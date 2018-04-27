@@ -4,6 +4,9 @@ Midgard is a collection of useful Python utilities used by the Geodetic
 institute at the Norwegian Mapping Authority (Kartverket). Although some of
 these are geodesy-specific, many are also useful in more general settings.
 
+Note: Midgard is still in pre-alpha status. Its functionality will change,
+      and it should not be depended on in any production-like setting.
+
 Midgard comes organized into different subpackages:
 
 {list_subpackages}
@@ -28,7 +31,7 @@ from pathlib import Path as _Path
 # Version of Midgard.
 #
 # This is automatically set using the bumpversion tool
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 # Authors of Midgard.

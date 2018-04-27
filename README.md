@@ -4,6 +4,9 @@ Midgard is a collection of useful Python utilities used by the Geodetic
 institute at the Norwegian Mapping Authority (Kartverket). Although some of
 these are geodesy-specific, many are also useful in more general settings.
 
+**Note:** Midgard is still in pre-alpha status. Its functionality will change,
+  and it should not be depended on in any production-like setting.
+
 
 ## Installing Midgard
 
@@ -27,8 +30,9 @@ download Anaconda for Python 3.
 
 ### Download the Midgard source code
 
-If you have not already done so, download the Midgard source code. Then enter
-the main `midgard` directory before running the install command below.
+If you have not already done so, download the Midgard source code from Github:
+[github.com/kartverket/midgard](https://github.com/kartverket/midgard). Then
+enter the main `midgard` directory before running the install command below.
 
     cd midgard
 
