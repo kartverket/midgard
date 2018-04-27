@@ -1,0 +1,10 @@
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - bumpversion
+  - flit
+  - ipython
+  - numpy
+  - python>=3.6
+  - pytoml
