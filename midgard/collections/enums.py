@@ -5,15 +5,6 @@ Description:
 
 Custom enumerations used for structured names.
 
-
-Authors:
---------
-
-* Geir Arne Hjelle <geir.arne.hjelle@kartverket.no>
-
-$Revision: 14777 $
-$Date: 2018-04-11 23:17:27 +0200 (Wed, 11 Apr 2018) $
-$LastChangedBy: hjegei $
 """
 
 # Midgard imports

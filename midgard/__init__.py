@@ -4,23 +4,31 @@ Midgard is a collection of useful Python utilities used by the Geodetic
 institute at the Norwegian Mapping Authority (Kartverket). Although some of
 these are geodesy-specific, many are also useful in more general settings.
 
-Midgard comes organized into different subpackages. To see info about the
-different subpackages, use the Python help system:
+Midgard comes organized into different subpackages:
 
-    >>> import midgard
-    >>> help(midgard)
+{list_subpackages}
+
+Look for help inside each subpackage:
+
+    >>> from midgard import subpackage
+    >>> help(subpackage)
 
 
+Authors:
+--------
+
+{list_authors}
 """
+
 # Standard library imports
 from datetime import date as _date
 from collections import namedtuple as _namedtuple
-
+from pathlib import Path as _Path
 
 # Version of Midgard.
 #
 # This is automatically set using the bumpversion tool
-__version__ = '0.0.1'
+__version__ = '0.1.0'
 
 
 # Authors of Midgard.
@@ -36,4 +44,27 @@ __contact__ = ', '.join(a.email for a in _AUTHORS if a.start < _date.today() < a
 
 
 # Copyright of the library
-__copyright__ = f'2018 - {_date.today().year} Kartverket'
+__copyright__ = f'2018 - {_date.today().year} Norwegian Mapping Authority'
+
+
+# Update doc with info about subpackages and authors
+def _update_doc(doc):
+    """Add information to module doc-string
+
+    Args:
+        doc (str):  The doc-string to format as the module doc-string.
+    """
+    # Subpackages
+    subpackage_paths = _Path(__file__).parent.iterdir()
+    subpackages = [p.name for p in subpackage_paths if p.is_dir() and not p.name.startswith('_')]
+    list_subpackages = '\n'.join(f'+ {p}' for p in subpackages)
+
+    # Authors
+    authors = [f'+ {a.name} <{a.email}>' for a in _AUTHORS if a.start < _date.today() < a.end]
+    list_authors = '\n'.join(authors)
+
+    # Add to module doc-string
+    return doc.format(list_subpackages=list_subpackages, list_authors=list_authors)
+
+
+__doc__ = _update_doc(__doc__)

@@ -8,21 +8,6 @@ mock is used for anything, a warning will be printed. This is done to avoid
 dependencies to all the C/C++-libraries for Python programs only using some of
 them.
 
-
-Todo:
------
-
-Move this to a general `gd_pyutils`-repo.
-
-
-Authors:
---------
-
-* Geir Arne Hjelle <geir.arne.hjelle@kartverket.no>
-
-$Revision: 14132 $
-$Date: 2018-01-18 12:18:00 +0100 (Thu, 18 Jan 2018) $
-$LastChangedBy: hjegei $
 """
 
 # Standard library imports
