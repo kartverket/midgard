@@ -25,4 +25,7 @@ keywords           = "geodesy utilities"
 # Requirements
 requires-python    = ">=3.6"
 requires           = ["numpy", ]
-dev-requires       = ["flit", "bumpversion", ]
+dev-requires       = ["black", "bumpversion", "flit", "mypy", "pytest", "pytest-cov"]
+
+[tool.flit.scripts]
+midgard_release = "midgard_release:main"

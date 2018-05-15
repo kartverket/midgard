@@ -4,7 +4,6 @@ Description:
 ------------
 
 Custom enumerations used for structured names.
-
 """
 
 # Midgard imports
@@ -30,9 +29,10 @@ def get_enum(name=None):
     try:
         return _ENUMS[name]
     except KeyError:
-        valid_enums = ', '.join(e for e in _ENUMS)
-        raise exceptions.UnknownEnumError(f"Enumeration '{name}' is not defined. "
-                                          f'Available enumerations are {valid_enums}.') from None
+        valid_enums = ", ".join(e for e in _ENUMS)
+        raise exceptions.UnknownEnumError(
+            f"Enumeration '{name}' is not defined. Available enumerations are {valid_enums}."
+        ) from None
 
 
 def get_value(name, value):
@@ -50,9 +50,10 @@ def get_value(name, value):
     try:
         return get_enum(name)[value]
     except KeyError:
-        valid_values = ', '.join(v.name for v in get_enum(name))
-        raise ValueError(f"Value '{value}' is not valid for a {name}-enumeration. "
-                         f'Valid values are {valid_values}.') from None
+        valid_values = ", ".join(v.name for v in get_enum(name))
+        raise ValueError(
+            f"Value '{value}' is not valid for a {name}-enumeration. Valid values are {valid_values}."
+        ) from None
 
 
 def register_enum(name):
@@ -66,6 +67,7 @@ def register_enum(name):
     Returns:
         Decorator: Decorator that registers an Enumeration.
     """
+
     def register_decorator(func):
         _ENUMS[name] = func
         return func

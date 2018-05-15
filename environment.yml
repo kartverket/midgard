@@ -2,9 +2,11 @@ channels:
   - defaults
   - conda-forge
 dependencies:
+  - python>=3.6
   - bumpversion
   - flit
   - ipython
+  - mypy
   - numpy
-  - python>=3.6
-  - pytoml
+  - pytest
+  - pytest-cov

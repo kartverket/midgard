@@ -7,7 +7,6 @@ Loads a C-library. If a library is missing, a mock library is returned. If this
 mock is used for anything, a warning will be printed. This is done to avoid
 dependencies to all the C/C++-libraries for Python programs only using some of
 them.
-
 """
 
 # Standard library imports
@@ -31,8 +30,7 @@ def load_name(library_name, func_specs=None, name_patterns=None):
         ctypes.CDLL:   Representation of the shared library.
     """
     library_path = c_util.find_library(library_name)
-    return load_path(library_path, func_specs=func_specs,
-                     name_patterns=name_patterns)
+    return load_path(library_path, func_specs=func_specs, name_patterns=name_patterns)
 
 
 def load_path(library_path, func_specs=None, name_patterns=None):
@@ -81,31 +79,32 @@ def load_path(library_path, func_specs=None, name_patterns=None):
 
     # Handle name mangling
     if name_patterns is None:
+
         def mangled_name(name):
             return name
+
     else:
+
         def mangled_name(name):
             for pattern in name_patterns:
-                full_name = pattern.format(func_name=name,
-                                           func_name_lower=name.lower())
+                full_name = pattern.format(func_name=name, func_name_lower=name.lower())
                 if hasattr(library_handle, full_name):
                     return full_name
-
             return name
 
     # Set argument and return types on functions
     if func_specs:
         for name, spec in func_specs.items():
-            if 'func_name' in spec:
-                func_name = mangled_name(spec['func_name'])
+            if "func_name" in spec:
+                func_name = mangled_name(spec["func_name"])
             else:
                 func_name = mangled_name(name)
             func = getattr(library_handle, func_name)
             delattr(library_handle, func_name)
-            if 'argtypes' in spec:
-                func.argtypes = spec['argtypes']
-            if 'restype' in spec:
-                func.restype = spec['restype']
+            if "argtypes" in spec:
+                func.argtypes = spec["argtypes"]
+            if "restype" in spec:
+                func.restype = spec["restype"]
             setattr(library_handle, name, func)
 
     return library_handle
@@ -157,9 +156,10 @@ class SimpleMock:
         file_name = caller.f_code.co_filename
 
         # Raise ImportError with a helpful message
-        raise ImportError("The library '{}' is not installed, but is used by"
-                          "'{}' on line {} of {}"
-                          ''.format(self._name, func_name, line_no, file_name))
+        raise ImportError(
+            "The library '{}' is not installed, but is used by '{}' on line {} of {}"
+            "".format(self._name, func_name, line_no, file_name)
+        )
 
     def __call__(self, *args, **kwargs):
         """Return the same SimpleMock-object when it is called
@@ -190,8 +190,7 @@ class SimpleMock:
         self._raise_import_error()
 
         if key not in self._children:
-            self._children[key] = type(self)('{}.{}'.format(self._name, key),
-                                             raise_error=self._raise_error)
+            self._children[key] = type(self)("{}.{}".format(self._name, key), raise_error=self._raise_error)
             setattr(self, key, self._children[key])
         return self._children[key]
 
@@ -209,4 +208,4 @@ class SimpleMock:
         Returns:
             String: An empty string.
         """
-        return ''
+        return ""
