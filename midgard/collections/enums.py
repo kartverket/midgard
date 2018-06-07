@@ -6,25 +6,57 @@ Description:
 Custom enumerations used for structured names.
 """
 
+# Standard library imports
+import enum
+from typing import Callable, Dict, List
+
 # Midgard imports
 from midgard.dev import exceptions
 
 
 # Dictionary of Enumerations. Populated by the @register_enum-decorators.
-_ENUMS = dict()
+_ENUMS: Dict[str, enum.EnumMeta] = dict()
 
 
-def get_enum(name=None):
-    """Return a named Enumeration
+def register_enum(name: str) -> Callable[[enum.EnumMeta], enum.EnumMeta]:
+    """Register a named Enumeration
 
-    Names are defined by the @register_enum-decorator. If the name-parameter is not given, the function will raise an
-    UnknownEnumError and list the available enumerations.
+    This allows for getting Enumerations with the get_enum-function.
 
     Args:
-        name (String):  Name used for Enumeration.
+        name:  Name used for Enumeration.
 
     Returns:
-        Enum: Enumeration with the given name.
+        Decorator that registers an Enumeration.
+    """
+
+    def register_decorator(enum_cls: enum.EnumMeta) -> enum.EnumMeta:
+        _ENUMS[name] = enum_cls
+        return enum_cls
+
+    return register_decorator
+
+
+def enums() -> List[str]:
+    """Return a list of available enums
+
+    Returns:
+        Names of available enums.
+    """
+    return sorted(_ENUMS)
+
+
+def get_enum(name: str) -> enum.EnumMeta:
+    """Return a named Enumeration
+
+    Names are defined by the @register_enum-decorator. If the name-parameter is not a valid enum, the function will
+    raise an UnknownEnumError and list the available enumerations.
+
+    Args:
+        name:  Name used for Enumeration.
+
+    Returns:
+        Enumeration with the given name.
     """
     try:
         return _ENUMS[name]
@@ -35,41 +67,41 @@ def get_enum(name=None):
         ) from None
 
 
-def get_value(name, value):
+def get_value(name: str, value: str) -> enum.Enum:
     """Return the value of a named Enumeration
 
     Names are defined by the @register_enum-decorator.
 
     Args:
-        name (String):   Name used for Enumeration.
-        value (String):  Value of Enumeration.
+        name:   Name used for Enumeration.
+        value:  Value of Enumeration.
 
     Returns:
-        Enum: Value of enumeration with the given name.
+        Value of enumeration with the given name.
     """
     try:
         return get_enum(name)[value]
     except KeyError:
-        valid_values = ", ".join(v.name for v in get_enum(name))
+        valid_values = ", ".join(v.name for v in get_enum(name))  # type: ignore
         raise ValueError(
             f"Value '{value}' is not valid for a {name}-enumeration. Valid values are {valid_values}."
         ) from None
 
 
-def register_enum(name):
-    """Register a named Enumeration
+#
+# ENUMS
+#
+@register_enum("log_level")
+class LogLevel(enum.IntEnum):
+    """Levels used when deciding how much log output to show"""
 
-    This allows for getting Enumerations with the get_enum-function.
-
-    Args:
-        name (String):  Name used for Enumeration.
-
-    Returns:
-        Decorator: Decorator that registers an Enumeration.
-    """
-
-    def register_decorator(func):
-        _ENUMS[name] = func
-        return func
-
-    return register_decorator
+    all = enum.auto()
+    debug = enum.auto()
+    time = enum.auto()
+    dev = enum.auto()
+    info = enum.auto()
+    warn = enum.auto()
+    check = enum.auto()
+    error = enum.auto()
+    fatal = enum.auto()
+    none = enum.auto()

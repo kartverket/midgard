@@ -75,14 +75,13 @@ def fill(text: str, *, width: Optional[int] = None, hanging: Optional[int] = Non
     indent (no indent on the first line) of `hanging` spaces.
 
     Args:
-        text (String):            Text that will be wrapped.
-        width (Integer):          The maximum width (in characters) of wrapped lines.
-        hanging (Integer): Number of characters used for hanging indent.
-        tw_args:                  Arguments passed on to `textwrap.fill`.
+        text:     Text that will be wrapped.
+        width:    The maximum width (in characters) of wrapped lines.
+        hanging:  Number of characters used for hanging indent.
+        tw_args:  Arguments passed on to `textwrap.fill`.
 
     Returns:
-        String: Wrapped string.
-
+        Wrapped string.
     """
     width = columns() if width is None else width
     if hanging is not None:
@@ -90,3 +89,55 @@ def fill(text: str, *, width: Optional[int] = None, hanging: Optional[int] = Non
         tw_args.setdefault("subsequent_indent", " " * hanging)
 
     return textwrap.fill(text, width=width, **tw_args)
+
+
+def dedent(text: str, num_spaces: int) -> str:
+    """Wrapper around textwrap.dedent
+
+    Dedents at most num_spaces.
+
+    Args:
+        text:        Text that will be dedented.
+        num_spaces:  Number of spaces that will be used for dedentation.
+
+    Returns:
+        Dedented string.
+    """
+    # Dedent the text all the way
+    dedented_text = textwrap.dedent(text)
+
+    # Indent it back if necessary
+    num_indents = (num_leading_spaces(text) - num_leading_spaces(dedented_text)) - num_spaces
+    if num_indents > 0:
+        return indent(dedented_text, num_spaces=num_indents)
+    else:
+        return dedented_text
+
+
+def indent(text: str, num_spaces: int, **tw_args: Any) -> str:
+    """Wrapper around textwrap.indent
+
+    The `tw_args` are passed on to textwrap.indent.
+
+    Args:
+        text:        Text that will be indented.
+        num_spaces:  Number of spaces that will be used for indentation.
+
+    Returns:
+        Indented string.
+    """
+    tw_args["prefix"] = " " * num_spaces
+    return textwrap.indent(text, **tw_args)
+
+
+def num_leading_spaces(text: str, space_char: str = " ") -> int:
+    """Count number of leading spaces in a string
+
+    Args:
+        text:        String to count.
+        space_char:  Which characters count as spaces.
+
+    Returns:
+        Number of leading spaces.
+    """
+    return len(text) - len(text.lstrip(space_char))

@@ -24,7 +24,7 @@ keywords           = "geodesy utilities"
 
 # Requirements
 requires-python    = ">=3.6"
-requires           = ["numpy", ]
+requires           = ["numpy", "scipy"]
 dev-requires       = ["black", "bumpversion", "flit", "mypy", "pytest", "pytest-cov"]
 
 [tool.flit.scripts]

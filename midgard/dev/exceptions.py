@@ -28,7 +28,19 @@ class FieldDoesNotExistError(MidgardException):
     pass
 
 
+class MissingConfigurationError(MidgardException):
+    pass
+
+
 class MissingDataError(MidgardException):
+    pass
+
+
+class MissingEntryError(MidgardException):
+    pass
+
+
+class MissingSectionError(MidgardException):
     pass
 
 

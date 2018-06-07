@@ -29,7 +29,8 @@ def one_sentence():
 @pytest.fixture
 def one_paragraph_width_80():
     """A one paragraph text with newlines, each line wrapped at 80 characters"""
-    return dedent("""
+    return dedent(
+        """
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum,
         orci at auctor venenatis, dolor orci congue felis, sit amet luctus dolor est in
         felis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
@@ -40,7 +41,21 @@ def one_paragraph_width_80():
         rutrum, efficitur dapibus eros mollis. Sed id aliquet justo. Etiam sem justo,
         commodo in vehicula id, maximus id magna. Donec neque quam, vulputate non ex sit
         amet, consectetur finibus purus. Curabitur urna magna, tempus vel porta eu,
-        semper malesuada odio.""").strip()
+        semper malesuada odio."""
+    ).strip()
+
+
+@pytest.fixture
+def one_paragraph_ragged_left():
+    """A one paragraph text with a ragged left margin"""
+    return dedent(
+        """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+               Integer condimentum, orci at auctor venenatis, dolor
+            orci congue felis, sit amet luctus dolor est in felis.
+        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+              inceptos himenaeos. Ut imperdiet ex sit amet lacinia condimentum."""
+    ).strip()
 
 
 #
@@ -69,10 +84,36 @@ def test_fill_one_paragraph(one_paragraph_width_80):
     assert filled_text == one_paragraph_width_80
 
 
-def test_hanging_indent(one_sentence):
+# TODO: Is this the proper way to parametrize with fixtures?
+@pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
+def test_hanging_indent(text):
     """Test that hanging indents work as expected"""
-    width = len(one_sentence) // 2  # Should force fill to three lines
-    filled_text = console.fill(one_sentence, width=width, hanging=4)
+    width = len(text) // 2  # Should force fill to three lines
+    filled_text = console.fill(text, width=width, hanging=4)
     num_lines = filled_text.count("\n") + 1
     assert filled_text.count("\n     ") == 0  # 5 spaces indent
     assert filled_text.count("\n    ") == num_lines - 1  # 4 spaces indent
+
+
+@pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
+def test_dedent(text):
+    """Test that dedentation works, indent first so that there are some spaces to dedent"""
+    dedented_text = "\n" + console.dedent(console.indent(text, 8), num_spaces=3)
+    num_lines = dedented_text.count("\n")
+    assert dedented_text.count("\n      ") == text.count("\n ")  # 6 spaces indent
+    assert dedented_text.count("\n     ") == num_lines  # 5 spaces indent
+
+
+def test_dedent_too_much(one_paragraph_ragged_left):
+    """If dedenting more than existing spaces, only dedent existing spaces"""
+    dedented_text = console.dedent(console.indent(one_paragraph_ragged_left, 2), num_spaces=4)
+    assert dedented_text == one_paragraph_ragged_left
+
+
+@pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
+def test_indent(text):
+    """Test that indentation works"""
+    indented_text = "\n" + console.indent(text, num_spaces=3)
+    num_lines = indented_text.count("\n")
+    assert indented_text.count("\n    ") == text.count("\n ")  # 4 spaces indent
+    assert indented_text.count("\n   ") == num_lines  # 3 spaces indent

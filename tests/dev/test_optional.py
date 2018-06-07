@@ -63,6 +63,7 @@ def test_non_existing_module_with_attrs():
 def test_SimpleMock_repr():
     """Test that the SimpleMock returns a nice repr"""
     from midgard.dev.optional import SimpleMock  # noqa  Import SimpleMock to be able to use eval on the repr
+
     simple_mock_repr = "SimpleMock('nice_repr')"
     simple_mock = eval(simple_mock_repr)
     assert repr(simple_mock) == simple_mock_repr

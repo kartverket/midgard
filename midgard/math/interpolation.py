@@ -107,16 +107,16 @@ def get_interpolator(name: str) -> Callable:
         ) from None
 
 
-def interpolate(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, **ipargs: Dict[str, Any]) -> np.ndarray:
+def interpolate(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, **ipargs: Any) -> np.ndarray:
     """Interpolate values from one x-array to another
 
     See `interpolators()` for a list of valid interpolators.
 
     Args:
-        x:      1-dimensional array with original x-values.
-        y:      Array with original y-values.
-        x_new:  1-dimensional array with new x-values.
-        kind:   Name of interpolator to use.
+        x:       1-dimensional array with original x-values.
+        y:       Array with original y-values.
+        x_new:   1-dimensional array with new x-values.
+        kind:    Name of interpolator to use.
         ipargs:  Keyword arguments passed on to the interpolator.
 
     Returns:
@@ -127,7 +127,7 @@ def interpolate(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, *
 
 
 def interpolate_with_derivative(
-    x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, dx: float = 0.5, **ipargs: Dict[str, Any]
+    x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, dx: float = 0.5, **ipargs: Any
 ) -> np.ndarray:
     """Interpolate values from one x-array to another as well as find derivatives
 
@@ -173,16 +173,16 @@ def lagrange(
         Lagrange interpolation function
     """
     # Check input
+    if x.ndim != 1:
+        raise ValueError(f"The x array must have exactly one dimension, currently x.ndim={x.ndim}.")
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+    if len(y) != len(x):
+        raise ValueError("x and y arrays must be equal in length along the first axis.")
     if window < 3:
         raise ValueError("The window should be at least 3")
     if window > len(x):
         raise ValueError(f"x and y arrays must have at least window={window} entries")
-    if len(y) != len(x):
-        raise ValueError("x and y arrays must be equal in length along the first axis.")
-    if x.ndim != 1:
-        raise ValueError("the x array must have exactly one dimension.")
-    if y.ndim < 1:
-        raise ValueError("the y array must have at least one dimension.")
 
     # Sort the input according to the x-array
     if not assume_sorted:
@@ -202,10 +202,10 @@ def lagrange(
 
     def _lagrange(x_new: np.ndarray) -> np.ndarray:
         """Interpolate using a Lagrange polynomial"""
-        if x_new.min() < x.min():
-            raise ValueError("A value in x_new is below the interpolation range.")
-        if x_new.max() > x.max():
-            raise ValueError("A value in x_new is above the interpolation range.")
+        if bounds_error and x_new.min() < x.min():
+            raise ValueError(f"Value {x_new.min()} in x_new is below the interpolation range {x.min()}.")
+        if bounds_error and x_new.max() > x.max():
+            raise ValueError(f"Value {x_new.max()} in x_new is above the interpolation range {x.max()}.")
 
         y_new = np.zeros(x_new.shape[:1] + y.shape[1:])
         x_new_scaled = (x_new - _xm) / _xs
@@ -234,7 +234,7 @@ def lagrange(
 
 
 @register_interpolator
-def linear(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, Any]) -> Callable:
+def linear(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
     """Linear interpolation through the given points
 
     Uses the scipy.interpolate.interp1d function with kind='linear' behind the scenes.
@@ -247,11 +247,16 @@ def linear(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, Any]) -> Callable:
     Returns:
         Linear interpolation function
     """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+
+    # Interpolate along axis=0 by default
+    ipargs.setdefault("axis", 0)
     return scipy.interpolate.interp1d(x, y, kind="linear", **ipargs)
 
 
 @register_interpolator
-def cubic(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, Any]) -> Callable:
+def cubic(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
     """Cubic spline interpolation through the given points
 
     Uses the scipy.interpolate.interp1d function with kind='cubic' behind the scenes.
@@ -264,11 +269,15 @@ def cubic(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, Any]) -> Callable:
     Returns:
         Cubic spline interpolation function
     """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+    # Interpolate along axis=0 by default
+    ipargs.setdefault("axis", 0)
     return scipy.interpolate.interp1d(x, y, kind="cubic", **ipargs)
 
 
 @register_interpolator
-def interpolated_univariate_spline(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, Any]) -> Callable:
+def interpolated_univariate_spline(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
     """One-dimensional interpolating spline for the given points
 
     Uses the scipy.interpolate.InterpolatedUnivariateSpline function behind the scenes.
@@ -284,6 +293,8 @@ def interpolated_univariate_spline(x: np.ndarray, y: np.ndarray, **ipargs: Dict[
     Returns:
         Interpolating spline function
     """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
     if y.ndim == 1:
         return scipy.interpolate.InterpolatedUnivariateSpline(x, y, **ipargs)
 
@@ -305,7 +316,7 @@ def interpolated_univariate_spline(x: np.ndarray, y: np.ndarray, **ipargs: Dict[
 
 
 @register_interpolator
-def barycentric_interpolator(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, Any]) -> Callable:
+def barycentric_interpolator(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
     """The interpolating polynomial through the given points
 
     Uses the scipy.interpolate.BarycentricInterpolator function behind the scenes.
@@ -318,4 +329,6 @@ def barycentric_interpolator(x: np.ndarray, y: np.ndarray, **ipargs: Dict[str, A
     Returns:
         Barycentric interpolation function
     """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
     return scipy.interpolate.BarycentricInterpolator(x, y, **ipargs)
