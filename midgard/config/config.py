@@ -135,7 +135,7 @@ class Configuration():
 
     @classmethod
     @contextmanager
-    def update_on_file(cls, file_path: Union[str, pathlib.Path]) -> None:
+    def update_on_file(cls, file_path: Union[str, pathlib.Path], **as_str_args) -> None:
         """Context manager for updating a configuration on file
         """
         # Read config from file
@@ -147,7 +147,7 @@ class Configuration():
 
         # Write config if it has been updated
         if cfg._update_count > update_count_before:
-            cfg.write_to_file(file_path)
+            cfg.write_to_file(file_path, **as_str_args)
 
     def write_to_file(self, file_path: Union[str, pathlib.Path], **as_str_args) -> None:
         """Write the configuration to a file
@@ -156,7 +156,6 @@ class Configuration():
         `as_str()` for more information.
 
         Todo: Use files.open_path
-
         """
         file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, mode="w") as fid:
@@ -401,7 +400,15 @@ class Configuration():
     ) -> None:
         section = other_section.name if section is None else section
         for key, entry in other_section.items():
-            self.update(section, key, entry.str, source=entry.source, meta=entry.meta, allow_new=allow_new, _update_sections=False)
+            self.update(
+                section,
+                key,
+                entry.str,
+                source=entry.source,
+                meta=entry.meta,
+                allow_new=allow_new,
+                _update_sections=False,
+            )
 
         self._set_sections_for_profiles()
 

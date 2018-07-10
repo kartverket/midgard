@@ -112,7 +112,7 @@ def test_read_config_from_file_classmethod(config_file):
 @pytest.mark.skip(reason="as_str() does not print profiles correctly")
 def test_write_config_to_file(config_file, tmpdir):
     """Test that writing a configuration creates a file that is identical to the original"""
-    cfg_path = pathlib.Path(''.join(config_file.sources))
+    cfg_path = pathlib.Path("".join(config_file.sources))
     out_path = pathlib.Path(tmpdir / "test_config.conf")
     config_file.write_to_file(out_path)
 
