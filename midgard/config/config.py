@@ -799,7 +799,9 @@ class ConfigurationEntry():
         self._using("list")
         return self._value.replace(",", " ").split()
 
-    def as_list(self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str) -> List[Any]:
+    def as_list(
+        self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str, maxsplit: int = 0
+    ) -> List[Any]:
         """Value of ConfigurationEntry converted to a list
 
         The entry is converted to a list by using the `split_re`-regular expression. By default the entry will be split
@@ -808,12 +810,13 @@ class ConfigurationEntry():
         Args:
             split_re:  Regular expression used to split entry into list.
             convert:   Function used to convert each element of the list.
+            maxsplit:  If nonzero, at most maxsplit splits occur.
 
         Returns:
             Value of entry as list.
         """
         self._using("list")
-        return [convert(s) for s in re.split(split_re, self._value) if s]
+        return [convert(s) for s in re.split(split_re, self._value, maxsplit=maxsplit) if s]
 
     @property
     def list_of_lists(self) -> List[List[builtins.str]]:
@@ -835,7 +838,9 @@ class ConfigurationEntry():
         self._using("tuple")
         return tuple(self._value.replace(",", " ").split())
 
-    def as_tuple(self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str) -> Tuple[Any, ...]:
+    def as_tuple(
+        self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str, maxsplit: int = 0
+    ) -> Tuple[Any, ...]:
         """Value of ConfigurationEntry converted to a tuple
 
         The entry is converted to a tuple by using the `split_re`-regular expression. By default the entry will be
@@ -844,12 +849,13 @@ class ConfigurationEntry():
         Args:
             split_re:  Regular expression used to split entry into tuple.
             convert:   Function used to convert each element of the tuple.
+            maxsplit:  If nonzero, at most maxsplit splits occur.
 
         Returns:
             Value of entry as tuple.
         """
         self._using("tuple")
-        return tuple([convert(s) for s in re.split(split_re, self._value) if s])
+        return tuple([convert(s) for s in re.split(split_re, self._value, maxsplit=maxsplit) if s])
 
     @property
     def dict(self) -> Dict[builtins.str, builtins.str]:
@@ -862,6 +868,7 @@ class ConfigurationEntry():
         item_split_re: builtins.str = r"[\s,]",
         key_value_split_re: builtins.str = r"[:]",
         convert: Callable = builtins.str,
+        maxsplit: int = 0,
     ) -> Dict[builtins.str, Any]:
         """Value of ConfigurationEntry converted to a dictionary
 
@@ -872,12 +879,13 @@ class ConfigurationEntry():
             item_split_re:       Regular expression used to split entry into items.
             key_value_split_re:  Regular expression used to split items into keys and values.
             convert:             Function used to convert each value in the dictionary.
+            maxsplit:            If nonzero, at most maxsplit splits occur when splitting entry into items.
 
         Returns:
             Value of entry as dict.
         """
         self._using("dict")
-        items = [s for s in re.split(item_split_re, self._value) if s]
+        items = [s for s in re.split(item_split_re, self._value, maxsplit=maxsplit) if s]
         key_values = [re.split(key_value_split_re, i, maxsplit=1) for i in items]
         return {k: convert(v) for k, v in key_values}
 
