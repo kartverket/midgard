@@ -9,7 +9,7 @@ import pytest
 
 # Midgard imports
 from midgard.dev import exceptions
-from midgard.dev.timer import Timer
+from midgard.dev.timer import AccumulatedTimer, Timer
 
 
 #
@@ -21,6 +21,12 @@ RE_TIME_MESSAGE = re.compile(TIME_MESSAGE + r" 0\.\d{4} seconds")
 
 @Timer(TIME_MESSAGE)
 def timewaster(num):
+    """Just waste a little bit of time"""
+    sum(n ** 2 for n in range(num))
+
+
+@AccumulatedTimer(TIME_MESSAGE)
+def accumulated_timewaste(num):
     """Just waste a little bit of time"""
     sum(n ** 2 for n in range(num))
 
@@ -111,3 +117,106 @@ def test_custom_logger():
     with Timer(TIME_MESSAGE, logger=logger):
         sum(n ** 2 for n in range(1000))
     assert RE_TIME_MESSAGE.match(logger.messages)
+
+
+def test_timer_without_text(capsys):
+    """Test that timer with None text does not print anything"""
+    with Timer(None):
+        sum(n ** 2 for n in range(1000))
+
+    stdout, stderr = capsys.readouterr()
+    assert stdout == ""
+    assert stderr == ""
+
+
+def test_accumulated_decorator(capsys):
+    """Test that decorated timer can accumulate"""
+    accumulated_timewaste(1000)
+    accumulated_timewaste(1000)
+
+    stdout, stderr = capsys.readouterr()
+    lines = stdout.strip().split("\n")
+    assert len(lines) == 2
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", lines[0])
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", lines[1])
+    assert stderr == ""
+
+
+def test_accumulated_context_manager(capsys):
+    """Test that context manager timer can accumulate"""
+    t = AccumulatedTimer(TIME_MESSAGE)
+    with t:
+        sum(n ** 2 for n in range(1000))
+    with t:
+        sum(n ** 2 for n in range(1000))
+
+    stdout, stderr = capsys.readouterr()
+    lines = stdout.strip().split("\n")
+    assert len(lines) == 2
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", lines[0])
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", lines[1])
+    assert stderr == ""
+
+
+def test_accumulated_explicit_timer(capsys):
+    """Test that explicit timer can accumulate"""
+    t = AccumulatedTimer(TIME_MESSAGE)
+    t.start()
+    sum(n ** 2 for n in range(1000))
+    t.end()
+    t.start()
+    sum(n ** 2 for n in range(1000))
+    t.end()
+
+    stdout, stderr = capsys.readouterr()
+    lines = stdout.strip().split("\n")
+    assert len(lines) == 2
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", lines[0])
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", lines[1])
+    assert stderr == ""
+
+
+def test_accumulated_explicit_timer_with_pause(capsys):
+    """Test that explicit timer can be paused"""
+    t = AccumulatedTimer(TIME_MESSAGE)
+    laps = list()
+    for _ in range(3):
+        t.start()
+        sum(n ** 2 for n in range(1000))
+        laps.append(t.pause())
+    total = t.end()
+    assert sum(laps) == total
+
+    stdout, stderr = capsys.readouterr()
+    assert re.match(TIME_MESSAGE + r" 0\.\d{4}/0\.\d{4} seconds", stdout)
+    assert stdout.count("\n") == 1
+    assert stderr == ""
+
+
+def test_consecutive_pauses():
+    """Test that consecutive pauses just returns 0"""
+    t = AccumulatedTimer(TIME_MESSAGE)
+    t.start()
+    sum(n ** 2 for n in range(1000))
+    t.pause()
+    sum(n ** 2 for n in range(1000))
+    assert t.pause() == 0
+
+
+def test_resetting_timer():
+    """Test that timer is reset to 0"""
+    t = AccumulatedTimer(TIME_MESSAGE)
+    t.start()
+    sum(n ** 2 for n in range(1000))
+    assert t.end() > 0
+
+    t.reset()
+    assert t.end() == 0
+
+
+def test_error_if_resetting_running_timer():
+    """Test that resetting a running timer raises an error"""
+    t = AccumulatedTimer(TIME_MESSAGE)
+    t.start()
+    with pytest.raises(exceptions.TimerRunning):
+        t.reset()

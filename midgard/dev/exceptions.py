@@ -48,6 +48,10 @@ class TimerNotRunning(MidgardException):
     pass
 
 
+class TimerRunning(MidgardException):
+    pass
+
+
 class UnknownEnumError(MidgardException):
     pass
 

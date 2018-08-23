@@ -39,10 +39,10 @@ logger is used to report the timing. See `Timer.__init__` for more details.
 # Standard library imports
 from contextlib import ContextDecorator
 import time
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 
 # Midgard imports
-from midgard.dev.exceptions import TimerNotRunning
+from midgard.dev import exceptions
 
 
 class Timer(ContextDecorator):
@@ -67,7 +67,7 @@ class Timer(ContextDecorator):
         super().__init__()
         self._start: Optional[float] = None
         self._end: Optional[float] = None
-        self.text = text if "{}" in text else (text + " {}").strip()
+        self.text = text if (text is None or "{}" in text) else (text + " {}").strip()
         self.fmt = fmt
         self.logger = logger
 
@@ -88,15 +88,23 @@ class Timer(ContextDecorator):
         self._start = self.timer()
         self._end = None
 
+    def pause(self) -> float:
+        """Pause the timer without logging. Use .start() to restart the timer
+        """
+        self._end = self.timer()
+        time_elapsed = self.elapsed()
+        self._start = None
+
+        return time_elapsed
+
     def end(self) -> float:
         """End the timer and log the time elapsed
 
         Returns:
             The time elapsed in seconds.
         """
-        self._end = self.timer()
-        time_elapsed = self.elapsed()
-        self._start = None
+        time_elapsed = self.pause()
+        self._log(time_elapsed)
 
         return time_elapsed
 
@@ -110,13 +118,12 @@ class Timer(ContextDecorator):
             The time elapsed in seconds.
         """
         if self._start is None:
-            raise TimerNotRunning(
+            raise exceptions.TimerNotRunning(
                 f"The timer is not running. See `help({self.__module__})` for information on how to start one."
             )
 
         timer_end = self.timer() if self._end is None else self._end
-        time_elapsed = timer_end - self._start
-        self._log(time_elapsed)
+        time_elapsed = 0 if self._start is None else timer_end - self._start
 
         return time_elapsed
 
@@ -127,7 +134,7 @@ class Timer(ContextDecorator):
             The time elapsed in seconds.
         """
         time_text = f"{time_elapsed:{self.fmt}} seconds"
-        if self.logger:
+        if self.logger and self.text:
             self.logger(self.text.format(time_text))
 
     def __enter__(self) -> "Timer":
@@ -136,7 +143,58 @@ class Timer(ContextDecorator):
         self.start()
         return self
 
-    def __exit__(self, *exc) -> None:
+    def __exit__(self, *_: Any) -> None:
         """End the timer and log the time elapsed as a context manager
         """
         self.end()
+
+
+class AccumulatedTimer(Timer):
+
+    def __init__(self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Callable[[str], None] = print) -> None:
+        super().__init__(text, fmt, logger)
+        self.accumulated = 0.0
+
+    def reset(self) -> None:
+        """Reset the timer back to 0
+        """
+        if self._end is None:
+            raise exceptions.TimerRunning(f"The timer is running and cannot be reset")
+
+        self.accumulated = 0.0
+
+    def end(self) -> float:
+        """End the timer and log the time elapsed
+
+        Returns:
+            The time elapsed in seconds.
+        """
+        super().end()
+        return self.accumulated
+
+    def elapsed(self) -> float:
+        """Log the time elapsed
+
+        Can be used explicitly to log the time since a timer started without
+        ending the timer.
+
+        Returns:
+            The time elapsed in seconds.
+        """
+        try:
+            time_elapsed = super().elapsed()
+        except exceptions.TimerNotRunning:
+            time_elapsed = 0
+
+        self.accumulated += time_elapsed
+        return time_elapsed
+
+    def _log(self, time_elapsed: float) -> None:
+        """Do the actual logging of elapsed time
+
+        Args:
+            The time elapsed in seconds.
+        """
+        time_text = f"{time_elapsed:{self.fmt}}/{self.accumulated:{self.fmt}} seconds"
+        if self.logger and self.text:
+            self.logger(self.text.format(time_text))

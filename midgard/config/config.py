@@ -96,6 +96,14 @@ FMT_datetime = "%Y-%m-%d %H:%M:%S"
 FMT_dt_file = "%Y%m%d-%H%M%S"
 
 
+class CasedConfigParser(ConfigParser):
+    """ConfigParser with case-sensitive keys"""
+
+    def optionxform(self, optionstr: str) -> str:
+        """Do not turn optionstr (key) into lowercase"""
+        return optionstr
+
+
 class Configuration():
     """Represents a Configuration"""
 
@@ -135,7 +143,7 @@ class Configuration():
 
     @classmethod
     @contextmanager
-    def update_on_file(cls, file_path: Union[str, pathlib.Path], **as_str_args) -> None:
+    def update_on_file(cls, file_path: Union[str, pathlib.Path], **as_str_args: Dict[str, Any]) -> None:
         """Context manager for updating a configuration on file
         """
         # Read config from file
@@ -149,7 +157,7 @@ class Configuration():
         if cfg._update_count > update_count_before:
             cfg.write_to_file(file_path, **as_str_args)
 
-    def write_to_file(self, file_path: Union[str, pathlib.Path], **as_str_args) -> None:
+    def write_to_file(self, file_path: Union[str, pathlib.Path], **as_str_args: Dict[str, Any]) -> None:
         """Write the configuration to a file
 
         In addition to the file path, arguments can be specified and will be passed on to the as_str() function. See
@@ -234,7 +242,7 @@ class Configuration():
             return ConfigurationSection("undefined")
 
     @master_section.setter
-    def master_section(self, section: Optional[SectionName]):
+    def master_section(self, section: Optional[SectionName]) -> None:
         """Set the master section"""
         if section is None or section in self._sections:
             self._master_section = section
@@ -338,7 +346,11 @@ class Configuration():
             self._set_sections_for_profiles()
 
     def update_from_file(
-        self, file_path: Union[str, pathlib.Path], allow_new: bool = True, interpolate: bool = False
+        self,
+        file_path: Union[str, pathlib.Path],
+        allow_new: bool = True,
+        interpolate: bool = False,
+        case_sensitive: bool = False,
     ) -> None:
         """Update the configuration from a configuration file
 
@@ -359,9 +371,10 @@ class Configuration():
         https://docs.python.org/library/configparser.html#configparser.ExtendedInterpolation for details.
 
         Args:
-            file_path:    Path to the configuration file.
-            allow_new:    Whether to allow the creation of new sections and entries.
-            interpolate:  Whether to interpolate variables in the configuration file.
+            file_path:      Path to the configuration file.
+            allow_new:      Whether to allow the creation of new sections and entries.
+            interpolate:    Whether to interpolate variables in the configuration file.
+            case_sensitive: Whether to read keys as case sensitive (or convert to lower case).
         """
         # Use ConfigParser to read from file
         cfg_parser_args = dict(
@@ -369,7 +382,7 @@ class Configuration():
             delimiters=("=",),
             interpolation=ExtendedInterpolation() if interpolate else BasicInterpolation(),
         )
-        cfg_parser = ConfigParser(**cfg_parser_args)
+        cfg_parser = (CasedConfigParser if case_sensitive else ConfigParser)(**cfg_parser_args)
         cfg_parser.read(file_path)
 
         # Add configuration entries
@@ -800,7 +813,7 @@ class ConfigurationEntry():
         return self._value.replace(",", " ").split()
 
     def as_list(
-        self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str, maxsplit: int = 0
+        self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str, maxsplit: builtins.int = 0
     ) -> List[Any]:
         """Value of ConfigurationEntry converted to a list
 
@@ -839,7 +852,7 @@ class ConfigurationEntry():
         return tuple(self._value.replace(",", " ").split())
 
     def as_tuple(
-        self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str, maxsplit: int = 0
+        self, split_re: builtins.str = r"[\s,]", convert: Callable = builtins.str, maxsplit: builtins.int = 0
     ) -> Tuple[Any, ...]:
         """Value of ConfigurationEntry converted to a tuple
 
@@ -868,7 +881,7 @@ class ConfigurationEntry():
         item_split_re: builtins.str = r"[\s,]",
         key_value_split_re: builtins.str = r"[:]",
         convert: Callable = builtins.str,
-        maxsplit: int = 0,
+        maxsplit: builtins.int = 0,
     ) -> Dict[builtins.str, Any]:
         """Value of ConfigurationEntry converted to a dictionary
 

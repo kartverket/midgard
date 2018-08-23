@@ -25,7 +25,7 @@ test:
 	pytest --cov=midgard --cov-report=term-missing
 
 typing:
-	mypy --ignore-missing-imports midgard
+	mypy --ignore-missing-imports --disallow-untyped-defs --disallow-untyped-calls midgard
 
 # Create documentation
 doc:

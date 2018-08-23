@@ -32,7 +32,7 @@ from pathlib import Path as _Path
 # Version of Midgard.
 #
 # This is automatically set using the bumpversion tool
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 
 
 # Authors of Midgard.
@@ -48,14 +48,14 @@ __copyright__ = f"2018 - {_date.today().year} Norwegian Mapping Authority"
 
 
 # Update doc with info about subpackages and maintainers
-def _update_doc(doc):
+def _update_doc(doc: str) -> str:
     """Add information to doc-string
 
     Args:
-        doc (str):  The doc-string to update.
+        doc:  The doc-string to update.
 
     Returns:
-        str: The updated doc-string
+        The updated doc-string.
     """
     # Subpackages
     subpackage_paths = _Path(__file__).parent.iterdir()
