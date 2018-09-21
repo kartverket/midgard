@@ -13,20 +13,23 @@ Color: The sub-module `color` can be used to set the foreground and background c
 functionality depends on the external package `colorama`. If `colorama` is not installed, color gracefully falls back
 to not showing any color.
 
+
 Examples:
 ---------
 
->>> from midgard.lib import console
->>> print(console.columns())
+>>> from midgard.dev import console
+>>> console.columns()  # doctest: +SKIP
 86
->>> print(console.fill(a_very_long_string))
+
+>>> print(console.fill(a_very_long_string))  # doctest: +SKIP
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempus eleifend feugiat.
 Maecenas vitae posuere metus. Sed sit amet fermentum velit. Aenean vitae turpis at
 risus sollicitudin fringilla in in nisi. Maecenas vitae ante libero. Aenean ut eros
 consequat, ornare erat at, tempus arcu. Suspendisse velit leo, eleifend eget mi non,
 vehicula ultricies erat. Vestibulum id nisi eget nisl venenatis dignissim. Duis cursus
 quam dui, vel hendrerit nibh lacinia id.
->>> print(console.color.Fore.YELLOW + console.color.Back.BLUE + 'I am YELLOW text on a BLUE background!')
+
+>>> print(console.color.Fore.YELLOW + console.color.Back.BLUE + 'I am YELLOW text on BLUE backdrop!')  # doctest: +SKIP
 I am YELLOW text on a BLUE background!
 
 """
@@ -91,10 +94,10 @@ def fill(text: str, *, width: Optional[int] = None, hanging: Optional[int] = Non
     return textwrap.fill(text, width=width, **tw_args)
 
 
-def dedent(text: str, num_spaces: int) -> str:
+def dedent(text: str, num_spaces: Optional[int] = None) -> str:
     """Wrapper around textwrap.dedent
 
-    Dedents at most num_spaces.
+    Dedents at most num_spaces. If num_spaces is not specified, dedents as much as possible.
 
     Args:
         text:        Text that will be dedented.
@@ -105,6 +108,8 @@ def dedent(text: str, num_spaces: int) -> str:
     """
     # Dedent the text all the way
     dedented_text = textwrap.dedent(text)
+    if num_spaces is None:
+        return dedented_text
 
     # Indent it back if necessary
     num_indents = (num_leading_spaces(text) - num_leading_spaces(dedented_text)) - num_spaces

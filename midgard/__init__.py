@@ -13,8 +13,8 @@ Midgard comes organized into different subpackages:
 
 Look for help inside each subpackage:
 
-    >>> from midgard import subpackage
-    >>> help(subpackage)
+    >>> from midgard import subpackage  # doctest: +SKIP
+    >>> help(subpackage)  # doctest: +SKIP
 
 
 Current maintainers:
@@ -32,7 +32,7 @@ from pathlib import Path as _Path
 # Version of Midgard.
 #
 # This is automatically set using the bumpversion tool
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 
 
 # Authors of Midgard.

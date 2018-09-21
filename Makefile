@@ -10,22 +10,22 @@ DOCSDIR_WWW = $(CURDIR)/www
 
 # Install in developer mode (no need to reinstall after changing source)
 develop:
-	flit install -s
+	python -m flit install -s
 
 # Regular install, freezes the code so must reinstall after changing source code
 install:
-	flit install --deps production
+	python -m flit install --deps production
 
 # Format code
 black:
-	black --line-length=119 .
+	python -m black --line-length=119 .
 
 # Run tests
 test:
-	pytest --cov=midgard --cov-report=term-missing
+	python -m pytest --doctest-modules --cov=midgard --cov-report=term-missing
 
 typing:
-	mypy --ignore-missing-imports --disallow-untyped-defs --disallow-untyped-calls midgard
+	python -m mypy --ignore-missing-imports --disallow-untyped-defs --disallow-untyped-calls midgard
 
 # Create documentation
 doc:

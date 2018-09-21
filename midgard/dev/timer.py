@@ -49,7 +49,9 @@ class Timer(ContextDecorator):
     """Class for timing running time of functions and code blocks.
     """
 
-    def __init__(self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Callable[[str], None] = print) -> None:
+    def __init__(
+        self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Optional[Callable[[str], None]] = print
+    ) -> None:
         """Set up a new timer
 
         The text to be shown when logging the timer can be customized.
@@ -150,8 +152,9 @@ class Timer(ContextDecorator):
 
 
 class AccumulatedTimer(Timer):
-
-    def __init__(self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Callable[[str], None] = print) -> None:
+    def __init__(
+        self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Optional[Callable[[str], None]] = print
+    ) -> None:
         super().__init__(text, fmt, logger)
         self.accumulated = 0.0
 

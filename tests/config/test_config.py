@@ -135,16 +135,16 @@ def test_read_config_from_options(config_options):
 
 def test_update_config_from_config_section(config_file, config_options):
     """Test that a config section can be copied"""
-    assert "section_1" not in config_file.sections
+    assert "section_1" not in config_file.section_names
     config_file.update_from_config_section(config_options.section_1)
-    assert "section_1" in config_file.sections
+    assert "section_1" in config_file.section_names
     assert str(config_file.section_1) == str(config_options.section_1)
 
 
 def test_update_config_from_options(config_file):
     """Test that a config can be updated from command line options"""
     config_file.master_section = "midgard"
-    sections_before = set(config_file.sections)
+    sections_before = set(config_file.section_names)
     entries_before = set(config_file.midgard.as_list())
     cfg_argv = [
         sys.argv[0],
@@ -161,7 +161,7 @@ def test_update_config_from_options(config_file):
     config_file.update_from_options(allow_new=True)
     sys.argv = remember_sys_argv
 
-    assert set(config_file.sections) - sections_before == {"new_section"}
+    assert set(config_file.section_names) - sections_before == {"new_section"}
     assert set(config_file.midgard.as_list()) - entries_before == {"new_key"}
     assert config_file.midgard.foo.str == "I am an option"
     assert config_file.midgard.pi.str == "4"
@@ -201,7 +201,7 @@ def test_get_from_master_section_without_master_section(config_file):
 
 def test_profiles_are_not_separate_sections(config_file):
     """Test that profiles are not registered as separate sections"""
-    assert len([s for s in config_file.sections if s.startswith("profile_test")]) == 1
+    assert len([s for s in config_file.section_names if s.startswith("profile_test")]) == 1
 
 
 def test_profiles_are_prioritized(config_file):
@@ -289,18 +289,18 @@ def test_get_from_master_section(config_file):
 
 def test_add_single_entry(config_file):
     """Test adding a single new entry"""
-    sections_before = set(config_file.sections)
+    sections_before = set(config_file.section_names)
     config_file.update("new_section", "new_key", "new_value", source="test")
-    assert set(config_file.sections) - sections_before == {"new_section"}
+    assert set(config_file.section_names) - sections_before == {"new_section"}
     assert config_file.new_section.new_key.str == "new_value"
     assert config_file.new_section.new_key.source == "test"
 
 
 def test_updating_existing_entry(config_file):
     """Test updating the value of an existing entry"""
-    sections_before = config_file.sections
+    sections_before = config_file.section_names
     config_file.update("midgard", "foo", "new_value", source="test", allow_new=False)
-    assert config_file.sections == sections_before
+    assert config_file.section_names == sections_before
     assert config_file.midgard.foo.str == "new_value"
     assert config_file.midgard.foo.source == "test"
 
@@ -355,22 +355,22 @@ def test_attribute_and_item_access(config_file):
 
 def test_deleting_section_as_item(config_file):
     """Test that deleting a section removes it"""
-    sections_before = set(config_file.sections)
+    sections_before = set(config_file.section_names)
     del config_file["midgard"]
-    assert sections_before - set(config_file.sections) == {"midgard"}
+    assert sections_before - set(config_file.section_names) == {"midgard"}
 
 
 def test_deleting_section_as_attribute(config_file):
     """Test that deleting a section removes it"""
-    sections_before = set(config_file.sections)
+    sections_before = set(config_file.section_names)
     del config_file.midgard
-    assert sections_before - set(config_file.sections) == {"midgard"}
+    assert sections_before - set(config_file.section_names) == {"midgard"}
 
 
 def test_dir_return_sections(config_file):
     """Test that sections are included in dir(configuration)"""
     cfg_dir = dir(config_file)
-    sections = set(config_file.sections)
+    sections = set(config_file.section_names)
     assert len(sections) > 0
     assert set(cfg_dir) & sections == sections
 

@@ -44,6 +44,10 @@ class MissingSectionError(MidgardException):
     pass
 
 
+class ParserError(MidgardException):
+    pass
+
+
 class TimerNotRunning(MidgardException):
     pass
 
@@ -53,6 +57,10 @@ class TimerRunning(MidgardException):
 
 
 class UnknownEnumError(MidgardException):
+    pass
+
+
+class UnknownPackageError(MidgardException):
     pass
 
 

@@ -1,0 +1,58 @@
+#================================== 
+# IVS source Name Translation Table  
+#================================== 
+# File format      : 21-Jun-2018  
+# Date last revised: 12-Sep-2018 
+# 
+# Columns      Format             Content 
+# 
+#   1 -   8    A8                 IVS source name 
+#                                 Source name used now or in the past in IVS schedules and databases 
+#  11 -  26    A16                J2000 source name long 
+#                                 ICRF designations following the recommendations of the IAU Task Group on Designations 
+#  29 -  38    A10                J2000 source name short 
+#  41 -  48    A8                 IERS designations source name constructed from B1950 coordinates 
+#  51 -  62    A12                JPL source name 
+#  65 -  79    I2,1X,I2,1X,F9.6   Right ascension in J2000 
+#  82 -  96    I3,1X,I2,1X,F8.5   Declination in J2000 
+#  99 - 118    A20                Source of position information 
+# 121 - 122    A2                 Flag to indicate the origin of the J2000 names 
+#                                 (left field for the long name and right field for the short name): 
+#                                 T: TN35 
+#                                 s: source.names 
+#                                 S: SCHED source catalog 
+#                                 n: new (created the first time the source appears in the table) 
+#                                 p: private communication. 
+# 125 - 134    I4,-,I2,-,I2       First date 
+# 137 - 176    A40                Alternate names 
+# 
+#  The token in a column "-" indicates that the source name is the same as the IVS name.
+#  Sources with non established J2000 names (long and short) are assigned J2000 names 
+#  following the recommendations of the IAU Task Group on Designations, which is indicated 
+#  by the token "n" in columns 121 and 122. 
+#  If an entry is blank we do not have information about the source name in this format.
+#  
+# Contact information for original file: Karine Le Bail, NVI Inc - karine.lebail@nasa.gov 
+# 
+# Note: This is just a dummy file, only used for testing parsing of the format. Do not use
+# the information inside this file.
+# 
+#============================================ 
+# Total number of sources in the table: 8
+#============================================ 
+# 
+#        1         2         3         4         5         6         7         8         9        10        11        12        13        14        15                     
+#23456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789            
+#========================================================================================================================================================================= 
+# IVS     J2000             J2000       IERS      JPL                RA               DEC         Src of pos            FF  First       Alternate names                    
+# name    name              name        name      name           h  m   s          d  m   s       info                      date                                           
+#         (long)            (short)                                                                                                                                        
+#========================================================================================================================================================================= 
+2357-326  J000020.3-322101  J0000-3221  -                       00 00 20.399948  -32 21 01.23352  TN35                  Ts  2002-02-01  
+2357+811  J000024.5+812348  J0000+8123  -                       00 00 24.580000  +81 23 48.80000  blokq apriori         ns              
+2357+028  J000027.0+030715  J0000+0307  -                       00 00 27.020000  +03 07 15.60000  blokq apriori         ns              
+2358+406  J000053.0+405401  J0000+4054  -                       00 00 53.081568  +40 54 01.79308  TN35                  Ts  1996-06-08  
+2358-161  J000105.3-155107  J0001-1551  -                       00 01 05.328768  -15 51 07.07605  TN35                  Ts  1997-07-03  
+0000-199  J000315.9-194150  J0003-1941  -                       00 03 15.949323  -19 41 50.39790  TN35                  Ts  2006-12-19  
+2357-318  J235935.4-313343  J2359-3133  -         -             23 59 35.491543  -31 33 43.82425  TN35                  Ts  2002-05-15  PKS 2357-318
+2357-007  J235936.8-003112  J2359-0031  -                       23 59 36.830000  -00 31 12.10000  blokq apriori         ns              

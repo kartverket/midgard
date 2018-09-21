@@ -110,6 +110,12 @@ def test_dedent_too_much(one_paragraph_ragged_left):
     assert dedented_text == one_paragraph_ragged_left
 
 
+def test_dedent_all(one_paragraph_ragged_left):
+    """If not specifying num_spaces, dedent all the way"""
+    dedented_text = console.dedent(console.indent(one_paragraph_ragged_left, 7))
+    assert dedented_text == one_paragraph_ragged_left
+
+
 @pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
 def test_indent(text):
     """Test that indentation works"""

@@ -10,13 +10,18 @@ Different interpolation methods are decorated with `@register_interpolator` and 
 Example:
 --------
 
+>>> import numpy as np
+>>> np.set_printoptions(precision=3, suppress=True)
 >>> x = np.linspace(-1, 1, 11)
 >>> y = x**3 - x
 >>> y
-array([ 0.   ,  0.288,  0.384,  0.336,  0.192,  0.   , -0.192, -0.336, -0.384, -0.288,  0.   ])
+array([ 0.   ,  0.288,  0.384,  0.336,  0.192,  0.   , -0.192, -0.336,
+       -0.384, -0.288,  0.   ])
+
 >>> x_new = np.linspace(-0.8, 0.8, 11)
->>> interpolation.interpolate(x, y, x_new, kind='cubic')
-array([ 0.288,  0.378,  0.369,  0.287,  0.156, -0.   , -0.156, -0.287, -0.369, -0.378, -0.288])
+>>> interpolate(x, y, x_new, kind='cubic')
+array([ 0.288,  0.378,  0.369,  0.287,  0.156, -0.   , -0.156, -0.287,
+       -0.369, -0.378, -0.288])
 
 
 Developer info:
@@ -41,7 +46,7 @@ For instance, the following would implement a terrible interpolation function th
 
 This function would then be available as an interpolator. For instance, one could do
 
-    >>> interpolation.interpolate(x, y, x_new, kind='zero')
+    >>> interpolate(x, y, x_new, kind='zero')  # doctest: +SKIP
     array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 
 """
@@ -218,7 +223,7 @@ def lagrange(
         # Interpolate for each unique set of interpolation points
         for idx in np.unique(start_idxs):
             y_idx = start_idxs == idx
-            x_wd, y_wd = x_scaled[idx:idx + window], y[idx:idx + window]
+            x_wd, y_wd = x_scaled[idx : idx + window], y[idx : idx + window]
             diff_x = np.subtract(*np.meshgrid(x_wd, x_wd)) + np.eye(window)
 
             r = np.array(

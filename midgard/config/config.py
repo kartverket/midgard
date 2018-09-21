@@ -3,41 +3,48 @@
 Description:
 ------------
 
-A Configuration consists of one or several sections. Each ConfigurationSection consists of one or more entries. Each
-ConfigurationEntry consists of a key and a value.
+A Configuration consists of one or several sections. Each ConfigurationSection
+consists of one or more entries. Each ConfigurationEntry consists of a key and
+a value.
 
 
 Examples:
 ---------
 
-For basic use, an entry is looked up by simple attribute access. For instance if `cfg` is a Configuration with the
-section `midgard` which has an entry `foo = bar`:
+For basic use, an entry is looked up by simple attribute access. For instance
+if `cfg` is a Configuration with the section `midgard` which has an entry `foo
+= bar`:
 
+    >>> cfg = Configuration("config_name")
+    >>> cfg.update("midgard", "foo", "bar")
     >>> cfg.midgard.foo
-    ConfigurationEntry('foo', 'bar')
+    ConfigurationEntry(key='foo', value='bar')
 
-ConfigurationEntry has several access methods that convert the entry to a given data type:
+ConfigurationEntry has several access methods that convert the entry to a given
+data type:
 
+    >>> cfg.update("midgard", "foo_pi", 3.14, source="command line")
     >>> cfg.midgard.foo_pi
-    ConfigurationEntry('foo_pi', '3.14')
+    ConfigurationEntry(key='foo_pi', value='3.14')
     >>> cfg.midgard.foo_pi.float
     3.14
     >>> cfg.midgard.foo_pi.str
     '3.14'
     >>> cfg.midgard.foo_pi.tuple
-    ('3.14', )
+    ('3.14',)
 
 
 Sources:
 --------
 
-Each configuration entry records its source. That is, where that entry was defined. Examples include read from file,
-set as a command line option, or programmatically from a dictionary. The source can be looked up on an individual
-entry, or for all entries in a configuration.
+Each configuration entry records its source. That is, where that entry was
+defined. Examples include read from file, set as a command line option, or
+programmatically from a dictionary. The source can be looked up on an
+individual entry, or for all entries in a configuration.
 
-    >>> cfg.midgard.foo.source
-    '/home/midgard/midgard.conf'
-    >>> cfg.sources
+    >>> cfg.midgard.foo_pi.source
+    'command line'
+    >>> cfg.sources  # doctest: +SKIP
     {'/home/midgard/midgard.conf', 'command line'}
 
 
@@ -60,7 +67,6 @@ Replacement Variables:
 Help text and Type hints:
 -------------------------
 
-
 """
 
 # Standard library imports
@@ -74,18 +80,17 @@ import re
 import sys
 from collections import UserDict
 
-# Where imports
+# Midgard imports
 from midgard.dev import console
 from midgard.collections import enums
 from midgard.dev import exceptions
 
 
 # Typing
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, Generator, List, Optional, Set, Tuple, Union
 
-ProfileName = Union[None, str]
-SectionName = str
-Sections = Dict[SectionName, "ConfigurationSection"]
+ProfileName = Optional[str]
+Sections = Dict[str, "ConfigurationSection"]
 EntryName = str
 ConfigVars = Dict[str, Any]
 
@@ -104,7 +109,7 @@ class CasedConfigParser(ConfigParser):
         return optionstr
 
 
-class Configuration():
+class Configuration:
     """Represents a Configuration"""
 
     def __init__(self, name: str) -> None:
@@ -143,7 +148,7 @@ class Configuration():
 
     @classmethod
     @contextmanager
-    def update_on_file(cls, file_path: Union[str, pathlib.Path], **as_str_args: Dict[str, Any]) -> None:
+    def update_on_file(cls, file_path: Union[str, pathlib.Path], **as_str_args: Any) -> Generator:
         """Context manager for updating a configuration on file
         """
         # Read config from file
@@ -157,7 +162,7 @@ class Configuration():
         if cfg._update_count > update_count_before:
             cfg.write_to_file(file_path, **as_str_args)
 
-    def write_to_file(self, file_path: Union[str, pathlib.Path], **as_str_args: Dict[str, Any]) -> None:
+    def write_to_file(self, file_path: Union[str, pathlib.Path], **as_str_args: Any) -> None:
         """Write the configuration to a file
 
         In addition to the file path, arguments can be specified and will be passed on to the as_str() function. See
@@ -165,19 +170,25 @@ class Configuration():
 
         Todo: Use files.open_path
         """
+        file_path = pathlib.Path(file_path)
         file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, mode="w") as fid:
             fid.write(self.as_str(**as_str_args) + "\n")
 
     @property
-    def sections(self) -> List[SectionName]:
-        """List of sections in Configuration"""
+    def section_names(self) -> List[str]:
+        """Names of sections in Configuration"""
         return list(self._sections.keys())
+
+    @property
+    def sections(self) -> List["ConfigurationSection"]:
+        """Sections in Configuration"""
+        return list(self._sections.values())
 
     @property
     def sources(self) -> Set[str]:
         """Sources of entries in Configuration"""
-        return {self[s][k].source for s in self.sections for k in self[s].keys() if self[s][k].source}
+        return {s[k].source for s in self.sections for k in s.keys() if s[k].source}
 
     @property
     def profiles(self) -> List[ProfileName]:
@@ -242,7 +253,7 @@ class Configuration():
             return ConfigurationSection("undefined")
 
     @master_section.setter
-    def master_section(self, section: Optional[SectionName]) -> None:
+    def master_section(self, section: Optional[str]) -> None:
         """Set the master section"""
         if section is None or section in self._sections:
             self._master_section = section
@@ -277,19 +288,24 @@ class Configuration():
             return ConfigurationEntry(key, value=value, source="method call", vars_dict=self.vars)
 
         try:
-            return self.master_section[key] if section is None else self[section][key]
-        except (exceptions.MissingSectionError, exceptions.MissingEntryError):
+            section_value = self.master_section if section is None else self[section]
+            if isinstance(section_value, ConfigurationEntry):
+                return section_value
+            else:
+                return section_value[key]
+        except (exceptions.MissingSectionError, exceptions.MissingEntryError) as err:
             try:
                 return self.parent_config.get(key=key, section=section)
             except (exceptions.MissingConfigurationError, exceptions.MissingEntryError):
                 if default is None:
-                    return self.master_section[key] if section is None else self[section][key]
+                    # Raise original error
+                    raise err
                 else:
                     return ConfigurationEntry(key, value=default, source="default value", vars_dict=self.vars)
 
     def update(
         self,
-        section: SectionName,
+        section: str,
         key: str,
         value: str,
         *,
@@ -377,12 +393,12 @@ class Configuration():
             case_sensitive: Whether to read keys as case sensitive (or convert to lower case).
         """
         # Use ConfigParser to read from file
-        cfg_parser_args = dict(
+        cfg_parser_cls = CasedConfigParser if case_sensitive else ConfigParser
+        cfg_parser = cfg_parser_cls(
             allow_no_value=True,
             delimiters=("=",),
             interpolation=ExtendedInterpolation() if interpolate else BasicInterpolation(),
         )
-        cfg_parser = (CasedConfigParser if case_sensitive else ConfigParser)(**cfg_parser_args)
         cfg_parser.read(file_path)
 
         # Add configuration entries
@@ -409,10 +425,10 @@ class Configuration():
         self._set_sections_for_profiles()
 
     def update_from_config_section(
-        self, other_section: "ConfigurationSection", section: Optional[SectionName] = None, allow_new: bool = True
+        self, other_section: "ConfigurationSection", section: Optional[str] = None, allow_new: bool = True
     ) -> None:
         section = other_section.name if section is None else section
-        for key, entry in other_section.items():
+        for key, entry in other_section.data.items():
             self.update(
                 section,
                 key,
@@ -464,7 +480,7 @@ class Configuration():
     def update_from_dict(
         self,
         cfg_dict: Dict[str, Any],
-        section: Optional[SectionName] = None,
+        section: Optional[str] = None,
         source: str = "dictionary",
         allow_new: bool = True,
     ) -> None:
@@ -517,8 +533,8 @@ class Configuration():
         return "\n\n\n".join(s for s in section_strs if s)
 
     def as_dict(
-        self, getters: Optional[Dict[SectionName, Dict[str, str]]] = None, default_getter: str = "str"
-    ) -> Dict[SectionName, Dict[str, Any]]:
+        self, getters: Optional[Dict[str, Dict[str, str]]] = None, default_getter: str = "str"
+    ) -> Dict[str, Dict[str, Any]]:
         """The configuration represented as a dictionary
 
         Args:
@@ -531,34 +547,34 @@ class Configuration():
         getters = dict() if getters is None else getters
         return {k: v.as_dict(getters=getters.get(k), default_getter=default_getter) for k, v in self._sections.items()}
 
-    def __getitem__(self, key: SectionName) -> "ConfigurationSection":
+    def __getitem__(self, key: str) -> Union["ConfigurationSection", "ConfigurationEntry"]:
         """Get a section or entry from the master section from the configuration"""
-        try:
+        if key in self.section_names:
             return self._sections[key]
-        except KeyError:
+        else:
             try:
                 return self.master_section[key]
             except exceptions.MissingSectionError:
                 raise exceptions.MissingSectionError(f"Configuration '{self.name}' has no section '{key}'") from None
 
-    def __getattr__(self, key: SectionName) -> "ConfigurationSection":
+    def __getattr__(self, key: str) -> Union["ConfigurationSection", "ConfigurationEntry"]:
         """Get a section or entry from the master section from the configuration"""
         return self[key]
 
-    def __delitem__(self, key: SectionName) -> None:
+    def __delitem__(self, key: str) -> None:
         """Delete a section from the configuration"""
         del self._sections[key]
 
-    def __delattr__(self, key: SectionName) -> None:
+    def __delattr__(self, key: str) -> None:
         """Delete a section from the configuration"""
         del self._sections[key]
 
     def __dir__(self) -> List[str]:
         """List attributes and sections in the configuration"""
         try:
-            return super().__dir__() + self.sections + self.master_section.as_list()
+            return list(super().__dir__()) + self.section_names + self.master_section.as_list()
         except exceptions.MissingSectionError:
-            return super().__dir__() + self.sections
+            return list(super().__dir__()) + self.section_names
 
     def __str__(self) -> str:
         """The configuration represented as a string
@@ -574,9 +590,11 @@ class Configuration():
 
 class ConfigurationSection(UserDict):
 
-    def __init__(self, name: SectionName) -> None:
+    data: Dict[str, "ConfigurationEntry"]
+
+    def __init__(self, name: str) -> None:
         super().__init__()
-        self.name = name
+        self.name: str = name
 
     def as_str(
         self, width: Optional[int] = None, key_width: int = 30, only_used: bool = False, metadata: bool = True
@@ -627,14 +645,14 @@ class ConfigurationSection(UserDict):
         getters = {k: getters.get(k, default_getter) for k in self.keys()}
         return {k: getattr(e, getters[k]) for k, e in self.items()}
 
-    def __getitem__(self, key: EntryName) -> "ConfigurationEntry":
+    def __getitem__(self, key: str) -> "ConfigurationEntry":
         """Get an entry from the configuration section"""
         try:
             return self.data[key]
         except KeyError:
             raise exceptions.MissingEntryError(f"Configuration section '{self.name}' has no entry '{key}'") from None
 
-    def __getattr__(self, key: EntryName) -> "ConfigurationEntry":
+    def __getattr__(self, key: str) -> "ConfigurationEntry":
         """Get an entry from the configuration section"""
         try:
             return self.data[key]
@@ -643,7 +661,7 @@ class ConfigurationSection(UserDict):
 
     def __dir__(self) -> List[str]:
         """List attributes and entries in the configuration section"""
-        return super().__dir__() + self.as_list()
+        return list(super().__dir__()) + self.as_list()
 
     def __str__(self) -> str:
         """The configuration section represented as a string"""
@@ -654,19 +672,26 @@ class ConfigurationSection(UserDict):
         return f"{self.__class__.__name__}(name='{self.name}')"
 
 
-class ConfigurationEntry():
+class ConfigurationEntry:
 
     _BOOLEAN_STATES = {
-        "0": False, "1": True, "false": False, "true": True, "no": False, "yes": True, "off": False, "on": True
+        "0": False,
+        "1": True,
+        "false": False,
+        "true": True,
+        "no": False,
+        "yes": True,
+        "off": False,
+        "on": True,
     }
 
     def __init__(
         self,
-        key: EntryName,
+        key: str,
         value: Any,
         *,
         source: builtins.str = "",
-        meta: Optional[Dict[str, Any]] = None,
+        meta: Optional[Dict[str, str]] = None,
         vars_dict: Optional[ConfigVars] = None,
         _used_as: Optional[Set[builtins.str]] = None,
     ) -> None:
@@ -874,7 +899,7 @@ class ConfigurationEntry():
     def dict(self) -> Dict[builtins.str, builtins.str]:
         """Value of ConfigurationEntry converted to a dict"""
         self._using("dict")
-        return dict(i.split(":", maxsplit=1) for i in self.list)
+        return dict(i.partition(":")[::2] for i in self.list)
 
     def as_dict(
         self,
