@@ -188,7 +188,7 @@ def call(
     plugin_name: str,
     part: Optional[str] = None,
     prefix: Optional[str] = None,
-    logger: Optional[Callable[[str], None]] = None,
+    plugin_logger: Optional[Callable[[str], None]] = None,
     **plugin_args: Any,
 ) -> Any:
     """Call one plug-in
@@ -200,12 +200,12 @@ def call(
     called.
 
     Args:
-        package_name:  Name of package containing plug-ins.
-        plugin_name:   Name of the plug-in, i.e. the module containing the plug-in.
-        part:          Name of function to call within the plug-in (optional).
-        prefix:        Prefix of the plug-in name, used if the plug-in name is not found (optional).
-        logger:        Function used for logging (optional).
-        plugin_args:   Named arguments passed on to the plug-in.
+        package_name:   Name of package containing plug-ins.
+        plugin_name:    Name of the plug-in, i.e. the module containing the plug-in.
+        part:           Name of function to call within the plug-in (optional).
+        prefix:         Prefix of the plug-in name, used if the plug-in name is not found (optional).
+        plugin_logger:  Function used for logging (optional).
+        plugin_args:    Named arguments passed on to the plug-in.
 
     Returns:
         Return value of the plug-in.
@@ -220,8 +220,8 @@ def call(
         raise UnknownPluginError(f"Plugin {part!r} not found for {plugin_name!r} in {package_name!r}") from None
 
     # Log message about calling plug-in
-    if logger is not None:
-        logger(f"Start plug-in {plugin.name!r} in {package_name!r}")
+    if plugin_logger is not None:
+        plugin_logger(f"Start plug-in {plugin.name!r} in {package_name!r}")
 
     # Call plug-in
     return plugin.function(**plugin_args)
@@ -232,7 +232,7 @@ def call_all(
     plugins: Optional[List[str]] = None,
     part: Optional[str] = None,
     prefix: Optional[str] = None,
-    logger: Optional[Callable[[str], None]] = None,
+    plugin_logger: Optional[Callable[[str], None]] = None,
     **plugin_args: Any,
 ) -> Dict[str, Any]:
     """Call all plug-ins in a package
@@ -245,18 +245,18 @@ def call_all(
     however, that this will import all python files in the package.
 
     Args:
-        package_name:  Name of package containing plug-ins.
-        plugins:       List of plug-in names that should be used (optional).
-        part:          Name of function to call within the plug-ins (optional).
-        prefix:        Prefix of the plug-in names, used for a plug-in if it is not found (optional).
-        logger:        Function used for loggin (optional).
-        plugin_args:   Named arguments passed on to all the plug-ins.
+        package_name:   Name of package containing plug-ins.
+        plugins:        List of plug-in names that should be used (optional).
+        part:           Name of function to call within the plug-ins (optional).
+        prefix:         Prefix of the plug-in names, used for a plug-in if it is not found (optional).
+        plugin_logger:  Function used for logging (optional).
+        plugin_args:    Named arguments passed on to all the plug-ins.
 
     Returns:
         Dictionary of all results from the plug-ins.
     """
     plugin_names = names(package_name, plugins=plugins, prefix=prefix)
-    return {p: call(package_name, p, part=part, logger=logger, **plugin_args) for p in plugin_names}
+    return {p: call(package_name, p, part=part, plugin_logger=plugin_logger, **plugin_args) for p in plugin_names}
 
 
 #

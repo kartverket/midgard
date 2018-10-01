@@ -26,15 +26,17 @@ The name used in `parse_file` to call the parser is the name of the module
 
 # Standard library imports
 import pathlib
-from typing import Any, List, Optional, Union
+from typing import Any, Callable, List, Optional, Union
 
 # Midgard imports
 from midgard.dev import plugins
+from midgard.dev.timer import Timer
 
 # Make base Parser-classes available at package level
 from midgard.parsers._parser import Parser  # noqa
 from midgard.parsers._parser_chain import ParserDef, ChainParser  # noqa
 from midgard.parsers._parser_line import LineParser  # noqa
+from midgard.parsers._parser_rinex import RinexParser, RinexHeader  # noqa
 from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField  # noqa
 
 
@@ -42,8 +44,10 @@ def parse_file(
     parser_name: str,
     file_path: Union[str, pathlib.Path],
     encoding: Optional[str] = None,
+    parser_logger: Optional[Callable[[str], None]] = print,
+    timer_logger: Optional[Callable[[str], None]] = None,
     use_cache: bool = False,
-    **parser_args: Any
+    **parser_args: Any,
 ) -> Parser:
     """Use the given parser on a file and return parsed data
 
@@ -58,11 +62,13 @@ def parse_file(
         >>> df = parse_file('rinex2_obs', 'ande3160.16o').as_dataframe()  # doctest: +SKIP
 
     Args:
-        parser_name:  Name of parser
-        file_path:    Path to file that should be parsed.
-        encoding:     Encoding in file that is parsed.
-        use_cache:    Whether to use a cache to avoid parsing the same file several times.
-        parser_args:  Input arguments to the parser
+        parser_name:    Name of parser
+        file_path:      Path to file that should be parsed.
+        encoding:       Encoding in file that is parsed.
+        parser_logger:  Logging function that will be used by parser.
+        timer_logger:   Logging function that will be used to log timing information.
+        use_cache:      Whether to use a cache to avoid parsing the same file several times.
+        parser_args:    Input arguments to the parser
 
     Returns:
         Parser:  Parser with the parsed data
@@ -71,9 +77,16 @@ def parse_file(
 
     # Create the parser and parse the data
     parser = plugins.call(
-        package_name=__name__, plugin_name=parser_name, file_path=file_path, encoding=encoding, **parser_args
+        package_name=__name__,
+        plugin_name=parser_name,
+        file_path=file_path,
+        encoding=encoding,
+        logger=parser_logger,
+        **parser_args,
     )
-    return parser.parse()
+
+    with Timer(f"Finish {parser_name} ({__name__}) - {file_path} in", logger=timer_logger):
+        return parser.parse()
 
 
 def names() -> List[str]:

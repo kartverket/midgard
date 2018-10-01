@@ -8,11 +8,17 @@ from datetime import datetime
 import pathlib
 
 # Third party imports
+import numpy as np
 import pytest
 
 # Midgard imports
 from midgard import parsers
-from midgard.parsers import Parser
+
+
+def get_parser(parser_name):
+    """Get a parser that has parsed an example file"""
+    example_path = pathlib.Path(__file__).parent / "example_files" / parser_name
+    return parsers.parse_file(parser_name, example_path)
 
 
 @pytest.fixture
@@ -51,22 +57,29 @@ def test_non_caching_parser():
     assert False
 
 
-def test_parser_vlbi_source_names():
-    """Test that calling a parser on an example file gives expected output"""
-    parser_name = "vlbi_source_names"
-    example_path = pathlib.Path(__file__).parent / "example_files" / parser_name
-    parser = parsers.parse_file(parser_name, example_path).as_dict()
+def test_parser_galileo_constellation_html():
+    """Test that parsing galileo_constellation_html gives expected output"""
+    parser = get_parser("galileo_constellation_html")
+    data = parser.as_dict()
+    events = parser.meta["events"]
 
-    assert "2357-326" in parser
-    assert len(parser) == 8
-    assert parser["2357-326"]["icrf_name_short"] == "J0000-3221"
+    assert parser.satellite_name("GSAT0101")["sv_id"] == "E11"
+    assert parser.satellite_id("E01")["satellite_name"] == "GSAT0210"
+    assert "clock" in data
+    assert len(data["active_nagu"]) == 26
+    assert len(events) == 6
+    assert events[0]["date_of_publication_utc"] == "2016-08-02 07:25"
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_galileo_constellation_html_download():
+    """Test that parsing galileo_constellation_html gives expected output"""
+    assert False
 
 
 def test_parser_gnss_antex():
-    """Test that calling a parser on an example file gives expected output"""
-    parser_name = "gnss_antex"
-    example_path = pathlib.Path(__file__).parent / "example_files" / parser_name
-    parser = parsers.parse_file(parser_name, example_path).as_dict()
+    """Test that parsing gnss_antex gives expected output"""
+    parser = get_parser("gnss_antex").as_dict()
 
     assert len(parser) == 2
     assert "AERAT1675_120   SPKE" in parser
@@ -75,3 +88,40 @@ def test_parser_gnss_antex():
     assert "G01" in parser
     satellite_info = parser["G01"][datetime(1992, 11, 22)]
     assert satellite_info["G01"]["noazi"][0] == -.8
+
+
+@pytest.mark.skip(reason="Rinex3 parser not yet implemented")
+def test_parser_rinex3_obs():
+    """Test that parsing rinex3_obs gives expected output"""
+    parser = get_parser("rinex3_obs")
+    data = parser.as_dict()
+    header = parser.header
+
+    expected_obs_e = ["C1X", "L1X", "D1X", "S1X", "C5X", "L5X", "S5X", "C8X", "L8X", "S8X", "C7X", "L7X", "S7X"]
+
+    assert header["rinex_version"] == "3.03"
+    assert header["receiver_type"] == "TRIMBLE NETR9"
+    assert "receiver_version" not in header
+    assert header["obs_types"]["E"] == expected_obs_e
+
+    assert "epoch" in data
+    for obs_type in expected_obs_e:
+        assert obs_type in data
+    assert len(data["satellite"]) == 10
+    assert data["C6X"][0] == 40600783.887
+    assert data["C1C"][0] == np.nan
+
+    assert header["time_of_first_obs"] == data["epoch"][0]
+
+
+def test_parser_rinex3_obs_with_writer():
+    pass
+
+
+def test_parser_vlbi_source_names():
+    """Test that parsing vlbi_source_names gives expected output"""
+    parser = get_parser("vlbi_source_names").as_dict()
+
+    assert "2357-326" in parser
+    assert len(parser) == 8
+    assert parser["2357-326"]["icrf_name_short"] == "J0000-3221"

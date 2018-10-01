@@ -146,7 +146,7 @@ def test_call_non_existing_part(plugin_package):
 def test_logger(capsys, plugin_package):
     """Test that using a logger prints to stdout"""
     plugin_name = "plugin_plain"
-    plugins.call(plugin_package, plugin_name, logger=print)
+    plugins.call(plugin_package, plugin_name, plugin_logger=print)
     stdout, stderr = capsys.readouterr()
 
     assert len(stdout) > 0

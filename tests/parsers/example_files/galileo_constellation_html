@@ -1,0 +1,1084 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta name="twitter:dnt" content="on">
+  <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+<link rel="shortcut icon" href="https://www.gsc-europa.eu/sites/all/themes/helpdesk_2016/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="shortlink" href="/node/20" />
+<link rel="canonical" href="/system-status/Constellation-Information" />
+<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+  <title>Constellation Information | European GNSS Service Centre</title>
+  <link rel="stylesheet" href="https://www.gsc-europa.eu/sites/default/files/css/css_lQaZfjVpwP_oGNqdtWCSpJT1EMqXdMiU84ekLLxQnc4.css" media="all" />
+<link rel="stylesheet" href="https://www.gsc-europa.eu/sites/default/files/css/css_n9rfmfv3vPBY388JZChheuLMrzk0mlvfpgwUVgZ1Okc.css" media="all" />
+<link rel="stylesheet" href="https://www.gsc-europa.eu/sites/default/files/css/css_DI5GhRU9A84ZMQ8uSgvnGdvl8v6JEBDhMR5mRk-Cf_s.css" media="all" />
+<style>#sliding-popup.sliding-popup-bottom,#sliding-popup.sliding-popup-bottom .eu-cookie-withdraw-banner,.eu-cookie-withdraw-tab{background:#a67c00;}#sliding-popup.sliding-popup-bottom.eu-cookie-withdraw-wrapper{background:transparent}#sliding-popup .popup-content #popup-text h1,#sliding-popup .popup-content #popup-text h2,#sliding-popup .popup-content #popup-text h3,#sliding-popup .popup-content #popup-text p,.eu-cookie-compliance-more-button,.eu-cookie-compliance-secondary-button,.eu-cookie-withdraw-tab{color:#fff !important;}.eu-cookie-withdraw-tab{border-color:#fff;}
+</style>
+<link rel="stylesheet" href="https://www.gsc-europa.eu/sites/default/files/css/css_GMcrzzeipuV-Rs9MOqf_fJGczrLbOp2CIURbT1ny-O0.css" media="all" />
+  <!-- HTML5 element support for IE6-8 -->
+  <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <script src="https://www.gsc-europa.eu/sites/default/files/js/js_x0MhBQfHNAIO1NwkQgzf_TGN4b8eMmKre3nqUfoQv3w.js"></script>
+<script src="https://www.gsc-europa.eu/sites/default/files/js/js__7Mjvj_fIAGoauK0xklylKBUIHrCcijyT8yucEi2E0o.js"></script>
+<script src="https://www.gsc-europa.eu/sites/default/files/js/js_CF7zWd2_kvvfhTdfL2fkRxxLdJmB_F41z8exjjfBgGY.js"></script>
+<script>function euCookieComplianceLoadScripts() {}</script>
+<script>var eu_cookie_compliance_cookie_name = "";</script>
+<script src="https://www.gsc-europa.eu/sites/default/files/js/js_gPqjYq7fqdMzw8-29XWQIVoDSWTmZCGy9OqaHppNxuQ.js"></script>
+<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","//www.google-analytics.com/analytics.js","ga");ga("create", "UA-41485580-1", {"cookieDomain":"auto"});ga("set", "anonymizeIp", true);ga("send", "pageview");</script>
+<script src="https://www.gsc-europa.eu/sites/default/files/js/js_mWGN-7feM0dykOe10BsRmXBnwHDP2rhavxgUCxFKCHU.js"></script>
+<script src="https://www.gsc-europa.eu/sites/default/files/js/js_o1hhbmaJ38wbcO0jY3TrQnixTasysNnfj-L9xFP9qC0.js"></script>
+<script src="https://www.gsc-europa.eu/sites/default/files/js/js_2wo7cUs2g2mhscxEutaG9FgA84-TF2Kclk43y3aRf4Y.js"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"helpdesk_2016","theme_token":"0QyG37PzEu4050c7pokS-sk6avNMzB0AbZFYOfLEWdY","jquery_version":"1.8","js":{"sites\/all\/themes\/bootstrap\/js\/bootstrap.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/jquery\/1.8\/jquery.min.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/ui\/external\/jquery.cookie.js":1,"sites\/all\/modules\/contrib\/jquery_update\/replace\/jquery.form\/4\/jquery.form.min.js":1,"misc\/ajax.js":1,"sites\/all\/modules\/contrib\/jquery_update\/js\/jquery_update.js":1,"sites\/all\/libraries\/colorbox\/jquery.colorbox-min.js":1,"sites\/all\/modules\/contrib\/colorbox\/js\/colorbox.js":1,"sites\/all\/modules\/contrib\/colorbox\/styles\/default\/colorbox_style.js":1,"sites\/all\/modules\/contrib\/colorbox\/js\/colorbox_load.js":1,"sites\/all\/modules\/contrib\/colorbox\/js\/colorbox_inline.js":1,"sites\/all\/modules\/contrib\/jcaption\/jcaption.js":1,"sites\/all\/modules\/contrib\/views\/js\/base.js":1,"sites\/all\/themes\/bootstrap\/js\/misc\/_progress.js":1,"sites\/all\/modules\/contrib\/views\/js\/ajax_view.js":1,"0":1,"1":1,"sites\/all\/modules\/google_analytics\/googleanalytics.js":1,"2":1,"sites\/all\/modules\/contrib\/colorbox_node\/colorbox_node.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/helpdesk-new.behaviors.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/helpdesk_new.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/media.match.min.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/enquire.min.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/affix.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/alert.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/button.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/carousel.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/collapse.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/dropdown.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/modal.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/tooltip.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/popover.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/scrollspy.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/tab.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/bootstrap\/transition.js":1,"sites\/all\/themes\/helpdesk_2016\/js\/jquery.init.js":1,"sites\/all\/themes\/bootstrap\/js\/modules\/views\/js\/ajax_view.js":1,"sites\/all\/themes\/bootstrap\/js\/misc\/ajax.js":1,"sites\/all\/modules\/contrib\/eu_cookie_compliance\/js\/eu_cookie_compliance.js":1},"css":{"modules\/system\/system.base.css":1,"sites\/all\/modules\/contrib\/simplenews\/simplenews.css":1,"sites\/all\/modules\/contrib\/colorbox_node\/colorbox_node.css":1,"sites\/all\/modules\/contrib\/date\/date_api\/date.css":1,"sites\/all\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/contrib\/logintoboggan\/logintoboggan.css":1,"modules\/node\/node.css":1,"sites\/all\/modules\/contrib\/youtube\/css\/youtube.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"sites\/all\/modules\/contrib\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/contrib\/colorbox\/styles\/default\/colorbox_style.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/contrib\/eu_cookie_compliance\/css\/eu_cookie_compliance.css":1,"0":1,"sites\/all\/themes\/helpdesk_2016\/css\/font-awesome.css":1,"sites\/all\/themes\/helpdesk_2016\/css\/style.css":1,"sites\/all\/themes\/helpdesk_2016\/css\/formulas.css":1}},"colorbox":{"opacity":"0.85","current":"{current} of {total}","previous":"\u00ab Prev","next":"Next \u00bb","close":"Close","maxWidth":"98%","maxHeight":"98%","fixed":true,"mobiledetect":true,"mobiledevicewidth":"480px"},"jcaption":{"jcaption_selectors":[".node-type-page .l-content .node__content img",".node-type-page .l-content .field img",".node-type-news .l-content .node__content img",".node-type-news .l-content .field img"],"jcaption_alt_title":"title","jcaption_requireText":1,"jcaption_copyStyle":1,"jcaption_removeStyle":1,"jcaption_removeClass":1,"jcaption_removeAlign":1,"jcaption_copyAlignmentToClass":0,"jcaption_copyFloatToClass":1,"jcaption_copyClassToClass":1,"jcaption_autoWidth":1,"jcaption_keepLink":0,"jcaption_styleMarkup":"","jcaption_animate":0,"jcaption_showDuration":"200","jcaption_hideDuration":"200"},"views":{"ajax_path":"\/views\/ajax","ajaxViews":{"views_dom_id:442114a14674ca33500d9d77f1f336af":{"view_name":"nagu","view_display_id":"block_2","view_args":"","view_path":"node\/20","view_base_path":"system-status\/user-notifications","view_dom_id":"442114a14674ca33500d9d77f1f336af","pager_element":0}}},"urlIsAjaxTrusted":{"\/views\/ajax":true,"\/system-status\/Constellation-Information":true},"better_exposed_filters":{"views":{"nagu":{"displays":{"block_2":{"filters":[]}}},"last_updated":{"displays":{"block":{"filters":[]}}}}},"eu_cookie_compliance":{"popup_enabled":1,"popup_agreed_enabled":1,"popup_hide_agreed":1,"popup_clicking_confirmation":false,"popup_scrolling_confirmation":false,"popup_html_info":"\u003Cdiv\u003E\n  \u003Cdiv class =\u0022popup-content info\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022\u003E\n      \u003Cp\u003E\u003Cspan style=\u0022font-size: medium;\u0022\u003EWe care about your privacy, to learn more about how you can manage your consent in relation to cookies and analytics\u003C\/span\u003E\u003C\/p\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022find-more-button eu-cookie-compliance-more-button\u0022\u003E\u003Cp\u003E\u003Cspan style=\u0022font-size: medium;\u0022\u003Eclick here.\u003C\/span\u003E\u003C\/p\u003E\u003C\/button\u003E\n          \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022agree-button eu-cookie-compliance-secondary-button\u0022\u003EOK, I agree\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022decline-button eu-cookie-compliance-default-button\u0022 \u003EDecline\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","use_mobile_message":false,"mobile_popup_html_info":"\u003Cdiv\u003E\n  \u003Cdiv class =\u0022popup-content info\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022\u003E\n                    \u003Cbutton type=\u0022button\u0022 class=\u0022find-more-button eu-cookie-compliance-more-button\u0022\u003E\u003Cp\u003E\u003Cspan style=\u0022font-size: medium;\u0022\u003Eclick here.\u003C\/span\u003E\u003C\/p\u003E\u003C\/button\u003E\n          \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022agree-button eu-cookie-compliance-secondary-button\u0022\u003EOK, I agree\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022decline-button eu-cookie-compliance-default-button\u0022 \u003EDecline\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E\n","mobile_breakpoint":"768","popup_html_agreed":"\u003Cdiv\u003E\n  \u003Cdiv class =\u0022popup-content agreed\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022\u003E\n      \u003Ch2\u003E\tThank you for accepting cookies\u003C\/h2\u003E\n\u003Cp\u003EYou can now hide this message or find out more about cookies.\u003C\/p\u003E\n    \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022hide-popup-button eu-cookie-compliance-hide-button\u0022\u003EHide\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022find-more-button eu-cookie-compliance-more-button-thank-you\u0022 \u003EMore info\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","popup_use_bare_css":false,"popup_height":"auto","popup_width":"100%","popup_delay":1000,"popup_link":"\/cookies","popup_link_new_window":1,"popup_position":null,"popup_language":"en","store_consent":false,"better_support_for_screen_readers":0,"reload_page":1,"domain":"gsc-europa.eu","popup_eu_only_js":0,"cookie_lifetime":100,"cookie_session":1,"disagree_do_not_show_popup":0,"method":"opt_in","whitelisted_cookies":"","withdraw_markup":"\u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-tab\u0022\u003EPrivacy settings\u003C\/button\u003E\n\u003Cdiv class=\u0022eu-cookie-withdraw-banner\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022\u003E\n      \u003Ch2\u003E\tWe use cookies on this site to enhance your user experience\u003C\/h2\u003E\n\u003Cp\u003EYou have given your consent for us to set cookies.\u003C\/p\u003E\n    \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-button\u0022\u003EWithdraw consent\u003C\/button\u003E\n    \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E\n","withdraw_enabled":false},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip","trackColorbox":1},"colorbox_node":{"width":"600px","height":"600px"},"bootstrap":{"anchorsFix":"0","anchorsSmoothScrolling":"0","formHasError":1,"popoverEnabled":1,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","triggerAutoclose":1,"title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":1,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-node page-node- page-node-20 node-type-page">
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    <header id="navbar" role="banner" class="navbar  navbar-default">
+  <div id="satellite-bg"></div>
+  <div class="container">
+    <div class="navbar-header">
+
+                       <div class="logo navbar-btn pull-left">
+          <img src="https://www.gsc-europa.eu/sites/all/themes/helpdesk_2016/logo.png" alt="Home" />
+        </div>
+      
+            
+
+              <div class="lead">European <b>GNSS</b> Service Centre</div>
+          </div>
+
+  </div>
+
+      <div class="wrap wrap_menu">
+             <div class=" container ">
+
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Main menu</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button><span class="main-menu-title">Main menu</span>
+        <button type="button" class="search-toggle" data-toggle="collapse" data-target=".search-collapse">
+          <span class="sr-only">Search</span>
+          <span class="search-icon"></span>
+        </button>
+      </div>
+        <div class=" container main-menu">
+
+      <div class="navbar-collapse collapse navbar-main-menu">
+        <nav role="navigation">
+                    
+                        <div class="region region-navigation">
+    
+<section id="block-menu-block-5" class="block block-menu-block clearfix">
+	 
+			
+	<div class="menu-block-wrapper menu-block-5 menu-name-main-menu parent-mlid-0 menu-level-1">
+  <ul class="menu nav"><li class="first expanded menu-mlid-2236 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Galileo & GSC<span class="br_processed"> </span>Overview</a><ul ><li class="first leaf menu-mlid-2235"><a href="/galileo-overview/what-is-galileo">What is Galileo</a></li>
+<li class="leaf menu-mlid-1854"><a href="/galileo-gsc-overview/programme">Programme</a></li>
+<li class="leaf menu-mlid-1855"><a href="/galileo-gsc-overview/system">System</a></li>
+<li class="leaf menu-mlid-1856"><a href="/galileo-gsc-overview/applications">Applications</a></li>
+<li class="leaf has-children menu-mlid-1857"><a href="/galileo-gsc-overview/services">Services</a></li>
+<li class="leaf menu-mlid-1860"><a href="/galileo-gsc-overview/benefits">Benefits</a></li>
+<li class="leaf menu-mlid-2237"><a href="/galileo-user-survey">2017 Galileo User Satisfaction Survey</a></li>
+<li class="leaf menu-mlid-1861"><a href="/galileo-gsc-overview/faq">FAQ</a></li>
+<li class="last leaf menu-mlid-1862"><a href="/galileo-gsc-overview/the-european-gnss-service-centre">The European GNSS Service Centre</a></li>
+</ul></li>
+<li class="expanded menu-mlid-437 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">GNSS Market &<span class="br_processed"> </span>Applications</a><ul ><li class="first leaf menu-mlid-1863"><a href="/gnss-market-applications/gnss-market-report">GNSS Market Report</a></li>
+<li class="leaf menu-mlid-1864"><a href="/gnss-market-applications/2016-gnss-user-technology-report">2016 GNSS User Technology Report</a></li>
+<li class="leaf menu-mlid-1865"><a href="/gnss-market-applications/gnss-users">GNSS Users</a></li>
+<li class="leaf has-children menu-mlid-1866"><a href="/gnss-market-applications/gnss-industry-and-value-chain">GNSS Industry and value chain</a></li>
+<li class="leaf menu-mlid-1868"><a href="/gnss-market-applications/segment-pages">Segment pages</a></li>
+<li class="last leaf menu-mlid-1872"><a href="/gnss-market-applications/gnss-project-portfolio">GNSS project portfolio</a></li>
+</ul></li>
+<li class="expanded active-trail menu-mlid-439 active "><a title="" class="active-trail dropdown-toggle nolink" data-target="#" data-toggle="dropdown">System<span class="br_processed"> </span>Status</a><ul ><li class="first leaf active-trail active menu-mlid-456 active active"><a href="/system-status/Constellation-Information" class="active-trail active active-trail active">Constellation Information</a></li>
+<li class="leaf menu-mlid-829"><a href="/system-status/orbital-and-technical-parameters">Orbital and Technical Parameters</a></li>
+<li class="last leaf has-children menu-mlid-1878"><a href="/system-status/user-notifications" title="">NAGUs (Notice Advisory to Galileo Users)</a></li>
+</ul></li>
+<li class="expanded menu-mlid-1324 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Electronic<span class="br_processed"> </span>Library</a><ul ><li class="first leaf menu-mlid-1325"><a href="/electronic-library/programme-reference-documents" title="">Programme reference documents</a></li>
+<li class="leaf menu-mlid-2231"><a href="/electronic-library/performance-reports" title="Performance Reports">Performance Reports</a></li>
+<li class="leaf menu-mlid-2234"><a href="/electronic-library/service-notices">Service Notices</a></li>
+<li class="leaf menu-mlid-1500"><a href="/electronic-library/public-consultation">Public consultations</a></li>
+<li class="last leaf menu-mlid-1875"><a href="/electronic-library/gsa-publications">GSA Publications</a></li>
+</ul></li>
+<li class="expanded menu-mlid-1876 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Support to<span class="br_processed"> </span>developers</a><ul ><li class="first leaf has-children menu-mlid-1879"><a href="/support-to-developers/gsti-gnss-simulation-and-testing-tools-infrastructure">GSTI (GNSS Simulation and<span class="br_processed"> </span>Testing Tools Infrastructure)</a></li>
+<li class="leaf menu-mlid-1882"><a href="/support-to-developers/galileo-satellite-metadata">Galileo Satellite Metadata</a></li>
+<li class="last leaf has-children menu-mlid-1877"><a href="/system-status/almanac-data" title="">Almanac</a></li>
+</ul></li>
+<li class="last expanded menu-mlid-438 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Multimedia<span class="br_processed"> </span>& News</a><ul ><li class="first leaf menu-mlid-1326"><a href="/about-the-gsc/news" title="">News</a></li>
+<li class="leaf menu-mlid-1873"><a href="/multimedia-news/satnav-in-action-the-gnss-image-gallery" title="">SatNav in Action:<span class="br_processed"> </span>The GNSS Image Gallery</a></li>
+<li class="last leaf menu-mlid-1874"><a href="/multimedia-news/gnss-video-gallery">GNSS Video Gallery</a></li>
+</ul></li>
+</ul></div>
+
+</section>
+  </div>
+                  </nav>
+                    <div class="region region-social-links">
+    
+<section id="block-menu-menu-header-menu" class="block block-menu clearfix">
+	 
+			
+	<ul class="menu nav"><li class="first leaf"><a href="/" title="">Home</a></li>
+<li class="leaf"><a href="/user/login" title="">Login</a></li>
+<li class="leaf"><a href="/user/register" title="">Register</a></li>
+<li class="last leaf"><a href="/helpdesk/faqs" title="">FAQ</a></li>
+</ul>
+</section>
+
+<section id="block-boxes-social-media-box" class="block block-boxes social-links  block-boxes-simple clearfix">
+	 
+			
+	<div id='boxes-box-social_media_box' class='boxes-box'><div class="boxes-box-content"><ul><li><a class="fa fa-rss" href="/rss.xml"></a></li>
+<li><a class="fa fa-twitter" href="https://twitter.com/EU_GNSS" target="_blank"></a></li>
+<li><a class="fa fa-facebook" href="https://www.facebook.com/EuropeanGnssAgency" target="_blank"></a></li>
+<li><a class="fa fa-linkedin" href="http://www.linkedin.com/company/european-gnss-agency" target="_blank"></a></li>
+<li><a class="fa fa-youtube" href="https://www.youtube.com/user/egnos1" target="_blank"></a></li>
+<li><a class="fa fa-slideshare" href="http://www.slideshare.net/EU_GNSS" target="_blank"></a></li>
+<li><a class="euagencies" href="https://euagencies.eu/" target="_blank">   </a></li>
+</ul></div></div>
+</section>
+  </div>
+        
+      </div>
+
+    </div> 
+           <div class=" container search-container">
+       <div class="search-collapse collapse ">
+          <div class="region region-search">
+    
+<section id="block-search-form" class="block block-search clearfix">
+	 
+			
+	<form class="form-search content-search" action="/system-status/Constellation-Information" method="post" id="search-block-form" accept-charset="UTF-8"><div><div>
+      <h2 class="element-invisible">Search form</h2>
+    <div class="input-group"><input title="Enter the terms you wish to search for." placeholder="Search" class="form-control form-control form-text form-search" type="search" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" /><span class="input-group-btn"><button type="submit" class="btn btn-primary"><span class="icon glyphicon glyphicon-search" aria-hidden="true"></span>
+</button></span></div><div class="form-actions form-wrapper form-group" id="edit-actions"><button class="element-invisible btn btn-primary form-submit" type="submit" id="edit-submit" name="op" value="Search">Search</button>
+</div><input type="hidden" name="form_build_id" value="form-yAqTrTQAAU4y0Z2b-LB7zIC4cgAFMcmD7gfc8o7V6qc" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div>
+</div></form>
+</section>
+  </div>
+            </div> 
+            </div> 
+        </div>
+
+  <div class="wrap wrap_sub-navigation">
+    <div class=" container sub-navigation">
+
+      <div class=" navbar-sub-navigation">
+        <nav role="sub-navigation">
+
+                        <div class="region region-sub-navigation">
+    
+<section id="block-block-16" class="block block-block inline_menu_tile clearfix">
+	 
+			
+	<div class="menu_tile" id="tile_1">
+<div class="menu_tile_icon">
+		<img src="/sites/all/themes/helpdesk_2016/images/icon_helpdesk.svg" /></div>
+<div class="menu_tile_row ">
+<div class="menu_tile_title">
+			<a href="/helpdesk/contact-form"><span>Galileo</span><br />
+			help desk</a></div>
+</div>
+<div class="menu_tile_row">
+<div class="menu_tile_text">
+			<a href="/helpdesk/contact-form">Our experts will provide answers<br />
+			to your questions about Galileo</a></div>
+</div>
+</div>
+<div class="menu_tile" id="tile_2">
+<div class="menu_tile_icon">
+		<img src="/sites/all/themes/helpdesk_2016/images/icon_system.svg" /></div>
+<div class="menu_tile_row ">
+<div class="menu_tile_title">
+			<a href="/system-status/Constellation-Information"><span>Galileo</span><br />
+			system status</a></div>
+</div>
+<div class="menu_tile_row">
+<div class="menu_tile_text">
+			<a href="/system-status/Constellation-Information">Click for satellite<br />
+			information and notifications</a></div>
+</div>
+</div>
+<div class="menu_tile" id="tile_3">
+<div class="menu_tile_icon">
+		<img src="/sites/all/themes/helpdesk_2016/images/icon_report.svg" /></div>
+<div class="menu_tile_row ">
+<div class="menu_tile_title">
+			<a href="/node/1833"><span>Galileo</span><br />
+			incident report</a></div>
+</div>
+<div class="menu_tile_row">
+<div class="menu_tile_text">
+			<a href="/node/1833">Report your<br />
+			incident here</a></div>
+</div>
+</div>
+
+</section>
+  </div>
+                  </nav>
+      </div>
+    </div>
+  </div>
+
+</header>
+<div class="wrap wrap_main-container">
+
+      <div class="wrap_breadcrumb">
+     <div class=" container"><ol class="breadcrumb"><li><a href="/">Home</a></li>
+<li><a title="" class="nolink">System  Status</a></li>
+<li>Constellation Information</li>
+</ol></div>
+   </div>
+  <div class="main-container container">
+
+  <header role="banner" id="page-header">
+
+
+    
+  </header> <!-- /#page-header -->
+
+  <div class="row">
+
+          <aside class="col-sm-3 left_aside" role="complementary">
+          <div class="region region-sidebar-first">
+    
+<section id="block-menu-block-3" class="block block-menu-block gsa-box left-menu clearfix">
+	 
+			
+	<div class="menu-block-wrapper menu-block-3 menu-name-main-menu parent-mlid-0 menu-level-2">
+  <ul class="menu nav"><li class="first leaf active-trail active menu-mlid-456 active active"><a href="/system-status/Constellation-Information" class="active-trail active active-trail active">Constellation Information</a></li>
+<li class="leaf menu-mlid-829"><a href="/system-status/orbital-and-technical-parameters">Orbital and Technical Parameters</a></li>
+<li class="last expanded menu-mlid-1878 dropdown-gsa-submenu"><a href="/system-status/user-notifications" title="" class="dropdown-gsa-toggle dropdown-gsa-toggle" data-toggle="dropdown-gsa">NAGUs (Notice Advisory to Galileo Users) <span class="caret-gsa"></span></a><ul class="dropdown-gsa-menu"><li class="first leaf menu-mlid-457"><a href="/system-status/user-notifications" title="">Active User Notifications</a></li>
+<li class="leaf menu-mlid-634"><a href="/system-status/user-notifications-archive" title="">Archived User Notifications</a></li>
+<li class="last leaf menu-mlid-830"><a href="/system-status/nagu-information">NAGU Information</a></li>
+</ul></li>
+</ul></div>
+
+</section>
+  </div>
+      </aside>  <!-- /#sidebar-first -->
+    
+    <section class="col-sm-9 internal_page">
+    
+    <a id="main-content"></a>
+              <h1 class="page-header">Constellation Information</h1>
+             
+                            <div class="region region-content">
+    
+<section id="block-system-main" class="block block-system clearfix">
+	 
+			
+	<article id="node-20" class="node node-page clearfix">
+    <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even"><h2>
+	<strong>Constellation Status</strong></h2>
+<div dir="ltr" style="margin-left:0pt;">
+<table class="table table-striped" height="1250" width="696"><thead><tr style="height:0px"><td>
+<p class="rtecenter"><span><strong>Satellite Name</strong><sup>1</sup></span></p>
+</td>
+<td>
+<div class="rtecenter">
+						<strong><span><span>SV ID<sup>2</sup></span></span></strong></div>
+</td>
+<td class="rtecenter">
+					<strong>Clock<sup>3</sup></strong></td>
+<td>
+<div class="rtecenter">
+						<strong><span>Status<sup><span style="font-size: 10px;">4</span></sup></span></strong></div>
+</td>
+<td style="width: 53px;">
+<div class="rtecenter">
+						<strong><span>Active NAGU<sup><span style="font-size: 10px;">5</span></sup></span></strong></div>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"><strong>NAGU Type<sup><span style="font-size: 10px;">6</span></sup></strong></p>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter">
+						<strong><span>NAGU Subject<sup><span style="font-size: 10px;">7</span></sup></span></strong></div>
+</td>
+</tr></thead><tbody><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0101</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E11</span></span></p>
+</td>
+<td class="rtecenter">
+					RAFS</td>
+<td class="rtecenter">
+<p><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018010"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+					 </td>
+<td class="rtecenter" style="width: 76px;">
+					 </td>
+<td class="rtecenter" style="width: 234px;">
+					 </td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0102</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E12</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2016065"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0103</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span>E19</span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="&quot;rtecenter&quot;&gt;&lt;span rtecenter" style="color: rgb(49, 164, 38); white-space: pre-wrap;"><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018016"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0104</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E20</span></span></p>
+</td>
+<td class="rtecenter">
+					RAFS</td>
+<td>
+<div class="rtecenter" dir="ltr">
+						<span style="background-color: transparent; color: rgb(164, 38, 38);   white-space: pre-wrap;">NOT AVAILABLE</span></div>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"><span><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2014014">2014014</a></span></p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter">UNP_UNUFN</p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"><span><span>UNAVAILABLE FROM 2014-05-27 UNTIL FURTHER NOTICE</span><span><span class="Apple-tab-span" style="white-space:pre;"> </span></span></span></p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0201</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E18</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><span><span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">TESTING</span></span></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"><span><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2016029">2016029</a></span></p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter">GENERAL</p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"><span><span>TESTING OF GSAT0201</span></span></p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0202</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E14</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><span><span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">TESTING</span></span></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"><span><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2016030">2016030</a></span></p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter">GENERAL</p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"><span><span>TESTING OF GSAT0202</span></span></p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0203</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E26</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td class="rtecenter">
+					<a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017027"><span style="color: rgb(49, 164, 38);">USABLE</span></a></td>
+<td style="width: 53px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 76px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0204</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E22</span></span></p>
+</td>
+<td class="rtecenter">
+					RAFS</td>
+<td>
+<p class="rtecenter"><span style="color: rgb(164, 38, 38); white-space: pre-wrap;">NOT USABLE</span></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017045">2017045</a></p>
+</td>
+<td style="width: 76px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						GENERAL</div>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter">
+						GSAT0204 REMOVED FROM ACTIVE SERVICE ON 2017-12-08 UNTIL FURTHER NOTICE FOR CONSTELLATION MANAGEMENT PURPOSES</div>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0205</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E24</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<div class="rtecenter" dir="ltr">
+						<a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017043"><span style="color: rgb(49, 164, 38);">USABLE</span></a></div>
+</td>
+<td style="width: 53px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 76px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0206</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E30</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017023"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 76px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0207</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E07</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017037"><span style="background-color: transparent; color: rgb(164, 38, 38);   white-space: pre-wrap;"><span style="color: rgb(49, 164, 38);">USABLE</span></span></a></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+					 </td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0208</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span>E08</span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017011"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 76px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0209</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E09</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017012"><span style="color: rgb(49, 164, 38); white-space: pre-wrap;">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 76px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+<td style="width: 234px;">
+<div class="rtecenter" dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+						 </div>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0210</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E01</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2016073"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0211</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E02</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2016074"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+					 </td>
+<td class="rtecenter" style="width: 76px;">
+					 </td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0212</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E03</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017029"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0213</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E04</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018002"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr style="height:0px"><td>
+<p class="rtecenter"><span><span>GSAT0214</span></span></p>
+</td>
+<td>
+<p class="rtecenter"><span><span>E05</span></span></p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td>
+<p class="rtecenter"><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017035"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td style="width: 53px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 76px;">
+<p class="rtecenter"> </p>
+</td>
+<td style="width: 234px;">
+<p class="rtecenter"> </p>
+</td>
+</tr><tr><td>
+<p class="rtecenter"> GSAT0215</p>
+</td>
+<td>
+<p class="rtecenter"> E21</p>
+</td>
+<td>
+					 </td>
+<td class="rtecenter">
+<p><span><span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">UNDER COMMISIONING</span></span></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+<p><a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2017047">2017047</a></p>
+</td>
+<td class="rtecenter" style="width: 76px;">
+<p>GENERAL</p>
+</td>
+<td class="rtecenter" style="width: 234px;">
+<p>LAUNCH OF GSAT0215, GSAT0216, GSAT0217 AND GSAT0218</p>
+</td>
+</tr><tr><td>
+<p class="rtecenter"> GSAT0216</p>
+</td>
+<td class="rtecenter">
+<p> E25</p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td class="rtecenter">
+<p><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018019"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+<p> </p>
+</td>
+<td class="rtecenter" style="width: 76px;">
+<p> </p>
+</td>
+<td class="rtecenter" style="width: 234px;">
+<p> </p>
+</td>
+</tr><tr><td>
+<p class="rtecenter"> GSAT0217</p>
+</td>
+<td class="rtecenter">
+<p> E27</p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td class="rtecenter">
+<p><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018020"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+<p> </p>
+</td>
+<td class="rtecenter" style="width: 76px;">
+<p> </p>
+</td>
+<td class="rtecenter" style="width: 234px;">
+<p> </p>
+</td>
+</tr><tr><td>
+<p class="rtecenter"> GSAT0218</p>
+</td>
+<td class="rtecenter">
+<p> E31</p>
+</td>
+<td class="rtecenter">
+					PHM</td>
+<td class="rtecenter">
+<p><a href="http://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018018"><span style="color: rgb(49, 164, 38);">USABLE</span></a></p>
+</td>
+<td class="rtecenter" style="width: 53px;">
+<p> </p>
+</td>
+<td class="rtecenter" style="width: 76px;">
+<p> </p>
+</td>
+<td class="rtecenter" style="width: 234px;">
+<p> </p>
+</td>
+</tr><tr><td class="rtecenter">
+					GSAT0219</td>
+<td class="rtecenter">
+					E36</td>
+<td class="rtecenter">
+					 </td>
+<td class="rtecenter">
+					<span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">UNDER COMMISIONING</span></td>
+<td class="rtecenter" style="width: 53px;">
+					<a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018017">2018017</a></td>
+<td class="rtecenter" style="width: 76px;">
+					GENERAL</td>
+<td class="rtecenter" style="width: 234px;">
+					LAUNCH OF GSAT0219, GSAT0220, GSAT0221 AND GSAT0222</td>
+</tr><tr><td class="rtecenter">
+					GSAT0220</td>
+<td class="rtecenter">
+					E13</td>
+<td class="rtecenter">
+					 </td>
+<td class="rtecenter">
+					<span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">UNDER COMMISIONING</span></td>
+<td class="rtecenter" style="width: 53px;">
+					<a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018017">2018017</a></td>
+<td class="rtecenter" style="width: 76px;">
+					GENERAL</td>
+<td class="rtecenter" style="width: 234px;">
+					LAUNCH OF GSAT0219, GSAT0220, GSAT0221 AND GSAT0222</td>
+</tr><tr><td class="rtecenter">
+					GSAT0221</td>
+<td class="rtecenter">
+					E15</td>
+<td class="rtecenter">
+					 </td>
+<td class="rtecenter">
+					<span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">UNDER COMMISIONING</span></td>
+<td class="rtecenter" style="width: 53px;">
+					<a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018017">2018017</a></td>
+<td class="rtecenter" style="width: 76px;">
+					GENERAL</td>
+<td class="rtecenter" style="width: 234px;">
+					LAUNCH OF GSAT0219, GSAT0220, GSAT0221 AND GSAT0222</td>
+</tr><tr><td class="rtecenter">
+					GSAT0222</td>
+<td class="rtecenter">
+					E33</td>
+<td class="rtecenter">
+					 </td>
+<td class="rtecenter">
+					<span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">UNDER COMMISIONING</span></td>
+<td class="rtecenter" style="width: 53px;">
+					<a href="https://www.gsc-europa.eu/notice-advisory-to-galileo-users-nagu-2018017">2018017</a></td>
+<td class="rtecenter" style="width: 76px;">
+					GENERAL</td>
+<td class="rtecenter" style="width: 234px;">
+					LAUNCH OF GSAT0219, GSAT0220, GSAT0221 AND GSAT0222</td>
+</tr></tbody></table></div>
+<div dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+	 </div>
+<div dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+	<strong>1: Satellite Name</strong>: Galileo Satellite (GSAT) identifier of the satellites:</div>
+<div dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;">
+<ul><li>
+			GSAT01XX: IOV satellites</li>
+<li>
+			GSAT02XX: FOC satellites</li>
+</ul><p><strong>2: SV ID: </strong>Space Vehicle (SV) Identifier is the Galileo satellite ranging code identifier. ‘E’ is the Galileo system constellation indicator.</p>
+<p><strong>3: Clock</strong>: PHM = Passive Hydrogen Maser, RAFS = Rubidium Atomic Frequency Standard.</p>
+<p><strong>4: Status</strong>:</p>
+<ul><li>
+			<span style="color: rgb(49, 164, 38);">USABLE</span>: satellite is operational and contributing to the service provision.</li>
+<li>
+			<span style="color: rgb(164, 38, 38); white-space: pre-wrap;">NOT AVAILABLE</span>: satellite is not operational and it is not contributing to the service provision (NAGU issued prior to Service Declaration).</li>
+<li>
+			<span style="color: rgb(164, 38, 38); white-space: pre-wrap;">NOT USABLE</span>: satellite is not operational and it is not contributing to the service provision (NAGU issued after Service Declaration).</li>
+<li>
+			<span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">TESTING</span>:  satellite may be used only for testing purposes.</li>
+<li>
+			<span style="  color: rgb(233, 123, 40); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;">UNDER COMMISIONING</span>: satellite is under In-Orbit Test (IOT) phase.</li>
+</ul><p><strong>5: Active NAGU</strong>: link to the applicable NAGU.</p>
+<p><strong>6: NAGU Type</strong>: information about the type of the applicable NAGU (see <a href="https://www.gsc-europa.eu/system-status/nagu-information">NAGU Information</a> section).</p>
+<p><strong>7: NAGU Subject</strong>: content of the ‘NAGU Subject’ field of the applicable NAGU (see <a href="https://www.gsc-europa.eu/system-status/nagu-information">NAGU Information</a> section).</p>
+</div>
+<p> </p>
+</div></div></div>    </article>
+
+</section>
+
+<section id="block-views-nagu-block-2" class="block block-views clearfix">
+	 
+			
+	<div class="view view-nagu view-id-nagu view-display-id-block_2 view-dom-id-442114a14674ca33500d9d77f1f336af">
+        
+  
+  
+      <div class="view-content">
+      
+
+
+<table class="views-table cols-6 table table-striped table-bordered table-0 table-0" >
+        <thead>
+    <tr>
+              <th class="views-field views-field-field-nagu-type" >
+          NAGU Type        </th>
+              <th class="views-field views-field-field-nagu-number" >
+          NAGU Number        </th>
+              <th class="views-field views-field-field-date-of-start-event-utc-" >
+          Date of start event         </th>
+              <th class="views-field views-field-field-nagu-date-of-publication-u" >
+          Date of publication (UTC)        </th>
+              <th class="views-field views-field-field-nagu-subject" >
+          NAGU Subject        </th>
+              <th class="views-field views-field-field-satellite-name-general" >
+          Satellites affected        </th>
+          </tr>
+    </thead>
+    <tbody>
+      <tr class="odd views-row-first">
+              <td class="views-field views-field-field-nagu-type" >
+          GENERAL        </td>
+              <td class="views-field views-field-field-nagu-number" >
+          <a href="/notice-advisory-to-galileo-users-nagu-2016029">2016029</a>        </td>
+              <td class="views-field views-field-field-date-of-start-event-utc-" >
+          <span class="date-display-single">2016-08-05 00:00</span>        </td>
+              <td class="views-field views-field-field-nagu-date-of-publication-u" >
+          <span class="date-display-single">2016-08-02 07:25</span>        </td>
+              <td class="views-field views-field-field-nagu-subject" >
+          TESTING OF GSAT0201        </td>
+              <td class="views-field views-field-field-satellite-name-general" >
+          GSAT0201        </td>
+          </tr>
+      <tr class="even">
+              <td class="views-field views-field-field-nagu-type" >
+          GENERAL        </td>
+              <td class="views-field views-field-field-nagu-number" >
+          <a href="/notice-advisory-to-galileo-users-nagu-2016030">2016030</a>        </td>
+              <td class="views-field views-field-field-date-of-start-event-utc-" >
+          <span class="date-display-single">2016-08-05 00:00</span>        </td>
+              <td class="views-field views-field-field-nagu-date-of-publication-u" >
+          <span class="date-display-single">2016-08-02 07:30</span>        </td>
+              <td class="views-field views-field-field-nagu-subject" >
+          TESTING OF GSAT0202        </td>
+              <td class="views-field views-field-field-satellite-name-general" >
+          GSAT0202        </td>
+          </tr>
+      <tr class="odd">
+              <td class="views-field views-field-field-nagu-type" >
+          GENERAL        </td>
+              <td class="views-field views-field-field-nagu-number" >
+          <a href="/notice-advisory-to-galileo-users-nagu-2016063">2016063</a>        </td>
+              <td class="views-field views-field-field-date-of-start-event-utc-" >
+          <span class="date-display-single">2016-12-15 12:00</span>        </td>
+              <td class="views-field views-field-field-nagu-date-of-publication-u" >
+          <span class="date-display-single">2016-12-15 12:00</span>        </td>
+              <td class="views-field views-field-field-nagu-subject" >
+          GALILEO INITIAL OPEN SERVICE (OS) DECLARATION        </td>
+              <td class="views-field views-field-field-satellite-name-general" >
+          ALL SATELLITES WITH USABINIT NAGU ISSUED        </td>
+          </tr>
+      <tr class="even">
+              <td class="views-field views-field-field-nagu-type" >
+          GENERAL        </td>
+              <td class="views-field views-field-field-nagu-number" >
+          <a href="/notice-advisory-to-galileo-users-nagu-2017045">2017045</a>        </td>
+              <td class="views-field views-field-field-date-of-start-event-utc-" >
+          <span class="date-display-single">2017-12-08 07:30</span>        </td>
+              <td class="views-field views-field-field-nagu-date-of-publication-u" >
+          <span class="date-display-single">2017-11-23 17:45</span>        </td>
+              <td class="views-field views-field-field-nagu-subject" >
+          GSAT0204 REMOVED FROM ACTIVE SERVICE FOR CONSTELLATION MANAGEMENT PURPOSES        </td>
+              <td class="views-field views-field-field-satellite-name-general" >
+          GSAT0204        </td>
+          </tr>
+      <tr class="odd">
+              <td class="views-field views-field-field-nagu-type" >
+          GENERAL        </td>
+              <td class="views-field views-field-field-nagu-number" >
+          <a href="/notice-advisory-to-galileo-users-nagu-2017047">2017047</a>        </td>
+              <td class="views-field views-field-field-date-of-start-event-utc-" >
+          <span class="date-display-single">2017-12-12 18:36</span>        </td>
+              <td class="views-field views-field-field-nagu-date-of-publication-u" >
+          <span class="date-display-single">2017-12-15 15:10</span>        </td>
+              <td class="views-field views-field-field-nagu-subject" >
+          LAUNCH OF GSAT0215, GSAT0216, GSAT0217 AND GSAT0218        </td>
+              <td class="views-field views-field-field-satellite-name-general" >
+          GSAT0215, GSAT0216, GSAT0217, GSAT0218        </td>
+          </tr>
+      <tr class="even views-row-last">
+              <td class="views-field views-field-field-nagu-type" >
+          GENERAL        </td>
+              <td class="views-field views-field-field-nagu-number" >
+          <a href="/notice-advisory-to-galileo-users-nagu-2018017">2018017</a>        </td>
+              <td class="views-field views-field-field-date-of-start-event-utc-" >
+          <span class="date-display-single">2018-07-25 11:25</span>        </td>
+              <td class="views-field views-field-field-nagu-date-of-publication-u" >
+          <span class="date-display-single">2018-07-26 10:40</span>        </td>
+              <td class="views-field views-field-field-nagu-subject" >
+          LAUNCH OF GSAT0219, GSAT0220, GSAT0221 AND GSAT0222        </td>
+              <td class="views-field views-field-field-satellite-name-general" >
+          GSAT0219, GSAT0220, GSAT0221, GSAT0222        </td>
+          </tr>
+    </tbody>
+</table>
+
+    </div>
+  
+  
+  
+  
+  
+  
+</div>
+</section>
+
+<section id="block-block-9" class="block block-block clearfix">
+	 
+			
+	<p> </p>
+
+</section>
+  </div>
+  </section>
+
+  
+</div>
+</div>
+</div>
+
+  <footer class="footer ">
+          <div class="wrap wrap-footer">
+       <div class=" container">
+          <div class="region region-footer">
+    
+<section id="block-boxes-social-media-box--2" class="block block-boxes social-links  block-boxes-simple col-md-4 clearfix">
+	 
+			
+	<div id='boxes-box-social_media_box' class='boxes-box'><div class="boxes-box-content"><ul><li><a class="fa fa-rss" href="/rss.xml"></a></li>
+<li><a class="fa fa-twitter" href="https://twitter.com/EU_GNSS" target="_blank"></a></li>
+<li><a class="fa fa-facebook" href="https://www.facebook.com/EuropeanGnssAgency" target="_blank"></a></li>
+<li><a class="fa fa-linkedin" href="http://www.linkedin.com/company/european-gnss-agency" target="_blank"></a></li>
+<li><a class="fa fa-youtube" href="https://www.youtube.com/user/egnos1" target="_blank"></a></li>
+<li><a class="fa fa-slideshare" href="http://www.slideshare.net/EU_GNSS" target="_blank"></a></li>
+<li><a class="euagencies" href="https://euagencies.eu/" target="_blank">   </a></li>
+</ul></div></div>
+</section>
+
+<section id="block-menu-block-6" class="block block-menu-block footer-menu clearfix">
+	 
+			
+	<div class="menu-block-wrapper menu-block-6 menu-name-main-menu parent-mlid-0 menu-level-1">
+  <ul class="menu nav"><li class="first expanded menu-mlid-2236 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Galileo & GSC<span class="br_processed"> </span>Overview</a><ul ><li class="first leaf menu-mlid-2235"><a href="/galileo-overview/what-is-galileo">What is Galileo</a></li>
+<li class="leaf menu-mlid-1854"><a href="/galileo-gsc-overview/programme">Programme</a></li>
+<li class="leaf menu-mlid-1855"><a href="/galileo-gsc-overview/system">System</a></li>
+<li class="leaf menu-mlid-1856"><a href="/galileo-gsc-overview/applications">Applications</a></li>
+<li class="leaf has-children menu-mlid-1857"><a href="/galileo-gsc-overview/services">Services</a></li>
+<li class="leaf menu-mlid-1860"><a href="/galileo-gsc-overview/benefits">Benefits</a></li>
+<li class="leaf menu-mlid-2237"><a href="/galileo-user-survey">2017 Galileo User Satisfaction Survey</a></li>
+<li class="leaf menu-mlid-1861"><a href="/galileo-gsc-overview/faq">FAQ</a></li>
+<li class="last leaf menu-mlid-1862"><a href="/galileo-gsc-overview/the-european-gnss-service-centre">The European GNSS Service Centre</a></li>
+</ul></li>
+<li class="expanded menu-mlid-437 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">GNSS Market &<span class="br_processed"> </span>Applications</a><ul ><li class="first leaf menu-mlid-1863"><a href="/gnss-market-applications/gnss-market-report">GNSS Market Report</a></li>
+<li class="leaf menu-mlid-1864"><a href="/gnss-market-applications/2016-gnss-user-technology-report">2016 GNSS User Technology Report</a></li>
+<li class="leaf menu-mlid-1865"><a href="/gnss-market-applications/gnss-users">GNSS Users</a></li>
+<li class="leaf has-children menu-mlid-1866"><a href="/gnss-market-applications/gnss-industry-and-value-chain">GNSS Industry and value chain</a></li>
+<li class="leaf menu-mlid-1868"><a href="/gnss-market-applications/segment-pages">Segment pages</a></li>
+<li class="last leaf menu-mlid-1872"><a href="/gnss-market-applications/gnss-project-portfolio">GNSS project portfolio</a></li>
+</ul></li>
+<li class="expanded active-trail menu-mlid-439 active "><a title="" class="active-trail dropdown-toggle nolink" data-target="#" data-toggle="dropdown">System<span class="br_processed"> </span>Status</a><ul ><li class="first leaf active-trail active menu-mlid-456 active active"><a href="/system-status/Constellation-Information" class="active-trail active-trail active active-trail active-trail active">Constellation Information</a></li>
+<li class="leaf menu-mlid-829"><a href="/system-status/orbital-and-technical-parameters">Orbital and Technical Parameters</a></li>
+<li class="last leaf has-children menu-mlid-1878"><a href="/system-status/user-notifications" title="">NAGUs (Notice Advisory to Galileo Users)</a></li>
+</ul></li>
+<li class="expanded menu-mlid-1324 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Electronic<span class="br_processed"> </span>Library</a><ul ><li class="first leaf menu-mlid-1325"><a href="/electronic-library/programme-reference-documents" title="">Programme reference documents</a></li>
+<li class="leaf menu-mlid-2231"><a href="/electronic-library/performance-reports" title="Performance Reports">Performance Reports</a></li>
+<li class="leaf menu-mlid-2234"><a href="/electronic-library/service-notices">Service Notices</a></li>
+<li class="leaf menu-mlid-1500"><a href="/electronic-library/public-consultation">Public consultations</a></li>
+<li class="last leaf menu-mlid-1875"><a href="/electronic-library/gsa-publications">GSA Publications</a></li>
+</ul></li>
+<li class="expanded menu-mlid-1876 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Support to<span class="br_processed"> </span>developers</a><ul ><li class="first leaf has-children menu-mlid-1879"><a href="/support-to-developers/gsti-gnss-simulation-and-testing-tools-infrastructure">GSTI (GNSS Simulation and<span class="br_processed"> </span>Testing Tools Infrastructure)</a></li>
+<li class="leaf menu-mlid-1882"><a href="/support-to-developers/galileo-satellite-metadata">Galileo Satellite Metadata</a></li>
+<li class="last leaf has-children menu-mlid-1877"><a href="/system-status/almanac-data" title="">Almanac</a></li>
+</ul></li>
+<li class="last expanded menu-mlid-438 "><a title="" data-target="#" class="dropdown-toggle nolink" data-toggle="dropdown">Multimedia<span class="br_processed"> </span>& News</a><ul ><li class="first leaf menu-mlid-1326"><a href="/about-the-gsc/news" title="">News</a></li>
+<li class="leaf menu-mlid-1873"><a href="/multimedia-news/satnav-in-action-the-gnss-image-gallery" title="">SatNav in Action:<span class="br_processed"> </span>The GNSS Image Gallery</a></li>
+<li class="last leaf menu-mlid-1874"><a href="/multimedia-news/gnss-video-gallery">GNSS Video Gallery</a></li>
+</ul></li>
+</ul></div>
+
+</section>
+  </div>
+      </div>
+    </div>
+        <div class="wrap wrap-eu_footer">
+      <div class=" container">
+          <div class="region region-eu-footer">
+    
+<section id="block-views-last-updated-block" class="block block-views eu_footer clearfix">
+	 
+			
+	<div class="view view-last-updated view-id-last_updated view-display-id-block view-dom-id-351a4bd61cb4fa03475dff5dc6b1c264">
+        
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first views-row-last">
+      
+  <div class="views-field views-field-nothing">        <span class="field-content"><p>The information on this site is subject to a <a href="/node/73#Disclaimer">Disclaimer</a>.  <a href="/node/73#copyright"> Copyright Notice</a>, <a href="cookies"> Cookies</a> and <a href="/node/73#privacy">Protection of personal data</a>.</p></span>  </div>  
+  <p class="views-field views-field-changed">    <span class="views-label views-label-changed">Last modified: </span>    <span class="field-content">Sep 25, 2018</span>  </p>  </div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>
+</section>
+  </div>
+      </div>
+    </div>
+  
+</footer>
+
+<div class="overlay">&nbsp;</div>  <script src="https://www.gsc-europa.eu/sites/default/files/js/js_FbpwIZNwgzwEuuL4Q2HOM07BOSCY5LxL_gwSK4ohQBM.js"></script>
+</body>
+</html>

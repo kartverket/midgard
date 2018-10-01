@@ -71,7 +71,7 @@ class Timer(ContextDecorator):
         self._end: Optional[float] = None
         self.text = text if (text is None or "{}" in text) else (text + " {}").strip()
         self.fmt = fmt
-        self.logger = logger
+        self.logger = (lambda _: None) if logger is None else logger
 
     @staticmethod
     def timer() -> float:
@@ -136,7 +136,7 @@ class Timer(ContextDecorator):
             The time elapsed in seconds.
         """
         time_text = f"{time_elapsed:{self.fmt}} seconds"
-        if self.logger and self.text:
+        if self.text:
             self.logger(self.text.format(time_text))
 
     def __enter__(self) -> "Timer":
@@ -199,5 +199,5 @@ class AccumulatedTimer(Timer):
             The time elapsed in seconds.
         """
         time_text = f"{time_elapsed:{self.fmt}}/{self.accumulated:{self.fmt}} seconds"
-        if self.logger and self.text:
+        if self.text:
             self.logger(self.text.format(time_text))
