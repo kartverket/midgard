@@ -86,6 +86,10 @@
 </li>
                                     
 <li >
+    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
+</li>
+                                    
+<li >
     <a href="../midgard-dev-timer/">midgard.dev.timer</a>
 </li>
                                     
@@ -147,6 +151,14 @@
                                     
 <li >
     <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
 </li>
                                 </ul>
                             </li>
@@ -215,8 +227,9 @@ my_data = my_new_parser.as_dict()
 <p>{doc_parser_names}</p>
 <p>Data can be retrieved either as Dictionaries, Pandas DataFrames or Midgard Datasets by using one of the methods
 <code>as_dict</code>, <code>as_dataframe</code> or <code>as_dataset</code>.</p>
-<p>Example:
-    &gt;&gt;&gt; df = parse_file('rinex2_obs', 'ande3160.16o').as_dataframe()  # doctest: +SKIP</p>
+<p>Example:</p>
+<pre><code>&gt;&gt;&gt; df = parse_file('rinex2_obs', 'ande3160.16o').as_dataframe()  # doctest: +SKIP
+</code></pre>
 <p><strong>Args:</strong></p>
 <ul>
 <li><code>parser_name</code>:    Name of parser</li>

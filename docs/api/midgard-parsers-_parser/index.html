@@ -86,6 +86,10 @@
 </li>
                                     
 <li >
+    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
+</li>
+                                    
+<li >
     <a href="../midgard-dev-timer/">midgard.dev.timer</a>
 </li>
                                     
@@ -148,6 +152,14 @@
 <li >
     <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
 </li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
+</li>
                                 </ul>
                             </li>
                         </ul>
@@ -197,13 +209,13 @@ my_data = my_new_parser.as_dict()
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for parsing a file. You should inherit from one of the specific parsers like for
 instance ChainParser, LineParser, SinexParser etc</p>
-<p>Attributes:
-    file_path (Path):             Path to the datafile that will be read.
-    file_encoding (String):       Encoding of the datafile.
-    parser_name (String):         Name of the parser (as needed to call parsers.parse_...).
-    data_available (Boolean):     Indicator of whether data are available.
-    data (Dict):                  The (observation) data read from file.
-    meta (Dict):                  Metainformation read from file.</p>
+<p><strong>Attributes:</strong></p>
+<p>file_path (Path):             Path to the datafile that will be read.
+file_encoding (String):       Encoding of the datafile.
+parser_name (String):         Name of the parser (as needed to call parsers.parse_...).
+data_available (Boolean):     Indicator of whether data are available.
+data (Dict):                  The (observation) data read from file.
+meta (Dict):                  Metainformation read from file.</p>
 <h3 id="parseras_dataframe">Parser.as_dataframe()</h3>
 <p><code>as_dataframe(self, index:Union[str, List[str], NoneType]=None) -&gt; pandas.core.frame.DataFrame</code></p>
 <p>Return the parsed data as a Pandas DataFrame</p>
@@ -272,7 +284,9 @@ may be done inside apriori classes or similar.</p>
 a simple structure. More advanced parsers may need to reimplement this
 method.</p>
 <p><strong>Args:</strong></p>
-<p>dset (Dataset):  The dataset to update with parsed data.</p></div>
+<ul>
+<li><code>dset</code>:  The dataset to update with parsed data.</li>
+</ul></div>
         </div>
 
         <footer class="col-md-12">

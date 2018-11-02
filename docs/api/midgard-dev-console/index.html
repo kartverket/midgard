@@ -86,6 +86,10 @@
 </li>
                                     
 <li >
+    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
+</li>
+                                    
+<li >
     <a href="../midgard-dev-timer/">midgard.dev.timer</a>
 </li>
                                     
@@ -148,6 +152,14 @@
 <li >
     <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
 </li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
+</li>
                                 </ul>
                             </li>
                         </ul>
@@ -197,24 +209,21 @@
 functionality depends on the external package <code>colorama</code>. If <code>colorama</code> is not installed, color gracefully falls back
 to not showing any color.</p>
 <p><strong>Examples:</strong></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>from midgard.dev import console
-console.columns()  # doctest: +SKIP
-86</p>
-<p>print(console.fill(a_very_long_string))  # doctest: +SKIP
+<pre><code>&gt;&gt;&gt; from midgard.dev import console
+&gt;&gt;&gt; console.columns()  # doctest: +SKIP
+86
+
+&gt;&gt;&gt; print(console.fill(a_very_long_string))  # doctest: +SKIP
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempus eleifend feugiat.
 Maecenas vitae posuere metus. Sed sit amet fermentum velit. Aenean vitae turpis at
 risus sollicitudin fringilla in in nisi. Maecenas vitae ante libero. Aenean ut eros
 consequat, ornare erat at, tempus arcu. Suspendisse velit leo, eleifend eget mi non,
 vehicula ultricies erat. Vestibulum id nisi eget nisl venenatis dignissim. Duis cursus
-quam dui, vel hendrerit nibh lacinia id.</p>
-<p>print(console.color.Fore.YELLOW + console.color.Back.BLUE + 'I am YELLOW text on BLUE backdrop!')  # doctest: +SKIP
-I am YELLOW text on a BLUE background!</p>
-</blockquote>
-</blockquote>
-</blockquote>
+quam dui, vel hendrerit nibh lacinia id.
+
+&gt;&gt;&gt; print(console.color.Fore.YELLOW + console.color.Back.BLUE + 'I am YELLOW text on BLUE backdrop!')  # doctest: +SKIP
+I am YELLOW text on a BLUE background!
+</code></pre>
 <h2 id="columns">columns()</h2>
 <p><code>columns() -&gt; int</code></p>
 <p>The width of the console</p>

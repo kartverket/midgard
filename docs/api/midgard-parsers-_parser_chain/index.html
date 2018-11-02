@@ -86,6 +86,10 @@
 </li>
                                     
 <li >
+    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
+</li>
+                                    
+<li >
     <a href="../midgard-dev-timer/">midgard.dev.timer</a>
 </li>
                                     
@@ -148,6 +152,14 @@
 <li >
     <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
 </li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
+</li>
                                 </ul>
                             </li>
                         </ul>
@@ -203,9 +215,11 @@ this one, and at least specify the necessary parameters in <code>setup_parser</c
 <p>A line is parsed by separating a line in fields. How the separation is done, is defined in the <code>parser_def</code>
 entry of the ParserDef.</p>
 <p><strong>Args:</strong></p>
-<p>line (str):     Line to be parsed.
-cache (dict):   Store temporary data.
-parser (dict):  Dictionary with defined parsers with the keys 'parser_def', 'label' and 'end_marker'.</p>
+<ul>
+<li><code>line</code>:    Line to be parsed.</li>
+<li><code>cache</code>:   Store temporary data.</li>
+<li><code>parser</code>:  Dictionary with defined parsers with the keys 'parser_def', 'label' and 'end_marker'.</li>
+</ul>
 <h3 id="chainparserread_data">ChainParser.read_data()</h3>
 <p><code>read_data(self) -&gt; None</code></p>
 <p>Read data from a data file and parse the contents</p>
