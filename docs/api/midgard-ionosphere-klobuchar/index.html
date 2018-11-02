@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>midgard.ionosphere.klobuchar - Midgard</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">Midgard</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Home</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../midgard/">midgard</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-collections-enums/">midgard.collections.enums</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-config-config/">midgard.config.config</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev-console/">midgard.dev.console</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev-exceptions/">midgard.dev.exceptions</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev-library/">midgard.dev.library</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev-optional/">midgard.dev.optional</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev-plugins/">midgard.dev.plugins</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev-timer/">midgard.dev.timer</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-files-dates/">midgard.files.dates</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">midgard.ionosphere.klobuchar</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-math-interpolation/">midgard.math.interpolation</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-math-unit/">midgard.math.unit</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers/">midgard.parsers</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-_parser/">midgard.parsers._parser</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-_parser_chain/">midgard.parsers._parser_chain</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-_parser_line/">midgard.parsers._parser_line</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-_parser_rinex/">midgard.parsers._parser_rinex</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-_parser_sinex/">midgard.parsers._parser_sinex</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-galileo_constellation_html/">midgard.parsers.galileo_constellation_html</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-gnss_antex/">midgard.parsers.gnss_antex</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-rinex3_header/">midgard.parsers.rinex3_header</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-rinex_obs/">midgard.parsers.rinex_obs</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../midgard-files-dates/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../midgard-math-interpolation/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#midgardionosphereklobuchar">midgard.ionosphere.klobuchar</a></li>
+            <li><a href="#epilog-str">epilog (str)</a></li>
+            <li><a href="#get_my_parser">get_my_parser()</a></li>
+            <li><a href="#klobuchar">klobuchar()</a></li>
+            <li><a href="#main">main()</a></li>
+            <li><a href="#prolog-str">prolog (str)</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="midgardionosphereklobuchar">midgard.ionosphere.klobuchar</h1>
+<h2 id="epilog-str">epilog (str)</h2>
+<p><code>epilog = '\n**EXAMPLE**\n    klobuchar_model.py(time, ion_coeffs, rec_pos, azel)\n    args:\n    time        (I)  : GPST\n    ion_coeffs  (I)  : iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} as vector\n    rec_pos     (I)  : receiver position {lat,lon,h} [rad, rad, m] as vector\n    azel        (I)  : azimuth/elevation angle {az,el} [rad] as vector \n    freq        (I)  : string, e.g. L1, L2, L5 (TODO: Not implemented)\n    logger      (I)  : Function that logs\n    l_result    (O)  : list containing the following parameters\n        L1_delay   : computed path delay on L1 [m]\n        L1_variance: correspong variance [m^2]\n        \n    \n               \n**COPYRIGHT**\n    | Copyright 2018, by the Geodetic Institute, NMA\n    | All rights reserved\n\n**AUTHORS**\n    | Mohammed Ouassou \n    | Geodetic Institute, NMA\n    | Kartverksveien 21, N-3511\n    | Hønefoss, Norway\n\nKeywords: Klobuchar model, Nequick broadcast model\n'</code></p>
+<h2 id="get_my_parser">get_my_parser()</h2>
+<p><code>get_my_parser()</code></p>
+<h2 id="klobuchar">klobuchar()</h2>
+<p><code>klobuchar(t, ion_coeffs, rec_pos, az, el, logger=&lt;built-in function print&gt;)</code></p>
+<p>Compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model)</p>
+<p>GPS and  Beidu satellite navigation systems use this model.
+The implementation is based on original paper of Klobuchar, J.A.
+Ionospheric Time-Delay Algorithm for Single-Frequency GPS Users
+https://scinapse.io/papers/2058160370</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>time</code>:       GPST</li>
+<li><code>ion_coeffs</code>: iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} as vector</li>
+<li><code>rec_pos</code>:    receiver position {lat,lon,h} [rad, rad, m] as vector</li>
+<li><code>az</code>:         azimuth angle [rad]</li>
+<li><code>el</code>:         elevation angle [rad]</li>
+<li><code>logger</code>:     Function that logs</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>L1_delay</code>:    computed path delay on L1 [m]</li>
+<li><code>L1_variance</code>: corresponding variance [m^2]</li>
+</ul>
+<h2 id="main">main()</h2>
+<p><code>main()</code></p>
+<h2 id="prolog-str">prolog (str)</h2>
+<p><code>prolog = '\n**PROGRAM**\n    klobuchar_model.py\n      \n**PURPOSE**\n    compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model).\n    GPS and  Beidu satellite navigation systems use this model.\n    The implementation is based on original paper of Klobuchar, J.A.\n    Ionospheric Time-Delay Algorithm for Single-Frequency GPS Users\n    https://scinapse.io/papers/2058160370\n\n**USAGE**\n'</code></p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
