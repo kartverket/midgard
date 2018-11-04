@@ -59,6 +59,7 @@ def parse_file(
     `as_dict`, `as_dataframe` or `as_dataset`.
 
     Example:
+
         >>> df = parse_file('rinex2_obs', 'ande3160.16o').as_dataframe()  # doctest: +SKIP
 
     Args:

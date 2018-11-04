@@ -344,6 +344,7 @@ class Unit(metaclass=_convert_units):
             Tuple with degrees, minutes, and seconds.
 
         Examples:
+
             >>> Unit.rad_to_dms(1.04570587646256)
             (59.0, 54.0, 52.3200000000179)
             >>> Unit.rad_to_dms(-0.2196050301753194)
@@ -375,6 +376,7 @@ class Unit(metaclass=_convert_units):
             Given degrees, minutes and seconds as radians.
 
         Examples:
+
             >>> Unit.dms_to_rad(59, 54, 52.32)
             1.04570587646256
             >>> Unit.dms_to_rad(-12.0, 34, 56.789)
@@ -400,6 +402,7 @@ class Unit(metaclass=_convert_units):
             Given hours, minutes and seconds as radians.
 
         Examples:
+
             >>> Unit.hms_to_rad(17, 7, 17.753427)
             4.482423920139868
             >>> Unit.hms_to_rad(12, 0, 0.00)

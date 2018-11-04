@@ -20,8 +20,7 @@ The optional import is typically used as follows::
 # Standard library imports
 import importlib
 import sys
-from types import ModuleType
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 
 class SimpleMock:

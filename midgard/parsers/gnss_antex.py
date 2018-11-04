@@ -57,53 +57,48 @@ class AntexParser(ChainParser):
 
     with following entries:
 
-    =================== =================== ========================================================================
-     Value               Type                Description
-    =================== =================== ========================================================================
-     azi                 numpy.ndarray       Array with azimuth-elevation dependent antenna correction in [mm] with
-                                             the shape: number of azimuth values x number of elevation values.
-     azimuth             numpy.ndarray       List with azimuth values in [rad] corresponding to antenna corrections
-                                             given in `azi`.
-     cospar_id           str                 COSPAR ID <yyyy-xxxa>: yyyy -> year when the satellite was put in
-                                             orbit, xxx -> sequential satellite number for that year, a -> alpha
-                                             numeric sequence number within a launch
-     elevation           numpy.ndarray       List with elevation values in [rad] corresponding to antenna
-                                             corrections given in `azi` or `noazi`.
-     <frequency>         str                 Frequency identifier (e.g. G01 - GPS L1)
-     neu                 list                North, East and Up eccentricities in [m]. The eccentricities of the
-                                             mean antenna phase center is given relative to the antenna reference
-                                             point (ARP) for receiver antennas or to the center of mass of the
-                                             satellite in X-, Y- and Z-direction.
-     noazi               numpy.ndarray       List with elevation dependent (non-azimuth-dependent) antenna
-                                             correction in [mm].
-     <prn>               str                 Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number
-     <receiver antenna>  str                 Receiver antenna name together with radome code
-     sat_code            str                 Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number
-     sat_type            str                 Satellite type (e.g. BLOCK IIA)
-     valid_from          datetime.datetime   Start of validity period of satellite in GPS time
-     valid_until         datetime.datetime   End of validity period of satellite in GPS time
-    =================== =================== ========================================================================
-
+    | Value              | Type              | Description                                                            |
+    |--------------------|-------------------|------------------------------------------------------------------------|
+    | azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with |
+    |                    |                   | the shape: number of azimuth values x number of elevation values.      |
+    | azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections |
+    |                    |                   | given in `azi`.                                                        |
+    | cospar_id          | str               | COSPAR ID <yyyy-xxxa>: yyyy -> year when the satellite was put in      |
+    |                    |                   | orbit, xxx -> sequential satellite number for that year, a -> alpha    |
+    |                    |                   | numeric sequence number within a launch                                |
+    | elevation          | numpy.ndarray     | List with elevation values in [rad] corresponding to antenna           |
+    |                    |                   | corrections given in `azi` or `noazi`.                                 |
+    | <frequency>        | str               | Frequency identifier (e.g. G01 - GPS L1)                               |
+    | neu                | list              | North, East and Up eccentricities in [m]. The eccentricities of the    |
+    |                    |                   | mean antenna phase center is given relative to the antenna reference   |
+    |                    |                   | point (ARP) for receiver antennas or to the center of mass of the      |
+    |                    |                   | satellite in X-, Y- and Z-direction.                                   |
+    | noazi              | numpy.ndarray     | List with elevation dependent (non-azimuth-dependent) antenna          |
+    |                    |                   | correction in [mm].                                                    |
+    | <prn>              | str               | Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number       |
+    | <receiver antenna> | str               | Receiver antenna name together with radome code                        |
+    | sat_code           | str               | Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number     |
+    | sat_type           | str               | Satellite type (e.g. BLOCK IIA)                                        |
+    | valid_from         | datetime.datetime | Start of validity period of satellite in GPS time                      |
+    | valid_until        | datetime.datetime | End of validity period of satellite in GPS time                        |
 
     The 'meta' attribute is a dictionary with following entries:
 
-        =================== ======= ========================================================================
-         Value               Type    Description
-        =================== ======= ========================================================================
-         comment             list    Header commments given in list line by line
-         pcv_type            str     Phase center variation type
-         ref_antenna         str     Reference antenna type for relative antenna
-         ref_serial_num      str     Serial number of the reference antenna
-         sat_sys             str     Satellite system
-         version             str     Format version
-        =================== ======= ========================================================================
+    | Value          | Type | Description                                      |
+    |----------------|------|--------------------------------------------------|
+    | comment        | list | Header commments given in list line by line      |
+    | pcv_type       | str  | Phase center variation type                      |
+    | ref_antenna    | str  | Reference antenna type for relative antenna      |
+    | ref_serial_num | str  | Serial number of the reference antenna           |
+    | sat_sys        | str  | Satellite system                                 |
+    | version        | str  | Format version                                   |
 
     Attributes:
-        data (dict):                    Contains the (observation) data read from file.
-        data_available (bool):          Indicator of whether data are available.
-        file_path (pathlib.PosixPath):  File path.
-        parser_name (str):              Parser name.
-        meta (dict):                    Contains metainformation read from file.
+        data:            (dict), Contains the (observation) data read from file.
+        data_available:  (bool), Indicator of whether data are available.
+        file_path:       (pathlib.Path), File path.
+        parser_name:     (str), Parser name.
+        meta:            (dict), Contains metainformation read from file.
     """
 
     #

@@ -52,7 +52,7 @@ Profiles:
 ---------
 
 
-Parent Configuration:
+Fallback Configuration:
 ---------------------
 
 
@@ -121,7 +121,7 @@ class Configuration:
             name:  Name of configuration.
         """
         self.name = name
-        self.parent_config = None
+        self.fallback_config = None
         self.master_section = None
 
         self._profiles: List[ProfileName] = [None]
@@ -228,37 +228,34 @@ class Configuration:
                     self._sections[section_name][key] = entry
 
     @property
-    def parent_config(self) -> "Configuration":
-        """The parent configuration"""
-        if self._parent_config is None:
+    def fallback_config(self) -> "Configuration":
+        """The fallback configuration"""
+        if self._fallback_config is None:
             raise exceptions.MissingConfigurationError(
-                f"Configuration '{self.name}' has not defined a parent configuration"
+                f"Configuration '{self.name}' has not defined a fallback configuration"
             )
-        return self._parent_config
+        return self._fallback_config
 
-    @parent_config.setter
-    def parent_config(self, cfg: Optional["Configuration"]) -> None:
-        """Set the parent configuration"""
-        self._parent_config = cfg
+    @fallback_config.setter
+    def fallback_config(self, cfg: Optional["Configuration"]) -> None:
+        """Set the fallback configuration"""
+        self._fallback_config = cfg
 
     @property
     def master_section(self) -> "ConfigurationSection":
         """The master section"""
         if self._master_section is None:
-            raise exceptions.MissingSectionError(f"Configuration '{self.name}' has not defined a master section")
+            raise exceptions.MissingSectionError(f"Configuration {self.name!r} has not defined a master section")
+        if self._master_section not in self._sections:
+            raise exceptions.MissingSectionError(f"Master section {self._master_section!r} does not exist in"
+                                                 f" configuration {self.name!r}")
 
-        try:
-            return self._sections[self._master_section]
-        except KeyError:
-            return ConfigurationSection("undefined")
+        return self._sections[self._master_section]
 
     @master_section.setter
     def master_section(self, section: Optional[str]) -> None:
         """Set the master section"""
-        if section is None or section in self._sections:
-            self._master_section = section
-        else:
-            raise exceptions.MissingSectionError(f"Configuration '{self.name}' does not contain section '{section}'")
+        self._master_section = section
 
     def get(
         self, key: str, value: Optional[str] = None, section: Optional[str] = None, default: Optional[str] = None
@@ -269,7 +266,7 @@ class Configuration:
 
             1. An explicit value given in `value`. None is used as a marker for no value.
             2. Looked up in the current configuration.
-            3. Looked up in any parent confiurations that are defined.
+            3. Looked up in any fallback confiurations that are defined.
             4. The default value is used.
 
         If `value` is not None, that value is simply returned as a `ConfigurationEntry`. If `default` is not given (is
@@ -295,7 +292,7 @@ class Configuration:
                 return section_value[key]
         except (exceptions.MissingSectionError, exceptions.MissingEntryError) as err:
             try:
-                return self.parent_config.get(key=key, section=section)
+                return self.fallback_config.get(key=key, section=section)
             except (exceptions.MissingConfigurationError, exceptions.MissingEntryError):
                 if default is None:
                     # Raise original error
@@ -551,11 +548,14 @@ class Configuration:
         """Get a section or entry from the master section from the configuration"""
         if key in self.section_names:
             return self._sections[key]
-        else:
+
+        try:
+            return self.master_section[key]
+        except exceptions.MissingSectionError:
             try:
-                return self.master_section[key]
-            except exceptions.MissingSectionError:
-                raise exceptions.MissingSectionError(f"Configuration '{self.name}' has no section '{key}'") from None
+                return self.fallback_config[key]
+            except exceptions.MidgardException:
+                raise exceptions.MissingSectionError(f"Configuration {self.name!r} has no section {key!r}") from None
 
     def __getattr__(self, key: str) -> Union["ConfigurationSection", "ConfigurationEntry"]:
         """Get a section or entry from the master section from the configuration"""

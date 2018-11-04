@@ -17,20 +17,20 @@ to not showing any color.
 Examples:
 ---------
 
->>> from midgard.dev import console
->>> console.columns()  # doctest: +SKIP
-86
+    >>> from midgard.dev import console
+    >>> console.columns()  # doctest: +SKIP
+    86
 
->>> print(console.fill(a_very_long_string))  # doctest: +SKIP
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempus eleifend feugiat.
-Maecenas vitae posuere metus. Sed sit amet fermentum velit. Aenean vitae turpis at
-risus sollicitudin fringilla in in nisi. Maecenas vitae ante libero. Aenean ut eros
-consequat, ornare erat at, tempus arcu. Suspendisse velit leo, eleifend eget mi non,
-vehicula ultricies erat. Vestibulum id nisi eget nisl venenatis dignissim. Duis cursus
-quam dui, vel hendrerit nibh lacinia id.
+    >>> print(console.fill(a_very_long_string))  # doctest: +SKIP
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempus eleifend feugiat.
+    Maecenas vitae posuere metus. Sed sit amet fermentum velit. Aenean vitae turpis at
+    risus sollicitudin fringilla in in nisi. Maecenas vitae ante libero. Aenean ut eros
+    consequat, ornare erat at, tempus arcu. Suspendisse velit leo, eleifend eget mi non,
+    vehicula ultricies erat. Vestibulum id nisi eget nisl venenatis dignissim. Duis cursus
+    quam dui, vel hendrerit nibh lacinia id.
 
->>> print(console.color.Fore.YELLOW + console.color.Back.BLUE + 'I am YELLOW text on BLUE backdrop!')  # doctest: +SKIP
-I am YELLOW text on a BLUE background!
+    >>> print(console.color.Fore.YELLOW + console.color.Back.BLUE + 'I am YELLOW text on BLUE backdrop!')  # doctest: +SKIP
+    I am YELLOW text on a BLUE background!
 
 """
 

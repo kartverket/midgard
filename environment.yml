@@ -10,6 +10,7 @@ dependencies:
   - numpy
   - pandas
   - pint
+  - pycurl
   - pytest
   - pytest-cov
   - scipy

@@ -174,7 +174,7 @@ class Parser:
         method.
 
         Args:
-            dset (Dataset):  The dataset to update with parsed data.
+            dset:  The dataset to update with parsed data.
         """
         # parser_dset = self.as_dataset()
         # if new fields:

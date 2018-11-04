@@ -17,6 +17,8 @@ import pathlib
 from typing import Any, Callable, cast, Dict, List, NamedTuple, Optional, Tuple, Union
 import warnings
 
+import numpy as np
+
 # Midgard imports
 from midgard.dev import exceptions
 from midgard.parsers._parser import Parser
@@ -180,9 +182,8 @@ class RinexParser(Parser):
     def parse_approx_position(self, fields: _FieldStr) -> _FieldVal:
         """Parse station coordinates defined in RINEX header to instance variable `data`
         """
-        return fields
-        # pos = np.array((float(line["pos_x"]), float(line["pos_y"]), float(line["pos_z"])))
-        # self.data["pos"] = pos
+        pos = np.array((float(fields["pos_x"]), float(fields["pos_y"]), float(fields["pos_z"])))
+        return dict(pos=pos)
 
     def parse_comment(self, fields: _FieldStr) -> _FieldVal:
         """Parse comment lines in RINEX header to instance variable `header['comment']`

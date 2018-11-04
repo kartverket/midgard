@@ -114,9 +114,9 @@ class ChainParser(Parser):
         entry of the ParserDef.
 
         Args:
-            line (str):     Line to be parsed.
-            cache (dict):   Store temporary data.
-            parser (dict):  Dictionary with defined parsers with the keys 'parser_def', 'label' and 'end_marker'.
+            line:    Line to be parsed.
+            cache:   Store temporary data.
+            parser:  Dictionary with defined parsers with the keys 'parser_def', 'label' and 'end_marker'.
         """
         if not parser.label:
             return

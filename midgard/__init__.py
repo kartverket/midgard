@@ -32,12 +32,17 @@ from pathlib import Path as _Path
 # Version of Midgard.
 #
 # This is automatically set using the bumpversion tool
-__version__ = "0.1.8"
+__version__ = "0.1.9"
 
 
 # Authors of Midgard.
 _Author = _namedtuple("_Author", ["name", "email", "start", "end"])
-_AUTHORS = [_Author("Geir Arne Hjelle", "geir.arne.hjelle@kartverket.no", _date.min, _date.max)]
+_AUTHORS = [
+    _Author("Michael Dähnn", "michael.daehnn@kartverket.no", _date.min, _date.max),
+    _Author("Geir Arne Hjelle", "geir.arne.hjelle@kartverket.no", _date.min, _date.max),
+    _Author("Ann-Silje Kirkvik", "ann-silje.kirkvik@kartverket.no", _date.min, _date.max),
+    _Author("Mohammed Ouasou", "mohammed.ouasou@kartverket.no", _date(2018, 9, 1), _date.max),
+]
 
 __author__ = ", ".join(a.name for a in _AUTHORS if a.start < _date.today() < a.end)
 __contact__ = ", ".join(a.email for a in _AUTHORS if a.start < _date.today() < a.end)

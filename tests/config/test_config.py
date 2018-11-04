@@ -176,9 +176,10 @@ def test_clearing_config(config_file):
 
 
 def test_set_non_existing_master_section(config_file):
-    """Test that setting a non-existing section as master section raises an error"""
+    """Test that setting a non-existing section is ok, but getting from it raises an error"""
+    config_file.master_section = "non_existing"
     with pytest.raises(exceptions.MissingSectionError):
-        config_file.master_section = "non_existing"
+        config_file.non_exisiting
 
 
 def test_access_from_master_section(config_file):
@@ -197,6 +198,13 @@ def test_get_from_master_section_without_master_section(config_file):
     """Test that trying to get an entry as if from a master section typically raises an error"""
     with pytest.raises(exceptions.MissingSectionError):
         config_file.foo
+
+
+def test_get_from_master_section(config_file):
+    """Test that get can access entries from a master section"""
+    config_file.master_section = "midgard"
+    entry = config_file.get("foo", default="baz")
+    assert entry is config_file.midgard.foo
 
 
 def test_profiles_are_not_separate_sections(config_file):
@@ -273,17 +281,24 @@ def test_get_from_configuration(config_file):
     assert entry is config_file.midgard.foo
 
 
-def test_get_from_parent_config(config_file, config_dict):
-    """Test that get can access entries in a parent configuration"""
-    config_dict.parent_config = config_file
+def test_get_from_fallback_config(config_file, config_dict):
+    """Test that get can access entries in a fallback configuration"""
+    config_dict.fallback_config = config_file
     entry = config_dict.get("foo", section="midgard", default="baz")
     assert entry is config_file.midgard.foo
 
 
-def test_get_from_master_section(config_file):
-    """Test that get can access entries from a master section"""
-    config_file.master_section = "midgard"
-    entry = config_file.get("foo", default="baz")
+def test_getattr_from_fallback_config(config_file, config_dict):
+    """Test that attribute access can get entries in fallback configuration"""
+    config_dict.fallback_config = config_file
+    entry = config_dict.midgard.foo
+    assert entry is config_file.midgard.foo
+
+
+def test_getitem_from_fallback_config(config_file, config_dict):
+    """Test that dictionary access can get entries in fallback configuration"""
+    config_dict.fallback_config = config_file
+    entry = config_dict["midgard"].foo
     assert entry is config_file.midgard.foo
 
 

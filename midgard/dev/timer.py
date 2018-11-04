@@ -11,25 +11,25 @@ module:
 
 The Timer can then be used in three different ways:
 
-1. As a decorator to time one function::
+1. As a decorator to time one function:
 
-    @Timer('The time to execute some_function was')
-    def some_function(some_argument, some_other_argument=some_value):
-        pass
+        @Timer('The time to execute some_function was')
+        def some_function(some_argument, some_other_argument=some_value):
+            pass
 
-2. As a context manager together with `with` to time a code block::
+2. As a context manager together with `with` to time a code block:
 
-    with Timer('Finish doing stuff in', logger=logger.debug) as t:
+        with Timer('Finish doing stuff in', logger=logger.debug) as t:
+            do_something()
+            do_something_else()
+
+3. With explicit `start`- and `end`-statements:
+
+        t = Timer()
+        t.start()
         do_something()
         do_something_else()
-
-3. With explicit `start`- and `end`-statements::
-
-    t = Timer()
-    t.start()
-    do_something()
-    do_something_else()
-    t.end()
+        t.end()
 
 As can be seen in the examples above, `Timer()` may be called with several
 optional parameters, including the text to report when the timer ends and which

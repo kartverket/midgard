@@ -7,6 +7,10 @@ these are geodesy-specific, many are also useful in more general settings.
 **Note:** Midgard is still in pre-alpha status. Its functionality will change,
   and it should not be depended on in any production-like setting.
 
+[![Latest version](https://img.shields.io/pypi/v/midgard.svg)](https://pypi.org/project/midgard/)
+[![Python versions](https://img.shields.io/pypi/pyversions/midgard.svg)](https://pypi.org/project/midgard/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+
 
 ## Installing Midgard
 
@@ -78,3 +82,5 @@ different subpackages, use the Python help system:
     >>> import midgard
     >>> help(midgard)
 
+Information about individual subpackages is also available on the
+[Midgard website](https://kartverket.github.io/midgard/).

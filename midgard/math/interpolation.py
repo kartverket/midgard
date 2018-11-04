@@ -10,18 +10,18 @@ Different interpolation methods are decorated with `@register_interpolator` and 
 Example:
 --------
 
->>> import numpy as np
->>> np.set_printoptions(precision=3, suppress=True)
->>> x = np.linspace(-1, 1, 11)
->>> y = x**3 - x
->>> y
-array([ 0.   ,  0.288,  0.384,  0.336,  0.192,  0.   , -0.192, -0.336,
-       -0.384, -0.288,  0.   ])
+    >>> import numpy as np
+    >>> np.set_printoptions(precision=3, suppress=True)
+    >>> x = np.linspace(-1, 1, 11)
+    >>> y = x**3 - x
+    >>> y
+    array([ 0.   ,  0.288,  0.384,  0.336,  0.192,  0.   , -0.192, -0.336,
+           -0.384, -0.288,  0.   ])
 
->>> x_new = np.linspace(-0.8, 0.8, 11)
->>> interpolate(x, y, x_new, kind='cubic')
-array([ 0.288,  0.378,  0.369,  0.287,  0.156, -0.   , -0.156, -0.287,
-       -0.369, -0.378, -0.288])
+    >>> x_new = np.linspace(-0.8, 0.8, 11)
+    >>> interpolate(x, y, x_new, kind='cubic')
+    array([ 0.288,  0.378,  0.369,  0.287,  0.156, -0.   , -0.156, -0.287,
+           -0.369, -0.378, -0.288])
 
 
 Developer info:
@@ -168,14 +168,14 @@ def lagrange(
     finding the closest original point and essentially picking the `window // 2` indices on either side.
 
     Args:
-        x:             1-dimensional array with original x-values.
-        y:             Array with original y-values.
-        window:        Number of points used in interpolation.
-        bounds_error:  If True, a ValueError is raised if extrapolation is attempted.
-        assume_sorted: If True, x must be an array of monotonically increasing values.
+        x:              1-dimensional array with original x-values.
+        y:              Array with original y-values.
+        window:         Number of points used in interpolation.
+        bounds_error:   If True, a ValueError is raised if extrapolation is attempted.
+        assume_sorted:  If True, x must be an array of monotonically increasing values.
 
     Returns:
-        Lagrange interpolation function
+        Lagrange interpolation function.
     """
     # Check input
     if x.ndim != 1:

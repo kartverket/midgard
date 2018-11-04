@@ -25,6 +25,7 @@ def date_vars(date: Optional[Union[datetime.date, datetime.datetime]]) -> Dict[s
     names.
 
     Examples:
+
         >>> from datetime import date
         >>> date_vars(date(2009, 11, 2))  # doctest: +NORMALIZE_WHITESPACE
         {'yyyy': '2009', 'ce': '20', 'yy': '09', 'm': '11', 'mm': '11', 'mmm': 'nov', 'MMM': 'NOV', 'd': '2',

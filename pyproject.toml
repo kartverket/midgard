@@ -16,7 +16,8 @@ classifiers        = ["Development Status :: 2 - Pre-Alpha",
                       "Operating System :: MacOS",
                       "Operating System :: Microsoft",
                       "Operating System :: POSIX :: Linux",
-                      "Programming Language :: Python :: 3",
+                      "Programming Language :: Python :: 3.6",
+                      "Programming Language :: Python :: 3.7",
                       "Topic :: Scientific/Engineering",
                       "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -24,8 +25,5 @@ keywords           = "geodesy utilities"
 
 # Requirements
 requires-python    = ">=3.6"
-requires           = ["numpy", "pandas", "pint", "scipy"]
+requires           = ["numpy", "pandas", "pint", "pycurl", "scipy"]
 dev-requires       = ["black", "bumpversion", "flit", "mypy", "pytest", "pytest-cov"]
-
-[tool.flit.scripts]
-midgard_release = "midgard_release:main"
