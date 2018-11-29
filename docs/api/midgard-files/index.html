@@ -12,7 +12,7 @@
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -50,6 +50,15 @@
                                 <a href="../..">Home</a>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../howto/testing/">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -58,107 +67,35 @@
 </li>
                                     
 <li >
-    <a href="../midgard-collections-enums/">midgard.collections.enums</a>
+    <a href="../midgard-collections/">midgard.collections</a>
 </li>
                                     
 <li >
-    <a href="../midgard-config-config/">midgard.config.config</a>
+    <a href="../midgard-config/">midgard.config</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-console/">midgard.dev.console</a>
+    <a href="../midgard-coords/">midgard.coords</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-exceptions/">midgard.dev.exceptions</a>
+    <a href="../midgard-dev/">midgard.dev</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">midgard.files</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-library/">midgard.dev.library</a>
+    <a href="../midgard-ionosphere/">midgard.ionosphere</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-optional/">midgard.dev.optional</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-plugins/">midgard.dev.plugins</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-timer/">midgard.dev.timer</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-files-dates/">midgard.files.dates</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-ionosphere-klobuchar/">midgard.ionosphere.klobuchar</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-math-interpolation/">midgard.math.interpolation</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-math-unit/">midgard.math.unit</a>
+    <a href="../midgard-math/">midgard.math</a>
 </li>
                                     
 <li >
     <a href="../midgard-parsers/">midgard.parsers</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser/">midgard.parsers._parser</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_chain/">midgard.parsers._parser_chain</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_line/">midgard.parsers._parser_line</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_rinex/">midgard.parsers._parser_rinex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_sinex/">midgard.parsers._parser_sinex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-galileo_constellation_html/">midgard.parsers.galileo_constellation_html</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-gnss_antex/">midgard.parsers.gnss_antex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-rinex3_header/">midgard.parsers.rinex3_header</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-rinex_obs/">midgard.parsers.rinex_obs</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
 </li>
                                 </ul>
                             </li>
@@ -170,6 +107,16 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
+                            <li >
+                                <a rel="next" href="../midgard-dev/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../midgard-ionosphere/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -178,12 +125,47 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#midgardfiles">midgard.files</a></li>
+        <li class="main active"><a href="#midgardfilesdates">midgard.files.dates</a></li>
+            <li><a href="#fmt_date-str">FMT_date (str)</a></li>
+            <li><a href="#fmt_datetime-str">FMT_datetime (str)</a></li>
+            <li><a href="#fmt_dt_file-str">FMT_dt_file (str)</a></li>
+            <li><a href="#date_vars">date_vars()</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="midgardfiles">midgard.files</h1></div>
+<h1 id="midgardfilesdates">midgard.files.dates</h1>
+<p>Convenience functions for working with dates</p>
+<p><strong>Description:</strong></p>
+<p>Formats and converters that can be used for convenience and consistency.</p>
+<h2 id="fmt_date-str">FMT_date (str)</h2>
+<p><code>FMT_date = '%Y-%m-%d'</code></p>
+<h2 id="fmt_datetime-str">FMT_datetime (str)</h2>
+<p><code>FMT_datetime = '%Y-%m-%d %H:%M:%S'</code></p>
+<h2 id="fmt_dt_file-str">FMT_dt_file (str)</h2>
+<p><code>FMT_dt_file = '%Y%m%d-%H%M%S'</code></p>
+<h2 id="date_vars"><strong>date_vars</strong>()</h2>
+<p>Full name: <code>midgard.files.dates.date_vars</code></p>
+<p>Signature: <code>(date:Union[datetime.date, NoneType]) -&gt; Dict[str, str]</code></p>
+<p>Construct a dict of date variables</p>
+<p>From a given date, construct a dict containing all relevant date
+variables. This dict can be used to for instance replace variables in file
+names.</p>
+<p><strong>Examples:</strong></p>
+<pre><code>&gt;&gt;&gt; from datetime import date
+&gt;&gt;&gt; date_vars(date(2009, 11, 2))  # doctest: +NORMALIZE_WHITESPACE
+{'yyyy': '2009', 'ce': '20', 'yy': '09', 'm': '11', 'mm': '11', 'mmm': 'nov', 'MMM': 'NOV', 'd': '2',
+ 'dd': '02', 'doy': '306', 'dow': '1', 'h': '0', 'hh': '00'}
+
+&gt;&gt;&gt; date_vars(None)
+{}
+</code></pre>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>date</code>:  The given date.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Dictionary with date variables for the given date.</p></div>
         </div>
 
         <footer class="col-md-12">

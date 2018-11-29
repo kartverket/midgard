@@ -12,7 +12,7 @@
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -50,6 +50,15 @@
                                 <a href="../..">Home</a>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../howto/testing/">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -58,107 +67,35 @@
 </li>
                                     
 <li >
-    <a href="../midgard-collections-enums/">midgard.collections.enums</a>
+    <a href="../midgard-collections/">midgard.collections</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">midgard.config</a>
 </li>
                                     
 <li >
-    <a href="../midgard-config-config/">midgard.config.config</a>
+    <a href="../midgard-coords/">midgard.coords</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-console/">midgard.dev.console</a>
+    <a href="../midgard-dev/">midgard.dev</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-exceptions/">midgard.dev.exceptions</a>
+    <a href="../midgard-files/">midgard.files</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-library/">midgard.dev.library</a>
+    <a href="../midgard-ionosphere/">midgard.ionosphere</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-optional/">midgard.dev.optional</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-plugins/">midgard.dev.plugins</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-timer/">midgard.dev.timer</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-files-dates/">midgard.files.dates</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-ionosphere-klobuchar/">midgard.ionosphere.klobuchar</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-math-interpolation/">midgard.math.interpolation</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-math-unit/">midgard.math.unit</a>
+    <a href="../midgard-math/">midgard.math</a>
 </li>
                                     
 <li >
     <a href="../midgard-parsers/">midgard.parsers</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser/">midgard.parsers._parser</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_chain/">midgard.parsers._parser_chain</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_line/">midgard.parsers._parser_line</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_rinex/">midgard.parsers._parser_rinex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_sinex/">midgard.parsers._parser_sinex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-galileo_constellation_html/">midgard.parsers.galileo_constellation_html</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-gnss_antex/">midgard.parsers.gnss_antex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-rinex3_header/">midgard.parsers.rinex3_header</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-rinex_obs/">midgard.parsers.rinex_obs</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
 </li>
                                 </ul>
                             </li>
@@ -170,6 +107,16 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
+                            <li >
+                                <a rel="next" href="../midgard-collections/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../midgard-coords/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -178,12 +125,391 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#midgardconfig">midgard.config</a></li>
+        <li class="main active"><a href="#midgardconfigconfig">midgard.config.config</a></li>
+            <li><a href="#casedconfigparser">CasedConfigParser</a></li>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#configurationentry">ConfigurationEntry</a></li>
+            <li><a href="#configurationsection">ConfigurationSection</a></li>
+            <li><a href="#fmt_date-str">FMT_date (str)</a></li>
+            <li><a href="#fmt_datetime-str">FMT_datetime (str)</a></li>
+            <li><a href="#fmt_dt_file-str">FMT_dt_file (str)</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="midgardconfig">midgard.config</h1></div>
+<h1 id="midgardconfigconfig">midgard.config.config</h1>
+<p>Midgard library module for handling of configuration settings</p>
+<p><strong>Description:</strong></p>
+<p>A Configuration consists of one or several sections. Each ConfigurationSection
+consists of one or more entries. Each ConfigurationEntry consists of a key and
+a value.</p>
+<p><strong>Examples:</strong></p>
+<p>For basic use, an entry is looked up by simple attribute access. For instance
+if <code>cfg</code> is a Configuration with the section <code>midgard</code> which has an entry <code>foo
+= bar</code>:</p>
+<pre><code>&gt;&gt;&gt; cfg = Configuration("config_name")
+&gt;&gt;&gt; cfg.update("midgard", "foo", "bar")
+&gt;&gt;&gt; cfg.midgard.foo
+ConfigurationEntry(key='foo', value='bar')
+</code></pre>
+<p>ConfigurationEntry has several access methods that convert the entry to a given
+data type:</p>
+<pre><code>&gt;&gt;&gt; cfg.update("midgard", "foo_pi", 3.14, source="command line")
+&gt;&gt;&gt; cfg.midgard.foo_pi
+ConfigurationEntry(key='foo_pi', value='3.14')
+&gt;&gt;&gt; cfg.midgard.foo_pi.float
+3.14
+&gt;&gt;&gt; cfg.midgard.foo_pi.str
+'3.14'
+&gt;&gt;&gt; cfg.midgard.foo_pi.tuple
+('3.14',)
+</code></pre>
+<p><strong>Sources:</strong></p>
+<p>Each configuration entry records its source. That is, where that entry was
+defined. Examples include read from file, set as a command line option, or
+programmatically from a dictionary. The source can be looked up on an
+individual entry, or for all entries in a configuration.</p>
+<pre><code>&gt;&gt;&gt; cfg.midgard.foo_pi.source
+'command line'
+&gt;&gt;&gt; cfg.sources  # doctest: +SKIP
+{'/home/midgard/midgard.conf', 'command line'}
+</code></pre>
+<p><strong>Profiles:</strong></p>
+<p><strong>Fallback Configuration:</strong></p>
+<p><strong>Master Section:</strong></p>
+<p><strong>Replacement Variables:</strong></p>
+<p><strong>Help text and Type hints:</strong></p>
+<h2 id="casedconfigparser"><strong>CasedConfigParser</strong></h2>
+<p>Full name: <code>midgard.config.config.CasedConfigParser</code></p>
+<p>Signature: <code>(defaults=None, dict_type=&lt;class 'collections.OrderedDict'&gt;, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=&lt;object object at 0x7f4900fe91a0&gt;, converters=&lt;object object at 0x7f4900fe91a0&gt;)</code></p>
+<p>ConfigParser with case-sensitive keys</p>
+<h3 id="casedconfigparserboolean_states-dict">CasedConfigParser.BOOLEAN_STATES (dict)</h3>
+<p><code>BOOLEAN_STATES = {'1': True, 'yes': True, 'true': True, 'on': True, '0': False, 'no': False, 'false': False, 'off': False}</code></p>
+<h3 id="casedconfigparsernonspacecre-sre_pattern">CasedConfigParser.NONSPACECRE (SRE_Pattern)</h3>
+<p><code>NONSPACECRE = re.compile('\\S')</code></p>
+<h3 id="casedconfigparseroptcre-sre_pattern">CasedConfigParser.OPTCRE (SRE_Pattern)</h3>
+<p><code>OPTCRE = re.compile('\n        (?P&lt;option&gt;.*?)                    # very permissive!\n        \\s*(?P&lt;vi&gt;=|:)\\s*              # any number of space/tab,\n                                           # followed by any of t, re.VERBOSE)</code></p>
+<h3 id="casedconfigparseroptcre_nv-sre_pattern">CasedConfigParser.OPTCRE_NV (SRE_Pattern)</h3>
+<p><code>OPTCRE_NV = re.compile('\n        (?P&lt;option&gt;.*?)                    # very permissive!\n        \\s*(?:                             # any number of space/tab,\n        (?P&lt;vi&gt;=|:)\\s*                 # optionally followed , re.VERBOSE)</code></p>
+<h3 id="casedconfigparsersectcre-sre_pattern">CasedConfigParser.SECTCRE (SRE_Pattern)</h3>
+<p><code>SECTCRE = re.compile('\n        \\[                                 # [\n        (?P&lt;header&gt;[^]]+)                  # very permissive!\n        \\]                                 # ]\n        ', re.VERBOSE)</code></p>
+<h3 id="casedconfigparseroptionxform">CasedConfigParser.<strong>optionxform</strong>()</h3>
+<p>Full name: <code>midgard.config.config.optionxform</code></p>
+<p>Signature: <code>(self, optionstr:str) -&gt; str</code></p>
+<p>Do not turn optionstr (key) into lowercase</p>
+<h2 id="configuration"><strong>Configuration</strong></h2>
+<p>Full name: <code>midgard.config.config.Configuration</code></p>
+<p>Signature: <code>(name:str) -&gt; None</code></p>
+<p>Represents a Configuration</p>
+<h3 id="configurationas_dict">Configuration.<strong>as_dict</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_dict</code></p>
+<p>Signature: <code>(self, getters:Union[Dict[str, Dict[str, str]], NoneType]=None, default_getter:str='str') -&gt; Dict[str, Dict[str, Any]]</code></p>
+<p>The configuration represented as a dictionary</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>getters</code>:         How to get the value of each entry in each section.</li>
+<li><code>default_getter</code>:  How to get the value of entries not specified in getters.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Representation of the configuration as a nested dictionary.</p>
+<h3 id="configurationas_str">Configuration.<strong>as_str</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_str</code></p>
+<p>Signature: <code>(self, width:Union[int, NoneType]=None, key_width:int=30, only_used:bool=False, metadata:bool=True) -&gt; str</code></p>
+<p>The configuration represented as a string</p>
+<p>This is simililar to what is shown by <code>str(configuration)</code> (and implemented by <code>__str__</code>), but has more
+flexibility.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>width</code>:      Width of text for wrapping. Default is width of console.</li>
+<li><code>key_width</code>:  Width of the key column. Default is 30 characters.</li>
+<li><code>only_used</code>:  Only include configuration entries that has been used so far.</li>
+<li><code>metadata</code>:   Include metadata like type and help text.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>String representation of the configuration.</p>
+<h3 id="configurationclear">Configuration.<strong>clear</strong>()</h3>
+<p>Full name: <code>midgard.config.config.clear</code></p>
+<p>Signature: <code>(self) -&gt; None</code></p>
+<p>Clear the configuration</p>
+<h3 id="configurationclear_vars">Configuration.<strong>clear_vars</strong>()</h3>
+<p>Full name: <code>midgard.config.config.clear_vars</code></p>
+<p>Signature: <code>(self) -&gt; None</code></p>
+<p>Clear the configuration variables</p>
+<h3 id="configurationexists">Configuration.<strong>exists</strong>()</h3>
+<p>Full name: <code>midgard.config.config.exists</code></p>
+<p>Signature: <code>(self, key:str, section:Union[str, NoneType]=None) -&gt; bool</code></p>
+<p>Check if a configuration entry exists</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>key</code>:      Name of option (key in the configuration entry).</li>
+<li><code>section</code>:  Section in the configuration in which to look up the key.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>True if the configuration entry exists, otherwise False.</p>
+<h3 id="configurationget">Configuration.<strong>get</strong>()</h3>
+<p>Full name: <code>midgard.config.config.get</code></p>
+<p>Signature: <code>(self, key:str, value:Union[str, NoneType]=None, section:Union[str, NoneType]=None, default:Union[str, NoneType]=None) -&gt; 'ConfigurationEntry'</code></p>
+<p>Get an entry from a configuration with possibility for override and default value</p>
+<p>A value for an entry is found using the following priorities:</p>
+<pre><code>1. An explicit value given in `value`. None is used as a marker for no value.
+2. Looked up in the current configuration.
+3. Looked up in any fallback confiurations that are defined.
+4. The default value is used.
+</code></pre>
+<p>If <code>value</code> is not None, that value is simply returned as a <code>ConfigurationEntry</code>. If <code>default</code> is not given (is
+None), and a value is not found in any other way, a MissingEntryError is raised.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>key</code>:      Name of option (key in the configuration entry).</li>
+<li><code>value</code>:    Value of entry. Used for overriding the configuration.</li>
+<li><code>section</code>:  Section in the configuration in which to look up the key.</li>
+<li><code>default</code>:  Default value that is returned if value is not found any other way.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Entry representing the value.</p>
+<h3 id="configurationread_from_file">Configuration.<strong>read_from_file</strong>()</h3>
+<p>Full name: <code>midgard.config.config.read_from_file</code></p>
+<p>Signature: <code>(cfg_name:str, *file_paths:Union[str, pathlib.Path]) -&gt; 'Configuration'</code></p>
+<p>Read a configuration from one or more files</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_paths</code>:  File(s) that will be read.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>A Configuration representing the file(s).</p>
+<h3 id="configurationupdate">Configuration.<strong>update</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update</code></p>
+<p>Signature: <code>(self, section:str, key:str, value:str, *, profile:Union[str, NoneType]=None, source:str='unknown', meta:Union[Dict[str, str], NoneType]=None, allow_new:bool=True, _update_sections:bool=True) -&gt; None</code></p>
+<p>Update a configuration section with a configuration entry</p>
+<p>If <code>allow_new</code> is False, the configuration entry must already exist. If it is True the update is allowed to
+create a new section and a new entry is necessary.</p>
+<p>The <code>_update_sections</code> flag can be used to not update the sections of the configuration, only the
+profiles. This should typically not be done, but is used by some of the other update methods which update the
+sections themselves.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>section</code>:    Section to update.</li>
+<li><code>key</code>:        Key of entry.</li>
+<li><code>value</code>:      Value of entry.</li>
+<li><code>profile</code>:    Profile to update.</li>
+<li><code>source</code>:     Source of the update.</li>
+<li><code>meta</code>:       Metadata like help text and type hints for the entry.</li>
+<li><code>allow_new</code>:  Whether to allow the creation of a new section and entry.</li>
+</ul>
+<h3 id="configurationupdate_from_config_section">Configuration.<strong>update_from_config_section</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update_from_config_section</code></p>
+<p>Signature: <code>(self, other_section:'ConfigurationSection', section:Union[str, NoneType]=None, allow_new:bool=True) -&gt; None</code></p>
+<h3 id="configurationupdate_from_dict">Configuration.<strong>update_from_dict</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update_from_dict</code></p>
+<p>Signature: <code>(self, cfg_dict:Dict[str, Any], section:Union[str, NoneType]=None, source:str='dictionary', allow_new:bool=True) -&gt; None</code></p>
+<h3 id="configurationupdate_from_file">Configuration.<strong>update_from_file</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update_from_file</code></p>
+<p>Signature: <code>(self, file_path:Union[str, pathlib.Path], allow_new:bool=True, interpolate:bool=False, case_sensitive:bool=False) -&gt; None</code></p>
+<p>Update the configuration from a configuration file</p>
+<p>The Python ConfigParser is used to read the file. The file format that is supported is described at
+https://docs.python.org/library/configparser.html</p>
+<p>Different profiles in a configuration file is denoted by double underscores in the sections names. For instance
+does the following configuration have a <code>foo</code> profile in the <code>spam</code> section (in addition to the default
+profile):</p>
+<pre><code>[spam]
+...
+
+[spam__foo]
+...
+</code></pre>
+<p>If <code>interpolate</code> is set to True, ExtendedInterpolation of variables in the configuration file is used. See
+https://docs.python.org/library/configparser.html#configparser.ExtendedInterpolation for details.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:      Path to the configuration file.</li>
+<li><code>allow_new</code>:      Whether to allow the creation of new sections and entries.</li>
+<li><code>interpolate</code>:    Whether to interpolate variables in the configuration file.</li>
+<li><code>case_sensitive</code>: Whether to read keys as case sensitive (or convert to lower case).</li>
+</ul>
+<h3 id="configurationupdate_from_options">Configuration.<strong>update_from_options</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update_from_options</code></p>
+<p>Signature: <code>(self, options:Union[List[str], NoneType]=None, profile:Union[str, NoneType]=None, source:str='command line', allow_new:bool=False) -&gt; None</code></p>
+<h3 id="configurationupdate_on_file">Configuration.<strong>update_on_file</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update_on_file</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], **as_str_args:Any) -&gt; Generator</code></p>
+<p>Context manager for updating a configuration on file</p>
+<h3 id="configurationupdate_vars">Configuration.<strong>update_vars</strong>()</h3>
+<p>Full name: <code>midgard.config.config.update_vars</code></p>
+<p>Signature: <code>(self, new_vars:Dict[str, Any]) -&gt; None</code></p>
+<p>Update the configuration variables</p>
+<h3 id="configurationwrite_to_file">Configuration.<strong>write_to_file</strong>()</h3>
+<p>Full name: <code>midgard.config.config.write_to_file</code></p>
+<p>Signature: <code>(self, file_path:Union[str, pathlib.Path], **as_str_args:Any) -&gt; None</code></p>
+<p>Write the configuration to a file</p>
+<p>In addition to the file path, arguments can be specified and will be passed on to the as_str() function. See
+<code>as_str()</code> for more information.</p>
+<p>Todo: Use files.open_path</p>
+<h2 id="configurationentry"><strong>ConfigurationEntry</strong></h2>
+<p>Full name: <code>midgard.config.config.ConfigurationEntry</code></p>
+<p>Signature: <code>(key:str, value:Any, *, source:str='', meta:Union[Dict[str, str], NoneType]=None, vars_dict:Union[Dict[str, Any], NoneType]=None, _used_as:Union[Set[str], NoneType]=None) -&gt; None</code></p>
+<h3 id="configurationentryas_bool">ConfigurationEntry.<strong>as_bool</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_bool</code></p>
+<p>Signature: <code>(self) -&gt; bool</code></p>
+<p>Value of ConfigurationEntry converted to a boolean</p>
+<p>The conversion is done by looking up the string value of the entry in _BOOLEAN_STATES.</p>
+<h3 id="configurationentryas_date">ConfigurationEntry.<strong>as_date</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_date</code></p>
+<p>Signature: <code>(self, format:str='%Y-%m-%d') -&gt; datetime.date</code></p>
+<p>Value of ConfigurationEntry converted to a date object</p>
+<p><strong>Args:</strong></p>
+<p>format (String):  Format string, see strftime for information about the string.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Date</code>:  Value of entry.</li>
+</ul>
+<h3 id="configurationentryas_datetime">ConfigurationEntry.<strong>as_datetime</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_datetime</code></p>
+<p>Signature: <code>(self, format:str='%Y-%m-%d %H:%M:%S') -&gt; datetime.datetime</code></p>
+<p>Value of ConfigurationEntry converted to a datetime object</p>
+<p><strong>Args:</strong></p>
+<p>format (String):  Format string, see strftime for information about the string.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Datetime</code>:  Value of entry.</li>
+</ul>
+<h3 id="configurationentryas_dict">ConfigurationEntry.<strong>as_dict</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_dict</code></p>
+<p>Signature: <code>(self, item_split_re:str='[\\s,]', key_value_split_re:str='[:]', convert:Callable=&lt;class 'str'&gt;, maxsplit:int=0) -&gt; Dict[str, Any]</code></p>
+<p>Value of ConfigurationEntry converted to a dictionary</p>
+<p>By default the dictionary is created by splitting items at commas and whitespace,
+and key from value at colons.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>item_split_re</code>:       Regular expression used to split entry into items.</li>
+<li><code>key_value_split_re</code>:  Regular expression used to split items into keys and values.</li>
+<li><code>convert</code>:             Function used to convert each value in the dictionary.</li>
+<li><code>maxsplit</code>:            If nonzero, at most maxsplit splits occur when splitting entry into items.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Value of entry as dict.</p>
+<h3 id="configurationentryas_enum">ConfigurationEntry.<strong>as_enum</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_enum</code></p>
+<p>Signature: <code>(self, enum:str) -&gt; enum.Enum</code></p>
+<p>Value of ConfigurationEntry converted to an enumeration</p>
+<p><strong>Args:</strong></p>
+<p>enum (String):   Name of Enum.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Enum</code>:  Value of entry as Enum.</li>
+</ul>
+<h3 id="configurationentryas_float">ConfigurationEntry.<strong>as_float</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_float</code></p>
+<p>Signature: <code>(self) -&gt; float</code></p>
+<p>Value of ConfigurationEntry converted to a float</p>
+<h3 id="configurationentryas_int">ConfigurationEntry.<strong>as_int</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_int</code></p>
+<p>Signature: <code>(self) -&gt; int</code></p>
+<p>Value of ConfigurationEntry converted to an integer</p>
+<h3 id="configurationentryas_list">ConfigurationEntry.<strong>as_list</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_list</code></p>
+<p>Signature: <code>(self, split_re:str='[\\s,]', convert:Callable=&lt;class 'str'&gt;, maxsplit:int=0) -&gt; List[Any]</code></p>
+<p>Value of ConfigurationEntry converted to a list</p>
+<p>The entry is converted to a list by using the <code>split_re</code>-regular expression. By default the entry will be split
+at commas and whitespace.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>split_re</code>:  Regular expression used to split entry into list.</li>
+<li><code>convert</code>:   Function used to convert each element of the list.</li>
+<li><code>maxsplit</code>:  If nonzero, at most maxsplit splits occur.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Value of entry as list.</p>
+<h3 id="configurationentryas_list_of_lists">ConfigurationEntry.<strong>as_list_of_lists</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_list_of_lists</code></p>
+<p>Signature: <code>(self, split_res:Tuple[str, ...]=('[\\s,]', '[^_\\w]'), num_elements:Union[int, NoneType]=None, convert:Callable=&lt;class 'str'&gt;) -&gt; List[List[Any]]</code></p>
+<h3 id="configurationentryas_path">ConfigurationEntry.<strong>as_path</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_path</code></p>
+<p>Signature: <code>(self) -&gt; pathlib.Path</code></p>
+<p>Value of ConfigurationEntry interpreted as a path string</p>
+<h3 id="configurationentryas_str">ConfigurationEntry.<strong>as_str</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_str</code></p>
+<p>Signature: <code>(self) -&gt; str</code></p>
+<p>Value of ConfigurationEntry as string</p>
+<h3 id="configurationentryas_tuple">ConfigurationEntry.<strong>as_tuple</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_tuple</code></p>
+<p>Signature: <code>(self, split_re:str='[\\s,]', convert:Callable=&lt;class 'str'&gt;, maxsplit:int=0) -&gt; Tuple[Any, ...]</code></p>
+<p>Value of ConfigurationEntry converted to a tuple</p>
+<p>The entry is converted to a tuple by using the <code>split_re</code>-regular expression. By default the entry will be
+split at commas and whitespace.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>split_re</code>:  Regular expression used to split entry into tuple.</li>
+<li><code>convert</code>:   Function used to convert each element of the tuple.</li>
+<li><code>maxsplit</code>:  If nonzero, at most maxsplit splits occur.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Value of entry as tuple.</p>
+<h3 id="configurationentryentry_as_str">ConfigurationEntry.<strong>entry_as_str</strong>()</h3>
+<p>Full name: <code>midgard.config.config.entry_as_str</code></p>
+<p>Signature: <code>(self, width:Union[int, NoneType]=None, key_width:int=30, metadata:bool=True) -&gt; str</code></p>
+<p>The configuration entry represented as a string</p>
+<p>This is simililar to what is shown by <code>str(entry)</code> (and implemented by <code>__str__</code>), but has more flexibility.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>width</code>:      Width of text for wrapping. Default is width of console.</li>
+<li><code>key_width</code>:  Width of the key column. Default is 30 characters.</li>
+<li><code>metadata</code>:   Include metadata like type and help text.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>String representation of the configuration entry.</p>
+<h3 id="configurationentryreplace">ConfigurationEntry.<strong>replace</strong>()</h3>
+<p>Full name: <code>midgard.config.config.replace</code></p>
+<p>Signature: <code>(self, default:Union[str, NoneType]=None, **replace_vars:str) -&gt; 'ConfigurationEntry'</code></p>
+<h2 id="configurationsection"><strong>ConfigurationSection</strong></h2>
+<p>Full name: <code>midgard.config.config.ConfigurationSection</code></p>
+<p>Signature: <code>(name:str) -&gt; None</code></p>
+<h3 id="configurationsectionas_dict">ConfigurationSection.<strong>as_dict</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_dict</code></p>
+<p>Signature: <code>(self, getters:Dict[str, str]=None, default_getter:str='str') -&gt; Dict[str, Any]</code></p>
+<p>The configuration section represented as a dictionary</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>getters</code>:         How to get the value of each entry in the section.</li>
+<li><code>default_getter</code>:  How to get the value of entries not specified in getters.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Representation of the configuration section as a dictionary.</p>
+<h3 id="configurationsectionas_list">ConfigurationSection.<strong>as_list</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_list</code></p>
+<p>Signature: <code>(self) -&gt; List[str]</code></p>
+<p>List of keys of entries in configuration section</p>
+<p><strong>Returns:</strong></p>
+<p>List of keys of entries in configuration section.</p>
+<h3 id="configurationsectionas_str">ConfigurationSection.<strong>as_str</strong>()</h3>
+<p>Full name: <code>midgard.config.config.as_str</code></p>
+<p>Signature: <code>(self, width:Union[int, NoneType]=None, key_width:int=30, only_used:bool=False, metadata:bool=True) -&gt; str</code></p>
+<p>The configuration section represented as a string</p>
+<p>This is simililar to what is shown by <code>str(section)</code> (and implemented by <code>__str__</code>), but has more flexibility.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>width</code>:      Width of text for wrapping. Default is width of console.</li>
+<li><code>key_width</code>:  Width of the key column. Default is 30 characters.</li>
+<li><code>only_used</code>:  Only include configuration entries that has been used so far.</li>
+<li><code>metadata</code>:   Include metadata like type and help text.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>String representation of the configuration section.</p>
+<h3 id="configurationsectionexists">ConfigurationSection.<strong>exists</strong>()</h3>
+<p>Full name: <code>midgard.config.config.exists</code></p>
+<p>Signature: <code>(self, key:str) -&gt; bool</code></p>
+<p>Check if key exists in section</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>key</code>:  Name of configuration key.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>True if key is in section, False otherwise.</p>
+<h2 id="fmt_date-str">FMT_date (str)</h2>
+<p><code>FMT_date = '%Y-%m-%d'</code></p>
+<h2 id="fmt_datetime-str">FMT_datetime (str)</h2>
+<p><code>FMT_datetime = '%Y-%m-%d %H:%M:%S'</code></p>
+<h2 id="fmt_dt_file-str">FMT_dt_file (str)</h2>
+<p><code>FMT_dt_file = '%Y%m%d-%H%M%S'</code></p></div>
         </div>
 
         <footer class="col-md-12">

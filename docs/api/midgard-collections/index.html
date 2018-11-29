@@ -12,7 +12,7 @@
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -50,6 +50,15 @@
                                 <a href="../..">Home</a>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../howto/testing/">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -57,108 +66,36 @@
     <a href="../midgard/">midgard</a>
 </li>
                                     
-<li >
-    <a href="../midgard-collections-enums/">midgard.collections.enums</a>
+<li class="active">
+    <a href="./">midgard.collections</a>
 </li>
                                     
 <li >
-    <a href="../midgard-config-config/">midgard.config.config</a>
+    <a href="../midgard-config/">midgard.config</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-console/">midgard.dev.console</a>
+    <a href="../midgard-coords/">midgard.coords</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-exceptions/">midgard.dev.exceptions</a>
+    <a href="../midgard-dev/">midgard.dev</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-library/">midgard.dev.library</a>
+    <a href="../midgard-files/">midgard.files</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-optional/">midgard.dev.optional</a>
+    <a href="../midgard-ionosphere/">midgard.ionosphere</a>
 </li>
                                     
 <li >
-    <a href="../midgard-dev-plugins/">midgard.dev.plugins</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-profiler/">midgard.dev.profiler</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-dev-timer/">midgard.dev.timer</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-files-dates/">midgard.files.dates</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-ionosphere-klobuchar/">midgard.ionosphere.klobuchar</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-math-interpolation/">midgard.math.interpolation</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-math-unit/">midgard.math.unit</a>
+    <a href="../midgard-math/">midgard.math</a>
 </li>
                                     
 <li >
     <a href="../midgard-parsers/">midgard.parsers</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser/">midgard.parsers._parser</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_chain/">midgard.parsers._parser_chain</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_line/">midgard.parsers._parser_line</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_rinex/">midgard.parsers._parser_rinex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-_parser_sinex/">midgard.parsers._parser_sinex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-galileo_constellation_html/">midgard.parsers.galileo_constellation_html</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-gnss_antex/">midgard.parsers.gnss_antex</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-rinex3_header/">midgard.parsers.rinex3_header</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-rinex_obs/">midgard.parsers.rinex_obs</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-vlbi_source_names/">midgard.parsers.vlbi_source_names</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-wip_rinex2_obs/">midgard.parsers.wip_rinex2_obs</a>
-</li>
-                                    
-<li >
-    <a href="../midgard-parsers-wip_rinex3_obs/">midgard.parsers.wip_rinex3_obs</a>
 </li>
                                 </ul>
                             </li>
@@ -170,6 +107,16 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
+                            <li >
+                                <a rel="next" href="../midgard/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../midgard-config/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -178,12 +125,85 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#midgardcollections">midgard.collections</a></li>
+        <li class="main active"><a href="#midgardcollectionsenums">midgard.collections.enums</a></li>
+            <li><a href="#loglevel">LogLevel</a></li>
+            <li><a href="#enums">enums()</a></li>
+            <li><a href="#get_enum">get_enum()</a></li>
+            <li><a href="#get_value">get_value()</a></li>
+            <li><a href="#register_enum">register_enum()</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="midgardcollections">midgard.collections</h1></div>
+<h1 id="midgardcollectionsenums">midgard.collections.enums</h1>
+<p>Framework for working with enumerations</p>
+<p><strong>Description:</strong></p>
+<p>Custom enumerations used for structured names.</p>
+<h2 id="loglevel"><strong>LogLevel</strong></h2>
+<p>Full name: <code>midgard.collections.enums.LogLevel</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Levels used when deciding how much log output to show</p>
+<h3 id="loglevelall-loglevel">LogLevel.all (LogLevel)</h3>
+<p><code>all = &lt;LogLevel.all: 1&gt;</code></p>
+<h3 id="loglevelcheck-loglevel">LogLevel.check (LogLevel)</h3>
+<p><code>check = &lt;LogLevel.check: 7&gt;</code></p>
+<h3 id="logleveldebug-loglevel">LogLevel.debug (LogLevel)</h3>
+<p><code>debug = &lt;LogLevel.debug: 2&gt;</code></p>
+<h3 id="logleveldev-loglevel">LogLevel.dev (LogLevel)</h3>
+<p><code>dev = &lt;LogLevel.dev: 4&gt;</code></p>
+<h3 id="loglevelerror-loglevel">LogLevel.error (LogLevel)</h3>
+<p><code>error = &lt;LogLevel.error: 8&gt;</code></p>
+<h3 id="loglevelfatal-loglevel">LogLevel.fatal (LogLevel)</h3>
+<p><code>fatal = &lt;LogLevel.fatal: 9&gt;</code></p>
+<h3 id="loglevelinfo-loglevel">LogLevel.info (LogLevel)</h3>
+<p><code>info = &lt;LogLevel.info: 5&gt;</code></p>
+<h3 id="loglevelnone-loglevel">LogLevel.none (LogLevel)</h3>
+<p><code>none = &lt;LogLevel.none: 10&gt;</code></p>
+<h3 id="logleveltime-loglevel">LogLevel.time (LogLevel)</h3>
+<p><code>time = &lt;LogLevel.time: 3&gt;</code></p>
+<h3 id="loglevelwarn-loglevel">LogLevel.warn (LogLevel)</h3>
+<p><code>warn = &lt;LogLevel.warn: 6&gt;</code></p>
+<h2 id="enums"><strong>enums</strong>()</h2>
+<p>Full name: <code>midgard.collections.enums.enums</code></p>
+<p>Signature: <code>() -&gt; List[str]</code></p>
+<p>Return a list of available enums</p>
+<p><strong>Returns:</strong></p>
+<p>Names of available enums.</p>
+<h2 id="get_enum"><strong>get_enum</strong>()</h2>
+<p>Full name: <code>midgard.collections.enums.get_enum</code></p>
+<p>Signature: <code>(name:str) -&gt; enum.EnumMeta</code></p>
+<p>Return a named Enumeration</p>
+<p>Names are defined by the @register_enum-decorator. If the name-parameter is not a valid enum, the function will
+raise an UnknownEnumError and list the available enumerations.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>name</code>:  Name used for Enumeration.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Enumeration with the given name.</p>
+<h2 id="get_value"><strong>get_value</strong>()</h2>
+<p>Full name: <code>midgard.collections.enums.get_value</code></p>
+<p>Signature: <code>(name:str, value:str) -&gt; enum.Enum</code></p>
+<p>Return the value of a named Enumeration</p>
+<p>Names are defined by the @register_enum-decorator.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>name</code>:   Name used for Enumeration.</li>
+<li><code>value</code>:  Value of Enumeration.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Value of enumeration with the given name.</p>
+<h2 id="register_enum"><strong>register_enum</strong>()</h2>
+<p>Full name: <code>midgard.collections.enums.register_enum</code></p>
+<p>Signature: <code>(name:str) -&gt; Callable[[enum.EnumMeta], enum.EnumMeta]</code></p>
+<p>Register a named Enumeration</p>
+<p>This allows for getting Enumerations with the get_enum-function.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>name</code>:  Name used for Enumeration.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Decorator that registers an Enumeration.</p></div>
         </div>
 
         <footer class="col-md-12">
