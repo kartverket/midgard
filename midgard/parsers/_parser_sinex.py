@@ -17,14 +17,14 @@ References:
 from datetime import datetime, timedelta
 import itertools
 import pathlib
-import warnings
 from typing import cast, Any, Callable, Dict, Iterable, List, NamedTuple, Optional, Tuple, Union
 
-# External library imports
+# Third party imports
 import numpy as np
 import pandas as pd
 
 # Midgard imports
+from midgard.dev import log
 from midgard.parsers._parser import Parser
 from midgard.math.unit import Unit
 
@@ -137,7 +137,7 @@ def parsing_matrix_factory(marker: str, size_marker: str) -> Callable[..., Dict[
             n = len(self._sinex[size_marker])
         except KeyError:
             n = max(data["row_idx"])
-            warnings.warn(f"{size_marker!r}-block was not parsed. Guessing at size of normal equation matrix (n={n}).")
+            log.warn(f"{size_marker!r}-block was not parsed. Guessing at size of normal equation matrix (n={n}).")
         matrix = np.zeros((n, n))
 
         # Loop through each line of values and put it in the correct place in the matrix (cannot simply reshape as
@@ -154,7 +154,7 @@ def parsing_matrix_factory(marker: str, size_marker: str) -> Callable[..., Dict[
         elif lower_upper.upper() == "U":
             matrix = np.triu(matrix) + np.triu(matrix, k=1).T
         else:
-            warnings.warn(f"'L' or 'U' not specified for {marker}. Trying to create a symmetric matrix anyway.")
+            log.warn(f"'L' or 'U' not specified for {marker}. Trying to create a symmetric matrix anyway.")
             matrix = matrix + matrix.T - np.diag(np.diag(matrix))
 
         return {"matrix": matrix, "type": type}
@@ -182,11 +182,7 @@ class SinexParser(Parser):
     _TECH = {"C": "comb", "D": "doris", "L": "slr", "M": "llr", "P": "gnss", "R": "vlbi"}
 
     def __init__(
-        self,
-        file_path: Union[str, pathlib.Path],
-        encoding: Optional[str] = None,
-        logger: Optional[Callable[[str], None]] = None,
-        header: bool = True,
+        self, file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True
     ) -> None:
         """Set up the basic information needed by the parser
 
@@ -196,10 +192,9 @@ class SinexParser(Parser):
         Args:
             file_path:  Path to file that will be read.
             encoding:   Encoding of file that will be read.
-            logger:     Function that will be used for logging.
             header:     Whether to parse the header.
         """
-        super().__init__(file_path, encoding=encoding, logger=logger)
+        super().__init__(file_path, encoding=encoding)
         self._header = header
         self._sinex: Dict[str, Any] = dict()
         self.sinex_blocks = cast(Iterable[SinexBlock], self.setup_parser())
@@ -273,9 +268,7 @@ class SinexParser(Parser):
 
         except StopIteration:  # File ended without reading all sinex_blocks
             missing = ", ".join(sinex_blocks)
-            warnings.warn(
-                f"SinexParser {self.parser_name!r} did not find Sinex blocks {missing} in file {self.file_path}"
-            )
+            log.warn(f"SinexParser {self.parser_name!r} did not find Sinex blocks {missing} in file {self.file_path}")
 
     def parse_lines(self, lines: List[bytes], fields: Tuple[SinexField, ...]) -> np.array:
         """Parse lines in a Sinex file
@@ -469,7 +462,9 @@ class SinexParser(Parser):
             header_line:  First line of Sinex file.
         """
         if not header_line.startswith(b"%=SNX"):
-            warnings.warn(f"The file '{self.file_path}' is missing the SINEX header")
+            log.warn(
+                f"The file '{self.file_path}' does not contain a valid SINEX header: {header_line.decode().strip()!r}"
+            )
             return
 
         # Add header information to self.meta

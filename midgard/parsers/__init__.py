@@ -44,7 +44,6 @@ def parse_file(
     parser_name: str,
     file_path: Union[str, pathlib.Path],
     encoding: Optional[str] = None,
-    parser_logger: Optional[Callable[[str], None]] = print,
     timer_logger: Optional[Callable[[str], None]] = None,
     use_cache: bool = False,
     **parser_args: Any,
@@ -66,7 +65,6 @@ def parse_file(
         parser_name:    Name of parser
         file_path:      Path to file that should be parsed.
         encoding:       Encoding in file that is parsed.
-        parser_logger:  Logging function that will be used by parser.
         timer_logger:   Logging function that will be used to log timing information.
         use_cache:      Whether to use a cache to avoid parsing the same file several times.
         parser_args:    Input arguments to the parser
@@ -78,12 +76,7 @@ def parse_file(
 
     # Create the parser and parse the data
     parser = plugins.call(
-        package_name=__name__,
-        plugin_name=parser_name,
-        file_path=file_path,
-        encoding=encoding,
-        logger=parser_logger,
-        **parser_args,
+        package_name=__name__, plugin_name=parser_name, file_path=file_path, encoding=encoding, **parser_args
     )
 
     with Timer(f"Finish {parser_name} ({__name__}) - {file_path} in", logger=timer_logger):

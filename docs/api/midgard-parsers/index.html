@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v0.1.9</title>
+        <title>midgard.parsers - Midgard v0.2.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.1.9</a>
+                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -75,7 +75,7 @@
 </li>
                                     
 <li >
-    <a href="../midgard-coords/">midgard.coords</a>
+    <a href="../midgard-data/">midgard.data</a>
 </li>
                                     
 <li >
@@ -84,6 +84,10 @@
                                     
 <li >
     <a href="../midgard-files/">midgard.files</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-gnss/">midgard.gnss</a>
 </li>
                                     
 <li >
@@ -96,6 +100,18 @@
                                     
 <li class="active">
     <a href="./">midgard.parsers</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-plot/">midgard.plot</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-site_info/">midgard.site_info</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-writers/">midgard.writers</a>
 </li>
                                 </ul>
                             </li>
@@ -112,8 +128,8 @@
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
-                            <li class="disabled">
-                                <a rel="prev" >
+                            <li >
+                                <a rel="prev" href="../midgard-plot/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -128,38 +144,35 @@
         <li class="main active"><a href="#midgardparsers">midgard.parsers</a></li>
             <li><a href="#names">names()</a></li>
             <li><a href="#parse_file">parse_file()</a></li>
-        <li class="main "><a href="#midgardparsers_parser">midgard.parsers._parser</a></li>
-            <li><a href="#parser">Parser</a></li>
-        <li class="main "><a href="#midgardparsers_parser_chain">midgard.parsers._parser_chain</a></li>
-            <li><a href="#chainparser">ChainParser</a></li>
-            <li><a href="#parserdef">ParserDef</a></li>
-        <li class="main "><a href="#midgardparsers_parser_line">midgard.parsers._parser_line</a></li>
-            <li><a href="#lineparser">LineParser</a></li>
-        <li class="main "><a href="#midgardparsers_parser_rinex">midgard.parsers._parser_rinex</a></li>
-            <li><a href="#rinexheader">RinexHeader</a></li>
-            <li><a href="#rinexparser">RinexParser</a></li>
-            <li><a href="#parser_cache">parser_cache()</a></li>
-        <li class="main "><a href="#midgardparsers_parser_sinex">midgard.parsers._parser_sinex</a></li>
-            <li><a href="#sinexblock">SinexBlock</a></li>
-            <li><a href="#sinexfield">SinexField</a></li>
-            <li><a href="#sinexparser">SinexParser</a></li>
-            <li><a href="#parsing_factory">parsing_factory()</a></li>
-            <li><a href="#parsing_matrix_factory">parsing_matrix_factory()</a></li>
-        <li class="main "><a href="#midgardparsersgalileo_constellation_html">midgard.parsers.galileo_constellation_html</a></li>
-            <li><a href="#galileoconstellationhtmlparser">GalileoConstellationHTMLParser</a></li>
-        <li class="main "><a href="#midgardparsersgnss_antex">midgard.parsers.gnss_antex</a></li>
-            <li><a href="#antexparser">AntexParser</a></li>
-        <li class="main "><a href="#midgardparsersrinex3_header">midgard.parsers.rinex3_header</a></li>
-            <li><a href="#rinex3headermixin">Rinex3HeaderMixin</a></li>
-            <li><a href="#rinex3headerparser">Rinex3HeaderParser</a></li>
-        <li class="main "><a href="#midgardparsersrinex_obs">midgard.parsers.rinex_obs</a></li>
-            <li><a href="#rinexobsparser">RinexObsParser</a></li>
-        <li class="main "><a href="#midgardparsersvlbi_source_names">midgard.parsers.vlbi_source_names</a></li>
-            <li><a href="#vlbisourcenamesparser">VlbiSourceNamesParser</a></li>
-        <li class="main "><a href="#midgardparserswip_rinex2_obs">midgard.parsers.wip_rinex2_obs</a></li>
-            <li><a href="#rinex2obsparser">Rinex2ObsParser</a></li>
-        <li class="main "><a href="#midgardparserswip_rinex3_obs">midgard.parsers.wip_rinex3_obs</a></li>
-            <li><a href="#rinex3obsparser">Rinex3ObsParser</a></li>
+            <li><a href="#midgardparsers_parser">midgard.parsers._parser</a></li>
+            <li><a href="#midgardparsers_parser_chain">midgard.parsers._parser_chain</a></li>
+            <li><a href="#midgardparsers_parser_line">midgard.parsers._parser_line</a></li>
+            <li><a href="#midgardparsers_parser_rinex">midgard.parsers._parser_rinex</a></li>
+            <li><a href="#midgardparsers_parser_sinex">midgard.parsers._parser_sinex</a></li>
+            <li><a href="#midgardparsersanubis">midgard.parsers.anubis</a></li>
+            <li><a href="#midgardparsersbcecmp_sisre">midgard.parsers.bcecmp_sisre</a></li>
+            <li><a href="#midgardparsersgalileo_constellation_html">midgard.parsers.galileo_constellation_html</a></li>
+            <li><a href="#midgardparsersgipsy_tdp">midgard.parsers.gipsy_tdp</a></li>
+            <li><a href="#midgardparsersgnss_antex">midgard.parsers.gnss_antex</a></li>
+            <li><a href="#midgardparsersgnss_sinex_igs">midgard.parsers.gnss_sinex_igs</a></li>
+            <li><a href="#midgardparsersrinex2_nav_header">midgard.parsers.rinex2_nav_header</a></li>
+            <li><a href="#midgardparsersrinex2_obs_header">midgard.parsers.rinex2_obs_header</a></li>
+            <li><a href="#midgardparsersrinex3_clk">midgard.parsers.rinex3_clk</a></li>
+            <li><a href="#midgardparsersrinex3_clk_header">midgard.parsers.rinex3_clk_header</a></li>
+            <li><a href="#midgardparsersrinex3_nav_header">midgard.parsers.rinex3_nav_header</a></li>
+            <li><a href="#midgardparsersrinex3_obs_header">midgard.parsers.rinex3_obs_header</a></li>
+            <li><a href="#midgardparsersterrapos_position">midgard.parsers.terrapos_position</a></li>
+            <li><a href="#midgardparsersterrapos_residual">midgard.parsers.terrapos_residual</a></li>
+            <li><a href="#midgardparserstimeseries_env">midgard.parsers.timeseries_env</a></li>
+            <li><a href="#midgardparsersvlbi_source_names">midgard.parsers.vlbi_source_names</a></li>
+            <li><a href="#midgardparserswip_rinex">midgard.parsers.wip_rinex</a></li>
+            <li><a href="#midgardparserswip_rinex2_nav">midgard.parsers.wip_rinex2_nav</a></li>
+            <li><a href="#midgardparserswip_rinex2_obs">midgard.parsers.wip_rinex2_obs</a></li>
+            <li><a href="#midgardparserswip_rinex3_nav">midgard.parsers.wip_rinex3_nav</a></li>
+            <li><a href="#midgardparserswip_rinex3_obs">midgard.parsers.wip_rinex3_obs</a></li>
+            <li><a href="#midgardparserswip_rinex_clk">midgard.parsers.wip_rinex_clk</a></li>
+            <li><a href="#midgardparserswip_rinex_nav">midgard.parsers.wip_rinex_nav</a></li>
+            <li><a href="#midgardparserswip_rinex_obs">midgard.parsers.wip_rinex_obs</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -184,15 +197,15 @@ my_data = my_new_parser.as_dict()
 </code></pre>
 <p>The name used in <code>parse_file</code> to call the parser is the name of the module
 (file) containing the parser.</p>
-<h2 id="names"><strong>names</strong>()</h2>
+<h3 id="names"><strong>names</strong>()</h3>
 <p>Full name: <code>midgard.parsers.names</code></p>
 <p>Signature: <code>() -&gt; List[str]</code></p>
 <p>List the names of the available parsers</p>
 <p><strong>Returns:</strong></p>
 <p>Names of the available parsers</p>
-<h2 id="parse_file"><strong>parse_file</strong>()</h2>
+<h3 id="parse_file"><strong>parse_file</strong>()</h3>
 <p>Full name: <code>midgard.parsers.parse_file</code></p>
-<p>Signature: <code>(parser_name:str, file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, parser_logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, timer_logger:Union[Callable[[str], NoneType], NoneType]=None, use_cache:bool=False, **parser_args:Any) -&gt; midgard.parsers._parser.Parser</code></p>
+<p>Signature: <code>(parser_name:str, file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, timer_logger:Union[Callable[[str], NoneType], NoneType]=None, use_cache:bool=False, **parser_args:Any) -&gt; midgard.parsers._parser.Parser</code></p>
 <p>Use the given parser on a file and return parsed data</p>
 <p>Specify <code>parser_name</code> and <code>file_path</code> to the file that should be parsed. The following parsers are available:</p>
 <p>{doc_parser_names}</p>
@@ -206,7 +219,6 @@ my_data = my_new_parser.as_dict()
 <li><code>parser_name</code>:    Name of parser</li>
 <li><code>file_path</code>:      Path to file that should be parsed.</li>
 <li><code>encoding</code>:       Encoding in file that is parsed.</li>
-<li><code>parser_logger</code>:  Logging function that will be used by parser.</li>
 <li><code>timer_logger</code>:   Logging function that will be used to log timing information.</li>
 <li><code>use_cache</code>:      Whether to use a cache to avoid parsing the same file several times.</li>
 <li><code>parser_args</code>:    Input arguments to the parser</li>
@@ -215,7 +227,7 @@ my_data = my_new_parser.as_dict()
 <ul>
 <li><code>Parser</code>:  Parser with the parsed data</li>
 </ul>
-<h1 id="midgardparsers_parser">midgard.parsers._parser</h1>
+<h2 id="midgardparsers_parser">midgard.parsers._parser</h2>
 <p>Basic functionality for parsing datafiles, extended by individual parsers</p>
 <p><strong>Description:</strong></p>
 <p>This module contains functions and classes for parsing datafiles. It should typically be used by calling
@@ -225,9 +237,9 @@ my_data = my_new_parser.as_dict()
 my_new_parser = parsers.parse_file('my_new_parser', 'file_name.txt', ...)
 my_data = my_new_parser.as_dict()
 </code></pre>
-<h2 id="parser"><strong>Parser</strong></h2>
+<h3 id="parser"><strong>Parser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser.Parser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for parsing a file. You should inherit from one of the specific parsers like for
 instance ChainParser, LineParser, SinexParser etc</p>
@@ -238,7 +250,7 @@ parser_name (String):         Name of the parser (as needed to call parsers.pars
 data_available (Boolean):     Indicator of whether data are available.
 data (Dict):                  The (observation) data read from file.
 meta (Dict):                  Metainformation read from file.</p>
-<h3 id="parseras_dataframe">Parser.<strong>as_dataframe</strong>()</h3>
+<h4 id="parseras_dataframe">Parser.<strong>as_dataframe</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.as_dataframe</code></p>
 <p>Signature: <code>(self, index:Union[str, List[str], NoneType]=None) -&gt; pandas.core.frame.DataFrame</code></p>
 <p>Return the parsed data as a Pandas DataFrame</p>
@@ -251,7 +263,7 @@ method.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Pandas DataFrame with the parsed data.</p>
-<h3 id="parseras_dataset">Parser.<strong>as_dataset</strong>()</h3>
+<h4 id="parseras_dataset">Parser.<strong>as_dataset</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.as_dataset</code></p>
 <p>Signature: <code>(self) -&gt; NoReturn</code></p>
 <p>Return the parsed data as a Midgard Dataset</p>
@@ -262,7 +274,7 @@ method.</p>
 <ul>
 <li><code>Dataset</code>:  The parsed data.</li>
 </ul>
-<h3 id="parseras_dict">Parser.<strong>as_dict</strong>()</h3>
+<h4 id="parseras_dict">Parser.<strong>as_dict</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.as_dict</code></p>
 <p>Signature: <code>(self, include_meta:bool=False) -&gt; Dict[str, Any]</code></p>
 <p>Return the parsed data as a dictionary</p>
@@ -274,14 +286,14 @@ self.data. More advanced parsers may need to reimplement this method.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with the parsed data.</p>
-<h3 id="parserparse">Parser.<strong>parse</strong>()</h3>
+<h4 id="parserparse">Parser.<strong>parse</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.parse</code></p>
 <p>Signature: <code>(self) -&gt; 'Parser'</code></p>
 <p>Parse data</p>
 <p>This is a basic implementation that carries out the whole pipeline of
 reading and parsing datafiles including calculating secondary data.</p>
 <p>Subclasses should typically implement (at least) the <code>read_data</code>-method.</p>
-<h3 id="parserpostprocess_data">Parser.<strong>postprocess_data</strong>()</h3>
+<h4 id="parserpostprocess_data">Parser.<strong>postprocess_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.postprocess_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Do simple manipulations on the data after they are read</p>
@@ -291,7 +303,7 @@ true representation of the data file as possible. Advanced calculations
 may be done inside apriori classes or similar.</p>
 <p>To add a postprocessor, define it in its own method, and override the
 <code>setup_postprocessors</code>-method to return a list of all postprocessors.</p>
-<h3 id="parserread_data">Parser.<strong>read_data</strong>()</h3>
+<h4 id="parserread_data">Parser.<strong>read_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.read_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Read data from the data file</p>
@@ -299,15 +311,15 @@ may be done inside apriori classes or similar.</p>
 <code>self.data</code>. A description of the data may be placed in the dictionary
 <code>self.meta</code>. If data are not available for some reason,
 <code>self.data_available</code> should be set to False.</p>
-<h3 id="parsersetup_parser">Parser.<strong>setup_parser</strong>()</h3>
+<h4 id="parsersetup_parser">Parser.<strong>setup_parser</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.setup_parser</code></p>
 <p>Signature: <code>(self) -&gt; Any</code></p>
 <p>Set up information needed for the parser</p>
-<h3 id="parsersetup_postprocessors">Parser.<strong>setup_postprocessors</strong>()</h3>
+<h4 id="parsersetup_postprocessors">Parser.<strong>setup_postprocessors</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.setup_postprocessors</code></p>
 <p>Signature: <code>(self) -&gt; List[Callable[[], NoneType]]</code></p>
 <p>List postprocessors that should be called after parsing</p>
-<h3 id="parserupdate_dataset">Parser.<strong>update_dataset</strong>()</h3>
+<h4 id="parserupdate_dataset">Parser.<strong>update_dataset</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser.update_dataset</code></p>
 <p>Signature: <code>(self, dset:Any) -&gt; NoReturn</code></p>
 <p>Update the given dataset with the parsed data</p>
@@ -318,7 +330,7 @@ method.</p>
 <ul>
 <li><code>dset</code>:  The dataset to update with parsed data.</li>
 </ul>
-<h1 id="midgardparsers_parser_chain">midgard.parsers._parser_chain</h1>
+<h2 id="midgardparsers_parser_chain">midgard.parsers._parser_chain</h2>
 <p>Basic functionality for parsing datafiles line by line</p>
 <p><strong>Description:</strong></p>
 <p>This module contains functions and classes for parsing datafiles.</p>
@@ -327,13 +339,13 @@ method.</p>
 my_new_parser = parsers.parse_file('my_new_parser', 'file_name.txt', ...)
 my_data = my_new_parser.as_dict()
 </code></pre>
-<h2 id="chainparser"><strong>ChainParser</strong></h2>
+<h3 id="chainparser"><strong>ChainParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_chain.ChainParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for parsing a file with chained groups of information. You should inherit from
 this one, and at least specify the necessary parameters in <code>setup_parser</code>.</p>
-<h3 id="chainparserparse_line">ChainParser.<strong>parse_line</strong>()</h3>
+<h4 id="chainparserparse_line">ChainParser.<strong>parse_line</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_chain.parse_line</code></p>
 <p>Signature: <code>(self, line:str, cache:Dict[str, Any], parser:midgard.parsers._parser_chain.ParserDef) -&gt; None</code></p>
 <p>Parse line</p>
@@ -345,18 +357,18 @@ entry of the ParserDef.</p>
 <li><code>cache</code>:   Store temporary data.</li>
 <li><code>parser</code>:  Dictionary with defined parsers with the keys 'parser_def', 'label' and 'end_marker'.</li>
 </ul>
-<h3 id="chainparserread_data">ChainParser.<strong>read_data</strong>()</h3>
+<h4 id="chainparserread_data">ChainParser.<strong>read_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_chain.read_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Read data from a data file and parse the contents</p>
-<h3 id="chainparsersetup_parser">ChainParser.<strong>setup_parser</strong>()</h3>
+<h4 id="chainparsersetup_parser">ChainParser.<strong>setup_parser</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_chain.setup_parser</code></p>
 <p>Signature: <code>(self) -&gt; Any</code></p>
 <p>Set up information needed for the parser</p>
 <p>Return an iterable of ParserDef's that describe the structure of the file that will be parsed</p>
-<h2 id="parserdef"><strong>ParserDef</strong></h2>
+<h3 id="parserdef"><strong>ParserDef</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_chain.ParserDef</code></p>
-<p>Signature: <code>(end_marker:Callable[[str, int, str], bool], label:Callable[[str, int], str], parser_def:Dict[str, Dict[str, Any]], skip_line:Union[Callable[[str], bool], NoneType]=None, end_callback:Union[Callable[[Dict[str, Any]], NoneType], NoneType]=None)</code></p>
+<p>Signature: <code>(end_marker:Callable[[str, int, str], bool], label:Callable[[str, int], Any], parser_def:Dict[Any, Dict[str, Any]], skip_line:Union[Callable[[str], bool], NoneType]=None, end_callback:Union[Callable[[Dict[str, Any]], NoneType], NoneType]=None)</code></p>
 <p>A convenience class for defining the necessary fields of a parser</p>
 <p>A single parser can read and parse one group of datalines, defined through the ParserDef by specifying how to parse
 each line (parser_def), how to identify each line (label), how to recognize the end of the group of lines
@@ -387,7 +399,7 @@ characters, which should be removed with the 'strip' entry. The <code>parser</co
 <li><code>skip_line</code>:    A function returning True if the line should be skipped.</li>
 <li><code>end_callback</code>: A function called after reading all lines in a group.</li>
 </ul>
-<h1 id="midgardparsers_parser_line">midgard.parsers._parser_line</h1>
+<h2 id="midgardparsers_parser_line">midgard.parsers._parser_line</h2>
 <p>Basic functionality for parsing datafiles line by line using Numpy</p>
 <p><strong>Description:</strong></p>
 <p>This module contains functions and classes for parsing datafiles.</p>
@@ -396,13 +408,13 @@ characters, which should be removed with the 'strip' entry. The <code>parser</co
 my_new_parser = parsers.parse_file('my_new_parser', 'file_name.txt', ...)
 my_data = my_new_parser.as_dict()
 </code></pre>
-<h2 id="lineparser"><strong>LineParser</strong></h2>
+<h3 id="lineparser"><strong>LineParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_line.LineParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for using numpy to parse a file line by line. You should inherit from this one,
 and at least specify the necessary parameters in <code>setup_parser</code>.</p>
-<h3 id="lineparserread_data">LineParser.<strong>read_data</strong>()</h3>
+<h4 id="lineparserread_data">LineParser.<strong>read_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_line.read_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Read data from the data file</p>
@@ -410,26 +422,26 @@ and at least specify the necessary parameters in <code>setup_parser</code>.</p>
 parameters should be set by <code>setup_parser</code>. Override
 <code>self.structure_data</code> if the self.data-dictionary needs to be
 structured in a particular way.</p>
-<h3 id="lineparsersetup_parser">LineParser.<strong>setup_parser</strong>()</h3>
+<h4 id="lineparsersetup_parser">LineParser.<strong>setup_parser</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_line.setup_parser</code></p>
 <p>Signature: <code>(self) -&gt; Any</code></p>
 <p>Set up information needed for the parser</p>
 <p>This method should return a dictionary which contains all parameters
 needed by np.genfromtxt to do the actual parsing.</p>
-<h3 id="lineparserstructure_data">LineParser.<strong>structure_data</strong>()</h3>
+<h4 id="lineparserstructure_data">LineParser.<strong>structure_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_line.structure_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Structure raw array data into the self.data dictionary</p>
 <p>This simple implementation creates a dictionary with one item per column in the array. Override this method for
 more complex use cases.</p>
-<h1 id="midgardparsers_parser_rinex">midgard.parsers._parser_rinex</h1>
+<h2 id="midgardparsers_parser_rinex">midgard.parsers._parser_rinex</h2>
 <p>Basic functionality for parsing Rinex files</p>
 <p><strong>Description:</strong></p>
 <p>This module contains functions and classes for parsing Rinex files.</p>
 <p>This file defines the general structure shared by most types of Rinex files, including header information. More
 specific format details are implemented in subclasses. When calling the parser, you should call the apropriate parser
 for a given Rinex format.</p>
-<h2 id="rinexheader"><strong>RinexHeader</strong></h2>
+<h3 id="rinexheader"><strong>RinexHeader</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_rinex.RinexHeader</code></p>
 <p>Signature: <code>(marker:str, fields:Dict[str, Tuple[int, int]], parser:Callable[[Dict[str, str]], Dict[str, Any]])</code></p>
 <p>A convenience class for defining how a Rinex header is parsed</p>
@@ -439,51 +451,51 @@ for a given Rinex format.</p>
 <li><code>fields</code>:  Dictionary with field names as keys, tuple of start- and end-columns as value.</li>
 <li><code>parser</code>:  Function that will parse the fields.</li>
 </ul>
-<h2 id="rinexparser"><strong>RinexParser</strong></h2>
+<h3 id="rinexparser"><strong>RinexParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_rinex.RinexParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, strict:bool=False) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for reading Rinex header data. You should inherit from this one,
 and at least implement <code>parse_epochs</code>.</p>
-<h3 id="rinexparserget_rinex_version">RinexParser.<strong>get_rinex_version</strong>()</h3>
-<p>Full name: <code>midgard.parsers._parser_rinex.get_rinex_version</code></p>
-<p>Signature: <code>(self) -&gt; str</code></p>
-<p>Get version of Rinex file</p>
-<h3 id="rinexparsername-str">RinexParser.name (str)</h3>
+<h4 id="rinexparserget_rinex_version_type">RinexParser.<strong>get_rinex_version_type</strong>()</h4>
+<p>Full name: <code>midgard.parsers._parser_rinex.get_rinex_version_type</code></p>
+<p>Signature: <code>(self) -&gt; Dict[str, str]</code></p>
+<p>Get version and type of Rinex file</p>
+<h4 id="rinexparsername-str">RinexParser.name (str)</h4>
 <p><code>name = 'Rinex'</code></p>
-<h3 id="rinexparserparse_approx_position">RinexParser.<strong>parse_approx_position</strong>()</h3>
+<h4 id="rinexparserparse_approx_position">RinexParser.<strong>parse_approx_position</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_approx_position</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse station coordinates defined in RINEX header to instance variable <code>data</code></p>
-<h3 id="rinexparserparse_comment">RinexParser.<strong>parse_comment</strong>()</h3>
+<h4 id="rinexparserparse_comment">RinexParser.<strong>parse_comment</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_comment</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse comment lines in RINEX header to instance variable <code>header['comment']</code></p>
-<h3 id="rinexparserparse_data_lines">RinexParser.<strong>parse_data_lines</strong>()</h3>
+<h4 id="rinexparserparse_data_lines">RinexParser.<strong>parse_data_lines</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_data_lines</code></p>
 <p>Signature: <code>(self, lines, epoch_info)</code></p>
-<h3 id="rinexparserparse_epoch_line">RinexParser.<strong>parse_epoch_line</strong>()</h3>
+<h4 id="rinexparserparse_epoch_line">RinexParser.<strong>parse_epoch_line</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_epoch_line</code></p>
 <p>Signature: <code>(self, line)</code></p>
-<h3 id="rinexparserparse_float">RinexParser.<strong>parse_float</strong>()</h3>
+<h4 id="rinexparserparse_float">RinexParser.<strong>parse_float</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_float</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse float entries of RINEX header to instance variable <code>header</code></p>
-<h3 id="rinexparserparse_glonass_code_phase_bias">RinexParser.<strong>parse_glonass_code_phase_bias</strong>()</h3>
+<h4 id="rinexparserparse_glonass_code_phase_bias">RinexParser.<strong>parse_glonass_code_phase_bias</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_glonass_code_phase_bias</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse GLONASS phase correction in RINEX header to instance variable <code>header['glonass_bias']</code></p>
 <p>self.header['glonass_bias'] = { <obstype>: <bias in meters>}</p>
-<h3 id="rinexparserparse_glonass_slot">RinexParser.<strong>parse_glonass_slot</strong>()</h3>
+<h4 id="rinexparserparse_glonass_slot">RinexParser.<strong>parse_glonass_slot</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_glonass_slot</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse GLONASS slot and frequency numbers given in RINEX header to instance variable <code>header['glonass_slot']</code></p>
 <p>self.header['glonass_slot'] = { <slot>: <frequency number>}</p>
-<h3 id="rinexparserparse_integer">RinexParser.<strong>parse_integer</strong>()</h3>
+<h4 id="rinexparserparse_integer">RinexParser.<strong>parse_integer</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_integer</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse integer entries of RINEX header to instance variable <code>header</code></p>
-<h3 id="rinexparserparse_leap_seconds">RinexParser.<strong>parse_leap_seconds</strong>()</h3>
+<h4 id="rinexparserparse_leap_seconds">RinexParser.<strong>parse_leap_seconds</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_leap_seconds</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse entries of RINEX header <code>LEAP SECONDS</code> to instance variable <code>header</code></p>
@@ -492,7 +504,7 @@ and at least implement <code>parse_epochs</code>.</p>
                                 'week': <value>,
                                 'week_day': <value>,
                                 'time_sys': <system> }</p>
-<h3 id="rinexparserparse_phase_shift">RinexParser.<strong>parse_phase_shift</strong>()</h3>
+<h4 id="rinexparserparse_phase_shift">RinexParser.<strong>parse_phase_shift</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_phase_shift</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str], cache:List[Dict[str, str]]) -&gt; Dict[str, Any]</code></p>
 <p>Parse entries of RINEX header <code>SYS / PHASE SHIFT</code> to instance variable <code>header</code></p>
@@ -508,21 +520,21 @@ and at least implement <code>parse_epochs</code>.</p>
                                            'sat': ['R01', 'R02', 'R07', 'R08']}}}
 </code></pre>
 <p>TODO: Maybe better to add information to header['obstypes']?</p>
-<h3 id="rinexparserparse_scale_factor">RinexParser.<strong>parse_scale_factor</strong>()</h3>
+<h4 id="rinexparserparse_scale_factor">RinexParser.<strong>parse_scale_factor</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_scale_factor</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse entries of RINEX header <code>SYS / SCALE FACTOR</code> to instance variable <code>header</code></p>
-<h3 id="rinexparserparse_string">RinexParser.<strong>parse_string</strong>()</h3>
+<h4 id="rinexparserparse_string">RinexParser.<strong>parse_string</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_string</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse string entries of RINEX header to instance variable 'header'</p>
-<h3 id="rinexparserparse_sys_dcbs_applied">RinexParser.<strong>parse_sys_dcbs_applied</strong>()</h3>
+<h4 id="rinexparserparse_sys_dcbs_applied">RinexParser.<strong>parse_sys_dcbs_applied</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_sys_dcbs_applied</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse entries of RINEX header <code>SYS / DCBS APPLIED</code> to instance variable <code>header</code></p>
 <p>self.header['dcbs_applied'] = { <sat_sys>: { prg: <used program>,
                                              url: <source url>}}</p>
-<h3 id="rinexparserparse_sys_obs_types">RinexParser.<strong>parse_sys_obs_types</strong>()</h3>
+<h4 id="rinexparserparse_sys_obs_types">RinexParser.<strong>parse_sys_obs_types</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_sys_obs_types</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str], cache:List[Dict[str, str]]) -&gt; Dict[str, Any]</code></p>
 <p>Parse observation types given in RINEX header to instance variable <code>header['obstypes']</code> and data</p>
@@ -530,43 +542,43 @@ and at least implement <code>parse_epochs</code>.</p>
 type in the RINEX header.</p>
 <pre><code>self.header['obstypes'] = { &lt;sat_sys&gt;: [&lt;ordered list with given observation types&gt;]}
 </code></pre>
-<h3 id="rinexparserparse_sys_pcvs_applied">RinexParser.<strong>parse_sys_pcvs_applied</strong>()</h3>
+<h4 id="rinexparserparse_sys_pcvs_applied">RinexParser.<strong>parse_sys_pcvs_applied</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_sys_pcvs_applied</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse entries of RINEX header <code>SYS / PCVS APPLIED</code> to instance variable <code>header</code></p>
 <p>self.header['pcvs_applied'] = { <sat_sys>: { prg: <used program>,
                                            url: <source url>}}</p>
-<h3 id="rinexparserparse_time_of_first_obs">RinexParser.<strong>parse_time_of_first_obs</strong>()</h3>
+<h4 id="rinexparserparse_time_of_first_obs">RinexParser.<strong>parse_time_of_first_obs</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_time_of_first_obs</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse time of first observation given in RINEX header to instance variable <code>header</code></p>
-<h3 id="rinexparserparse_time_of_last_obs">RinexParser.<strong>parse_time_of_last_obs</strong>()</h3>
+<h4 id="rinexparserparse_time_of_last_obs">RinexParser.<strong>parse_time_of_last_obs</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.parse_time_of_last_obs</code></p>
 <p>Signature: <code>(self, fields:Dict[str, str]) -&gt; Dict[str, Any]</code></p>
 <p>Parse time of last observation given in RINEX header to instance variable <code>header</code></p>
-<h3 id="rinexparserread_data">RinexParser.<strong>read_data</strong>()</h3>
+<h4 id="rinexparserread_data">RinexParser.<strong>read_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.read_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Read data from the data file</p>
-<h3 id="rinexparserread_epochs">RinexParser.<strong>read_epochs</strong>()</h3>
+<h4 id="rinexparserread_epochs">RinexParser.<strong>read_epochs</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.read_epochs</code></p>
 <p>Signature: <code>(self, fid) -&gt; None</code></p>
 <p>Read data from Rinex file</p>
 <p>Add data to self.data</p>
-<h3 id="rinexparserread_header">RinexParser.<strong>read_header</strong>()</h3>
+<h4 id="rinexparserread_header">RinexParser.<strong>read_header</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.read_header</code></p>
 <p>Signature: <code>(self, fid) -&gt; None</code></p>
 <p>Read header from the rinex file</p>
 <p>Add header information to self.header</p>
-<h3 id="rinexparserstructure_data">RinexParser.<strong>structure_data</strong>()</h3>
+<h4 id="rinexparserstructure_data">RinexParser.<strong>structure_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_rinex.structure_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Convert lists of data to numpy arrays</p>
-<h2 id="parser_cache"><strong>parser_cache</strong>()</h2>
+<h3 id="parser_cache"><strong>parser_cache</strong>()</h3>
 <p>Full name: <code>midgard.parsers._parser_rinex.parser_cache</code></p>
 <p>Signature: <code>(func:Callable[[_ForwardRef('RinexParser'), Dict[str, str], List[Dict[str, str]]], Dict[str, Any]]) -&gt; Callable[[_ForwardRef('RinexParser'), Dict[str, str]], Dict[str, Any]]</code></p>
 <p>Decorator for adding a cache to parser functions</p>
-<h1 id="midgardparsers_parser_sinex">midgard.parsers._parser_sinex</h1>
+<h2 id="midgardparsers_parser_sinex">midgard.parsers._parser_sinex</h2>
 <p>Basic functionality for parsing Sinex datafiles</p>
 <p><strong>Description:</strong></p>
 <p>This module contains functions and classes for parsing Sinex datafiles.</p>
@@ -574,7 +586,7 @@ type in the RINEX header.</p>
 <ul>
 <li>SINEX Format: https://www.iers.org/IERS/EN/Organization/AnalysisCoordinator/SinexFormat/sinex.html</li>
 </ul>
-<h2 id="sinexblock"><strong>SinexBlock</strong></h2>
+<h3 id="sinexblock"><strong>SinexBlock</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.SinexBlock</code></p>
 <p>Signature: <code>(marker:str, fields:Tuple[midgard.parsers._parser_sinex.SinexField, ...], parser:Callable[[&lt;built-in function array&gt;, Tuple[str, ...]], Dict[str, Any]])</code></p>
 <p>A convenience class for defining a Sinex block</p>
@@ -584,7 +596,7 @@ type in the RINEX header.</p>
 <li><code>fields</code>:  Fields in Sinex block.</li>
 <li><code>parser</code>:  Function used to parse the data.</li>
 </ul>
-<h2 id="sinexfield"><strong>SinexField</strong></h2>
+<h3 id="sinexfield"><strong>SinexField</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.SinexField</code></p>
 <p>Signature: <code>(name:str, start_col:int, dtype:Union[str, NoneType], converter:Union[str, NoneType]=None)</code></p>
 <p>A convenience class for defining the fields in a Sinex block</p>
@@ -595,16 +607,16 @@ type in the RINEX header.</p>
 <li><code>dtype</code>:      String, using numpy notation, defining type of field, use None to ignore field.</li>
 <li><code>converter</code>:  Optional, name of converter to apply to field data.</li>
 </ul>
-<h2 id="sinexparser"><strong>SinexParser</strong></h2>
+<h3 id="sinexparser"><strong>SinexParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.SinexParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=None, header:bool=True) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, header:bool=True) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a Sinex file</p>
 <p>This class provides functionality for parsing a sinex file with chained
 groups of information. You should inherit from this one, and at least
 specify which Sinex blocks you are interested in by implementing
 <code>setup_parser</code>, as well as implement methods that parse each block if
 needed.</p>
-<h3 id="sinexparseras_dataframe">SinexParser.<strong>as_dataframe</strong>()</h3>
+<h4 id="sinexparseras_dataframe">SinexParser.<strong>as_dataframe</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.as_dataframe</code></p>
 <p>Signature: <code>(self, index:Union[str, List[str], NoneType]=None, marker:Union[str, NoneType]=None) -&gt; pandas.core.frame.DataFrame</code></p>
 <p>Return the parsed data as a Pandas DataFrame</p>
@@ -618,7 +630,7 @@ method.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Pandas DataFrame with the parsed data.</p>
-<h3 id="sinexparserparse_bias_epochs">SinexParser.<strong>parse_bias_epochs</strong>()</h3>
+<h4 id="sinexparserparse_bias_epochs">SinexParser.<strong>parse_bias_epochs</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_bias_epochs</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -632,7 +644,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_blocks">SinexParser.<strong>parse_blocks</strong>()</h3>
+<h4 id="sinexparserparse_blocks">SinexParser.<strong>parse_blocks</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_blocks</code></p>
 <p>Signature: <code>(self, fid:Iterable[bytes]) -&gt; None</code></p>
 <p>Parse contents of Sinex blocks</p>
@@ -642,7 +654,7 @@ self._sinex</p>
 <ul>
 <li><code>fid</code>:  Pointer to file being read.</li>
 </ul>
-<h3 id="sinexparserparse_file_comment">SinexParser.<strong>parse_file_comment</strong>()</h3>
+<h4 id="sinexparserparse_file_comment">SinexParser.<strong>parse_file_comment</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_file_comment</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -656,7 +668,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_file_reference">SinexParser.<strong>parse_file_reference</strong>()</h3>
+<h4 id="sinexparserparse_file_reference">SinexParser.<strong>parse_file_reference</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_file_reference</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -670,7 +682,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_header_line">SinexParser.<strong>parse_header_line</strong>()</h3>
+<h4 id="sinexparserparse_header_line">SinexParser.<strong>parse_header_line</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_header_line</code></p>
 <p>Signature: <code>(self, header_line:bytes) -&gt; None</code></p>
 <p>Parse header of Sinex file</p>
@@ -679,7 +691,7 @@ parameters.</p>
 <ul>
 <li><code>header_line</code>:  First line of Sinex file.</li>
 </ul>
-<h3 id="sinexparserparse_input_acknowledgements">SinexParser.<strong>parse_input_acknowledgements</strong>()</h3>
+<h4 id="sinexparserparse_input_acknowledgements">SinexParser.<strong>parse_input_acknowledgements</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_input_acknowledgements</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -693,7 +705,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_input_files">SinexParser.<strong>parse_input_files</strong>()</h3>
+<h4 id="sinexparserparse_input_files">SinexParser.<strong>parse_input_files</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_input_files</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -707,7 +719,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_input_history">SinexParser.<strong>parse_input_history</strong>()</h3>
+<h4 id="sinexparserparse_input_history">SinexParser.<strong>parse_input_history</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_input_history</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -721,7 +733,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_lines">SinexParser.<strong>parse_lines</strong>()</h3>
+<h4 id="sinexparserparse_lines">SinexParser.<strong>parse_lines</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_lines</code></p>
 <p>Signature: <code>(self, lines:List[bytes], fields:Tuple[midgard.parsers._parser_sinex.SinexField, ...]) -&gt; &lt;built-in function array&gt;</code></p>
 <p>Parse lines in a Sinex file</p>
@@ -732,7 +744,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Data contained in lines.</p>
-<h3 id="sinexparserparse_nutation_data">SinexParser.<strong>parse_nutation_data</strong>()</h3>
+<h4 id="sinexparserparse_nutation_data">SinexParser.<strong>parse_nutation_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_nutation_data</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -746,7 +758,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_precession_data">SinexParser.<strong>parse_precession_data</strong>()</h3>
+<h4 id="sinexparserparse_precession_data">SinexParser.<strong>parse_precession_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_precession_data</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -760,7 +772,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_satellite_id">SinexParser.<strong>parse_satellite_id</strong>()</h3>
+<h4 id="sinexparserparse_satellite_id">SinexParser.<strong>parse_satellite_id</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_satellite_id</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -774,7 +786,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_satellite_phase_center">SinexParser.<strong>parse_satellite_phase_center</strong>()</h3>
+<h4 id="sinexparserparse_satellite_phase_center">SinexParser.<strong>parse_satellite_phase_center</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_satellite_phase_center</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -788,7 +800,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_antenna">SinexParser.<strong>parse_site_antenna</strong>()</h3>
+<h4 id="sinexparserparse_site_antenna">SinexParser.<strong>parse_site_antenna</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_antenna</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -802,7 +814,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_data">SinexParser.<strong>parse_site_data</strong>()</h3>
+<h4 id="sinexparserparse_site_data">SinexParser.<strong>parse_site_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_data</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -816,7 +828,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_eccentricity">SinexParser.<strong>parse_site_eccentricity</strong>()</h3>
+<h4 id="sinexparserparse_site_eccentricity">SinexParser.<strong>parse_site_eccentricity</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_eccentricity</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -830,7 +842,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_gal_phase_center">SinexParser.<strong>parse_site_gal_phase_center</strong>()</h3>
+<h4 id="sinexparserparse_site_gal_phase_center">SinexParser.<strong>parse_site_gal_phase_center</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_gal_phase_center</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -844,7 +856,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_gps_phase_center">SinexParser.<strong>parse_site_gps_phase_center</strong>()</h3>
+<h4 id="sinexparserparse_site_gps_phase_center">SinexParser.<strong>parse_site_gps_phase_center</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_gps_phase_center</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -858,7 +870,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_id">SinexParser.<strong>parse_site_id</strong>()</h3>
+<h4 id="sinexparserparse_site_id">SinexParser.<strong>parse_site_id</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_id</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -872,7 +884,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_site_receiver">SinexParser.<strong>parse_site_receiver</strong>()</h3>
+<h4 id="sinexparserparse_site_receiver">SinexParser.<strong>parse_site_receiver</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_site_receiver</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -886,7 +898,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_solution_apriori">SinexParser.<strong>parse_solution_apriori</strong>()</h3>
+<h4 id="sinexparserparse_solution_apriori">SinexParser.<strong>parse_solution_apriori</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_apriori</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -900,7 +912,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_solution_epochs">SinexParser.<strong>parse_solution_epochs</strong>()</h3>
+<h4 id="sinexparserparse_solution_epochs">SinexParser.<strong>parse_solution_epochs</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_epochs</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -914,7 +926,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_solution_estimate">SinexParser.<strong>parse_solution_estimate</strong>()</h3>
+<h4 id="sinexparserparse_solution_estimate">SinexParser.<strong>parse_solution_estimate</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_estimate</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -928,7 +940,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_solution_matrix_apriori">SinexParser.<strong>parse_solution_matrix_apriori</strong>()</h3>
+<h4 id="sinexparserparse_solution_matrix_apriori">SinexParser.<strong>parse_solution_matrix_apriori</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_matrix_apriori</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, lower_upper:str, type:str='') -&gt; Dict[str, Any]</code></p>
 <p>Parser for SOLUTION/MATRIX_APRIORI data</p>
@@ -946,7 +958,7 @@ reduce the size of this block.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with symmetric matrix as a numpy array.</p>
-<h3 id="sinexparserparse_solution_matrix_estimate">SinexParser.<strong>parse_solution_matrix_estimate</strong>()</h3>
+<h4 id="sinexparserparse_solution_matrix_estimate">SinexParser.<strong>parse_solution_matrix_estimate</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_matrix_estimate</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, lower_upper:str, type:str='') -&gt; Dict[str, Any]</code></p>
 <p>Parser for SOLUTION/MATRIX_ESTIMATE data</p>
@@ -964,7 +976,7 @@ reduce the size of this block.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with symmetric matrix as a numpy array.</p>
-<h3 id="sinexparserparse_solution_normal_equation_matrix">SinexParser.<strong>parse_solution_normal_equation_matrix</strong>()</h3>
+<h4 id="sinexparserparse_solution_normal_equation_matrix">SinexParser.<strong>parse_solution_normal_equation_matrix</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_normal_equation_matrix</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, lower_upper:str, type:str='') -&gt; Dict[str, Any]</code></p>
 <p>Parser for SOLUTION/NORMAL_EQUATION_MATRIX data</p>
@@ -982,7 +994,7 @@ reduce the size of this block.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with symmetric matrix as a numpy array.</p>
-<h3 id="sinexparserparse_solution_normal_equation_vector">SinexParser.<strong>parse_solution_normal_equation_vector</strong>()</h3>
+<h4 id="sinexparserparse_solution_normal_equation_vector">SinexParser.<strong>parse_solution_normal_equation_vector</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_normal_equation_vector</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -996,7 +1008,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_solution_statistics">SinexParser.<strong>parse_solution_statistics</strong>()</h3>
+<h4 id="sinexparserparse_solution_statistics">SinexParser.<strong>parse_solution_statistics</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_solution_statistics</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -1010,7 +1022,7 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserparse_source_id">SinexParser.<strong>parse_source_id</strong>()</h3>
+<h4 id="sinexparserparse_source_id">SinexParser.<strong>parse_source_id</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.parse_source_id</code></p>
 <p>Signature: <code>(self:'SinexParser', data:&lt;built-in function array&gt;, *params:str) -&gt; Dict[str, Any]</code></p>
 <p>Simple parser for Sinex data</p>
@@ -1024,14 +1036,14 @@ parameters.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with each column in the Sinex file as a numpy array.</p>
-<h3 id="sinexparserread_data">SinexParser.<strong>read_data</strong>()</h3>
+<h4 id="sinexparserread_data">SinexParser.<strong>read_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.read_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Read data from a Sinex file and parse the contents</p>
 <p>First the whole Sinex file is read and the requested blocks are stored
 in self._sinex. After the file has been read, a parser is called on
 each block so that self.data is properly populated.</p>
-<h3 id="sinexparsersetup_parser">SinexParser.<strong>setup_parser</strong>()</h3>
+<h4 id="sinexparsersetup_parser">SinexParser.<strong>setup_parser</strong>()</h4>
 <p>Full name: <code>midgard.parsers._parser_sinex.setup_parser</code></p>
 <p>Signature: <code>(self) -&gt; Any</code></p>
 <p>Set up information needed for the parser</p>
@@ -1042,7 +1054,7 @@ order is important, a tuple of SinexBlock-objects may be returned
 instead.</p>
 <p><strong>Returns:</strong></p>
 <p>Iterable of blocks in the Sinex file that should be parsed.</p>
-<h2 id="parsing_factory"><strong>parsing_factory</strong>()</h2>
+<h3 id="parsing_factory"><strong>parsing_factory</strong>()</h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.parsing_factory</code></p>
 <p>Signature: <code>() -&gt; Callable[..., Dict[str, Any]]</code></p>
 <p>Create a default parsing function for a Sinex block</p>
@@ -1051,7 +1063,7 @@ the block as separated arrays. This will be stored in self.data['{marker}']
 with the {marker} of the current block.</p>
 <p><strong>Returns:</strong></p>
 <p>Simple parsing function for one Sinex block.</p>
-<h2 id="parsing_matrix_factory"><strong>parsing_matrix_factory</strong>()</h2>
+<h3 id="parsing_matrix_factory"><strong>parsing_matrix_factory</strong>()</h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.parsing_matrix_factory</code></p>
 <p>Signature: <code>(marker:str, size_marker:str) -&gt; Callable[..., Dict[str, Any]]</code></p>
 <p>Create a parsing function for parsing a matrix within a Sinex block</p>
@@ -1068,16 +1080,146 @@ this might be wrong.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Simple parsing function for one Sinex block.</p>
-<h1 id="midgardparsersgalileo_constellation_html">midgard.parsers.galileo_constellation_html</h1>
-<p>A parser for reading IVS source names translation table</p>
-<h2 id="galileoconstellationhtmlparser"><strong>GalileoConstellationHTMLParser</strong></h2>
+<h2 id="midgardparsersanubis">midgard.parsers.anubis</h2>
+<p>A parser for reading Anubis xtr-files</p>
+<h3 id="anubisxtrparser"><strong>AnubisXtrParser</strong></h3>
+<p>Full name: <code>midgard.parsers.anubis.AnubisXtrParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A parser for reading Anubis XTR files</p>
+<h4 id="anubisxtrparserread_data">AnubisXtrParser.<strong>read_data</strong>()</h4>
+<p>Full name: <code>midgard.parsers.anubis.read_data</code></p>
+<p>Signature: <code>(self) -&gt; None</code></p>
+<p>Read data and store in .data dictionary</p>
+<h2 id="midgardparsersbcecmp_sisre">midgard.parsers.bcecmp_sisre</h2>
+<p>A parser for reading DLR BCEcmp Software SISRE output files</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bcecmp_sisre', file_path='BCEcmp_GAL_FNAV_E1E5A_com_2018_032.OUT')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in the BCEcmp Software output file format. The BCEcmp Software is developed and used by DLR.</p>
+<h3 id="bcecmpparser"><strong>BcecmpParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bcecmp_sisre.BcecmpParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A parser for reading DLR BCEcmp Software output files.</p>
+<p>The following <strong>data</strong> are available after reading BCEcmp Software output file:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>age_min</td>
+<td>age of ephemeris in [min]</td>
+</tr>
+<tr>
+<td>clk_diff_sys</td>
+<td>Satellite clock correction difference in [m]</td>
+</tr>
+<tr>
+<td>dalong_track</td>
+<td>Along-track orbit difference in [m]</td>
+</tr>
+<tr>
+<td>dcross_track</td>
+<td>Cross-track orbit difference in [m]</td>
+</tr>
+<tr>
+<td>dradial</td>
+<td>Radial orbit difference in [m]</td>
+</tr>
+<tr>
+<td>dradial_wul</td>
+<td>Worst-user-location (wul) SISRE?</td>
+</tr>
+<tr>
+<td>satellite</td>
+<td>Satellite PRN number together with GNSS identifier (e.g. G07)</td>
+</tr>
+<tr>
+<td>sisre</td>
+<td>Signal-in-space range error [m]</td>
+</tr>
+<tr>
+<td>time</td>
+<td>Observation time</td>
+</tr>
+<tr>
+<td>used_iodc</td>
+<td>GPS: IODC (Clock issue of data indicates changes (set equal to IODE))</td>
+</tr>
+<tr>
+<td></td>
+<td>QZSS: IODC</td>
+</tr>
+<tr>
+<td>used_iode</td>
+<td>Ephemeris issue of data indicates changes to the broadcast ephemeris:</td>
+</tr>
+<tr>
+<td></td>
+<td>- GPS: Ephemeris issue of data (IODE), which is set equal to IODC</td>
+</tr>
+<tr>
+<td></td>
+<td>- Galileo: Issue of Data of the NAV batch (IODnav)</td>
+</tr>
+<tr>
+<td></td>
+<td>- QZSS: Ephemeris issue of data (IODE)</td>
+</tr>
+<tr>
+<td></td>
+<td>- BeiDou: Age of Data Ephemeris (AODE)</td>
+</tr>
+<tr>
+<td></td>
+<td>- IRNSS: Issue of Data, Ephemeris and Clock (IODEC)</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h4 id="bcecmpparsersetup_parser">BcecmpParser.<strong>setup_parser</strong>()</h4>
+<p>Full name: <code>midgard.parsers.bcecmp_sisre.setup_parser</code></p>
+<p>Signature: <code>(self) -&gt; Iterable[midgard.parsers._parser_chain.ParserDef]</code></p>
+<p>Parsers defined for reading BCEcmp Software output file line by line.</p>
+<h4 id="bcecmpparsersetup_postprocessors">BcecmpParser.<strong>setup_postprocessors</strong>()</h4>
+<p>Full name: <code>midgard.parsers.bcecmp_sisre.setup_postprocessors</code></p>
+<p>Signature: <code>(self) -&gt; List[Callable[[], NoneType]]</code></p>
+<p>List steps necessary for postprocessing</p>
+<h2 id="midgardparsersgalileo_constellation_html">midgard.parsers.galileo_constellation_html</h2>
+<p>A parser for reading Galileo constellation info from a web page</p>
+<p>See https://www.gsc-europa.eu/system-status/Constellation-Information for an example</p>
+<h3 id="galileoconstellationhtmlparser"><strong>GalileoConstellationHTMLParser</strong></h3>
 <p>Full name: <code>midgard.parsers.galileo_constellation_html.GalileoConstellationHTMLParser</code></p>
 <p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, url:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>A parser for reading Galileo constellation info from a web page</p>
 <p>See https://www.gsc-europa.eu/system-status/Constellation-Information for an example</p>
-<h3 id="galileoconstellationhtmlparserurl-str">GalileoConstellationHTMLParser.URL (str)</h3>
+<h4 id="galileoconstellationhtmlparserurl-str">GalileoConstellationHTMLParser.URL (str)</h4>
 <p><code>URL = 'https://www.gsc-europa.eu/system-status/Constellation-Information'</code></p>
-<h3 id="galileoconstellationhtmlparserdownload_html">GalileoConstellationHTMLParser.<strong>download_html</strong>()</h3>
+<h4 id="galileoconstellationhtmlparserdownload_html">GalileoConstellationHTMLParser.<strong>download_html</strong>()</h4>
 <p>Full name: <code>midgard.parsers.galileo_constellation_html.download_html</code></p>
 <p>Signature: <code>(self, url:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>Download html file from url</p>
@@ -1086,12 +1228,12 @@ this might be wrong.</p>
 <ul>
 <li><code>url</code>:  URL to download from, if None use self.URL instead.</li>
 </ul>
-<h3 id="galileoconstellationhtmlparserread_data">GalileoConstellationHTMLParser.<strong>read_data</strong>()</h3>
+<h4 id="galileoconstellationhtmlparserread_data">GalileoConstellationHTMLParser.<strong>read_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers.galileo_constellation_html.read_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Read tables from the HTML file</p>
 <p>The satellite table is placed in self.data, while the NAGU events are placed in self.meta["events"].</p>
-<h3 id="galileoconstellationhtmlparsersatellite_id">GalileoConstellationHTMLParser.<strong>satellite_id</strong>()</h3>
+<h4 id="galileoconstellationhtmlparsersatellite_id">GalileoConstellationHTMLParser.<strong>satellite_id</strong>()</h4>
 <p>Full name: <code>midgard.parsers.galileo_constellation_html.satellite_id</code></p>
 <p>Signature: <code>(self, sat_id:str) -&gt; Dict[str, Any]</code></p>
 <p>Get satellite info from satellite vehicle ID</p>
@@ -1101,7 +1243,7 @@ this might be wrong.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with satellite info.</p>
-<h3 id="galileoconstellationhtmlparsersatellite_name">GalileoConstellationHTMLParser.<strong>satellite_name</strong>()</h3>
+<h4 id="galileoconstellationhtmlparsersatellite_name">GalileoConstellationHTMLParser.<strong>satellite_name</strong>()</h4>
 <p>Full name: <code>midgard.parsers.galileo_constellation_html.satellite_name</code></p>
 <p>Signature: <code>(self, sat_name:str) -&gt; Dict[str, Any]</code></p>
 <p>Get satellite info from name</p>
@@ -1111,7 +1253,96 @@ this might be wrong.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with satellite info.</p>
-<h1 id="midgardparsersgnss_antex">midgard.parsers.gnss_antex</h1>
+<h2 id="midgardparsersgipsy_tdp">midgard.parsers.gipsy_tdp</h2>
+<p>A parser for reading NASA JPL Gipsy time dependent parameter (TDP) file</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='gipsy_tdp', file_path='final.tdp')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Gipsy time dependent parameter (TDP) format.</p>
+<h3 id="gipsytdpparser"><strong>GipsyTdpParser</strong></h3>
+<p>Full name: <code>midgard.parsers.gipsy_tdp.GipsyTdpParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A parser for reading Gipsy time dependent parameter (TDP) file</p>
+<p>Following <strong>data</strong> are available after reading Gipsy TDP output file:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>apriori_value</td>
+<td>Nominal value. This field contains the last value used by the model.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Parameter name.</td>
+</tr>
+<tr>
+<td>sigma</td>
+<td>The sigma associated with the value of the parameter. A negative value indicates it</td>
+</tr>
+<tr>
+<td></td>
+<td>should be used for interpolation by the file reader read_time_variation in</td>
+</tr>
+<tr>
+<td></td>
+<td>$GOA/libsrc/time_variation. If no sigmas are computed by the smapper, a 1.0 will be</td>
+</tr>
+<tr>
+<td></td>
+<td>placed here.</td>
+</tr>
+<tr>
+<td>time_past_j2000</td>
+<td>Time given in GPS seconds past J2000.</td>
+</tr>
+<tr>
+<td>value</td>
+<td>Accumulated value of the parameter at time and includes any nominal, or iterative</td>
+</tr>
+<tr>
+<td></td>
+<td>correction. This is the only entry used by the model.</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h4 id="gipsytdpparsersetup_parser">GipsyTdpParser.<strong>setup_parser</strong>()</h4>
+<p>Full name: <code>midgard.parsers.gipsy_tdp.setup_parser</code></p>
+<p>Signature: <code>(self) -&gt; Dict[str, Any]</code></p>
+<p>Set up information needed for the parser</p>
+<p>This should return a dictionary with all parameters needed by np.genfromtxt to do the actual parsing.</p>
+<p>TODO: Station name should be separated from parameter name.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Dict</code>:  Parameters needed by np.genfromtxt to parse the input file.</li>
+</ul>
+<h2 id="midgardparsersgnss_antex">midgard.parsers.gnss_antex</h2>
 <p>A parser for reading ANTEX format 1.4 data</p>
 <p><strong>Example:</strong></p>
 <pre><code>from midgard import parsers
@@ -1120,9 +1351,9 @@ data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
 <p>Reads data from files in the GNSS Antenna Exchange (ANTEX) file format version 1.4 (see :cite:<code>antex</code>).</p>
-<h2 id="antexparser"><strong>AntexParser</strong></h2>
+<h3 id="antexparser"><strong>AntexParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gnss_antex.AntexParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>A parser for reading ANTEX file</p>
 <p>The parser reads GNSS ANTEX format 1.4 (see :cite:<code>antex</code>).</p>
 <p>The 'data' attribute is a dictionary with GNSS satellite PRN or receiver antenna as key. The GNSS satellite
@@ -1316,15 +1547,15 @@ like:</p>
 <li><code>parser_name</code>:     (str), Parser name.</li>
 <li><code>meta</code>:            (dict), Contains metainformation read from file.</li>
 </ul>
-<h3 id="antexparserparse_comment">AntexParser.<strong>parse_comment</strong>()</h3>
+<h4 id="antexparserparse_comment">AntexParser.<strong>parse_comment</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_comment</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], _:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse comment lines in ANTEX header.</p>
-<h3 id="antexparserparse_correction">AntexParser.<strong>parse_correction</strong>()</h3>
+<h4 id="antexparserparse_correction">AntexParser.<strong>parse_correction</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_correction</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse antenna corrections entries of ANTEX antenna section.</p>
-<h3 id="antexparserparse_default_meta">AntexParser.<strong>parse_default_meta</strong>()</h3>
+<h4 id="antexparserparse_default_meta">AntexParser.<strong>parse_default_meta</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_default_meta</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], _:Dict[str, Any]) -&gt; None</code></p>
 <p>Add the contents of line to meta</p>
@@ -1332,31 +1563,31 @@ like:</p>
 <ul>
 <li><code>line</code>: Dict containing the fields of a line.</li>
 </ul>
-<h3 id="antexparserparse_num_of_frequencies">AntexParser.<strong>parse_num_of_frequencies</strong>()</h3>
+<h4 id="antexparserparse_num_of_frequencies">AntexParser.<strong>parse_num_of_frequencies</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_num_of_frequencies</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse '# OF FREQUENCIES' entry of ANTEX antenna section.</p>
-<h3 id="antexparserparse_section_float">AntexParser.<strong>parse_section_float</strong>()</h3>
+<h4 id="antexparserparse_section_float">AntexParser.<strong>parse_section_float</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_section_float</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse float entries of ANTEX header.</p>
-<h3 id="antexparserparse_section_string">AntexParser.<strong>parse_section_string</strong>()</h3>
+<h4 id="antexparserparse_section_string">AntexParser.<strong>parse_section_string</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_section_string</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse string entries of ANTEX header.</p>
-<h3 id="antexparserparse_string">AntexParser.<strong>parse_string</strong>()</h3>
+<h4 id="antexparserparse_string">AntexParser.<strong>parse_string</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_string</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], _:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse string entries of ANTEX header.</p>
-<h3 id="antexparserparse_valid_from">AntexParser.<strong>parse_valid_from</strong>()</h3>
+<h4 id="antexparserparse_valid_from">AntexParser.<strong>parse_valid_from</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_valid_from</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse 'VALID FROM' entries of ANTEX antenna section.</p>
-<h3 id="antexparserparse_valid_until">AntexParser.<strong>parse_valid_until</strong>()</h3>
+<h4 id="antexparserparse_valid_until">AntexParser.<strong>parse_valid_until</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.parse_valid_until</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Parse 'VALID UNTIL' entries of ANTEX antenna section.</p>
-<h3 id="antexparsersave_correction">AntexParser.<strong>save_correction</strong>()</h3>
+<h4 id="antexparsersave_correction">AntexParser.<strong>save_correction</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.save_correction</code></p>
 <p>Signature: <code>(self, line:Dict[str, str], cache:Dict[str, Any]) -&gt; None</code></p>
 <p>Save antenna correction in data structures.</p>
@@ -1379,81 +1610,552 @@ saved in following data structure, whereby satellite antenna corrections are tim
                                                     noazi: [&lt;list with elevation dependent corrections&gt;] }}
             }
 </code></pre>
-<h3 id="antexparsersetup_parser">AntexParser.<strong>setup_parser</strong>()</h3>
+<h4 id="antexparsersetup_parser">AntexParser.<strong>setup_parser</strong>()</h4>
 <p>Full name: <code>midgard.parsers.gnss_antex.setup_parser</code></p>
 <p>Signature: <code>(self) -&gt; Iterable[midgard.parsers._parser_chain.ParserDef]</code></p>
 <p>Parsers defined for reading ANTEX file line by line.</p>
 <p>First the ANTEX header information are read and afterwards the ANTEX corrections.</p>
-<h1 id="midgardparsersrinex3_header">midgard.parsers.rinex3_header</h1>
-<p>A parser for reading IVS source names translation table</p>
-<h2 id="rinex3headermixin"><strong>Rinex3HeaderMixin</strong></h2>
-<p>Full name: <code>midgard.parsers.rinex3_header.Rinex3HeaderMixin</code></p>
+<h2 id="midgardparsersgnss_sinex_igs">midgard.parsers.gnss_sinex_igs</h2>
+<p>A parser for reading data from igs.snx file based on IGS sitelog files in SINEX format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='gnss_sinex_igs', file_path='igs.snx')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads station information (e.g. approximated station coordinates, receiver and antenna type, station eccentricities,
+...) igs.snx file in SINEX format.</p>
+<h3 id="igssnxparser"><strong>IgsSnxParser</strong></h3>
+<p>Full name: <code>midgard.parsers.gnss_sinex_igs.IgsSnxParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, header:bool=True) -&gt; None</code></p>
+<p>A parser for reading data from igs.snx file based on IGS sitelog files in SINEX format</p>
+<p>site - Site dictionary, whereby keys are the site identifiers and values are a site entry
+       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id' and 'site_receiver'. The
+       site dictionary has following strucuture:</p>
+<pre><code>      self.site[site] = { 'site_antenna':          [],  # SITE/ANTENNA SINEX block information
+                          'site_eccentricity':     [],  # SITE/ECCENTRICITY block information
+                          'site_id':               {},  # SITE/ID block information
+                          'site_receiver':         [],  # SITE/RECEIVER block information }
+
+   with the site entry dictionary entries
+
+      site_antenna[ii]      = { 'point_code':         point_code,
+                                'soln':               soln,
+                                'obs_code':           obs_code,
+                                'start_time':         start_time,
+                                'end_time':           end_time,
+                                'antenna_type':       antenna_type,
+                                'radome_type':        radome_type,
+                                'serial_number':      serial_number }
+
+      site_eccentricity[ii] = { 'point_code':         point_code,
+                                'soln':               soln,
+                                'obs_code':           obs_code,
+                                'start_time':         start_time,
+                                'end_time':           end_time,
+                                'reference_system':   reference_system,
+                                'vector_1':           vector_1,
+                                'vector_2':           vector_2,
+                                'vector_3':           vector_3,
+                                'vector_type':        UNE }
+
+      site_id               = { 'point_code':         point_code,
+                                'domes':              domes,
+                                'marker':             marker,
+                                'obs_code':           obs_code,
+                                'description':        description,
+                                'approx_lon':         approx_lon,
+                                'approx_lat':         approx_lat,
+                                'approx_height':      approx_height }
+
+      site_receiver[ii]     = { 'point_code':         point_code,
+                                'soln':               soln,
+                                'obs_code':           obs_code,
+                                'start_time':         start_time,
+                                'end_time':           end_time,
+                                'receiver_type':      receiver_type,
+                                'serial_number':      serial_number,
+                                'firmware':           firmware }
+
+   The counter 'ii' ranges from 0 to n and depends on how many antenna type, receiver type and
+   antenna monument changes were done at each site. Note also, that time entries (e.g. start_time,
+   end_time) are given in Modified Julian Date. If the time is defined as 00:000:00000 in the SINEX
+   file, then the value is saved as 'None' in the Sinex class.
+</code></pre>
+<h4 id="igssnxparserparse_site_antenna">IgsSnxParser.<strong>parse_site_antenna</strong>()</h4>
+<p>Full name: <code>midgard.parsers.gnss_sinex_igs.parse_site_antenna</code></p>
+<p>Signature: <code>(self, data)</code></p>
+<p>Parse SITE/ANTENNA SINEX block</p>
+<h4 id="igssnxparserparse_site_eccentricity">IgsSnxParser.<strong>parse_site_eccentricity</strong>()</h4>
+<p>Full name: <code>midgard.parsers.gnss_sinex_igs.parse_site_eccentricity</code></p>
+<p>Signature: <code>(self, data)</code></p>
+<p>Parse SITE/ECCENTRICITY SINEX block</p>
+<h4 id="igssnxparserparse_site_id">IgsSnxParser.<strong>parse_site_id</strong>()</h4>
+<p>Full name: <code>midgard.parsers.gnss_sinex_igs.parse_site_id</code></p>
+<p>Signature: <code>(self, data)</code></p>
+<p>Parse SITE/ID SINEX block</p>
+<h4 id="igssnxparserparse_site_receiver">IgsSnxParser.<strong>parse_site_receiver</strong>()</h4>
+<p>Full name: <code>midgard.parsers.gnss_sinex_igs.parse_site_receiver</code></p>
+<p>Signature: <code>(self, data)</code></p>
+<p>Parse SITE/RECEIVER SINEX block</p>
+<h4 id="igssnxparsersetup_parser">IgsSnxParser.<strong>setup_parser</strong>()</h4>
+<p>Full name: <code>midgard.parsers.gnss_sinex_igs.setup_parser</code></p>
+<p>Signature: <code>(self)</code></p>
+<h2 id="midgardparsersrinex2_nav_header">midgard.parsers.rinex2_nav_header</h2>
+<p>RINEX navigation header classes for file format version 2.xx</p>
+<h3 id="rinex2navheadermixin"><strong>Rinex2NavHeaderMixin</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex2_nav_header.Rinex2NavHeaderMixin</code></p>
 <p>Signature: <code>()</code></p>
-<p>A mixin defining which headers are mandatory and optional in Rinex 3</p>
-<h2 id="rinex3headerparser"><strong>Rinex3HeaderParser</strong></h2>
-<p>Full name: <code>midgard.parsers.rinex3_header.Rinex3HeaderParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, strict:bool=False) -&gt; None</code></p>
-<p>A parser for reading just the Rinex3 header</p>
+<p>A mixin defining which RINEX navigation headers are mandatory and optional in RINEX version 2.xx</p>
+<h3 id="rinex2navheaderparser"><strong>Rinex2NavHeaderParser</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex2_nav_header.Rinex2NavHeaderParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading just the RINEX version 2.xx navigation header</p>
 <p>The data in the rinex file will not be parsed.</p>
-<h3 id="rinex3headerparsername-str">Rinex3HeaderParser.name (str)</h3>
+<h4 id="rinex2navheaderparsername-str">Rinex2NavHeaderParser.name (str)</h4>
 <p><code>name = 'Rinex'</code></p>
-<h3 id="rinex3headerparserread_epochs">Rinex3HeaderParser.<strong>read_epochs</strong>()</h3>
-<p>Full name: <code>midgard.parsers.rinex3_header.read_epochs</code></p>
+<h4 id="rinex2navheaderparserread_epochs">Rinex2NavHeaderParser.<strong>read_epochs</strong>()</h4>
+<p>Full name: <code>midgard.parsers.rinex2_nav_header.read_epochs</code></p>
 <p>Signature: <code>(self, fid) -&gt; None</code></p>
 <p>Do not read data from Rinex file</p>
 <p>Skip reading of data.</p>
-<h1 id="midgardparsersrinex_obs">midgard.parsers.rinex_obs</h1>
-<p>A parser for reading Rinex observation files</p>
-<h2 id="rinexobsparser"><strong>RinexObsParser</strong></h2>
-<p>Full name: <code>midgard.parsers.rinex_obs.RinexObsParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, strict:bool=False) -&gt; None</code></p>
-<p>A parser for reading Rinex observation files</p>
-<p>Different versions of the Rinex format are implemented as subclasses</p>
-<h3 id="rinexobsparsername-str">RinexObsParser.name (str)</h3>
+<h2 id="midgardparsersrinex2_obs_header">midgard.parsers.rinex2_obs_header</h2>
+<p>RINEX observation header classes for file format version 3.xx</p>
+<h3 id="rinex2obsheadermixin"><strong>Rinex2ObsHeaderMixin</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex2_obs_header.Rinex2ObsHeaderMixin</code></p>
+<p>Signature: <code>()</code></p>
+<p>A mixin defining which RINEX observation headers are mandatory and optional in RINEX version 2.xx</p>
+<h3 id="rinex2obsheaderparser"><strong>Rinex2ObsHeaderParser</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex2_obs_header.Rinex2ObsHeaderParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading just the RINEX version 2.xx observation header</p>
+<p>The data in the rinex file will not be parsed.</p>
+<h4 id="rinex2obsheaderparsername-str">Rinex2ObsHeaderParser.name (str)</h4>
 <p><code>name = 'Rinex'</code></p>
-<h3 id="rinexobsparserread_data">RinexObsParser.<strong>read_data</strong>()</h3>
-<p>Full name: <code>midgard.parsers.rinex_obs.read_data</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Dispatch to correct subclass based on version in Rinex file</p>
-<p>Need to make sure the dispatch only happens for RinexObsParsers, not for subclasses.</p>
-<h1 id="midgardparsersvlbi_source_names">midgard.parsers.vlbi_source_names</h1>
+<h4 id="rinex2obsheaderparserread_epochs">Rinex2ObsHeaderParser.<strong>read_epochs</strong>()</h4>
+<p>Full name: <code>midgard.parsers.rinex2_obs_header.read_epochs</code></p>
+<p>Signature: <code>(self, fid) -&gt; None</code></p>
+<p>Do not read data from Rinex file</p>
+<p>Skip reading of data.</p>
+<h2 id="midgardparsersrinex3_clk">midgard.parsers.rinex3_clk</h2>
+<p>A parser for reading RINEX clock files with version 3.xx</p>
+<h3 id="rinex3clkparser"><strong>Rinex3ClkParser</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_clk.Rinex3ClkParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading RINEX clock files with version 3.xx</p>
+<h4 id="rinex3clkparsername-str">Rinex3ClkParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h2 id="midgardparsersrinex3_clk_header">midgard.parsers.rinex3_clk_header</h2>
+<p>RINEX clock header classes for file format version 3.xx</p>
+<h3 id="rinex3clkheadermixin"><strong>Rinex3ClkHeaderMixin</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_clk_header.Rinex3ClkHeaderMixin</code></p>
+<p>Signature: <code>()</code></p>
+<p>A mixin defining which RINEX clock headers are mandatory and optional in RINEX version 3.xx</p>
+<h3 id="rinex3clkheaderparser"><strong>Rinex3ClkHeaderParser</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_clk_header.Rinex3ClkHeaderParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading just the RINEX version 3.xx clock header</p>
+<p>The data in the rinex file will not be parsed.</p>
+<h4 id="rinex3clkheaderparsername-str">Rinex3ClkHeaderParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h4 id="rinex3clkheaderparserread_epochs">Rinex3ClkHeaderParser.<strong>read_epochs</strong>()</h4>
+<p>Full name: <code>midgard.parsers.rinex3_clk_header.read_epochs</code></p>
+<p>Signature: <code>(self, fid) -&gt; None</code></p>
+<p>Do not read data from Rinex file</p>
+<p>Skip reading of data.</p>
+<h2 id="midgardparsersrinex3_nav_header">midgard.parsers.rinex3_nav_header</h2>
+<p>RINEX navigation header classes for file format version 3.xx</p>
+<h3 id="rinex3navheadermixin"><strong>Rinex3NavHeaderMixin</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_nav_header.Rinex3NavHeaderMixin</code></p>
+<p>Signature: <code>()</code></p>
+<p>A mixin defining which RINEX navigation headers are mandatory and optional in RINEX version 3.xx</p>
+<h3 id="rinex3navheaderparser"><strong>Rinex3NavHeaderParser</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_nav_header.Rinex3NavHeaderParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading just the RINEX version 3.xx navigation header</p>
+<p>The data in the rinex file will not be parsed.</p>
+<h4 id="rinex3navheaderparsername-str">Rinex3NavHeaderParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h4 id="rinex3navheaderparserread_epochs">Rinex3NavHeaderParser.<strong>read_epochs</strong>()</h4>
+<p>Full name: <code>midgard.parsers.rinex3_nav_header.read_epochs</code></p>
+<p>Signature: <code>(self, fid) -&gt; None</code></p>
+<p>Do not read data from Rinex file</p>
+<p>Skip reading of data.</p>
+<h2 id="midgardparsersrinex3_obs_header">midgard.parsers.rinex3_obs_header</h2>
+<p>RINEX observation header classes for file format version 3.xx</p>
+<h3 id="rinex3obsheadermixin"><strong>Rinex3ObsHeaderMixin</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_obs_header.Rinex3ObsHeaderMixin</code></p>
+<p>Signature: <code>()</code></p>
+<p>A mixin defining which RINEX observation headers are mandatory and optional in RINEX version 3.xx</p>
+<h3 id="rinex3obsheaderparser"><strong>Rinex3ObsHeaderParser</strong></h3>
+<p>Full name: <code>midgard.parsers.rinex3_obs_header.Rinex3ObsHeaderParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading just the RINEX version 3.xx observation header</p>
+<p>The data in the rinex file will not be parsed.</p>
+<h4 id="rinex3obsheaderparsername-str">Rinex3ObsHeaderParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h4 id="rinex3obsheaderparserread_epochs">Rinex3ObsHeaderParser.<strong>read_epochs</strong>()</h4>
+<p>Full name: <code>midgard.parsers.rinex3_obs_header.read_epochs</code></p>
+<p>Signature: <code>(self, fid) -&gt; None</code></p>
+<p>Do not read data from Rinex file</p>
+<p>Skip reading of data.</p>
+<h2 id="midgardparsersterrapos_position">midgard.parsers.terrapos_position</h2>
+<p>A parser for reading Terrapos position output file</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='terrapos_position', file_path='Gal_C1X_brdc_land_30sec_24hrs_FNAV-file.txt')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Terrapos position output format.</p>
+<h3 id="terrapospositionparser"><strong>TerraposPositionParser</strong></h3>
+<p>Full name: <code>midgard.parsers.terrapos_position.TerraposPositionParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A parser for reading Terrapos position output file</p>
+<p>Following <strong>data</strong> are available after reading Terrapos position file:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gpsweek</td>
+<td>GPS week</td>
+</tr>
+<tr>
+<td>gpssec</td>
+<td>Seconds of GPS week</td>
+</tr>
+<tr>
+<td>head</td>
+<td>Head in [deg]</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Ellipsoidal height in [m]</td>
+</tr>
+<tr>
+<td>lat</td>
+<td>Latitude in [deg]</td>
+</tr>
+<tr>
+<td>lon</td>
+<td>Longitude in [deg]</td>
+</tr>
+<tr>
+<td>num_sat</td>
+<td>Number of satellites</td>
+</tr>
+<tr>
+<td>pdop</td>
+<td>Position Dilution of Precision (PDOP)</td>
+</tr>
+<tr>
+<td>pitch</td>
+<td>Pitch in [deg]</td>
+</tr>
+<tr>
+<td>reliability_east</td>
+<td>East position external reliability in [m] #TODO: Is that correct?</td>
+</tr>
+<tr>
+<td>reliability_height</td>
+<td>Height position external reliability in [m] #TODO: Is that correct?</td>
+</tr>
+<tr>
+<td>reliability_north</td>
+<td>North position external reliability in [m] #TODO: Is that correct?</td>
+</tr>
+<tr>
+<td>roll</td>
+<td>Roll in [deg]</td>
+</tr>
+<tr>
+<td>sigma_east</td>
+<td>Standard deviation of East position in [m] #TODO: Is that correct?</td>
+</tr>
+<tr>
+<td>sigma_height</td>
+<td>Standard deviation of Height position in [m] #TODO: Is that correct?</td>
+</tr>
+<tr>
+<td>sigma_north</td>
+<td>Standard deviation of North position in [m] #TODO: Is that correct?</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h4 id="terrapospositionparsersetup_parser">TerraposPositionParser.<strong>setup_parser</strong>()</h4>
+<p>Full name: <code>midgard.parsers.terrapos_position.setup_parser</code></p>
+<p>Signature: <code>(self) -&gt; Dict[str, Any]</code></p>
+<p>Set up information needed for the parser</p>
+<p>This should return a dictionary with all parameters needed by np.genfromtxt to do the actual parsing.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Dict</code>:  Parameters needed by np.genfromtxt to parse the input file.</li>
+</ul>
+<h2 id="midgardparsersterrapos_residual">midgard.parsers.terrapos_residual</h2>
+<p>A parser for reading Terrapos residual file</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='terrapos_residual', file_path='PPP-residuals.txt')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Terrapos residual format.</p>
+<h3 id="terraposresidualparser"><strong>TerraposResidualParser</strong></h3>
+<p>Full name: <code>midgard.parsers.terrapos_residual.TerraposResidualParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A parser for reading Terrapos residual file</p>
+<p>Following <strong>data</strong> are available after reading Terrapos residual file:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>azimuth</td>
+<td>Azimuth of satellites in [deg]</td>
+</tr>
+<tr>
+<td>elevation</td>
+<td>Elevation of satellites in [deg]</td>
+</tr>
+<tr>
+<td>gpsweek</td>
+<td>GPS week</td>
+</tr>
+<tr>
+<td>gpssec</td>
+<td>Seconds of GPS week</td>
+</tr>
+<tr>
+<td>residual_code</td>
+<td>Code (pseudorange) residuals in [m]</td>
+</tr>
+<tr>
+<td>residual_doppler</td>
+<td>Doppler residuals in [m]</td>
+</tr>
+<tr>
+<td>residual_phase</td>
+<td>Carrier-phase residuals in [m]</td>
+</tr>
+<tr>
+<td>satellite</td>
+<td>Satellite PRN number together with GNSS identifier (e.g. G07)</td>
+</tr>
+<tr>
+<td>system</td>
+<td>GNSS identifier</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h4 id="terraposresidualparsersetup_parser">TerraposResidualParser.<strong>setup_parser</strong>()</h4>
+<p>Full name: <code>midgard.parsers.terrapos_residual.setup_parser</code></p>
+<p>Signature: <code>(self) -&gt; Dict[str, Any]</code></p>
+<p>Set up information needed for the parser</p>
+<p>This should return a dictionary with all parameters needed by np.genfromtxt to do the actual parsing.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Dict</code>:  Parameters needed by np.genfromtxt to parse the input file.</li>
+</ul>
+<h4 id="terraposresidualparsersetup_postprocessors">TerraposResidualParser.<strong>setup_postprocessors</strong>()</h4>
+<p>Full name: <code>midgard.parsers.terrapos_residual.setup_postprocessors</code></p>
+<p>Signature: <code>(self) -&gt; List[Callable[[], NoneType]]</code></p>
+<p>List steps necessary for postprocessing</p>
+<h2 id="midgardparserstimeseries_env">midgard.parsers.timeseries_env</h2>
+<p>A parser for reading timeseries files in ENV format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='timeseries_env', file_path='stas.env')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files timeseries files in ENV (east, north, vertical) format</p>
+<h3 id="timeseriesenvparser"><strong>TimeseriesEnvParser</strong></h3>
+<p>Full name: <code>midgard.parsers.timeseries_env.TimeseriesEnvParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A parser for reading timeseries files in ENV format</p>
+<p>Following <strong>data</strong> are available after reading timeseries ENV file:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date</td>
+<td>Date in format yyMMMdd (e.g. 18MAY10).</td>
+</tr>
+<tr>
+<td>year</td>
+<td>Date in unit year.</td>
+</tr>
+<tr>
+<td>east</td>
+<td>East coordinate in [mm].</td>
+</tr>
+<tr>
+<td>east_sigma</td>
+<td>Standard devication of east coordinate in [mm].</td>
+</tr>
+<tr>
+<td>north</td>
+<td>North coordinate in [mm].</td>
+</tr>
+<tr>
+<td>north_sigma</td>
+<td>Standard devication of north coordinate in [mm].</td>
+</tr>
+<tr>
+<td>vertical</td>
+<td>Vertical coordinate in [mm].</td>
+</tr>
+<tr>
+<td>vertical_sigma</td>
+<td>Standard devication of vertical coordinate in [mm].</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__params__</td>
+<td>np.genfromtxt parameters</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h4 id="timeseriesenvparseras_dataset">TimeseriesEnvParser.<strong>as_dataset</strong>()</h4>
+<p>Full name: <code>midgard.parsers.timeseries_env.as_dataset</code></p>
+<p>Signature: <code>(self, ref_pos)</code></p>
+<h4 id="timeseriesenvparsersetup_parser">TimeseriesEnvParser.<strong>setup_parser</strong>()</h4>
+<p>Full name: <code>midgard.parsers.timeseries_env.setup_parser</code></p>
+<p>Signature: <code>(self) -&gt; Dict[str, Any]</code></p>
+<p>Set up information needed for the parser</p>
+<p>This should return a dictionary with all parameters needed by np.genfromtxt to do the actual parsing.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>Dict</code>:  Parameters needed by np.genfromtxt to parse the input file.</li>
+</ul>
+<h2 id="midgardparsersvlbi_source_names">midgard.parsers.vlbi_source_names</h2>
 <p>A parser for reading IVS source names translation table</p>
-<h2 id="vlbisourcenamesparser"><strong>VlbiSourceNamesParser</strong></h2>
+<h3 id="vlbisourcenamesparser"><strong>VlbiSourceNamesParser</strong></h3>
 <p>Full name: <code>midgard.parsers.vlbi_source_names.VlbiSourceNamesParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;) -&gt; None</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None) -&gt; None</code></p>
 <p>A parser for reading IVS source names translation table</p>
 <p>See https://vlbi.gsfc.nasa.gov/output for an example of a IVS source name file</p>
-<h3 id="vlbisourcenamesparsersetup_parser">VlbiSourceNamesParser.<strong>setup_parser</strong>()</h3>
+<h4 id="vlbisourcenamesparsersetup_parser">VlbiSourceNamesParser.<strong>setup_parser</strong>()</h4>
 <p>Full name: <code>midgard.parsers.vlbi_source_names.setup_parser</code></p>
 <p>Signature: <code>(self) -&gt; Dict[str, Any]</code></p>
 <p>Set up information needed for the parser</p>
 <p>This should return a dictionary with all parameters needed by np.genfromtxt to do the actual parsing.</p>
 <p><strong>Returns:</strong></p>
 <p>Parameters needed by np.genfromtxt to parse the input file.</p>
-<h3 id="vlbisourcenamesparserstructure_data">VlbiSourceNamesParser.<strong>structure_data</strong>()</h3>
+<h4 id="vlbisourcenamesparserstructure_data">VlbiSourceNamesParser.<strong>structure_data</strong>()</h4>
 <p>Full name: <code>midgard.parsers.vlbi_source_names.structure_data</code></p>
 <p>Signature: <code>(self) -&gt; None</code></p>
 <p>Structure raw array data into the self.data dictionary</p>
 <p>Using the IVS name as key.</p>
-<h1 id="midgardparserswip_rinex2_obs">midgard.parsers.wip_rinex2_obs</h1>
-<p>A parser for reading IVS source names translation table</p>
-<h2 id="rinex2obsparser"><strong>Rinex2ObsParser</strong></h2>
-<p>Full name: <code>midgard.parsers.wip_rinex2_obs.Rinex2ObsParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, strict:bool=False) -&gt; None</code></p>
-<p>A parser for reading IVS source names translation table</p>
-<p>See https://vlbi.gsfc.nasa.gov/output for an example of a IVS source name file</p>
-<h3 id="rinex2obsparsername-str">Rinex2ObsParser.name (str)</h3>
+<h2 id="midgardparserswip_rinex">midgard.parsers.wip_rinex</h2>
+<p>A parser for reading Rinex files</p>
+<h3 id="rinex"><strong>rinex</strong>()</h3>
+<p>Full name: <code>midgard.parsers.wip_rinex.rinex</code></p>
+<p>Signature: <code>(**parser_args:Any) -&gt; midgard.parsers._parser_rinex.RinexParser</code></p>
+<p>Dispatch to correct subclass based on Rinex file type</p>
+<h2 id="midgardparserswip_rinex2_nav">midgard.parsers.wip_rinex2_nav</h2>
+<p>A parser for reading RINEX navigation files with version 2.xx</p>
+<h3 id="rinex2navparser"><strong>Rinex2NavParser</strong></h3>
+<p>Full name: <code>midgard.parsers.wip_rinex2_nav.Rinex2NavParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading RINEX navigation files with version 2.xx</p>
+<h4 id="rinex2navparsername-str">Rinex2NavParser.name (str)</h4>
 <p><code>name = 'Rinex'</code></p>
-<h1 id="midgardparserswip_rinex3_obs">midgard.parsers.wip_rinex3_obs</h1>
-<p>A parser for reading IVS source names translation table</p>
-<h2 id="rinex3obsparser"><strong>Rinex3ObsParser</strong></h2>
+<h2 id="midgardparserswip_rinex2_obs">midgard.parsers.wip_rinex2_obs</h2>
+<p>A parser for reading RINEX observation files with version 2.xx</p>
+<h3 id="rinex2obsparser"><strong>Rinex2ObsParser</strong></h3>
+<p>Full name: <code>midgard.parsers.wip_rinex2_obs.Rinex2ObsParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading RINEX observation files with version 2.xx</p>
+<h4 id="rinex2obsparsername-str">Rinex2ObsParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h2 id="midgardparserswip_rinex3_nav">midgard.parsers.wip_rinex3_nav</h2>
+<p>A parser for reading RINEX navigation files with version 3.xx</p>
+<h3 id="rinex3navparser"><strong>Rinex3NavParser</strong></h3>
+<p>Full name: <code>midgard.parsers.wip_rinex3_nav.Rinex3NavParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading RINEX navigation files with version 3.xx</p>
+<h4 id="rinex3navparsername-str">Rinex3NavParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h2 id="midgardparserswip_rinex3_obs">midgard.parsers.wip_rinex3_obs</h2>
+<p>A parser for reading RINEX observation files with version 3.xx</p>
+<h3 id="rinex3obsparser"><strong>Rinex3ObsParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_obs.Rinex3ObsParser</code></p>
-<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger:Union[Callable[[str], NoneType], NoneType]=&lt;built-in function print&gt;, strict:bool=False) -&gt; None</code></p>
-<p>A parser for reading IVS source names translation table</p>
-<p>See https://vlbi.gsfc.nasa.gov/output for an example of a IVS source name file</p>
-<h3 id="rinex3obsparserepoch_fields-dict">Rinex3ObsParser.EPOCH_FIELDS (dict)</h3>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>A parser for reading RINEX observation files with version 3.xx</p>
+<h4 id="rinex3obsparserepoch_fields-dict">Rinex3ObsParser.EPOCH_FIELDS (dict)</h4>
 <p><code>EPOCH_FIELDS = {'identifier': (0, 1), 'year': (2, 6), 'month': (7, 9), 'day': (10, 12), 'hour': (13, 15), 'minute': (16, 18), 'second': (19, 21), 'frac_sec': (21, 29), 'epoch_flag': (30, 32), 'num_data_lines': (33, 35)}</code></p>
-<h3 id="rinex3obsparseras_dataframe">Rinex3ObsParser.<strong>as_dataframe</strong>()</h3>
+<h4 id="rinex3obsparseras_dataframe">Rinex3ObsParser.<strong>as_dataframe</strong>()</h4>
 <p>Full name: <code>midgard.parsers.wip_rinex3_obs.as_dataframe</code></p>
 <p>Signature: <code>(self, system:str, index:Union[str, List[str], NoneType]=None) -&gt; pandas.core.frame.DataFrame</code></p>
 <p>Return the parsed data as a Pandas DataFrame</p>
@@ -1462,21 +2164,58 @@ a simple structure. More advanced parsers may need to reimplement this
 method.</p>
 <p><strong>Args:</strong></p>
 <ul>
+<li><code>sys</code>:    Which system to create a datafrom for.</li>
 <li><code>index</code>:  Optional name of field to use as index. May also be a list of strings.</li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Pandas DataFrame with the parsed data.</p>
-<h3 id="rinex3obsparsername-str">Rinex3ObsParser.name (str)</h3>
+<h4 id="rinex3obsparsername-str">Rinex3ObsParser.name (str)</h4>
 <p><code>name = 'Rinex'</code></p>
-<h3 id="rinex3obsparserparse_data_lines">Rinex3ObsParser.<strong>parse_data_lines</strong>()</h3>
+<h4 id="rinex3obsparserparse_data_lines">Rinex3ObsParser.<strong>parse_data_lines</strong>()</h4>
 <p>Full name: <code>midgard.parsers.wip_rinex3_obs.parse_data_lines</code></p>
 <p>Signature: <code>(self, lines, epoch_info) -&gt; Dict[str, Any]</code></p>
 <p>Read one section of data lines</p>
-<h3 id="rinex3obsparserparse_epoch_line">Rinex3ObsParser.<strong>parse_epoch_line</strong>()</h3>
+<h4 id="rinex3obsparserparse_epoch_line">Rinex3ObsParser.<strong>parse_epoch_line</strong>()</h4>
 <p>Full name: <code>midgard.parsers.wip_rinex3_obs.parse_epoch_line</code></p>
 <p>Signature: <code>(self, line) -&gt; Dict[str, Any]</code></p>
 <p>Read data from Rinex file</p>
-<p>Add data to self.data</p></div>
+<p>Add data to self.data</p>
+<h2 id="midgardparserswip_rinex_clk">midgard.parsers.wip_rinex_clk</h2>
+<p>A parser for reading Rinex navigation files</p>
+<h3 id="rinexclkparser"><strong>RinexClkParser</strong></h3>
+<p>Full name: <code>midgard.parsers.wip_rinex_clk.RinexClkParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>Class for defining common methods for RINEX clock parsers.</p>
+<h4 id="rinexclkparsername-str">RinexClkParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h3 id="rinex_clk"><strong>rinex_clk</strong>()</h3>
+<p>Full name: <code>midgard.parsers.wip_rinex_clk.rinex_clk</code></p>
+<p>Signature: <code>(**parser_args:Any) -&gt; midgard.parsers._parser_rinex.RinexParser</code></p>
+<p>Dispatch to correct subclass based on version in Rinex file</p>
+<h2 id="midgardparserswip_rinex_nav">midgard.parsers.wip_rinex_nav</h2>
+<p>A parser for reading Rinex navigation files</p>
+<h3 id="rinexnavparser"><strong>RinexNavParser</strong></h3>
+<p>Full name: <code>midgard.parsers.wip_rinex_nav.RinexNavParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>Class for defining common methods for RINEX navigation parsers.</p>
+<h4 id="rinexnavparsername-str">RinexNavParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h3 id="rinex_nav"><strong>rinex_nav</strong>()</h3>
+<p>Full name: <code>midgard.parsers.wip_rinex_nav.rinex_nav</code></p>
+<p>Signature: <code>(**parser_args:Any) -&gt; midgard.parsers._parser_rinex.RinexParser</code></p>
+<p>Dispatch to correct subclass based on version in Rinex file</p>
+<h2 id="midgardparserswip_rinex_obs">midgard.parsers.wip_rinex_obs</h2>
+<p>A parser for reading Rinex observation files</p>
+<h3 id="rinexobsparser"><strong>RinexObsParser</strong></h3>
+<p>Full name: <code>midgard.parsers.wip_rinex_obs.RinexObsParser</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path], encoding:Union[str, NoneType]=None, logger=&lt;built-in function print&gt;, sampling_rate:Union[int, NoneType]=None, strict:bool=False) -&gt; None</code></p>
+<p>Class for defining common methods for RINEX observation parsers.</p>
+<h4 id="rinexobsparsername-str">RinexObsParser.name (str)</h4>
+<p><code>name = 'Rinex'</code></p>
+<h3 id="rinex_obs"><strong>rinex_obs</strong>()</h3>
+<p>Full name: <code>midgard.parsers.wip_rinex_obs.rinex_obs</code></p>
+<p>Signature: <code>(**parser_args:Any) -&gt; midgard.parsers._parser_rinex.RinexParser</code></p>
+<p>Dispatch to correct subclass based on version in Rinex file</p></div>
         </div>
 
         <footer class="col-md-12">

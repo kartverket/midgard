@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="img/favicon.ico">
-        <title>Midgard v0.1.9</title>
+        <title>Midgard v0.2.0</title>
         <link href="css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href=".">Midgard v0.1.9</a>
+                    <a class="navbar-brand" href=".">Midgard v0.2.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -75,7 +75,7 @@
 </li>
                                     
 <li >
-    <a href="api/midgard-coords/">midgard.coords</a>
+    <a href="api/midgard-data/">midgard.data</a>
 </li>
                                     
 <li >
@@ -84,6 +84,10 @@
                                     
 <li >
     <a href="api/midgard-files/">midgard.files</a>
+</li>
+                                    
+<li >
+    <a href="api/midgard-gnss/">midgard.gnss</a>
 </li>
                                     
 <li >
@@ -96,6 +100,18 @@
                                     
 <li >
     <a href="api/midgard-parsers/">midgard.parsers</a>
+</li>
+                                    
+<li >
+    <a href="api/midgard-plot/">midgard.plot</a>
+</li>
+                                    
+<li >
+    <a href="api/midgard-site_info/">midgard.site_info</a>
+</li>
+                                    
+<li >
+    <a href="api/midgard-writers/">midgard.writers</a>
 </li>
                                 </ul>
                             </li>
@@ -145,7 +161,7 @@ these are geodesy-specific, many are also useful in more general settings.</p>
 <h2 id="installing-midgard">Installing Midgard</h2>
 <p>Midgard is available at <a href="https://pypi.org/project/midgard/">PyPI</a>. You can
 install it by simply running</p>
-<pre><code>pip install midgard
+<pre><code>python -m pip install midgard
 </code></pre>
 <h2 id="installing-midgard-from-source">Installing Midgard from source</h2>
 <p>Midgard depends on several other brilliant Python packages, like for instance
@@ -175,13 +191,13 @@ conda activate midgard
 </code></pre>
 <h3 id="install-the-midgard-package">Install the Midgard package</h3>
 <p>To do the actual installation of Midgard, use the <code>flit</code> packaging tool:</p>
-<pre><code>flit install --dep production
+<pre><code>python -m flit install --dep production
 </code></pre>
 <p>If you want to develop the Midgard package, install it in editable mode using</p>
-<pre><code>flit install -s
+<pre><code>python -m flit install -s
 </code></pre>
 <p>On Windows, you can install in editable mode using</p>
-<pre><code>flit install --pth-file
+<pre><code>python -m flit install --pth-file
 </code></pre>
 <h2 id="using-midgard">Using Midgard</h2>
 <p>Midgard comes organized into different subpackages. To see info about the
@@ -273,5 +289,5 @@ different subpackages, use the Python help system:</p>
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2018-11-29 13:44:48
+Build Date UTC : 2019-02-01 13:04:10
 -->

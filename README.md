@@ -17,7 +17,7 @@ these are geodesy-specific, many are also useful in more general settings.
 Midgard is available at [PyPI](https://pypi.org/project/midgard/). You can
 install it by simply running
 
-    pip install midgard
+    python -m pip install midgard
 
 
 ## Installing Midgard from source
@@ -63,15 +63,15 @@ To install `midgard` in a new environment named `midgard` and activate it, do
 
 To do the actual installation of Midgard, use the `flit` packaging tool:
 
-    flit install --dep production
+    python -m flit install --dep production
 
 If you want to develop the Midgard package, install it in editable mode using
 
-    flit install -s
+    python -m flit install -s
 
 On Windows, you can install in editable mode using
 
-    flit install --pth-file
+    python -m flit install --pth-file
 
 
 ## Using Midgard

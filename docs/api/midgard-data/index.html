@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>midgard.data - Midgard v0.2.0</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Home</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../howto/testing/">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../midgard/">midgard</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-collections/">midgard.collections</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-config/">midgard.config</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">midgard.data</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev/">midgard.dev</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-files/">midgard.files</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-gnss/">midgard.gnss</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-ionosphere/">midgard.ionosphere</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-math/">midgard.math</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers/">midgard.parsers</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-plot/">midgard.plot</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-site_info/">midgard.site_info</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-writers/">midgard.writers</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../midgard-config/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../midgard-dev/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#midgarddata">midgard.data</a></li>
+            <li><a href="#midgarddata_h5utils">midgard.data._h5utils</a></li>
+            <li><a href="#midgarddata_position">midgard.data._position</a></li>
+            <li><a href="#midgarddata_position_delta">midgard.data._position_delta</a></li>
+            <li><a href="#midgarddata_time">midgard.data._time</a></li>
+            <li><a href="#midgarddata_time_formats">midgard.data._time_formats</a></li>
+        <li class="main "><a href="#todo-conversion-is-not-correct">TODO: conversion is not correct!!!</a></li>
+            <li><a href="#timeyearday2seconds-float">TimeYear.day2seconds (float)</a></li>
+            <li><a href="#timeyearformat-str">TimeYear.format (str)</a></li>
+            <li><a href="#timeyearfrom_jds">TimeYear.from_jds()</a></li>
+            <li><a href="#timeyearto_jds">TimeYear.to_jds()</a></li>
+            <li><a href="#timeyearunit-tuple">TimeYear.unit (tuple)</a></li>
+            <li><a href="#timeyearweek2days-float">TimeYear.week2days (float)</a></li>
+            <li><a href="#register_format">register_format()</a></li>
+            <li><a href="#midgarddata_time_scales">midgard.data._time_scales</a></li>
+            <li><a href="#midgarddatadataset">midgard.data.dataset</a></li>
+            <li><a href="#midgarddatafieldtypes">midgard.data.fieldtypes</a></li>
+            <li><a href="#midgarddatafieldtypes_fieldtype">midgard.data.fieldtypes._fieldtype</a></li>
+            <li><a href="#midgarddatafieldtypescollection">midgard.data.fieldtypes.collection</a></li>
+            <li><a href="#midgarddatafieldtypesfloat">midgard.data.fieldtypes.float</a></li>
+            <li><a href="#midgarddatafieldtypesposition">midgard.data.fieldtypes.position</a></li>
+            <li><a href="#midgarddatafieldtypesposition_delta">midgard.data.fieldtypes.position_delta</a></li>
+            <li><a href="#midgarddatafieldtypessigma">midgard.data.fieldtypes.sigma</a></li>
+            <li><a href="#midgarddatafieldtypestime">midgard.data.fieldtypes.time</a></li>
+            <li><a href="#midgarddataposition">midgard.data.position</a></li>
+            <li><a href="#midgarddatasigma">midgard.data.sigma</a></li>
+            <li><a href="#midgarddatatime">midgard.data.time</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="midgarddata">midgard.data</h1>
+<h2 id="midgarddata_h5utils">midgard.data._h5utils</h2>
+<p>Simple utilities used by Dataset when dealing with HDF5 files</p>
+<h3 id="dict2h5attr"><strong>dict2h5attr</strong>()</h3>
+<p>Full name: <code>midgard.data._h5utils.dict2h5attr</code></p>
+<p>Signature: <code>(dct:Dict[str, str]) -&gt; str</code></p>
+<p>Convert a dictionary to a string that can be stored as an HDF5 attribute</p>
+<h3 id="h5attr2dict"><strong>h5attr2dict</strong>()</h3>
+<p>Full name: <code>midgard.data._h5utils.h5attr2dict</code></p>
+<p>Signature: <code>(attr:str) -&gt; List[str]</code></p>
+<p>Convert an HDF5 attribute to a dictionary of strings</p>
+<h3 id="h5attr2list"><strong>h5attr2list</strong>()</h3>
+<p>Full name: <code>midgard.data._h5utils.h5attr2list</code></p>
+<p>Signature: <code>(attr:str) -&gt; List[str]</code></p>
+<p>Convert an HDF5 attribute to a list of strings</p>
+<h3 id="h5attr2tuple"><strong>h5attr2tuple</strong>()</h3>
+<p>Full name: <code>midgard.data._h5utils.h5attr2tuple</code></p>
+<p>Signature: <code>(attr:str) -&gt; Tuple[str, ...]</code></p>
+<p>Convert an HDF5 attribute to a list of strings</p>
+<h3 id="sequence2h5attr"><strong>sequence2h5attr</strong>()</h3>
+<p>Full name: <code>midgard.data._h5utils.sequence2h5attr</code></p>
+<p>Signature: <code>(lst:Sequence[str]) -&gt; str</code></p>
+<p>Convert a list to a string that can be stored as an HDF5 attribute</p>
+<h2 id="midgarddata_position">midgard.data._position</h2>
+<p>Array with positions</p>
+<h3 id="llhposition"><strong>LlhPosition</strong></h3>
+<p>Full name: <code>midgard.data._position.LlhPosition</code></p>
+<p>Signature: <code>(val, **pos_args)</code></p>
+<h4 id="llhpositionaberrated_direction_to">LlhPosition.<strong>aberrated_direction_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberrated_direction_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="llhpositionaberrated_elevation_to">LlhPosition.<strong>aberrated_elevation_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberrated_elevation_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="llhpositionaberration_to">LlhPosition.<strong>aberration_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberration_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="llhpositionazimuth_to">LlhPosition.<strong>azimuth_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.azimuth_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="llhpositioncolumn_names-tuple">LlhPosition.column_names (tuple)</h4>
+<p><code>column_names = ('lat', 'lon', 'height')</code></p>
+<h4 id="llhpositioncreate">LlhPosition.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._position.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, **pos_args:Any) -&gt; 'PositionArray'</code></p>
+<p>Factory for creating PositionArrays for different systems</p>
+<p>See each position class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:       Array of position values.</li>
+<li><code>system</code>:    Name of position system.</li>
+<li><code>pos_args</code>:  Additional arguments used to create the PositionArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h4 id="llhpositiondirection_to">LlhPosition.<strong>direction_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.direction_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="llhpositiondistance_to">LlhPosition.<strong>distance_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.distance_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<p>Distance to other positions in current system</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>other</code>:  Other position array</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array of distances to other position array.</p>
+<h4 id="llhpositionelevation_to">LlhPosition.<strong>elevation_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.elevation_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="llhpositionfrom_position">LlhPosition.<strong>from_position</strong>()</h4>
+<p>Full name: <code>midgard.data._position.from_position</code></p>
+<p>Signature: <code>(val:numpy.ndarray, other:'PositionArray') -&gt; 'PositionArray'</code></p>
+<p>Create a new position with given values and same attributes as other position</p>
+<p>Factory method for creating a new position array with the given
+values. Attributes will be copied from the other position.</p>
+<h4 id="llhpositionsystem-str">LlhPosition.system (str)</h4>
+<p><code>system = 'llh'</code></p>
+<h4 id="llhpositionto_system">LlhPosition.<strong>to_system</strong>()</h4>
+<p>Full name: <code>midgard.data._position.to_system</code></p>
+<p>Signature: <code>(self, system:str) -&gt; 'PositionArray'</code></p>
+<p>Convert position to a different system</p>
+<p>Returns a new PositionArray with the same position in the new system.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>system</code>:  Name of new system.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>PositionArray representing the same positions in the new system.</p>
+<h4 id="llhpositionunit">LlhPosition.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data._position.unit</code></p>
+<p>Signature: <code>(field:str='') -&gt; Tuple[str, ...]</code></p>
+<p>Unit of field</p>
+<h4 id="llhpositionvector_to">LlhPosition.<strong>vector_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.vector_to</code></p>
+<p>Signature: <code>(self, other:'PositionArray') -&gt; numpy.ndarray</code></p>
+<p>Vector to other positions in current system</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>other</code>:  Other position array.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array of vectors to other position array.</p>
+<h4 id="llhpositionzenith_distance_to">LlhPosition.<strong>zenith_distance_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.zenith_distance_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h3 id="positionarray"><strong>PositionArray</strong></h3>
+<p>Full name: <code>midgard.data._position.PositionArray</code></p>
+<p>Signature: <code>(val, **pos_args)</code></p>
+<p>Base class for Position arrays</p>
+<p>This PositionArray should not be instatiated. Instead instantiate one of
+the system specific subclasses, typically using the Position factory
+function.</p>
+<h4 id="positionarrayaberrated_direction_to">PositionArray.<strong>aberrated_direction_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberrated_direction_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="positionarrayaberrated_elevation_to">PositionArray.<strong>aberrated_elevation_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberrated_elevation_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="positionarrayaberration_to">PositionArray.<strong>aberration_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberration_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="positionarrayazimuth_to">PositionArray.<strong>azimuth_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.azimuth_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="positionarraycolumn_names-nonetype">PositionArray.column_names (NoneType)</h4>
+<p><code>column_names = None</code></p>
+<h4 id="positionarraycreate">PositionArray.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._position.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, **pos_args:Any) -&gt; 'PositionArray'</code></p>
+<p>Factory for creating PositionArrays for different systems</p>
+<p>See each position class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:       Array of position values.</li>
+<li><code>system</code>:    Name of position system.</li>
+<li><code>pos_args</code>:  Additional arguments used to create the PositionArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h4 id="positionarraydirection_to">PositionArray.<strong>direction_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.direction_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="positionarraydistance_to">PositionArray.<strong>distance_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.distance_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<p>Distance to other positions in current system</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>other</code>:  Other position array</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array of distances to other position array.</p>
+<h4 id="positionarrayelevation_to">PositionArray.<strong>elevation_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.elevation_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="positionarrayfrom_position">PositionArray.<strong>from_position</strong>()</h4>
+<p>Full name: <code>midgard.data._position.from_position</code></p>
+<p>Signature: <code>(val:numpy.ndarray, other:'PositionArray') -&gt; 'PositionArray'</code></p>
+<p>Create a new position with given values and same attributes as other position</p>
+<p>Factory method for creating a new position array with the given
+values. Attributes will be copied from the other position.</p>
+<h4 id="positionarraysystem-nonetype">PositionArray.system (NoneType)</h4>
+<p><code>system = None</code></p>
+<h4 id="positionarrayto_system">PositionArray.<strong>to_system</strong>()</h4>
+<p>Full name: <code>midgard.data._position.to_system</code></p>
+<p>Signature: <code>(self, system:str) -&gt; 'PositionArray'</code></p>
+<p>Convert position to a different system</p>
+<p>Returns a new PositionArray with the same position in the new system.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>system</code>:  Name of new system.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>PositionArray representing the same positions in the new system.</p>
+<h4 id="positionarrayunit">PositionArray.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data._position.unit</code></p>
+<p>Signature: <code>(field:str='') -&gt; Tuple[str, ...]</code></p>
+<p>Unit of field</p>
+<h4 id="positionarrayvector_to">PositionArray.<strong>vector_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.vector_to</code></p>
+<p>Signature: <code>(self, other:'PositionArray') -&gt; numpy.ndarray</code></p>
+<p>Vector to other positions in current system</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>other</code>:  Other position array.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array of vectors to other position array.</p>
+<h4 id="positionarrayzenith_distance_to">PositionArray.<strong>zenith_distance_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.zenith_distance_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h3 id="trsposition"><strong>TrsPosition</strong></h3>
+<p>Full name: <code>midgard.data._position.TrsPosition</code></p>
+<p>Signature: <code>(val, **pos_args)</code></p>
+<h4 id="trspositionaberrated_direction_to">TrsPosition.<strong>aberrated_direction_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberrated_direction_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="trspositionaberrated_elevation_to">TrsPosition.<strong>aberrated_elevation_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberrated_elevation_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="trspositionaberration_to">TrsPosition.<strong>aberration_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.aberration_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="trspositionazimuth_to">TrsPosition.<strong>azimuth_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.azimuth_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="trspositioncolumn_names-tuple">TrsPosition.column_names (tuple)</h4>
+<p><code>column_names = ('x', 'y', 'z')</code></p>
+<h4 id="trspositioncreate">TrsPosition.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._position.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, **pos_args:Any) -&gt; 'PositionArray'</code></p>
+<p>Factory for creating PositionArrays for different systems</p>
+<p>See each position class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:       Array of position values.</li>
+<li><code>system</code>:    Name of position system.</li>
+<li><code>pos_args</code>:  Additional arguments used to create the PositionArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h4 id="trspositiondirection_to">TrsPosition.<strong>direction_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.direction_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="trspositiondistance_to">TrsPosition.<strong>distance_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.distance_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<p>Distance to other positions in current system</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>other</code>:  Other position array</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array of distances to other position array.</p>
+<h4 id="trspositionelevation_to">TrsPosition.<strong>elevation_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.elevation_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="trspositionfrom_position">TrsPosition.<strong>from_position</strong>()</h4>
+<p>Full name: <code>midgard.data._position.from_position</code></p>
+<p>Signature: <code>(val:numpy.ndarray, other:'PositionArray') -&gt; 'PositionArray'</code></p>
+<p>Create a new position with given values and same attributes as other position</p>
+<p>Factory method for creating a new position array with the given
+values. Attributes will be copied from the other position.</p>
+<h4 id="trspositionsystem-str">TrsPosition.system (str)</h4>
+<p><code>system = 'trs'</code></p>
+<h4 id="trspositionto_system">TrsPosition.<strong>to_system</strong>()</h4>
+<p>Full name: <code>midgard.data._position.to_system</code></p>
+<p>Signature: <code>(self, system:str) -&gt; 'PositionArray'</code></p>
+<p>Convert position to a different system</p>
+<p>Returns a new PositionArray with the same position in the new system.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>system</code>:  Name of new system.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>PositionArray representing the same positions in the new system.</p>
+<h4 id="trspositionunit">TrsPosition.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data._position.unit</code></p>
+<p>Signature: <code>(field:str='') -&gt; Tuple[str, ...]</code></p>
+<p>Unit of field</p>
+<h4 id="trspositionvector_to">TrsPosition.<strong>vector_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.vector_to</code></p>
+<p>Signature: <code>(self, other:'PositionArray') -&gt; numpy.ndarray</code></p>
+<p>Vector to other positions in current system</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>other</code>:  Other position array.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array of vectors to other position array.</p>
+<h4 id="trspositionzenith_distance_to">TrsPosition.<strong>zenith_distance_to</strong>()</h4>
+<p>Full name: <code>midgard.data._position.zenith_distance_to</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h3 id="register_attribute"><strong>register_attribute</strong>()</h3>
+<p>Full name: <code>midgard.data._position.register_attribute</code></p>
+<p>Signature: <code>(name:str) -&gt; None</code></p>
+<p>Function used to register new attributes on position arrays</p>
+<p>The registered attributes will be available as attributes on PositionArray
+and its subclasses. In addition, each attribute can be given as a parameter
+when creating a PositionArray.</p>
+<p>The reason for using this register-function instead of a regular attribute
+is to allow additional attributes to be added on all position systems.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>name</code>:  Name of attribute</li>
+</ul>
+<h3 id="register_field"><strong>register_field</strong>()</h3>
+<p>Full name: <code>midgard.data._position.register_field</code></p>
+<p>Signature: <code>(units:List[str]) -&gt; Callable</code></p>
+<p>Decorator used to register fields and their units</p>
+<h3 id="register_system"><strong>register_system</strong>()</h3>
+<p>Full name: <code>midgard.data._position.register_system</code></p>
+<p>Signature: <code>(convert_to:Dict[str, Callable]=None, convert_from:Dict[str, Callable]=None) -&gt; Callable[[Callable], Callable]</code></p>
+<p>Decorator used to register new position systems</p>
+<p>The system name is read from the .system attribute of the Position class.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>convert_to</code>:    Functions used to convert to other systems.</li>
+<li><code>convert_from</code>:  Functions used to convert from other systems.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Decorator registering system.</p>
+<h2 id="midgarddata_position_delta">midgard.data._position_delta</h2>
+<p>Array with positions</p>
+<h3 id="enupositiondelta"><strong>EnuPositionDelta</strong></h3>
+<p>Full name: <code>midgard.data._position_delta.EnuPositionDelta</code></p>
+<p>Signature: <code>(val, ref_pos, **delta_args)</code></p>
+<h4 id="enupositiondeltacolumn_names-tuple">EnuPositionDelta.column_names (tuple)</h4>
+<p><code>column_names = ('east', 'north', 'up')</code></p>
+<h4 id="enupositiondeltacreate">EnuPositionDelta.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._position_delta.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, ref_pos, **delta_args:Any) -&gt; 'PositionDeltaArray'</code></p>
+<p>Factory for creating PositionDeltaArrays for different systems</p>
+<p>See each position delta class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:         Array of position deltas.</li>
+<li><code>system</code>:      Name of position system.</li>
+<li><code>ref_pos</code>:     Array of reference positions.</li>
+<li><code>delta_args</code>:  Additional arguments used to create the PositionDeltaArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h4 id="enupositiondeltasystem-str">EnuPositionDelta.system (str)</h4>
+<p><code>system = 'enu'</code></p>
+<h4 id="enupositiondeltato_system">EnuPositionDelta.<strong>to_system</strong>()</h4>
+<p>Full name: <code>midgard.data._position_delta.to_system</code></p>
+<p>Signature: <code>(self, system:str) -&gt; 'PositionDeltaArray'</code></p>
+<p>Convert position to a different system</p>
+<p>Returns a new PositionDeltaArray with the same position in the new system.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>system</code>:  Name of new system.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>PositionDeltaArray representing the same positions in the new system.</p>
+<h3 id="positiondeltaarray"><strong>PositionDeltaArray</strong></h3>
+<p>Full name: <code>midgard.data._position_delta.PositionDeltaArray</code></p>
+<p>Signature: <code>(val, ref_pos, **delta_args)</code></p>
+<p>Base class for position deltas</p>
+<p>This PositionDeltaArray should not be instatiated. Instead instantiate one
+of the system specific subclasses, typically using the PositionDelta
+factory function.</p>
+<h4 id="positiondeltaarraycolumn_names-nonetype">PositionDeltaArray.column_names (NoneType)</h4>
+<p><code>column_names = None</code></p>
+<h4 id="positiondeltaarraycreate">PositionDeltaArray.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._position_delta.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, ref_pos, **delta_args:Any) -&gt; 'PositionDeltaArray'</code></p>
+<p>Factory for creating PositionDeltaArrays for different systems</p>
+<p>See each position delta class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:         Array of position deltas.</li>
+<li><code>system</code>:      Name of position system.</li>
+<li><code>ref_pos</code>:     Array of reference positions.</li>
+<li><code>delta_args</code>:  Additional arguments used to create the PositionDeltaArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h4 id="positiondeltaarraysystem-nonetype">PositionDeltaArray.system (NoneType)</h4>
+<p><code>system = None</code></p>
+<h4 id="positiondeltaarrayto_system">PositionDeltaArray.<strong>to_system</strong>()</h4>
+<p>Full name: <code>midgard.data._position_delta.to_system</code></p>
+<p>Signature: <code>(self, system:str) -&gt; 'PositionDeltaArray'</code></p>
+<p>Convert position to a different system</p>
+<p>Returns a new PositionDeltaArray with the same position in the new system.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>system</code>:  Name of new system.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>PositionDeltaArray representing the same positions in the new system.</p>
+<h3 id="trspositiondelta"><strong>TrsPositionDelta</strong></h3>
+<p>Full name: <code>midgard.data._position_delta.TrsPositionDelta</code></p>
+<p>Signature: <code>(val, ref_pos, **delta_args)</code></p>
+<h4 id="trspositiondeltacolumn_names-tuple">TrsPositionDelta.column_names (tuple)</h4>
+<p><code>column_names = ('x', 'y', 'z')</code></p>
+<h4 id="trspositiondeltacreate">TrsPositionDelta.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._position_delta.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, ref_pos, **delta_args:Any) -&gt; 'PositionDeltaArray'</code></p>
+<p>Factory for creating PositionDeltaArrays for different systems</p>
+<p>See each position delta class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:         Array of position deltas.</li>
+<li><code>system</code>:      Name of position system.</li>
+<li><code>ref_pos</code>:     Array of reference positions.</li>
+<li><code>delta_args</code>:  Additional arguments used to create the PositionDeltaArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h4 id="trspositiondeltasystem-str">TrsPositionDelta.system (str)</h4>
+<p><code>system = 'trs'</code></p>
+<h4 id="trspositiondeltato_system">TrsPositionDelta.<strong>to_system</strong>()</h4>
+<p>Full name: <code>midgard.data._position_delta.to_system</code></p>
+<p>Signature: <code>(self, system:str) -&gt; 'PositionDeltaArray'</code></p>
+<p>Convert position to a different system</p>
+<p>Returns a new PositionDeltaArray with the same position in the new system.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>system</code>:  Name of new system.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>PositionDeltaArray representing the same positions in the new system.</p>
+<h3 id="delta_enu2trs"><strong>delta_enu2trs</strong>()</h3>
+<p>Full name: <code>midgard.data._position_delta.delta_enu2trs</code></p>
+<p>Signature: <code>(enu:'EnuPositionDelta') -&gt; numpy.ndarray</code></p>
+<p>Convert position deltas from ENU to TRS</p>
+<h3 id="delta_trs2enu"><strong>delta_trs2enu</strong>()</h3>
+<p>Full name: <code>midgard.data._position_delta.delta_trs2enu</code></p>
+<p>Signature: <code>(trs:'TrsPositionDelta') -&gt; numpy.ndarray</code></p>
+<p>Convert position deltas from TRS to ENU</p>
+<h3 id="register_system_1"><strong>register_system</strong>()</h3>
+<p>Full name: <code>midgard.data._position_delta.register_system</code></p>
+<p>Signature: <code>(convert_to:Dict[str, Callable]=None, convert_from:Dict[str, Callable]=None) -&gt; Callable[[Callable], Callable]</code></p>
+<p>Decorator used to register new position systems</p>
+<p>The system name is read from the .system attribute of the Position class.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>convert_to</code>:    Functions used to convert to other systems.</li>
+<li><code>convert_from</code>:  Functions used to convert from other systems.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Decorator registering system.</p>
+<h2 id="midgarddata_time">midgard.data._time</h2>
+<p>Array with time epochs</p>
+<h3 id="timearray"><strong>TimeArray</strong></h3>
+<p>Full name: <code>midgard.data._time.TimeArray</code></p>
+<p>Signature: <code>(val, val2=None, format='', _jd1=None, _jd2=None)</code></p>
+<h4 id="timearraycreate">TimeArray.<strong>create</strong>()</h4>
+<p>Full name: <code>midgard.data._time.create</code></p>
+<p>Signature: <code>(val:numpy.ndarray, scale:str, format:str, val2:Union[numpy.ndarray, NoneType]=None) -&gt; 'TimeArray'</code></p>
+<p>Factory for creating TimeArrays for different scales</p>
+<p>See each time class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:       Array of time values.</li>
+<li><code>scale</code>:    Name of time scale.</li>
+<li><code>pos_args</code>:  Additional arguments used to create the TimeArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with times in the given scale.</p>
+<h4 id="timearrayfrom_jds">TimeArray.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time.from_jds</code></p>
+<p>Signature: <code>(jd1:numpy.ndarray, jd2:numpy.ndarray, format:str) -&gt; 'TimeArray'</code></p>
+<p>Create a new time array with given Julian dates and format, keep scale</p>
+<h4 id="timearraynow">TimeArray.<strong>now</strong>()</h4>
+<p>Full name: <code>midgard.data._time.now</code></p>
+<p>Signature: <code>(scale='utc', format='datetime') -&gt; 'TimeArray'</code></p>
+<p>Create a new time representing now</p>
+<h4 id="timearrayscale-nonetype">TimeArray.scale (NoneType)</h4>
+<p><code>scale = None</code></p>
+<h4 id="timearrayto_scale">TimeArray.<strong>to_scale</strong>()</h4>
+<p>Full name: <code>midgard.data._time.to_scale</code></p>
+<p>Signature: <code>(self, scale:str) -&gt; 'TimeArray'</code></p>
+<p>Convert time to a different scale</p>
+<p>Returns a new TimeArray with the same time in the new scale.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>scale</code>:  Name of new scale.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>TimeArray representing the same times in the new scale.</p>
+<h4 id="timearrayunit">TimeArray.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data._time.unit</code></p>
+<p>Signature: <code>(self, field:str='') -&gt; Tuple[str, ...]</code></p>
+<p>Unit of field</p>
+<h3 id="register_scale"><strong>register_scale</strong>()</h3>
+<p>Full name: <code>midgard.data._time.register_scale</code></p>
+<p>Signature: <code>(convert_to:Dict[str, Callable]=None, convert_from:Dict[str, Callable]=None) -&gt; Callable[[Callable], Callable]</code></p>
+<p>Decorator used to register new time scales</p>
+<p>The scale name is read from the .scale attribute of the Time class.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>convert_to</code>:    Functions used to convert to other scales.</li>
+<li><code>convert_from</code>:  Functions used to convert from other scales.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Decorator registering scale.</p>
+<h2 id="midgarddata_time_formats">midgard.data._time_formats</h2>
+<p>Array with time epochs</p>
+<h3 id="timedatetime"><strong>TimeDateTime</strong></h3>
+<p>Full name: <code>midgard.data._time_formats.TimeDateTime</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<h4 id="timedatetimeday2seconds-float">TimeDateTime.day2seconds (float)</h4>
+<p><code>day2seconds = 86400.0</code></p>
+<h4 id="timedatetimeformat-str">TimeDateTime.format (str)</h4>
+<p><code>format = 'datetime'</code></p>
+<h4 id="timedatetimefrom_jds">TimeDateTime.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.from_jds</code></p>
+<p>Signature: <code>(jd1, jd2)</code></p>
+<h4 id="timedatetimeto_jds">TimeDateTime.<strong>to_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.to_jds</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<h4 id="timedatetimeunit-nonetype">TimeDateTime.unit (NoneType)</h4>
+<p><code>unit = None</code></p>
+<h4 id="timedatetimeweek2days-float">TimeDateTime.week2days (float)</h4>
+<p><code>week2days = 6.999999999999998</code></p>
+<h3 id="timeformat"><strong>TimeFormat</strong></h3>
+<p>Full name: <code>midgard.data._time_formats.TimeFormat</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<h4 id="timeformatday2seconds-float">TimeFormat.day2seconds (float)</h4>
+<p><code>day2seconds = 86400.0</code></p>
+<h4 id="timeformatformat-nonetype">TimeFormat.format (NoneType)</h4>
+<p><code>format = None</code></p>
+<h4 id="timeformatfrom_jds">TimeFormat.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.from_jds</code></p>
+<p>Signature: <code>(jd1, jd2)</code></p>
+<p>Convert Julian days to the right format</p>
+<h4 id="timeformatto_jds">TimeFormat.<strong>to_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.to_jds</code></p>
+<p>Signature: <code>(val, val2)</code></p>
+<p>Convert val and val2 to Julian days and set the .jd1 and .jd2 attributes</p>
+<h4 id="timeformatunit-nonetype">TimeFormat.unit (NoneType)</h4>
+<p><code>unit = None</code></p>
+<h4 id="timeformatweek2days-float">TimeFormat.week2days (float)</h4>
+<p><code>week2days = 6.999999999999998</code></p>
+<h3 id="timegpsweeksec"><strong>TimeGPSWeekSec</strong></h3>
+<p>Full name: <code>midgard.data._time_formats.TimeGPSWeekSec</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<p>GPS weeks and seconds.</p>
+<h4 id="timegpsweeksecday2seconds-float">TimeGPSWeekSec.day2seconds (float)</h4>
+<p><code>day2seconds = 86400.0</code></p>
+<h4 id="timegpsweeksecformat-str">TimeGPSWeekSec.format (str)</h4>
+<p><code>format = 'gps_ws'</code></p>
+<h4 id="timegpsweeksecfrom_jds">TimeGPSWeekSec.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.from_jds</code></p>
+<p>Signature: <code>(jd1, jd2)</code></p>
+<h4 id="timegpsweeksecto_jds">TimeGPSWeekSec.<strong>to_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.to_jds</code></p>
+<p>Signature: <code>(wwww, sec)</code></p>
+<h4 id="timegpsweeksecunit-tuple">TimeGPSWeekSec.unit (tuple)</h4>
+<p><code>unit = ('week', 'second')</code></p>
+<h4 id="timegpsweeksecweek2days-float">TimeGPSWeekSec.week2days (float)</h4>
+<p><code>week2days = 6.999999999999998</code></p>
+<h3 id="timejd"><strong>TimeJD</strong></h3>
+<p>Full name: <code>midgard.data._time_formats.TimeJD</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<h4 id="timejdday2seconds-float">TimeJD.day2seconds (float)</h4>
+<p><code>day2seconds = 86400.0</code></p>
+<h4 id="timejdformat-str">TimeJD.format (str)</h4>
+<p><code>format = 'jd'</code></p>
+<h4 id="timejdfrom_jds">TimeJD.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.from_jds</code></p>
+<p>Signature: <code>(jd1, jd2)</code></p>
+<h4 id="timejdto_jds">TimeJD.<strong>to_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.to_jds</code></p>
+<p>Signature: <code>(val, val2)</code></p>
+<h4 id="timejdunit-tuple">TimeJD.unit (tuple)</h4>
+<p><code>unit = ('day',)</code></p>
+<h4 id="timejdweek2days-float">TimeJD.week2days (float)</h4>
+<p><code>week2days = 6.999999999999998</code></p>
+<h3 id="timemjd"><strong>TimeMJD</strong></h3>
+<p>Full name: <code>midgard.data._time_formats.TimeMJD</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<p>Modified Julian Date time format.</p>
+<p>This represents the number of days since midnight on November 17, 1858.
+For example, 51544.0 in MJD is midnight on January 1, 2000.</p>
+<h4 id="timemjdday2seconds-float">TimeMJD.day2seconds (float)</h4>
+<p><code>day2seconds = 86400.0</code></p>
+<h4 id="timemjdformat-str">TimeMJD.format (str)</h4>
+<p><code>format = 'mjd'</code></p>
+<h4 id="timemjdfrom_jds">TimeMJD.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.from_jds</code></p>
+<p>Signature: <code>(jd1, jd2)</code></p>
+<h4 id="timemjdto_jds">TimeMJD.<strong>to_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.to_jds</code></p>
+<p>Signature: <code>(val, val2)</code></p>
+<h4 id="timemjdunit-tuple">TimeMJD.unit (tuple)</h4>
+<p><code>unit = ('day',)</code></p>
+<h4 id="timemjdweek2days-float">TimeMJD.week2days (float)</h4>
+<p><code>week2days = 6.999999999999998</code></p>
+<h3 id="timeyear"><strong>TimeYear</strong></h3>
+<p>Full name: <code>midgard.data._time_formats.TimeYear</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<p>Year.</p>
+<h1 id="todo-conversion-is-not-correct">TODO: conversion is not correct!!!</h1>
+<h4 id="timeyearday2seconds-float">TimeYear.day2seconds (float)</h4>
+<p><code>day2seconds = 86400.0</code></p>
+<h4 id="timeyearformat-str">TimeYear.format (str)</h4>
+<p><code>format = 'decimalyear'</code></p>
+<h4 id="timeyearfrom_jds">TimeYear.<strong>from_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.from_jds</code></p>
+<p>Signature: <code>(jds1, jds2)</code></p>
+<h4 id="timeyearto_jds">TimeYear.<strong>to_jds</strong>()</h4>
+<p>Full name: <code>midgard.data._time_formats.to_jds</code></p>
+<p>Signature: <code>(val, val2=None)</code></p>
+<h4 id="timeyearunit-tuple">TimeYear.unit (tuple)</h4>
+<p><code>unit = ('common_year',)</code></p>
+<h4 id="timeyearweek2days-float">TimeYear.week2days (float)</h4>
+<p><code>week2days = 6.999999999999998</code></p>
+<h3 id="register_format"><strong>register_format</strong>()</h3>
+<p>Full name: <code>midgard.data._time_formats.register_format</code></p>
+<p>Signature: <code>(cls:Callable) -&gt; Callable</code></p>
+<p>Decorator used to register new time formats</p>
+<p>The format name is read from the .format attribute of the TimeFormat class.</p>
+<h2 id="midgarddata_time_scales">midgard.data._time_scales</h2>
+<p>Time scales and conversions between them</p>
+<h3 id="gpstime"><strong>GpsTime</strong></h3>
+<p>Full name: <code>midgard.data._time_scales.GpsTime</code></p>
+<p>Signature: <code>(val, val2=None, format='', _jd1=None, _jd2=None)</code></p>
+<h4 id="gpstimescale-str">GpsTime.scale (str)</h4>
+<p><code>scale = 'gps'</code></p>
+<h3 id="taitime"><strong>TaiTime</strong></h3>
+<p>Full name: <code>midgard.data._time_scales.TaiTime</code></p>
+<p>Signature: <code>(val, val2=None, format='', _jd1=None, _jd2=None)</code></p>
+<h4 id="taitimescale-str">TaiTime.scale (str)</h4>
+<p><code>scale = 'tai'</code></p>
+<h3 id="tttime"><strong>TtTime</strong></h3>
+<p>Full name: <code>midgard.data._time_scales.TtTime</code></p>
+<p>Signature: <code>(val, val2=None, format='', _jd1=None, _jd2=None)</code></p>
+<h4 id="tttimescale-str">TtTime.scale (str)</h4>
+<p><code>scale = 'tt'</code></p>
+<h3 id="utctime"><strong>UtcTime</strong></h3>
+<p>Full name: <code>midgard.data._time_scales.UtcTime</code></p>
+<p>Signature: <code>(val, val2=None, format='', _jd1=None, _jd2=None)</code></p>
+<h4 id="utctimescale-str">UtcTime.scale (str)</h4>
+<p><code>scale = 'utc'</code></p>
+<h2 id="midgarddatadataset">midgard.data.dataset</h2>
+<p>A dataset for handling time series data</p>
+<p><strong>Description:</strong></p>
+<h3 id="dataset"><strong>Dataset</strong></h3>
+<p>Full name: <code>midgard.data.dataset.Dataset</code></p>
+<p>Signature: <code>(num_obs:int=0) -&gt; None</code></p>
+<p>A dataset representing fields of data arrays</p>
+<h4 id="datasetadd_collection">Dataset.<strong>add_collection</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_collection</code></p>
+<p>Signature: <code>(self, name, val, unit=None, write_level=None, suffix=None, **field_args)</code></p>
+<p>Add a collection field to the dataset</p>
+<h4 id="datasetadd_float">Dataset.<strong>add_float</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_float</code></p>
+<p>Signature: <code>(self, name, val, unit=None, write_level=None, suffix=None, **field_args)</code></p>
+<p>Add a float field to the dataset</p>
+<h4 id="datasetadd_position">Dataset.<strong>add_position</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_position</code></p>
+<p>Signature: <code>(self, name, val, unit=None, write_level=None, suffix=None, **field_args)</code></p>
+<p>Add a position field to the dataset</p>
+<h4 id="datasetadd_position_delta">Dataset.<strong>add_position_delta</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_position_delta</code></p>
+<p>Signature: <code>(self, name, val, unit=None, write_level=None, suffix=None, **field_args)</code></p>
+<p>Add a position_delta field to the dataset</p>
+<h4 id="datasetadd_sigma">Dataset.<strong>add_sigma</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_sigma</code></p>
+<p>Signature: <code>(self, name, val, unit=None, write_level=None, suffix=None, **field_args)</code></p>
+<p>Add a sigma field to the dataset</p>
+<h4 id="datasetadd_time">Dataset.<strong>add_time</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_time</code></p>
+<p>Signature: <code>(self, name, val, unit=None, write_level=None, suffix=None, **field_args)</code></p>
+<p>Add a time field to the dataset</p>
+<h4 id="datasetapply">Dataset.<strong>apply</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.apply</code></p>
+<p>Signature: <code>(self, func:Callable, field:str, **filters:Any) -&gt; Any</code></p>
+<p>Apply a function to a field</p>
+<h4 id="datasetas_dataframe">Dataset.<strong>as_dataframe</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.as_dataframe</code></p>
+<p>Signature: <code>(self, fields=None, index=None) -&gt; pandas.core.frame.DataFrame</code></p>
+<p>Return a representation of the dataset as a Pandas DataFrame</p>
+<h4 id="datasetas_dict">Dataset.<strong>as_dict</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.as_dict</code></p>
+<p>Signature: <code>(self, fields=None) -&gt; Dict[str, Any]</code></p>
+<p>Return a representation of the dataset as a dictionary</p>
+<h4 id="datasetcopy_from">Dataset.<strong>copy_from</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.copy_from</code></p>
+<p>Signature: <code>(self, other:'Dataset') -&gt; None</code></p>
+<p>Copy observations from another dataset</p>
+<p><strong>Args:</strong></p>
+<p>other_dset (Dataset):  The other dataset.
+meta_key (str):        Dictionary key for introduction of an additional level in dictionary.</p>
+<h4 id="datasetcount">Dataset.<strong>count</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.count</code></p>
+<p>Signature: <code>(self, field:str, **filters:Any) -&gt; int</code></p>
+<p>Count the number of unique values in a field</p>
+<h4 id="datasetextend">Dataset.<strong>extend</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.extend</code></p>
+<p>Signature: <code>(self, other_dataset:'Dataset') -&gt; None</code></p>
+<p>Add observations from another dataset to the end of this dataset</p>
+<h4 id="datasetfilter">Dataset.<strong>filter</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.filter</code></p>
+<p>Signature: <code>(self, idx=None, **filters) -&gt; &lt;built-in function array&gt;</code></p>
+<p>Filter observations</p>
+<p>TODO: default_field_suffix</p>
+<h4 id="datasetfor_each">Dataset.<strong>for_each</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.for_each</code></p>
+<p>Signature: <code>(self, key)</code></p>
+<p>Do something for each suffix</p>
+<h4 id="datasetmean">Dataset.<strong>mean</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.mean</code></p>
+<p>Signature: <code>(self, field:str, **filters:Any) -&gt; float</code></p>
+<p>Calculate mean of a field</p>
+<h4 id="datasetnum">Dataset.<strong>num</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.num</code></p>
+<p>Signature: <code>(self, **filters:Any) -&gt; int</code></p>
+<p>Number of observations satisfying the filters</p>
+<h4 id="datasetplot_values">Dataset.<strong>plot_values</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.plot_values</code></p>
+<p>Signature: <code>(self, field:str) -&gt; &lt;built-in function array&gt;</code></p>
+<p>Return values of a field in a form that can be plotted</p>
+<h4 id="datasetread">Dataset.<strong>read</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.read</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path]) -&gt; 'Dataset'</code></p>
+<p>Read a dataset from file</p>
+<h4 id="datasetrms">Dataset.<strong>rms</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.rms</code></p>
+<p>Signature: <code>(self, field:str, **filters:Any) -&gt; float</code></p>
+<p>Calculate Root Mean Square of a field</p>
+<h4 id="datasetsubset">Dataset.<strong>subset</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.subset</code></p>
+<p>Signature: <code>(self, idx:&lt;built-in function array&gt;) -&gt; None</code></p>
+<p>Remove observations from all fields based on index</p>
+<h4 id="datasetunique">Dataset.<strong>unique</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.unique</code></p>
+<p>Signature: <code>(self, field, **filters) -&gt; &lt;built-in function array&gt;</code></p>
+<p>List unique values of a given field</p>
+<p>TODO: default_field_suffix</p>
+<h4 id="datasetunit">Dataset.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.unit</code></p>
+<p>Signature: <code>(self, field)</code></p>
+<p>Unit for values in a given field</p>
+<h4 id="datasetversion-str">Dataset.version (str)</h4>
+<p><code>version = 'Dataset v3.0, Midgard v0.2.0'</code></p>
+<h4 id="datasetwrite">Dataset.<strong>write</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.write</code></p>
+<p>Signature: <code>(self, file_path:Union[str, pathlib.Path], write_level:Union[midgard.collections.enums.WriteLevel, NoneType]=None) -&gt; None</code></p>
+<p>Write a dataset to file</p>
+<h3 id="meta"><strong>Meta</strong></h3>
+<p>Full name: <code>midgard.data.dataset.Meta</code></p>
+<p>Signature: <code>(*args, **kwargs)</code></p>
+<h4 id="metaadd">Meta.<strong>add</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add</code></p>
+<p>Signature: <code>(self, section, name, value)</code></p>
+<p>Add information to the metaset</p>
+<h4 id="metaadd_event">Meta.<strong>add_event</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.add_event</code></p>
+<p>Signature: <code>(self, timestamp, event_type, description)</code></p>
+<p>Add event to the metaset</p>
+<h4 id="metacopy_from">Meta.<strong>copy_from</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.copy_from</code></p>
+<p>Signature: <code>(self, other)</code></p>
+<h4 id="metaget_events">Meta.<strong>get_events</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.get_events</code></p>
+<p>Signature: <code>(self, *event_types)</code></p>
+<p>Get events from the metaset</p>
+<h4 id="metaread">Meta.<strong>read</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.read</code></p>
+<p>Signature: <code>(self, h5_group)</code></p>
+<h4 id="metawrite">Meta.<strong>write</strong>()</h4>
+<p>Full name: <code>midgard.data.dataset.write</code></p>
+<p>Signature: <code>(self, h5_group)</code></p>
+<h3 id="field_type-str">field_type (str)</h3>
+<p><code>field_type = 'time'</code></p>
+<h2 id="midgarddatafieldtypes">midgard.data.fieldtypes</h2>
+<p>Field types that can be used by Dataset</p>
+<h3 id="function"><strong>function</strong>()</h3>
+<p>Full name: <code>midgard.data.fieldtypes.function</code></p>
+<p>Signature: <code>(plugin_name:str) -&gt; Callable</code></p>
+<p>Function creating new field</p>
+<h3 id="names"><strong>names</strong>()</h3>
+<p>Full name: <code>midgard.data.fieldtypes.names</code></p>
+<p>Signature: <code>() -&gt; List[str]</code></p>
+<p>Names of fieldtype plugins</p>
+<h2 id="midgarddatafieldtypes_fieldtype">midgard.data.fieldtypes._fieldtype</h2>
+<p>Abstract class used to define different types of tables for a Dataset</p>
+<h3 id="fieldtype"><strong>FieldType</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.FieldType</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<p>Abstract class representing a type of field in the Dataset</p>
+<h4 id="fieldtypeas_dataframe">FieldType.<strong>as_dataframe</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.as_dataframe</code></p>
+<p>Signature: <code>(self, fields=None, index=None) -&gt; pandas.core.frame.DataFrame</code></p>
+<p>Return a representation of the field as a Pandas DataFrame</p>
+<h4 id="fieldtypeas_dict">FieldType.<strong>as_dict</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.as_dict</code></p>
+<p>Signature: <code>(self, fields=None) -&gt; Dict[str, Any]</code></p>
+<p>Return a representation of the field as a dictionary</p>
+<h4 id="fieldtypecopy">FieldType.<strong>copy</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.copy</code></p>
+<p>Signature: <code>(self) -&gt; 'FieldType'</code></p>
+<p>Make a copy of field</p>
+<h4 id="fieldtypecopy_from">FieldType.<strong>copy_from</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.copy_from</code></p>
+<p>Signature: <code>(self, other_field) -&gt; None</code></p>
+<p>Copy data from another field</p>
+<h4 id="fieldtypeextend">FieldType.<strong>extend</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.extend</code></p>
+<p>Signature: <code>(self, other_field) -&gt; None</code></p>
+<p>Add observations from another field</p>
+<h4 id="fieldtyperead">FieldType.<strong>read</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.read</code></p>
+<p>Signature: <code>(h5_group, master) -&gt; 'FieldType'</code></p>
+<p>Read a field from a HDF5 data source</p>
+<h4 id="fieldtypesubset">FieldType.<strong>subset</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.subset</code></p>
+<p>Signature: <code>(self, idx:&lt;built-in function array&gt;) -&gt; None</code></p>
+<p>Remove observations from a field based on index</p>
+<h4 id="fieldtypeunit">FieldType.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.unit</code></p>
+<p>Signature: <code>(self, subfield)</code></p>
+<p>Unit(s) of field</p>
+<h4 id="fieldtypewrite">FieldType.<strong>write</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes._fieldtype.write</code></p>
+<p>Signature: <code>(self, h5_group, write_level:midgard.collections.enums.WriteLevel) -&gt; None</code></p>
+<p>Write data to a HDF5 data source</p>
+<h2 id="midgarddatafieldtypescollection">midgard.data.fieldtypes.collection</h2>
+<p>A Dataset collection field consisting of other fields</p>
+<h3 id="collection"><strong>Collection</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.collection.Collection</code></p>
+<p>Signature: <code>()</code></p>
+<h4 id="collectionunit">Collection.<strong>unit</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes.collection.unit</code></p>
+<p>Signature: <code>(self, field)</code></p>
+<p>Unit for values in a given field</p>
+<h3 id="collectionfield"><strong>CollectionField</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.collection.CollectionField</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<h4 id="collectionfieldread">CollectionField.<strong>read</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes.collection.read</code></p>
+<p>Signature: <code>(h5_group, master)</code></p>
+<h4 id="collectionfieldwrite">CollectionField.<strong>write</strong>()</h4>
+<p>Full name: <code>midgard.data.fieldtypes.collection.write</code></p>
+<p>Signature: <code>(self, h5_group, write_level)</code></p>
+<p>Write data to a HDF5 data source</p>
+<h2 id="midgarddatafieldtypesfloat">midgard.data.fieldtypes.float</h2>
+<p>A Dataset float field</p>
+<h3 id="floatfield"><strong>FloatField</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.float.FloatField</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<h2 id="midgarddatafieldtypesposition">midgard.data.fieldtypes.position</h2>
+<p>A Dataset position field</p>
+<h3 id="positionfield"><strong>PositionField</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.position.PositionField</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<h2 id="midgarddatafieldtypesposition_delta">midgard.data.fieldtypes.position_delta</h2>
+<p>A Dataset position delta field</p>
+<h3 id="positiondeltafield"><strong>PositionDeltaField</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.position_delta.PositionDeltaField</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<h2 id="midgarddatafieldtypessigma">midgard.data.fieldtypes.sigma</h2>
+<p>A Dataset sigma field</p>
+<h3 id="sigmafield"><strong>SigmaField</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.sigma.SigmaField</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<h2 id="midgarddatafieldtypestime">midgard.data.fieldtypes.time</h2>
+<p>A Dataset time field</p>
+<h3 id="timefield"><strong>TimeField</strong></h3>
+<p>Full name: <code>midgard.data.fieldtypes.time.TimeField</code></p>
+<p>Signature: <code>(num_obs, master, name, val, unit=None, write_level=None, **field_args)</code></p>
+<h2 id="midgarddataposition">midgard.data.position</h2>
+<p>Array with positions</p>
+<h3 id="position"><strong>Position</strong>()</h3>
+<p>Full name: <code>midgard.data.position.Position</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, **pos_args:Any) -&gt; 'PositionArray'</code></p>
+<p>Factory for creating PositionArrays for different systems</p>
+<p>See each position class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:       Array of position values.</li>
+<li><code>system</code>:    Name of position system.</li>
+<li><code>pos_args</code>:  Additional arguments used to create the PositionArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h3 id="positiondelta"><strong>PositionDelta</strong>()</h3>
+<p>Full name: <code>midgard.data.position.PositionDelta</code></p>
+<p>Signature: <code>(val:numpy.ndarray, system:str, ref_pos:midgard.data._position.PositionArray, **delta_args:Any) -&gt; midgard.data._position_delta.PositionDeltaArray</code></p>
+<p>Factory for creating PositionArrays for different systems</p>
+<p>See each position class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:         Array of position values.</li>
+<li><code>system</code>:      Name of position system.</li>
+<li><code>ref_pos</code>:     Reference position.</li>
+<li><code>delta_args</code>:  Additional arguments used to create the PositionArray.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with positions in the given system.</p>
+<h2 id="midgarddatasigma">midgard.data.sigma</h2>
+<p>Array with sigma values</p>
+<p>See https://docs.scipy.org/doc/numpy/user/basics.subclassing.html for information about subclassing Numpy arrays.</p>
+<p>SigmaArray is a regular Numpy array with an added field, sigma.</p>
+<h3 id="sigmaarray"><strong>SigmaArray</strong></h3>
+<p>Full name: <code>midgard.data.sigma.SigmaArray</code></p>
+<p>Signature: <code>(values, sigma=None)</code></p>
+<h2 id="midgarddatatime">midgard.data.time</h2>
+<p>Array with time epochs</p>
+<h3 id="time"><strong>Time</strong>()</h3>
+<p>Full name: <code>midgard.data.time.Time</code></p>
+<p>Signature: <code>(val:numpy.ndarray, scale:str, format:str, val2:Union[numpy.ndarray, NoneType]=None) -&gt; 'TimeArray'</code></p>
+<p>Factory for creating TimeArrays for different systems</p>
+<p>See each time class for exact optional parameters.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>val</code>:     Array of time values.</li>
+<li><code>val2</code>:    Optional second array for extra precision.</li>
+<li><code>scale</code>:   Name of time scale.</li>
+<li><code>format</code>:  Format of values given in val and val2.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with epochs in the given time scale and format</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

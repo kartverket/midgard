@@ -14,10 +14,19 @@ C   10 C6X L6X S6X C1X L1X D1X S1X C7X L7X S7X              SYS / # / OBS TYPES
 E   13 C1X L1X D1X S1X C5X L5X S5X C8X L8X S8X C7X L7X S7X  SYS / # / OBS TYPES
 G   12 C1C L1C D1C S1C C2W C2X L2W L2X D2W D2X S2W S2X      SYS / # / OBS TYPES
 R   13 C1C C1P L1C L1P D1C S1C S1P C2C C2P L2C L2P S2C S2P  SYS / # / OBS TYPES
+DBHZ                                                        SIGNAL STRENGTH UNIT
    300.000                                                  INTERVAL
   2018     2     1     0     0    0.0000000     GPS         TIME OF FIRST OBS
+  2018     2     1    23    59   59.0000000     GPS         TIME OF LAST OBS
      0                                                      RCV CLOCK OFFS APPL
-                                                            GLONASS COD/PHS/BIS
+G APPL_DCB          xyz.uvw.abc//pub/dcb_gps.dat            SYS / DCBS APPLIED
+G L1C  0.00000  12 G01 G02 G03 G04 G05 G06 G07 G08 G09 G10  SYS / PHASE SHIFT
+                   G11 G12                                  SYS / PHASE SHIFT
+G L1W  0.00000                                              SYS / PHASE SHIFT
+ 22 R01  1 R02 -4 R03  5 R04  6 R05  1 R06 -4 R07  5 R08  6 GLONASS SLOT / FRQ #
+    R09 -6 R10 -7 R11  0 R13 -2 R14 -7 R15  0 R17  4 R18 -3 GLONASS SLOT / FRQ #
+    R19  3 R20  2 R21  4 R22 -3 R23  3 R24  2               GLONASS SLOT / FRQ #
+ C1C  -10.000 C1P  -10.123 C2C  -10.432 C2P  -10.634        GLONASS COD/PHS/BIS
     18                                                      LEAP SECONDS
     78                                                      # OF SATELLITES
                                                             END OF HEADER

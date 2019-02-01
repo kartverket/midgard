@@ -59,8 +59,8 @@ class ParserDef(NamedTuple):
     """
 
     end_marker: Callable[[str, int, str], bool]
-    label: Callable[[str, int], str]
-    parser_def: Dict[str, Dict[str, Any]]
+    label: Callable[[str, int], Any]
+    parser_def: Dict[Any, Dict[str, Any]]
     skip_line: Optional[Callable[[str], bool]] = None
     end_callback: Optional[Callable[[Dict[str, Any]], None]] = None
 

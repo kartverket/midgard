@@ -17,7 +17,7 @@ Example:
 # Standard library imports
 from typing import Any
 
-# External library imports
+# Third party imports
 import numpy as np
 
 # Midgard imports

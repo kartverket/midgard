@@ -288,6 +288,28 @@ def test_get_from_fallback_config(config_file, config_dict):
     assert entry is config_file.midgard.foo
 
 
+def test_exists_with_section(config_file):
+    """Test that exists works for both existing and non-existing keys"""
+    assert config_file.exists("foo", section="midgard")
+    assert not config_file.exists("does_not_exist", section="midgard")
+    assert not config_file.exists("foo", section="does_not_exist")
+
+
+def test_exists_with_master_section(config_file):
+    """Test that exists works for both existing and non-existing keys without specifying section"""
+    config_file.master_section = "data_types"
+    assert config_file.exists("str")
+    assert not config_file.exists("does_not_exist")
+
+
+def test_exists_with_master_section_defined(config_file):
+    """Test that exists behaves correctly when master_section is defined and section specified"""
+    config_file.master_section = "data_types"
+    assert config_file.exists("foo", section="midgard")
+    assert not config_file.exists("str", section="str")
+    assert not config_file.exists("foo", section="does_not_exist")
+
+
 def test_getattr_from_fallback_config(config_file, config_dict):
     """Test that attribute access can get entries in fallback configuration"""
     config_dict.fallback_config = config_file

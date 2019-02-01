@@ -52,13 +52,22 @@ instance:
 
 However, using the full unit system adds some overhead so we should be careful in using it in heavy calculations.
 
+Note that `pint` has a system for defining new units and constants if necessary,
+`http://pint.readthedocs.io/en/latest/defining.html`. To use this system, add units to the `unit.txt` file in the
+current (midgard/math) directory.
 """
 
 # Standard library imports
 import pathlib
 from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar, Union
 
-# External library imports
+try:
+    import importlib.resources as importlib_resources  # Python >= 3.7
+except ImportError:
+    import importlib_resources  # Python <= 3.6:  pip install importlib_resources
+
+
+# Third party imports
 import numpy as np
 import pint
 
@@ -415,3 +424,8 @@ class Unit(metaclass=_convert_units):
             raise ValueError("hours must be non-negative")
 
         return 15 * cls.dms_to_rad(hours, minutes, seconds)
+
+
+# Read extra units defined specially for Midgard
+with importlib_resources.open_text("midgard.math", "unit.txt") as fid:
+    Unit._ureg.load_definitions(fid)

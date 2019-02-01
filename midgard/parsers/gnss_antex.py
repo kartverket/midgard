@@ -19,7 +19,7 @@ import datetime
 import itertools
 from typing import Any, Dict, Iterable
 
-# External library imports
+# Third party imports
 import numpy as np
 
 # Midgard imports

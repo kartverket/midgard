@@ -50,7 +50,7 @@ This function would then be available as an interpolator. For instance, one coul
     array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 
 """
-# System library imports
+# Standard library imports
 from typing import Any, Callable, Dict, List
 
 # Third party imports

@@ -37,18 +37,26 @@ class SimpleMock:
     attributes are looked up.
     """
 
-    def __init__(self, name: str, raise_error: bool = True, attrs: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        raise_error: bool = True,
+        attrs: Optional[Dict[str, Any]] = None,
+        error_msg: Optional[str] = None,
+    ) -> None:
         """Initialize SimpleMock object
 
         Args:
             name:         Name of SimpleMock-object. Used for string representation and when raising Errors.
             raise_error:  Whether ImportError should be raised when object is used.
             attrs:        Attributes that should be added to the SimpleMock.
+            error_msg:    Text that will be added to error message.
         """
         self._name = name
         self._children: Dict[str, "SimpleMock"] = dict()
         self._raise_error = raise_error
         self._attrs = attrs
+        self._error_msg = error_msg
 
         if attrs is not None:
             for name, attr in attrs.items():
@@ -74,10 +82,13 @@ class SimpleMock:
         file_name = caller.f_code.co_filename
 
         # Raise ImportError with a helpful message
-        raise ImportError(
+        error_msg = (
             f"The module '{self._name}' is not installed, "
             f"but is used by '{func_name}' on line {line_num} of {file_name}"
         )
+        if self._error_msg:
+            error_msg += f".\n    {self._error_msg}"
+        raise ImportError(error_msg)
 
     def __call__(self, *args: Any, **kwargs: Any) -> "SimpleMock":
         """Return the same SimpleMock-object when it is called

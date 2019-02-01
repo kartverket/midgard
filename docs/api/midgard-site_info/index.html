@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>midgard.site_info - Midgard v0.2.0</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Home</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../howto/testing/">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../midgard/">midgard</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-collections/">midgard.collections</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-config/">midgard.config</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-data/">midgard.data</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-dev/">midgard.dev</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-files/">midgard.files</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-gnss/">midgard.gnss</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-ionosphere/">midgard.ionosphere</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-math/">midgard.math</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-parsers/">midgard.parsers</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-plot/">midgard.plot</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">midgard.site_info</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-writers/">midgard.writers</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../midgard-plot/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../midgard-writers/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#midgardsite_info">midgard.site_info</a></li>
+            <li><a href="#midgardsite_infoantenna">midgard.site_info.antenna</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="midgardsite_info">midgard.site_info</h1>
+<h2 id="midgardsite_infoantenna">midgard.site_info.antenna</h2>
+<p>Antenna site information classes</p>
+<p><strong>Description:</strong>
+The antenna module generates a antenna object based on site information from 
+the SINEX file or other sources.</p>
+<p>Example for getting antenna object:
+    from midgard.site_info import antenna
+    antenna.Antenna.get(source="sinex", station="ales", date=datetime(2018, 10, 1)) </p>
+<p>Following steps are carried out for getting a antenna object:</p>
+<pre><code>1. Plugins modulen register AntennaHistory classes (e.g. 
+   AntennaHistorySinex) and updates the 'sources' attribute of the 
+   AntennaHistory class. 
+2. The Antenna object is initialized by calling the Antenna.get function. 
+3. The AntennaHistory.get function is called via the Antenna.get function.
+   Here the correct AntennaHistory class is choosen by accessing the 
+   registered 'sources' attribute of the AntennaHistory class.
+4. The AntennaBase.get function reads the antenna information via the
+   _read_history() function of the AntennaHistorySinex or other 
+   calls. The antenna information is selected via a given date.
+</code></pre>
+<h3 id="antenna"><strong>Antenna</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.Antenna</code></p>
+<p>Signature: <code>()</code></p>
+<p>Main antenna class for getting antenna object depending on site information source</p>
+<p>The site information source can be e.g. a SINEX file.</p>
+<h4 id="antennaget">Antenna.<strong>get</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.get</code></p>
+<p>Signature: <code>(source:str, station:str, date:datetime.datetime) -&gt; Union[_ForwardRef('AntennaSinex'), Any]</code></p>
+<p>Get antenna object depending on given source</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>station</code>: Station name.</li>
+<li><code>date</code>:    Date for getting site information</li>
+<li><code>source</code>:  Site information source e.g. 'sinex' (SINEX file)</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Antenna object </p>
+<h4 id="antennasources-dict">Antenna.sources (dict)</h4>
+<p><code>sources = {}</code></p>
+<h3 id="antennabase"><strong>AntennaBase</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaBase</code></p>
+<p>Signature: <code>(station:str, antenna_info:Dict[str, Any]) -&gt; None</code></p>
+<p>Antenna base class defining common attributes and methods</p>
+<h4 id="antennabasefields-dict">AntennaBase.fields (dict)</h4>
+<p><code>fields = {'date_installed': 'date_installed', 'date_removed': 'date_removed', 'type': 'type', 'serial_number': 'serial_number', 'radome_type': 'radome_type', 'radome_serial_number': 'radome_serial_number'}</code></p>
+<h4 id="antennabasesource-nonetype">AntennaBase.source (NoneType)</h4>
+<p><code>source = None</code></p>
+<h3 id="antennahistory"><strong>AntennaHistory</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaHistory</code></p>
+<p>Signature: <code>()</code></p>
+<h4 id="antennahistorydate_installed">AntennaHistory.<strong>date_installed</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.date_installed</code></p>
+<p>Signature: <code>(source:str, station:str) -&gt; List[datetime.datetime]</code></p>
+<p>Get all antenna installation dates for an given station</p>
+<p><strong>Returns:</strong></p>
+<p>List with antenna installation site dates</p>
+<h4 id="antennahistorydate_removed">AntennaHistory.<strong>date_removed</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.date_removed</code></p>
+<p>Signature: <code>(source:str, station:str) -&gt; List[datetime.datetime]</code></p>
+<p>Get all antenna removing dates for an given station</p>
+<p><strong>Returns:</strong></p>
+<p>List with antenna removing site dates</p>
+<h4 id="antennahistoryget">AntennaHistory.<strong>get</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.get</code></p>
+<p>Signature: <code>(source:str, station:str) -&gt; Union[_ForwardRef('AntennaHistorySinex'), Any]</code></p>
+<p>Get antenna history class depending on given source</p>
+<p><strong>Returns:</strong></p>
+<p>Antenna history class depending on given source</p>
+<h4 id="antennahistoryregister_source">AntennaHistory.<strong>register_source</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.register_source</code></p>
+<p>Signature: <code>(source_cls:Union[_ForwardRef('AntennaHistorySinex'), Any]) -&gt; Union[_ForwardRef('AntennaHistorySinex'), Any]</code></p>
+<p>Register antenna history class in source attribute</p>
+<p>This routine is called via plugins module, which register existing antenna history classes (e.g.
+AntennaHistorySinex). </p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>source_cls</code>: Antenna history class</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Antenna history class</p>
+<h4 id="antennahistorysources-dict">AntennaHistory.sources (dict)</h4>
+<p><code>sources = {'sinex': &lt;class 'midgard.site_info.antenna.AntennaHistorySinex'&gt;}</code></p>
+<h3 id="antennahistorybase"><strong>AntennaHistoryBase</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaHistoryBase</code></p>
+<p>Signature: <code>(station:str) -&gt; None</code></p>
+<p>Antenna history base class defining common attributes and methods</p>
+<h4 id="antennahistorybaseget">AntennaHistoryBase.<strong>get</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.get</code></p>
+<p>Signature: <code>(self, date:datetime.datetime) -&gt; Union[_ForwardRef('AntennaSinex'), Any]</code></p>
+<p>Get antenna object for given date</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>date</code>:  Date for which antenna information is chosen</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Antenna object for given date            </p>
+<h4 id="antennahistorybasesource-nonetype">AntennaHistoryBase.source (NoneType)</h4>
+<p><code>source = None</code></p>
+<h3 id="antennahistorysinex"><strong>AntennaHistorySinex</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaHistorySinex</code></p>
+<p>Signature: <code>(station:str) -&gt; None</code></p>
+<h4 id="antennahistorysinexget">AntennaHistorySinex.<strong>get</strong>()</h4>
+<p>Full name: <code>midgard.site_info.antenna.get</code></p>
+<p>Signature: <code>(self, date:datetime.datetime) -&gt; Union[_ForwardRef('AntennaSinex'), Any]</code></p>
+<p>Get antenna object for given date</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>date</code>:  Date for which antenna information is chosen</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Antenna object for given date            </p>
+<h4 id="antennahistorysinexsource-str">AntennaHistorySinex.source (str)</h4>
+<p><code>source = 'sinex'</code></p>
+<h3 id="antennasinex"><strong>AntennaSinex</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaSinex</code></p>
+<p>Signature: <code>(station:str, antenna_info:Dict[str, Any]) -&gt; None</code></p>
+<p>Antenna class handling SINEX file antenna station information</p>
+<h4 id="antennasinexfields-dict">AntennaSinex.fields (dict)</h4>
+<p><code>fields = {'type': 'antennaTypeName', 'serial_number': 'serialNumber', 'radome_type': 'radomeType', 'radome_serial_number': 'radomeSnr'}</code></p>
+<h4 id="antennasinexsource-str">AntennaSinex.source (str)</h4>
+<p><code>source = 'sinex'</code></p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

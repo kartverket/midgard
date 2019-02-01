@@ -56,6 +56,14 @@ class TimerRunning(MidgardException):
     pass
 
 
+class UnknownConstantError(MidgardException):
+    pass
+
+
+class UnknownConversionError(MidgardException):
+    pass
+
+
 class UnknownEnumError(MidgardException):
     pass
 
@@ -65,6 +73,10 @@ class UnknownPackageError(MidgardException):
 
 
 class UnknownPluginError(MidgardException):
+    pass
+
+
+class UnknownSystemError(MidgardException):
     pass
 
 

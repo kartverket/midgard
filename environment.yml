@@ -4,8 +4,11 @@ channels:
 dependencies:
   - python>=3.6
   - bumpversion
+  - dataclasses
   - flit
+  - importlib_resources
   - ipython
+  - mkdocs
   - mypy
   - numpy
   - pandas

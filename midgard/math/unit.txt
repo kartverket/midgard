@@ -1,0 +1,13 @@
+# Extra units used in Midgard, not already defined
+#
+# Midgard is using Pint for handling units, http://pint.readthedocs.io/. The list of units already defined in Pint is
+# quite comprehensive. See https://github.com/hgrecco/pint/blob/master/pint/default_en.txt or simply do
+#
+#     >>> from midgard.math.unit import Unit
+#     >>> print(Unit.list())
+#
+# However, the list can also be extended. Any units defined in this file will also be available to Midgard. See
+# http://pint.readthedocs.io/en/stable/defining.html for a description of how to define new units.
+
+unit = []
+percent = unit / 100

@@ -43,6 +43,7 @@ from typing import Any, Callable, Optional
 
 # Midgard imports
 from midgard.dev import exceptions
+from midgard.dev import log
 
 
 class Timer(ContextDecorator):
@@ -50,7 +51,7 @@ class Timer(ContextDecorator):
     """
 
     def __init__(
-        self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Optional[Callable[[str], None]] = print
+        self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Optional[Callable[[str], None]] = log.info
     ) -> None:
         """Set up a new timer
 
@@ -153,7 +154,7 @@ class Timer(ContextDecorator):
 
 class AccumulatedTimer(Timer):
     def __init__(
-        self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Optional[Callable[[str], None]] = print
+        self, text: str = "Elapsed time:", fmt: str = ".4f", logger: Optional[Callable[[str], None]] = log.info
     ) -> None:
         super().__init__(text, fmt, logger)
         self.accumulated = 0.0

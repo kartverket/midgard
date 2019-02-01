@@ -92,7 +92,7 @@ from typing import Any, Callable, Dict, Generator, List, Optional, Set, Tuple, U
 ProfileName = Optional[str]
 Sections = Dict[str, "ConfigurationSection"]
 EntryName = str
-ConfigVars = Dict[str, Any]
+ConfigVars = Dict[str, str]
 
 
 # Date and datetime formats
@@ -247,8 +247,9 @@ class Configuration:
         if self._master_section is None:
             raise exceptions.MissingSectionError(f"Configuration {self.name!r} has not defined a master section")
         if self._master_section not in self._sections:
-            raise exceptions.MissingSectionError(f"Master section {self._master_section!r} does not exist in"
-                                                 f" configuration {self.name!r}")
+            raise exceptions.MissingSectionError(
+                f"Master section {self._master_section!r} does not exist in configuration {self.name!r}"
+            )
 
         return self._sections[self._master_section]
 
@@ -299,6 +300,29 @@ class Configuration:
                     raise err
                 else:
                     return ConfigurationEntry(key, value=default, source="default value", vars_dict=self.vars)
+
+    def exists(self, key: str, section: Optional[str] = None) -> bool:
+        """Check if a configuration entry exists
+
+        Args:
+            key:      Name of option (key in the configuration entry).
+            section:  Section in the configuration in which to look up the key.
+
+        Returns:
+            True if the configuration entry exists, otherwise False.
+        """
+        if section is None:
+            return self.master_section.exists(key)
+
+        try:
+            cfg_section = self[section]
+        except (exceptions.MissingSectionError, exceptions.MissingEntryError):
+            return False
+
+        if isinstance(cfg_section, ConfigurationEntry):
+            return False
+        else:
+            return cfg_section.exists(key)
 
     def update(
         self,
@@ -370,9 +394,9 @@ class Configuration:
         The Python ConfigParser is used to read the file. The file format that is supported is described at
         https://docs.python.org/library/configparser.html
 
-        Different profiles in a configuration file is denoted by double underscores in the sections names. For instance
-        does the following configuration have a `foo` profile in the `spam` section (in addition to the default
-        profile):
+        Different profiles in a configuration file are denoted by double underscores in the sections names. For
+        instance will the following configuration have a `foo` profile in the `spam` section (in addition to the
+        default profile):
 
             [spam]
             ...
@@ -380,7 +404,14 @@ class Configuration:
             [spam__foo]
             ...
 
-        If `interpolate` is set to True, ExtendedInterpolation of variables in the configuration file is used. See
+        The file may contain a special section called `__replace__` which may contain key-value pairs which will
+        replace format-style strings in keys and values in the rest of the file.
+
+        Additionally, the file may contain a special section called `__vars__`. The key-value pairs from this section
+        will be added to the `dictionary` of the configuration.
+
+        If `interpolate` is set to True, ExtendedInterpolation of variables in the configuration file is used. This
+        means that variables of the form ${key:section} can be used for references within the file. See
         https://docs.python.org/library/configparser.html#configparser.ExtendedInterpolation for details.
 
         Args:
@@ -398,9 +429,18 @@ class Configuration:
         )
         cfg_parser.read(file_path)
 
+        # Read special __replace__
+        replace_vars = {k: v for k, v in cfg_parser["__replace__"].items()} if "__replace__" in cfg_parser else {}
+
+        # Add __vars__ to vars dictionary
+        if "__vars__" in cfg_parser.sections():
+            self.update_vars({k: v for k, v in cfg_parser["__vars__"].items()})
+
         # Add configuration entries
         for cfg_section in cfg_parser.sections():
             section, has_profile, profile = cfg_section.partition("__")
+            if not section:  # Skip dunder sections
+                continue
             for key, value in cfg_parser[cfg_section].items():
                 # Handle meta-information
                 if ":" in key:
@@ -410,8 +450,8 @@ class Configuration:
                 # Create a configuration entry
                 self.update(
                     section,
-                    key,
-                    value if value is None else value.replace("\n", " "),
+                    _replace(key, replace_vars),
+                    value if value is None else _replace(value, replace_vars).replace("\n", " "),
                     profile=profile if has_profile else None,
                     source=str(file_path),
                     meta=meta,
@@ -644,6 +684,17 @@ class ConfigurationSection(UserDict):
         getters = dict() if getters is None else getters
         getters = {k: getters.get(k, default_getter) for k in self.keys()}
         return {k: getattr(e, getters[k]) for k, e in self.items()}
+
+    def exists(self, key: str) -> bool:
+        """Check if key exists in section
+
+        Args:
+            key:  Name of configuration key.
+
+        Returns:
+            True if key is in section, False otherwise.
+        """
+        return key in self.data
 
     def __getitem__(self, key: str) -> "ConfigurationEntry":
         """Get an entry from the configuration section"""
@@ -945,23 +996,8 @@ class ConfigurationEntry:
         return self.replace()
 
     def replace(self, default: Optional[builtins.str] = None, **replace_vars: builtins.str) -> "ConfigurationEntry":
-        replacement_vars = dict(self._vars_dict, **replace_vars)
-        replacement_value = self._value
-        replacements = list()
-
-        matches = re.findall(r"\{\$\w+\}", replacement_value)
-        for match in matches:
-            var = match.strip("${}")
-            replacement = str(replacement_vars.get(var, match if default is None else default))
-            replacements.append(f"{var}={replacement}")
-            replacement_value = replacement_value.replace(match, replacement)
-
-        return self.__class__(
-            key=self._key,
-            value=replacement_value,
-            source=self.source + " ({','.join(replacements)})",
-            _used_as=self._used_as,
-        )
+        value = _replace(self._value, dict(self._vars_dict, **replace_vars), default)
+        return self.__class__(key=self._key, value=value, source=self.source, _used_as=self._used_as)
 
     @property
     def is_used(self) -> builtins.bool:
@@ -1031,3 +1067,36 @@ class ConfigurationEntry:
     def __repr__(self) -> builtins.str:
         """A simple string representation of the configuration entry"""
         return f"{self.__class__.__name__}(key='{self._key}', value='{self._value}')"
+
+
+def _replace(string: str, replace_vars: Dict[str, str], default: Optional[str] = None) -> str:
+    """Replace format style variables in a string
+
+    Handles nested replacements by first replacing the replace_vars. Format specifiers (after colon, :) are allowed,
+    but can not contain nested format strings.
+
+    This function is used instead of str.format for three reasons. It handles:
+
+    - that not all pairs of {...} are replaced at once
+    - optional default values for variables that are not specified
+    - nested replacements where values of replace_vars may be replaced themselves
+
+    Args:
+        string:        Original string
+        replace_vars:  Variables that can be replaced
+        default:       Optional default value used for variables that are not in replace_vars.
+    """
+    matches = re.finditer(r"\{(\w+)(:[^\{\}]*)?\}", string)
+    for match in matches:
+        var = match.group(1)
+        var_expr = match.string[slice(*match.span())]
+        replacement = replace_vars.get(var)
+        if replacement is None:
+            replacement = var_expr if default is None else default  # Default replacements
+        else:
+            replacement = _replace(replacement, replace_vars, default)  # Nested replacements
+
+        # Use str.format to handle format specifiers
+        string = string.replace(var_expr, var_expr.format(**{var: replacement}))
+
+    return string

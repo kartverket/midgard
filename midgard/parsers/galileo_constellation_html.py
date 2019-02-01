@@ -1,11 +1,13 @@
-"""A parser for reading IVS source names translation table
+"""A parser for reading Galileo constellation info from a web page
+
+See https://www.gsc-europa.eu/system-status/Constellation-Information for an example
 """
 # Standard library imports
 import pathlib
-from typing import Any, Callable, cast, Dict, Optional, Union
+from typing import Any, Callable, Dict, Optional, Union
 import warnings
 
-# External library imports
+# Third party imports
 import pandas as pd
 import pycurl
 

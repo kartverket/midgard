@@ -20,8 +20,11 @@ import pathlib
 from typing import Any, Callable, Dict, List, NoReturn, Optional, Union
 import warnings
 
-# External library imports
+# Third party imports
 import pandas as pd
+
+# Midgard imports
+from midgard.dev import log
 
 
 class Parser:
@@ -39,27 +42,20 @@ class Parser:
         meta (Dict):                  Metainformation read from file.
     """
 
-    def __init__(
-        self,
-        file_path: Union[str, pathlib.Path],
-        encoding: Optional[str] = None,
-        logger: Optional[Callable[[str], None]] = print,
-    ) -> None:
+    def __init__(self, file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None:
         """Set up the basic information needed by the parser
 
         Args:
             file_path:    Path to file that will be read.
             encoding:     Encoding of file that will be read.
-            logger:       Function that will be used for logging.
         """
         self.file_path = pathlib.Path(file_path)
         self.file_encoding = encoding
         self.parser_name = self.__module__.split(".")[-1]
-        self.logger = (lambda _: None) if logger is None else logger
 
         # Initialize the data
         self.data_available = self.file_path.exists()
-        self.meta: Dict[str, Any] = dict(__parser_name__=self.parser_name, __data_path__=self.file_path)
+        self.meta: Dict[str, Any] = dict(__parser_name__=self.parser_name, __data_path__=str(self.file_path))
         self.data: Dict[str, Any] = dict()
 
     def setup_parser(self) -> Any:

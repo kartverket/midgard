@@ -1,0 +1,10 @@
+# This file is used by Midgard to keep track of leap seconds.
+#
+# Whenever a new leapsecond gets decided it should be added to this list
+#
+# See ...
+
+[leapseconds]
+1972-06-30
+1972-12-31
+1973-12-31

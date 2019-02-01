@@ -77,17 +77,33 @@ def test_parser_galileo_constellation_html_download():
     assert False
 
 
-def test_parser_gnss_antex():
-    """Test that parsing gnss_antex gives expected output"""
-    parser = get_parser("gnss_antex").as_dict()
+def test_parser_bcecmp_sisre():
+    """Test that parsing bcecmp_sisre gives expected output"""
+    parser = get_parser("bcecmp_sisre").as_dict()
 
-    assert len(parser) == 2
-    assert "AERAT1675_120   SPKE" in parser
-    assert "neu" in parser["AERAT1675_120   SPKE"]["G01"]
+    assert len(parser) == 12
+    assert "age_min" in parser
+    assert "E26" in parser["satellite"]
 
-    assert "G01" in parser
-    satellite_info = parser["G01"][datetime(1992, 11, 22)]
-    assert satellite_info["G01"]["noazi"][0] == -.8
+
+def test_parser_gipsy_tdp():
+    """Test that parsing gipsy_tdp gives expected output"""
+    parser = get_parser("gipsy_tdp").as_dict()
+
+    assert len(parser) == 5
+    assert "time_past_j2000" in parser
+    assert "TRPAZSINZIMM" in parser["name"]
+
+
+def test_gnss_sinex_igs():
+    """Test that parsing gnss_sinex_igs gives expected output"""
+    parser = get_parser("gnss_sinex_igs").as_dict()
+
+    assert len(parser) == 8
+    assert "abmf" in parser
+    assert "site_id" in parser["abmf"]
+    assert "site_code" in parser["abmf"]["site_id"]
+    assert "abmf" in parser["abmf"]["site_id"]["site_code"]
 
 
 @pytest.mark.skip(reason="Rinex3 parser not yet implemented")
@@ -116,6 +132,34 @@ def test_parser_rinex3_obs():
 
 def test_parser_rinex3_obs_with_writer():
     pass
+
+
+def test_parser_terrapos_position():
+    """Test that parsing terrapos_position gives expected output"""
+    parser = get_parser("terrapos_position").as_dict()
+
+    assert len(parser) == 19
+    assert "lat" in parser
+    assert 1972 in parser["gpsweek"]
+
+
+def test_parser_terrapos_residual():
+    """Test that parsing terrapos_residual gives expected output"""
+    parser = get_parser("terrapos_residual").as_dict()
+
+    assert len(parser) == 9
+    assert "residual_code" in parser
+    assert "G01" in parser["satellite"]
+    assert "G" in parser["system"]
+
+
+def test_parser_timeseries_env():
+    """Test that parsing timeseries_env gives expected output"""
+    parser = get_parser("timeseries_env").as_dict()
+
+    assert len(parser) == 8
+    assert "date" in parser
+    assert "14AUG31" in parser["date"]
 
 
 def test_parser_vlbi_source_names():

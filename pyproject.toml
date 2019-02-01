@@ -25,5 +25,5 @@ keywords           = "geodesy utilities"
 
 # Requirements
 requires-python    = ">=3.6"
-requires           = ["numpy", "pandas", "pint", "pycurl", "scipy"]
-dev-requires       = ["black", "bumpversion", "flit", "mypy", "pytest", "pytest-cov"]
+requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy"]
+dev-requires       = ["black", "bumpversion", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]

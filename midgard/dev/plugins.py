@@ -69,6 +69,7 @@ using the `part` optional parameter to `call_one`:
 # Standard library imports
 import functools
 import importlib
+import inspect
 import pathlib
 import re
 import sys
@@ -77,6 +78,8 @@ from typing import Any, Callable, Dict, Iterable, List, NamedTuple, Optional, Tu
 # Midgard imports
 from midgard.dev import console
 from midgard.dev.exceptions import UnknownPackageError, UnknownPluginError
+from midgard.dev import log
+from midgard.files import dependencies
 
 
 # The _PLUGINS-dict is populated by the `register` decorator in each module.
@@ -140,7 +143,7 @@ def register(func: Callable, name: Optional[str] = None, sort_value: int = 0) ->
 
     plugin = Plugin(f"{plugin_name}.{name}", func, file_path, sort_value)
     plugin_info[name] = plugin
-    # log.debug("Registering {} as a {}-plugin from {}", plugin.name, package_name, plugin.file_path)
+    log.debug(f"Registering {plugin.name} ({plugin.file_path}) as a {package_name}-plugin")
 
     # Add first registered unnamed part as default
     if "__parts__" in plugin_info:
@@ -180,6 +183,34 @@ def register_ordered(sort_value: int) -> Callable:
     return functools.partial(register, sort_value=sort_value)
 
 
+def get(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None) -> Plugin:
+    """Get a specific plugin-object
+
+    If the plug-in is not part of the package an UnknownPluginError is raised.
+
+    If there are several functions registered in a plug-in and `part` is not
+    specified, then the first function registered in the plug-in will be
+    called.
+
+    Args:
+        package_name:  Name of package containing plug-ins.
+        plugin_name:   Name of the plug-in, i.e. the module containing the plug-in.
+        part:          Name of function to call within the plug-in (optional).
+        prefix:        Prefix of the plug-in name, used if the plug-in name is not found (optional).
+
+    Returns:
+        Plugin-namedtuple representing the plug-in.
+    """
+    # Get Plugin-object
+    plugin_name = load(package_name, plugin_name, prefix=prefix)
+    part = "__default__" if part is None else part
+    try:
+        return _PLUGINS[package_name][plugin_name][part]
+    except KeyError:
+        # TODO: List available plugins
+        raise UnknownPluginError(f"Plugin {part!r} not found for {plugin_name!r} in {package_name!r}") from None
+
+
 #
 # CALL PLUG-INS
 #
@@ -193,12 +224,6 @@ def call(
 ) -> Any:
     """Call one plug-in
 
-    If the plug-in is not part of the package an UnknownPluginError is raised.
-
-    If there are several functions registered in a plug-in and `part` is not
-    specified, then the first function registered in the plug-in will be
-    called.
-
     Args:
         package_name:   Name of package containing plug-ins.
         plugin_name:    Name of the plug-in, i.e. the module containing the plug-in.
@@ -210,18 +235,14 @@ def call(
     Returns:
         Return value of the plug-in.
     """
-    # Get Plugin-object
-    plugin_name = load(package_name, plugin_name, prefix=prefix)
-    part = "__default__" if part is None else part
-    try:
-        plugin = _PLUGINS[package_name][plugin_name][part]
-    except KeyError:
-        # TODO: List available plugins
-        raise UnknownPluginError(f"Plugin {part!r} not found for {plugin_name!r} in {package_name!r}") from None
+    plugin = get(package_name, plugin_name, part, prefix)
 
     # Log message about calling plug-in
     if plugin_logger is not None:
         plugin_logger(f"Start plug-in {plugin.name!r} in {package_name!r}")
+
+    # Add dependency to the plug-in
+    dependencies.add(plugin.file_path, label=f"plugin:{package_name}")
 
     # Call plug-in
     return plugin.function(**plugin_args)
@@ -269,6 +290,7 @@ def doc(
     prefix: Optional[str] = None,
     long_doc: bool = True,
     include_details: bool = False,
+    use_module: bool = False,
 ) -> str:
     """Document one plug-in
 
@@ -285,18 +307,17 @@ def doc(
         prefix:           Prefix of the plug-in name, used if the plug-in name is unknown (optional).
         long_doc:         Whether to return the long doc-string or the short one-line string (optional).
         include_details:  Whether to include development details like parameters and return values (optional).
+        use_module:       Whether to use module doc-string instead of plug-in doc-string (optional).
 
     Returns:
         Documentation of the plug-in.
     """
     # Get Plugin-object and pick out doc-string
-    plugin_name = load(package_name, plugin_name, prefix=prefix)
-    part = "__default__" if part is None else part
-    try:
-        plugin = _PLUGINS[package_name][plugin_name][part]
-    except KeyError:
-        raise UnknownPluginError(f"Plugin {part!r} not found for {plugin_name!r} in {package_name!r}") from None
-    doc = plugin.function.__doc__ if plugin.function.__doc__ else ""
+    plugin = get(package_name, plugin_name, part, prefix)
+    if use_module:
+        doc = sys.modules[plugin.function.__module__].__doc__ or ""
+    else:
+        doc = plugin.function.__doc__ or ""
 
     if long_doc:
         # Strip short description and indentation
@@ -324,6 +345,7 @@ def doc_all(
     prefix: Optional[str] = None,
     long_doc: bool = True,
     include_details: bool = False,
+    use_module: bool = False,
 ) -> Dict[str, str]:
     """Call all plug-ins in a package
 
@@ -335,17 +357,46 @@ def doc_all(
     however, that this will import all python files in the package.
 
     Args:
-        package_name (String):     Name of package containing plug-ins.
-        plugins (Tuple):           List of plug-ins that should be used (optional).
-        prefix (String):           Prefix of the plug-in names, used if any of the plug-ins are unknown (optional).
-        long_doc (Boolean):        Whether to return the long doc-string or the short one-line string (optional).
-        include_details (Boolean): Whether to include development details like parameters and return values (optional).
+        package_name:     Name of package containing plug-ins.
+        plugins:          List of plug-ins that should be used (optional).
+        prefix:           Prefix of the plug-in names, used if any of the plug-ins are unknown (optional).
+        long_doc:         Whether to return the long doc-string or the short one-line string (optional).
+        include_details:  Whether to include development details like parameters and return values (optional).
+        use_module:       Whether to use module doc-string instead of plug-in doc-string (optional).
 
     Returns:
-        Dict: Dictionary of all results from the plug-ins.
+        Dictionary of all doc-strings from the plug-ins.
     """
     plugin_names = names(package_name, plugins=plugins, prefix=prefix)
-    return {p: doc(package_name, p, long_doc=long_doc, include_details=include_details) for p in plugin_names}
+    return {
+        p: doc(package_name, p, long_doc=long_doc, include_details=include_details, use_module=use_module)
+        for p in plugin_names
+    }
+
+
+def signature(
+    package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None
+) -> inspect.Signature:
+    """Get signature of a plug-in
+
+    If the plug-in is not part of the package an UnknownPluginError is raised.
+
+    If there are several functions registered in a plug-in and `part` is not
+    specified, then the first function registered in the plug-in will be
+    documented.
+
+    Args:
+        package_name:     Name of package containing plug-ins.
+        plugin_name:      Name of the plug-in, i.e. the module containing the plug-in.
+        part:             Name of function to call within the plug-in (optional).
+        prefix:           Prefix of the plug-in name, used if the plug-in name is unknown (optional).
+
+    Returns:
+        Signature of the plugin
+    """
+    # Get Plugin-object and pick out signature
+    plugin = get(package_name, plugin_name, part, prefix)
+    return inspect.signature(plugin.function)
 
 
 #
@@ -490,8 +541,18 @@ def _import_one(package_name: str, plugin_name: str) -> None:
         module_name = f"{package}.{plugin_name}"
         try:
             importlib.import_module(module_name)
-        except ImportError:
-            pass  # Plugin might be aliased from another package
+        except ImportError as err:
+            # Error comes from a subimport inside the plugin
+            if not hasattr(err, "name") or err.name != module_name:
+                raise
+
+            # Plugin does not exist, but might be aliased from another package
+            else:
+                pass  # Just to be explicit, not really necessary
+
+        # Success, do not import more aliases
+        else:
+            continue
 
     if plugin_name not in _PLUGINS.get(package_name, dict()):
         raise UnknownPluginError(f"Plug-in {plugin_name!r} not found in package {package_name!r}") from None

@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.collections - Midgard v0.1.9</title>
+        <title>midgard.collections - Midgard v0.2.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.1.9</a>
+                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -75,7 +75,7 @@
 </li>
                                     
 <li >
-    <a href="../midgard-coords/">midgard.coords</a>
+    <a href="../midgard-data/">midgard.data</a>
 </li>
                                     
 <li >
@@ -84,6 +84,10 @@
                                     
 <li >
     <a href="../midgard-files/">midgard.files</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-gnss/">midgard.gnss</a>
 </li>
                                     
 <li >
@@ -96,6 +100,18 @@
                                     
 <li >
     <a href="../midgard-parsers/">midgard.parsers</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-plot/">midgard.plot</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-site_info/">midgard.site_info</a>
+</li>
+                                    
+<li >
+    <a href="../midgard-writers/">midgard.writers</a>
 </li>
                                 </ul>
                             </li>
@@ -125,51 +141,100 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#midgardcollectionsenums">midgard.collections.enums</a></li>
-            <li><a href="#loglevel">LogLevel</a></li>
-            <li><a href="#enums">enums()</a></li>
-            <li><a href="#get_enum">get_enum()</a></li>
-            <li><a href="#get_value">get_value()</a></li>
-            <li><a href="#register_enum">register_enum()</a></li>
+        <li class="main active"><a href="#midgardcollections">midgard.collections</a></li>
+            <li><a href="#midgardcollectionsenums">midgard.collections.enums</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="midgardcollectionsenums">midgard.collections.enums</h1>
+<h1 id="midgardcollections">midgard.collections</h1>
+<h2 id="midgardcollectionsenums">midgard.collections.enums</h2>
 <p>Framework for working with enumerations</p>
 <p><strong>Description:</strong></p>
-<p>Custom enumerations used for structured names.</p>
-<h2 id="loglevel"><strong>LogLevel</strong></h2>
+<p>Custom enumerations used for structured names. You can add your own enumerations in your own application by importing
+<code>register_enum</code> and using that to register your own enums.</p>
+<p><strong>Example:</strong></p>
+<p>Create your own enumeration:</p>
+<pre><code>from midgard.collections.enums import register_enum
+
+@register_enum("reference_ellipsoid")
+class ReferenceEllipsoid(enum.IntEnum):
+
+    wgs84 = 1
+    grs80 = 2
+    wgs72 = 3
+</code></pre>
+<p>Use enumerations in your code:</p>
+<pre><code>from midgard.collections import enums
+enums.get_value("gnss_freq_G", "L1")
+enums.get_value("gnss_freq_G", "L1") + 1
+
+enums.get_enum("gnss_freq_G")
+enums.get_enum("gnss_freq_G").L1
+enums.get_enum("gnss_freq_G").L1 + 1
+
+enums.gnss_freq_G.L1
+enums.gnss_freq_G.L1 * 2
+</code></pre>
+<h3 id="gpsfrequency"><strong>GPSFrequency</strong></h3>
+<p>Full name: <code>midgard.collections.enums.GPSFrequency</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>GPS frequencies</p>
+<h4 id="gpsfrequencyl1-gpsfrequency">GPSFrequency.L1 (GPSFrequency)</h4>
+<p><code>L1 = &lt;GPSFrequency.L1: 1575420000.0&gt;</code></p>
+<h4 id="gpsfrequencyl2-gpsfrequency">GPSFrequency.L2 (GPSFrequency)</h4>
+<p><code>L2 = &lt;GPSFrequency.L2: 1227600000.0&gt;</code></p>
+<h4 id="gpsfrequencyl5-gpsfrequency">GPSFrequency.L5 (GPSFrequency)</h4>
+<p><code>L5 = &lt;GPSFrequency.L5: 1176450000.0&gt;</code></p>
+<h3 id="logcolor"><strong>LogColor</strong></h3>
+<p>Full name: <code>midgard.collections.enums.LogColor</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Colors used when logging</p>
+<h4 id="logcolorerror-logcolor">LogColor.error (LogColor)</h4>
+<p><code>error = &lt;LogColor.error: '\x1b[31m'&gt;</code></p>
+<h4 id="logcolorfatal-logcolor">LogColor.fatal (LogColor)</h4>
+<p><code>fatal = &lt;LogColor.fatal: '\x1b[1m\x1b[31m'&gt;</code></p>
+<h4 id="logcolorwarn-logcolor">LogColor.warn (LogColor)</h4>
+<p><code>warn = &lt;LogColor.warn: '\x1b[33m'&gt;</code></p>
+<h3 id="loglevel"><strong>LogLevel</strong></h3>
 <p>Full name: <code>midgard.collections.enums.LogLevel</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
 <p>Levels used when deciding how much log output to show</p>
-<h3 id="loglevelall-loglevel">LogLevel.all (LogLevel)</h3>
+<h4 id="loglevelall-loglevel">LogLevel.all (LogLevel)</h4>
 <p><code>all = &lt;LogLevel.all: 1&gt;</code></p>
-<h3 id="loglevelcheck-loglevel">LogLevel.check (LogLevel)</h3>
-<p><code>check = &lt;LogLevel.check: 7&gt;</code></p>
-<h3 id="logleveldebug-loglevel">LogLevel.debug (LogLevel)</h3>
+<h4 id="logleveldebug-loglevel">LogLevel.debug (LogLevel)</h4>
 <p><code>debug = &lt;LogLevel.debug: 2&gt;</code></p>
-<h3 id="logleveldev-loglevel">LogLevel.dev (LogLevel)</h3>
-<p><code>dev = &lt;LogLevel.dev: 4&gt;</code></p>
-<h3 id="loglevelerror-loglevel">LogLevel.error (LogLevel)</h3>
-<p><code>error = &lt;LogLevel.error: 8&gt;</code></p>
-<h3 id="loglevelfatal-loglevel">LogLevel.fatal (LogLevel)</h3>
-<p><code>fatal = &lt;LogLevel.fatal: 9&gt;</code></p>
-<h3 id="loglevelinfo-loglevel">LogLevel.info (LogLevel)</h3>
-<p><code>info = &lt;LogLevel.info: 5&gt;</code></p>
-<h3 id="loglevelnone-loglevel">LogLevel.none (LogLevel)</h3>
-<p><code>none = &lt;LogLevel.none: 10&gt;</code></p>
-<h3 id="logleveltime-loglevel">LogLevel.time (LogLevel)</h3>
-<p><code>time = &lt;LogLevel.time: 3&gt;</code></p>
-<h3 id="loglevelwarn-loglevel">LogLevel.warn (LogLevel)</h3>
-<p><code>warn = &lt;LogLevel.warn: 6&gt;</code></p>
-<h2 id="enums"><strong>enums</strong>()</h2>
+<h4 id="loglevelerror-loglevel">LogLevel.error (LogLevel)</h4>
+<p><code>error = &lt;LogLevel.error: 5&gt;</code></p>
+<h4 id="loglevelfatal-loglevel">LogLevel.fatal (LogLevel)</h4>
+<p><code>fatal = &lt;LogLevel.fatal: 6&gt;</code></p>
+<h4 id="loglevelinfo-loglevel">LogLevel.info (LogLevel)</h4>
+<p><code>info = &lt;LogLevel.info: 3&gt;</code></p>
+<h4 id="loglevelnone-loglevel">LogLevel.none (LogLevel)</h4>
+<p><code>none = &lt;LogLevel.none: 7&gt;</code></p>
+<h4 id="loglevelwarn-loglevel">LogLevel.warn (LogLevel)</h4>
+<p><code>warn = &lt;LogLevel.warn: 4&gt;</code></p>
+<h3 id="notgiven"><strong>NotGiven</strong></h3>
+<p>Full name: <code>midgard.collections.enums.NotGiven</code></p>
+<p>Signature: <code>()</code></p>
+<p>Dummy class used as a marker for a argument not given, used instead of None because None is valid value</p>
+<h3 id="writelevel"><strong>WriteLevel</strong></h3>
+<p>Full name: <code>midgard.collections.enums.WriteLevel</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Levels used when deciding which fields of a dataset and other information to write to disk</p>
+<h4 id="writelevelanalysis-writelevel">WriteLevel.analysis (WriteLevel)</h4>
+<p><code>analysis = &lt;WriteLevel.analysis: 2&gt;</code></p>
+<h4 id="writeleveldetail-writelevel">WriteLevel.detail (WriteLevel)</h4>
+<p><code>detail = &lt;WriteLevel.detail: 1&gt;</code></p>
+<h4 id="writeleveloperational-writelevel">WriteLevel.operational (WriteLevel)</h4>
+<p><code>operational = &lt;WriteLevel.operational: 3&gt;</code></p>
+<h3 id="enums"><strong>enums</strong>()</h3>
 <p>Full name: <code>midgard.collections.enums.enums</code></p>
 <p>Signature: <code>() -&gt; List[str]</code></p>
 <p>Return a list of available enums</p>
 <p><strong>Returns:</strong></p>
 <p>Names of available enums.</p>
-<h2 id="get_enum"><strong>get_enum</strong>()</h2>
+<h3 id="get_enum"><strong>get_enum</strong>()</h3>
 <p>Full name: <code>midgard.collections.enums.get_enum</code></p>
 <p>Signature: <code>(name:str) -&gt; enum.EnumMeta</code></p>
 <p>Return a named Enumeration</p>
@@ -181,19 +246,69 @@ raise an UnknownEnumError and list the available enumerations.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Enumeration with the given name.</p>
-<h2 id="get_value"><strong>get_value</strong>()</h2>
+<h3 id="get_value"><strong>get_value</strong>()</h3>
 <p>Full name: <code>midgard.collections.enums.get_value</code></p>
-<p>Signature: <code>(name:str, value:str) -&gt; enum.Enum</code></p>
+<p>Signature: <code>(name:str, value:str, default:Any=&lt;class 'midgard.collections.enums.NotGiven'&gt;) -&gt; enum.Enum</code></p>
 <p>Return the value of a named Enumeration</p>
 <p>Names are defined by the @register_enum-decorator.</p>
 <p><strong>Args:</strong></p>
 <ul>
-<li><code>name</code>:   Name used for Enumeration.</li>
-<li><code>value</code>:  Value of Enumeration.</li>
+<li><code>name</code>:     Name used for Enumeration.</li>
+<li><code>value</code>:    Value of Enumeration.</li>
+<li><code>default</code>:  Optional object returned if enumeration does not contain value</li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Value of enumeration with the given name.</p>
-<h2 id="register_enum"><strong>register_enum</strong>()</h2>
+<h3 id="gnss_freq_g"><strong>gnss_freq_G</strong></h3>
+<p>Full name: <code>midgard.collections.enums.gnss_freq_G</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>GPS frequencies</p>
+<h4 id="gnss_freq_gl1-gpsfrequency">gnss_freq_G.L1 (GPSFrequency)</h4>
+<p><code>L1 = &lt;GPSFrequency.L1: 1575420000.0&gt;</code></p>
+<h4 id="gnss_freq_gl2-gpsfrequency">gnss_freq_G.L2 (GPSFrequency)</h4>
+<p><code>L2 = &lt;GPSFrequency.L2: 1227600000.0&gt;</code></p>
+<h4 id="gnss_freq_gl5-gpsfrequency">gnss_freq_G.L5 (GPSFrequency)</h4>
+<p><code>L5 = &lt;GPSFrequency.L5: 1176450000.0&gt;</code></p>
+<h3 id="has_value"><strong>has_value</strong>()</h3>
+<p>Full name: <code>midgard.collections.enums.has_value</code></p>
+<p>Signature: <code>(name:str, value:str) -&gt; bool</code></p>
+<p>Check whether a named Enumeration defines a given value</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>name</code>:     Name used for Enumeration.</li>
+<li><code>value</code>:    Value of Enumeration.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>True if Enumeration defines value, False otherwise</p>
+<h3 id="log_color"><strong>log_color</strong></h3>
+<p>Full name: <code>midgard.collections.enums.log_color</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Colors used when logging</p>
+<h4 id="log_colorerror-logcolor">log_color.error (LogColor)</h4>
+<p><code>error = &lt;LogColor.error: '\x1b[31m'&gt;</code></p>
+<h4 id="log_colorfatal-logcolor">log_color.fatal (LogColor)</h4>
+<p><code>fatal = &lt;LogColor.fatal: '\x1b[1m\x1b[31m'&gt;</code></p>
+<h4 id="log_colorwarn-logcolor">log_color.warn (LogColor)</h4>
+<p><code>warn = &lt;LogColor.warn: '\x1b[33m'&gt;</code></p>
+<h3 id="log_level"><strong>log_level</strong></h3>
+<p>Full name: <code>midgard.collections.enums.log_level</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Levels used when deciding how much log output to show</p>
+<h4 id="log_levelall-loglevel">log_level.all (LogLevel)</h4>
+<p><code>all = &lt;LogLevel.all: 1&gt;</code></p>
+<h4 id="log_leveldebug-loglevel">log_level.debug (LogLevel)</h4>
+<p><code>debug = &lt;LogLevel.debug: 2&gt;</code></p>
+<h4 id="log_levelerror-loglevel">log_level.error (LogLevel)</h4>
+<p><code>error = &lt;LogLevel.error: 5&gt;</code></p>
+<h4 id="log_levelfatal-loglevel">log_level.fatal (LogLevel)</h4>
+<p><code>fatal = &lt;LogLevel.fatal: 6&gt;</code></p>
+<h4 id="log_levelinfo-loglevel">log_level.info (LogLevel)</h4>
+<p><code>info = &lt;LogLevel.info: 3&gt;</code></p>
+<h4 id="log_levelnone-loglevel">log_level.none (LogLevel)</h4>
+<p><code>none = &lt;LogLevel.none: 7&gt;</code></p>
+<h4 id="log_levelwarn-loglevel">log_level.warn (LogLevel)</h4>
+<p><code>warn = &lt;LogLevel.warn: 4&gt;</code></p>
+<h3 id="register_enum"><strong>register_enum</strong>()</h3>
 <p>Full name: <code>midgard.collections.enums.register_enum</code></p>
 <p>Signature: <code>(name:str) -&gt; Callable[[enum.EnumMeta], enum.EnumMeta]</code></p>
 <p>Register a named Enumeration</p>
@@ -203,7 +318,17 @@ raise an UnknownEnumError and list the available enumerations.</p>
 <li><code>name</code>:  Name used for Enumeration.</li>
 </ul>
 <p><strong>Returns:</strong></p>
-<p>Decorator that registers an Enumeration.</p></div>
+<p>Decorator that registers an Enumeration.</p>
+<h3 id="write_level"><strong>write_level</strong></h3>
+<p>Full name: <code>midgard.collections.enums.write_level</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Levels used when deciding which fields of a dataset and other information to write to disk</p>
+<h4 id="write_levelanalysis-writelevel">write_level.analysis (WriteLevel)</h4>
+<p><code>analysis = &lt;WriteLevel.analysis: 2&gt;</code></p>
+<h4 id="write_leveldetail-writelevel">write_level.detail (WriteLevel)</h4>
+<p><code>detail = &lt;WriteLevel.detail: 1&gt;</code></p>
+<h4 id="write_leveloperational-writelevel">write_level.operational (WriteLevel)</h4>
+<p><code>operational = &lt;WriteLevel.operational: 3&gt;</code></p></div>
         </div>
 
         <footer class="col-md-12">

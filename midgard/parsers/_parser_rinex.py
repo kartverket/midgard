@@ -11,16 +11,17 @@ for a given Rinex format.
 
 """
 # Standard library imports
+from datetime import datetime
 import functools
 import itertools
 import pathlib
 from typing import Any, Callable, cast, Dict, List, NamedTuple, Optional, Tuple, Union
-import warnings
 
 import numpy as np
 
 # Midgard imports
 from midgard.dev import exceptions
+from midgard.dev import log
 from midgard.parsers._parser import Parser
 
 # Custom types
@@ -73,37 +74,41 @@ class RinexParser(Parser):
         self,
         file_path: Union[str, pathlib.Path],
         encoding: Optional[str] = None,
-        logger: Optional[Callable[[str], None]] = print,
+        logger=print,
+        sampling_rate: Optional[int] = None,
         strict: bool = False,
     ) -> None:
         """Set up the basic information needed by the parser
 
         Args:
-            file_path:    Path to file that will be read.
-            encoding:     Encoding of file that will be read.
-            logger:       Function that will be used for logging.
-            strict:       Raise error if file does not conform with format.
+            file_path:      Path to file that will be read.
+            encoding:       Encoding of file that will be read.
+            sampling_rate:  If given, decimate the file to sampling_rate.
+            strict:         Raise error if file does not conform with format.
         """
-        super().__init__(file_path, encoding, logger)
-        self.meta["__kwargs__"] = dict(file_path=file_path, encoding=encoding, logger=logger, strict=strict)
+        super().__init__(file_path, encoding)
+        self.meta["__kwargs__"] = dict(
+            file_path=file_path, encoding=encoding, sampling_rate=sampling_rate, strict=strict
+        )
         self.header: Dict[str, Any] = dict()
-        self.error = cast(Callable[[str], None], self._raise_error if strict else warnings.warn)
+        self.samling_rate = sampling_rate
+        self.error = cast(Callable[[str], None], self._raise_error if strict else log.warn)
 
     def _raise_error(self, text: str) -> None:
         """Raise a parser error"""
         raise exceptions.ParserError(text)
 
-    def get_rinex_version(self) -> str:
-        """Get version of Rinex file"""
-        version = self.rinex_version__type
+    def get_rinex_version_type(self) -> Dict[str, str]:
+        """Get version and type of Rinex file"""
+        header_def = self.rinex_version__type
 
         with open(self.file_path, mode="r", encoding=self.file_encoding) as fid:
             for line in fid:
                 marker = line[60:80].strip()
-                if marker != version.marker:
+                if marker != header_def.marker:
                     self.error(f"Wrong marker {marker!r} before version information")
                     continue
-                return line[slice(*version.fields["rinex_version"])].strip()
+                return {k: line[slice(*v)].strip() for k, v in header_def.fields.items()}
 
         raise exceptions.ParserError(f"No information about Rinex version found in {self.file_path}")
 
@@ -123,13 +128,15 @@ class RinexParser(Parser):
             self.read_header(fid)
             self.read_epochs(fid)
 
+        self.structure_data()
+
     def read_header(self, fid) -> None:
         """Read header from the rinex file
 
         Add header information to self.header
         """
         headers = {h.marker: h for h in self.mandatory_headers + self.optional_headers}
-        mandatory_markers = [h.marker for h in self.mandatory_headers]
+        mandatory_markers = {h.marker for h in self.mandatory_headers}
 
         # Read header lines
         for line in fid:
@@ -154,27 +161,33 @@ class RinexParser(Parser):
 
         Add data to self.data
         """
-        while True:
-            try:
-                epoch_line = next(fid)
-            except StopIteration:
-                print("**" * 50 + "File ended")
-                break
-
+        sampling_rate = 400  # TODO: Why does not self.sampling_rate work?
+        prev_epoch = datetime.min
+        for epoch_line in fid:
             num_data_lines, epoch_info = self.parse_epoch_line(epoch_line)
-
             data_lines = itertools.islice(fid, num_data_lines)
-            data_info = self.parse_data_lines(data_lines, epoch_info)
-            print(f"End of read_epochs({fid})")
-            import IPython
 
-            IPython.embed()
+            if sampling_rate is not None:
+                epoch = epoch_info["epoch"]
+                if (epoch - prev_epoch).total_seconds() < sampling_rate:
+                    for line in data_lines:
+                        pass  # Consume lines  # TODO: Better way for this?
+                    continue
+                prev_epoch = epoch
+
+            data_info = self.parse_data_lines(data_lines, epoch_info)
 
     def parse_epoch_line(self, line):
         raise NotImplementedError
 
     def parse_data_lines(self, lines, epoch_info):
         raise NotImplementedError
+
+    def structure_data(self) -> None:
+        """Convert lists of data to numpy arrays
+        """
+        for system, sys_data in self.data.items():
+            self.data[system] = {k: np.array(v) for k, v in sys_data.items()}
 
     #
     # HEADER PARSERS
@@ -202,24 +215,41 @@ class RinexParser(Parser):
 
             self.header['glonass_bias'] = { <obstype>: <bias in meters>}
         """
-        return fields
-        # self.header.setdefault("glonass_bias", {})
-        # for field in sorted([f for f in line if f.startswith("type_")]):
-        #    if line[field]:
-        #        type_, bias = line[field].split()[0:2]
-        #        self.header["glonass_bias"].update({type_: float(bias)})
+        glonass_bias = self.header.setdefault("glonass_bias", {})
+        for field in fields.values():
+            if field:  # Check if field is not empty.
+                type_, bias = field.split()[0:2]
+                glonass_bias.update({type_: float(bias)})
+        return glonass_bias
 
     def parse_glonass_slot(self, fields: _FieldStr) -> _FieldVal:
         """Parse GLONASS slot and frequency numbers given in RINEX header to instance variable `header['glonass_slot']`
 
             self.header['glonass_slot'] = { <slot>: <frequency number>}
         """
-        return fields
-        # self.header.setdefault("glonass_slot", {})
-        # for field in sorted([f for f in line if f.startswith("slot_")]):
-        #    if line[field]:
-        #        slot, freq = line[field].split()[0:2]
-        #        self.header["glonass_slot"].update({slot: int(freq)})
+        glonass_slot = self.header.setdefault("glonass_slot", {})
+
+        if "num_satellite" in fields:
+            num_sat = fields["num_satellite"]
+            del fields["num_satellite"]
+
+        for field in fields.values():
+            if field:  # Check if field is not empty.
+                slot, freq = field.split()[0:2]
+                glonass_slot.update({slot: int(freq)})
+
+        # TODO: How can that be checked after all lines are read?
+        # lines = cache + [fields]
+        # lines
+        # int(lines[0]["num_satellite"])
+        # " ".join(s["satellites"] for s in lines)
+        # " ".join(d["satellites"] for d in lines)
+        # (" ".join(d["satellites"] for d in lines)).split()
+        # len((" ".join(d["satellites"] for d in lines)).split())
+        # if num_sat != len(glonass_slot):
+        #    #TODO: How to define a warning?
+        #    raise exceptions.ParserError(f"Listed number of GLONASS satellites ({len(glonass_slot)}) is not as expected (number of satellites {num_sat}).")
+        return glonass_slot
 
     def parse_integer(self, fields: _FieldStr) -> _FieldVal:
         """Parse integer entries of RINEX header to instance variable `header`
@@ -230,14 +260,12 @@ class RinexParser(Parser):
         """Parse entries of RINEX header `LEAP SECONDS` to instance variable `header`
 
             self.header['leap_seconds'] = { 'leap_seconds': <value>,
-                                          'future_past_leap_seconds': <value>,
-                                          'week': <value>,
-                                          'week_day': <value>,
-                                          'time_sys': <system> }
+                                            'future_past_leap_seconds': <value>,
+                                            'week': <value>,
+                                            'week_day': <value>,
+                                            'time_sys': <system> }
         """
-        return fields
-        # for field in line:
-        #    self.header.setdefault("leap_seconds", {}).update({field: line[field]})
+        return dict(leap_seconds={k: v for k, v in fields.items() if v})
 
     @parser_cache
     def parse_phase_shift(self, fields: _FieldStr, cache: _FieldCache) -> _FieldVal:
@@ -250,37 +278,67 @@ class RinexParser(Parser):
 
             self.header['phase_shift'] =  {'G': {'L1C': {'corr': '0.00000',
                                                        'sat': ['G01', 'G02', 'G03', ...]},
-                                               'L1W': {'corr': '0.00000',
+                                                 'L1W': {'corr': '0.00000',
                                                        'sat': []}},
-                                         'R': {'L1C': {'corr': '0.00000',
+                                          'R': {'L1C': {'corr': '0.00000',
                                                        'sat': ['R01', 'R02', 'R07', 'R08']}}}
 
         TODO: Maybe better to add information to header['obstypes']?
         """
-        return fields
-        # self.header.setdefault("phase_shift", {})
-        #
-        # if line["sat_sys"]:
-        #    cache["sat_sys"] = line["sat_sys"]
-        #    cache["obs_type"] = line["obs_type"]
-        #    cache["corr"] = line["correction"]
-        #    cache["sat"] = []
-        #
+
+        # import IPython; IPython.embed()
+        # phase_shift = self.header.setdefault("phase_shift", {})
+        # if field['sat_sys']:
+        #    phase_shift.setdefault(fields['sat_sys'], {}).update({fields['obs_type']: {}})
+
+        #    if field['satellites']
+        #    phase_shift[fields['sat_sys']][fields['obs_type']].update({'corr': fields['correction'], 'sat': fields[satellites].split()})
+        phase_shift = self.header.setdefault("phase_shift", {})
+
+        prev_idx = -1  # MURKS
+        if fields["sat_sys"]:
+            phase_shift.setdefault(fields["sat_sys"], {}).update({fields["obs_type"]: {}})
+            prev_idx = -1
+
+        if fields["num_satellite"]:
+            phase_shift[fields["sat_sys"]][fields["obs_type"]].update(
+                {"corr": float(fields["correction"]), "sat": fields["satellites"].split()}
+            )
+        else:
+            if fields["satellites"]:
+                sat_sys = cache[prev_idx]["sat_sys"]
+                obs_type = cache[prev_idx]["obs_type"]
+                phase_shift[sat_sys][obs_type]["sat"] += fields["satellites"].split()
+                prev_idx -= 1
+
+        print("MURKS:", phase_shift)
+        # if cache:
+        #    if fields['num_satellite']
+        return phase_shift
+
+        if fields["sat_sys"]:
+            phase_shift.setdefault(fields["sat_sys"], {})
+            cache["sat_sys"] = fields["sat_sys"]
+            cache["obs_type"] = fields["obs_type"]
+            cache["corr"] = float(fields["correction"])
+            cache["sat"] = fields["satellites"]
+
         # if cache["sat_sys"] not in self.header["phase_shift"]:
-        #    self.header["phase_shift"].update({cache["sat_sys"]: {}})
-        #
-        # cache["sat"].extend(line["satellites"].split())
-        #
-        # if cache["obs_type"]:
-        #    self.header["phase_shift"][cache["sat_sys"]].update(
-        #        {cache["obs_type"]: {"corr": cache["corr"], "sat": cache["sat"]}}
-        #    )
+        #    phase_shift.update({cache["sat_sys"]: {}})
+
+        cache["sat"].extend(line["satellites"].split())
+
+        if cache["obs_type"]:
+            self.header["phase_shift"][cache["sat_sys"]].update(
+                {cache["obs_type"]: {"corr": cache["corr"], "sat": cache["sat"]}}
+            )
+
+        return fields
 
     def parse_scale_factor(self, fields: _FieldStr) -> _FieldVal:
         """Parse entries of RINEX header `SYS / SCALE FACTOR` to instance variable `header`
         """
-        return fields
-        # log.fatal("Reading and applying of RINEX header entry 'SYS / SCALE FACTOR' is not implemented.")
+        return NotImplementedError
 
     def parse_string(self, fields: _FieldStr) -> _FieldVal:
         """Parse string entries of RINEX header to instance variable 'header'
@@ -291,8 +349,9 @@ class RinexParser(Parser):
         """Parse entries of RINEX header `SYS / DCBS APPLIED` to instance variable `header`
 
             self.header['dcbs_applied'] = { <sat_sys>: { prg: <used program>,
-                                                       url: <source url>}}
+                                                         url: <source url>}}
         """
+        # self.header.setdefault("leap_seconds", {}).update({k: v for k, v in fields.items() if v})
         return fields
         # self.header.setdefault("dcbs_applied", {}).update(
         #    {line["sat_sys"]: {"prg": line["program"], "url": line["source"]}}
@@ -400,7 +459,7 @@ class RinexParser(Parser):
     #
     @property
     def rinex_version__type(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'RINEX VERSION / TYPE'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -414,7 +473,7 @@ class RinexParser(Parser):
 
     @property
     def pgm__run_by__date(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'PGM / RUN BY / DATE'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -428,7 +487,7 @@ class RinexParser(Parser):
 
     @property
     def comment(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'COMMENT'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -438,7 +497,7 @@ class RinexParser(Parser):
 
     @property
     def marker_name(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'MARKER NAME'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -448,7 +507,7 @@ class RinexParser(Parser):
 
     @property
     def marker_number(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'MARKER NUMBER'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -458,13 +517,13 @@ class RinexParser(Parser):
 
     @property
     def marker_type(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label ''
         """
         return RinexHeader(marker="MARKER TYPE", fields={"marker_type": (0, 20)}, parser=self.parse_string)
 
     @property
     def observer__agency(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'OBSERVER / AGENCY'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -476,7 +535,7 @@ class RinexParser(Parser):
 
     @property
     def rec_num__type__vers(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'REC # / TYPE / VERS'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -490,7 +549,7 @@ class RinexParser(Parser):
 
     @property
     def ant_num__type(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'ANT # / TYPE'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -504,7 +563,7 @@ class RinexParser(Parser):
 
     @property
     def approx_position_xyz(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'APPROX POSITION XYZ'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -518,7 +577,7 @@ class RinexParser(Parser):
 
     @property
     def antenna__delta_hen(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'ANTENNA: DELTA H/E/N'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -532,7 +591,11 @@ class RinexParser(Parser):
 
     @property
     def antenna__delta_xyz(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'ANTENNA: DELTA X/Y/Z'
+
+        Example:
+            ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
+                    0.0000        0.0000        0.0000                  ANTENNA: DELTA X/Y/Z
         """
         return RinexHeader(
             marker="ANTENNA: DELTA X/Y/Z",
@@ -548,7 +611,7 @@ class RinexParser(Parser):
 
     @property
     def sys__num__obs_types(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'SYS / # / OBS TYPES'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -581,7 +644,7 @@ class RinexParser(Parser):
 
     @property
     def signal_strength_unit(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'SIGNAL STRENGTH UNIT'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -593,7 +656,7 @@ class RinexParser(Parser):
 
     @property
     def interval(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'INTERVAL'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -603,7 +666,7 @@ class RinexParser(Parser):
 
     @property
     def time_of_first_obs(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'TIME OF FIRST OBS'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -625,7 +688,7 @@ class RinexParser(Parser):
 
     @property
     def time_of_last_obs(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'TIME OF LAST OBS'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -647,7 +710,7 @@ class RinexParser(Parser):
 
     @property
     def rcv_clock_offs_appl(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'RCV CLOCK OFFS APPL'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -659,7 +722,7 @@ class RinexParser(Parser):
 
     @property
     def sys__dcbs_applied(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'SYS / DCBS APPLIED'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -673,7 +736,7 @@ class RinexParser(Parser):
 
     @property
     def sys__pcvs_applied(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'SYS / PCVS APPLIED'
         """
         return RinexHeader(
             marker="SYS / PCVS APPLIED",
@@ -683,7 +746,7 @@ class RinexParser(Parser):
 
     @property
     def sys__scale_factor(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'SYS / SCALE FACTOR'
         """
         return RinexHeader(
             marker="SYS / SCALE FACTOR",
@@ -693,7 +756,7 @@ class RinexParser(Parser):
 
     @property
     def sys__phase_shift(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'SYS / PHASE SHIFT'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -715,7 +778,7 @@ class RinexParser(Parser):
 
     @property
     def glonass_slot__frq_num(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'GLONASS SLOT / FRQ #'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -741,7 +804,7 @@ class RinexParser(Parser):
 
     @property
     def glonass_cod__phs__bis(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'GLONASS COD/PHS/BIS'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -755,7 +818,7 @@ class RinexParser(Parser):
 
     @property
     def leap_seconds(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label 'LEAP SECONDS'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -775,7 +838,7 @@ class RinexParser(Parser):
 
     @property
     def num_of_satellites(self) -> RinexHeader:
-        """bla bla bla
+        """Parser definition for RINEX header label '# OF SATELLITES'
 
         Example:
             ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
