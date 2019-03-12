@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.math - Midgard v0.2.0</title>
+        <title>midgard.math - Midgard v0.3.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v0.3.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -177,44 +177,6 @@ lib.unit).</p>
 <h3 id="constant"><strong>Constant</strong></h3>
 <p>Full name: <code>midgard.math.constant.Constant</code></p>
 <p>Signature: <code>() -&gt; None</code></p>
-<h4 id="constantget">Constant.<strong>get</strong>()</h4>
-<p>Full name: <code>midgard.math.constant.get</code></p>
-<p>Signature: <code>(self, constant:str, source:str=None) -&gt; float</code></p>
-<p>Get the value of one constant</p>
-<p>Note that if you need the default value of the constant (from the
-default source) it is typically better to read it as a property. That
-is, <code>constant.c</code> is preferred to <code>constant.get('c')</code>.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>constant</code>:   Name of the constant.</li>
-<li><code>source</code>:     Source from which the constant is defined.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Value of constant.</p>
-<h4 id="constantunit">Constant.<strong>unit</strong>()</h4>
-<p>Full name: <code>midgard.math.constant.unit</code></p>
-<p>Signature: <code>(self, constant:str) -&gt; str</code></p>
-<p>Unit of constant</p>
-<h4 id="constantupdate_from_file">Constant.<strong>update_from_file</strong>()</h4>
-<p>Full name: <code>midgard.math.constant.update_from_file</code></p>
-<p>Signature: <code>(self, file_path)</code></p>
-<p>Update list of constants from file</p>
-<h4 id="constantuse_source">Constant.<strong>use_source</strong>()</h4>
-<p>Full name: <code>midgard.math.constant.use_source</code></p>
-<p>Signature: <code>(self, source:str) -&gt; None</code></p>
-<p>Context manager for handling different sources</p>
-<p>Example:
-    &gt;&gt;&gt; constant.GM
-    398600441800000.0</p>
-<pre><code>&gt;&gt;&gt; with constant.use_source("de430"):
-...     print(constant.GM)
-...
-398600435436000.0
-</code></pre>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>source</code>:  Name of source of constant.</li>
-</ul>
 <h3 id="constant-constant">constant (Constant)</h3>
 <p><code>constant = Constant('/home/kirann/anaconda3/lib/python3.6/site-packages/midgard/math/constant.txt')</code></p>
 <h2 id="midgardmathellipsoid">midgard.math.ellipsoid</h2>
@@ -523,26 +485,32 @@ lon (Float or Array):   Longitude of origin of ENU coordinate system.</p>
 <h2 id="midgardmathtransformation">midgard.math.transformation</h2>
 <p>Midgard library module for handling of geodetic conversions</p>
 <p><strong>Description:</strong></p>
-<h3 id="ellipsoid_1"><strong>Ellipsoid</strong></h3>
-<p>Full name: <code>midgard.math.transformation.Ellipsoid</code></p>
-<p>Signature: <code>(name, a, f)</code></p>
-<p>Ellipsoid(name, a, f)</p>
-<h3 id="grs80-ellipsoid_1">GRS80 (Ellipsoid)</h3>
-<p><code>GRS80 = Ellipsoid(name='GRS80', a=6378137, f=0.003352810681182319)</code></p>
-<h3 id="wgs72-ellipsoid_1">WGS72 (Ellipsoid)</h3>
-<p><code>WGS72 = Ellipsoid(name='WGS72', a=6378135, f=0.003352779454167505)</code></p>
-<h3 id="wgs84-ellipsoid_1">WGS84 (Ellipsoid)</h3>
-<p><code>WGS84 = Ellipsoid(name='WGS84', a=6378137, f=0.0033528106647474805)</code></p>
+<h3 id="delta_enu2trs"><strong>delta_enu2trs</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.delta_enu2trs</code></p>
+<p>Signature: <code>(enu:'EnuPositionDelta') -&gt; 'TrsPositionDelta'</code></p>
+<p>Convert position deltas from ENU to TRS</p>
+<h3 id="delta_enu2trs_posvel"><strong>delta_enu2trs_posvel</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.delta_enu2trs_posvel</code></p>
+<p>Signature: <code>(enu:'EnuPosVelDelta') -&gt; 'TrsPosVelDelta'</code></p>
+<p>Convert position deltas from ENU to TRS</p>
+<h3 id="delta_trs2enu"><strong>delta_trs2enu</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.delta_trs2enu</code></p>
+<p>Signature: <code>(trs:'TrsPositionDelta') -&gt; 'EnuPositionDelta'</code></p>
+<p>Convert position deltas from TRS to ENU</p>
+<h3 id="delta_trs2enu_posvel"><strong>delta_trs2enu_posvel</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.delta_trs2enu_posvel</code></p>
+<p>Signature: <code>(trs:'TrsPosVelDelta') -&gt; 'EnuPosVelDelta'</code></p>
+<p>Convert position deltas from TRS to ENU</p>
 <h3 id="llh2trs"><strong>llh2trs</strong>()</h3>
 <p>Full name: <code>midgard.math.transformation.llh2trs</code></p>
-<p>Signature: <code>(llh:numpy.ndarray, ellipsoid:midgard.math.ellipsoid.Ellipsoid=Ellipsoid(name='GRS80', a=6378137, f_inv=298.257222101, description='Used by ITRS')) -&gt; numpy.ndarray</code></p>
+<p>Signature: <code>(llh:numpy.ndarray, ellipsoid:midgard.math.ellipsoid.Ellipsoid=None) -&gt; numpy.ndarray</code></p>
 <p>Convert geodetic latitude-, longitude-, height-coordinates to geocentric xyz-coordinates</p>
-<p>Ref: Datums and Map projections, Jonathan Iliffe and Roger Lott, section 2.2.4</p>
+<p>Reimplementation of GD2GCE.for from the IUA SOFA software collection.</p>
 <h3 id="trs2llh"><strong>trs2llh</strong>()</h3>
 <p>Full name: <code>midgard.math.transformation.trs2llh</code></p>
-<p>Signature: <code>(trs:numpy.ndarray, ellipsoid:midgard.math.ellipsoid.Ellipsoid=Ellipsoid(name='GRS80', a=6378137, f_inv=298.257222101, description='Used by ITRS')) -&gt; numpy.ndarray</code></p>
+<p>Signature: <code>(trs:numpy.ndarray, ellipsoid:midgard.math.ellipsoid.Ellipsoid=None) -&gt; numpy.ndarray</code></p>
 <p>Convert geocentric xyz-coordinates to geodetic latitude-, longitude-, height-coordinates</p>
-<p>Ref: Datums and Map projections, Jonathan Iliffe and Roger Lott, section 2.2.4</p>
+<p>Reimplementation of GC2GDE.for from the IUA SOFA software collection.</p>
 <h2 id="midgardmathunit">midgard.math.unit</h2>
 <p>Midgard library module for handling of SI-unit conversions</p>
 <p><strong>Description:</strong></p>
@@ -595,68 +563,6 @@ current (midgard/math) directory.</p>
 <p>Signature: <code>(from_unit:str, to_unit:Union[str, NoneType]=None) -&gt; Any</code></p>
 <p>Unit converter</p>
 <p>The implementation of the unit conversion is done in the <code>_convert_units</code>-metaclass.</p>
-<h4 id="unitdms_to_rad">Unit.<strong>dms_to_rad</strong>()</h4>
-<p>Full name: <code>midgard.math.unit.dms_to_rad</code></p>
-<p>Signature: <code>(degrees:~np_float, minutes:~np_float, seconds:~np_float) -&gt; ~np_float</code></p>
-<p>Convert degrees, minutes and seconds to radians</p>
-<p>The sign of degrees will be used. In this case, be careful that the sign
-of +0 or -0 is correctly passed on. That is, degrees must be specified as a float, not an
-int.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>degrees</code>:   Degrees as float (including sign) or array of floats</li>
-<li><code>minutes</code>:   Minutes as int/float or array of ints/floats</li>
-<li><code>seconds</code>:   Seconds as float or array of floats</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Given degrees, minutes and seconds as radians.</p>
-<p><strong>Examples:</strong></p>
-<pre><code>&gt;&gt;&gt; Unit.dms_to_rad(59, 54, 52.32)
-1.04570587646256
-&gt;&gt;&gt; Unit.dms_to_rad(-12.0, 34, 56.789)
--0.21960503017531938
-&gt;&gt;&gt; Unit.dms_to_rad(-0.0, 19, 59.974870)
--0.005817642339636369
-</code></pre>
-<h4 id="unithms_to_rad">Unit.<strong>hms_to_rad</strong>()</h4>
-<p>Full name: <code>midgard.math.unit.hms_to_rad</code></p>
-<p>Signature: <code>(hours:~np_float, minutes:~np_float, seconds:~np_float) -&gt; ~np_float</code></p>
-<p>Convert hours, minutes and seconds to radians</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>hours</code>:     Hours as int or array of ints</li>
-<li><code>minutes</code>:   Minutes as int or or array of ints</li>
-<li><code>seconds</code>:   Seconds as float or or array of floats</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Given hours, minutes and seconds as radians.</p>
-<p><strong>Examples:</strong></p>
-<pre><code>&gt;&gt;&gt; Unit.hms_to_rad(17, 7, 17.753427)
-4.482423920139868
-&gt;&gt;&gt; Unit.hms_to_rad(12, 0, 0.00)
-3.1415926535897936
-&gt;&gt;&gt; Unit.hms_to_rad(-12, 34, 56.789)
-Traceback (most recent call last):
-ValueError: hours must be non-negative
-</code></pre>
-<h4 id="unitrad_to_dms">Unit.<strong>rad_to_dms</strong>()</h4>
-<p>Full name: <code>midgard.math.unit.rad_to_dms</code></p>
-<p>Signature: <code>(radians:~np_float) -&gt; Tuple[~np_float, ~np_float, ~np_float]</code></p>
-<p>Converts radians to degrees, minutes and seconds</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>radians</code>:  Angle(s) in radians</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Tuple with degrees, minutes, and seconds.</p>
-<p><strong>Examples:</strong></p>
-<pre><code>&gt;&gt;&gt; Unit.rad_to_dms(1.04570587646256)
-(59.0, 54.0, 52.3200000000179)
-&gt;&gt;&gt; Unit.rad_to_dms(-0.2196050301753194)
-(-12.0, 34.0, 56.78900000000468)
-&gt;&gt;&gt; Unit.rad_to_dms(-0.005817642339636369)
-(-0.0, 19.0, 59.974869999999925)
-</code></pre>
 <h3 id="fid-textiowrapper">fid (TextIOWrapper)</h3>
 <p><code>fid = &lt;_io.TextIOWrapper name='/home/kirann/anaconda3/lib/python3.6/site-packages/midgard/math/unit.txt' mode='r' encoding='utf-8'&gt;</code></p></div>
         </div>

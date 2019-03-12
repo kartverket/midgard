@@ -21,7 +21,11 @@ class SigmaArray(np.ndarray):
         if obj is None:
             return
         # Copy sigma from the original object
-        self.sigma = getattr(obj, "_sigma_sliced", None)
+        sigma_sliced = getattr(obj, "_sigma_sliced", None)
+        if sigma_sliced:
+            self.sigma = sigma_sliced
+        else:
+            self.sigma = getattr(obj, "_sigma", None)
 
     @property
     def sigma(self):
@@ -36,7 +40,7 @@ class SigmaArray(np.ndarray):
         else:
             self._sigma = np.asarray(value) * np.ones(self.shape)
 
-    def __getitem__(self, key):
+    def __getitem__(self, item):
         """Update _sigma_sliced with correct shape, used by __array_finalize__"""
-        self._sigma_sliced = self._sigma[key]
-        return super().__getitem__(key)
+        self._sigma_sliced = self._sigma[item]
+        return super().__getitem__(item)

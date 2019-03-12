@@ -48,6 +48,10 @@ class Dataset:
 
         log.debug(f"Read dataset from {file_path}")
 
+        # Dictionary to keep track of references in the data structure
+        # key: field_name, value: object (TimeArray, PositionArray, etc)
+        memo = {}
+
         # Read fields from file
         with h5py.File(file_path, mode="r") as h5_file:
             num_obs = h5_file.attrs["num_obs"]
@@ -56,18 +60,17 @@ class Dataset:
 
             # Read fields
             for fieldname, fieldtype in _h5utils.h5attr2dict(h5_file.attrs["fields"]).items():
-                print(fieldname, fieldtype)
-                field = fieldtypes.function(fieldtype).read(h5_file[fieldname], master=dset)
+                field = fieldtypes.function(fieldtype).read(h5_file[fieldname], memo)
                 if field:  # TODO: Test can be removed when all fieldtypes implement read
                     dset._fields[fieldname] = field
+                    setattr(dset, fieldname, field.data)
+                    memo[fieldname] = field.data
 
             # Read meta
             dset.meta.read(h5_file["__meta__"])
         return dset
 
-    def write(
-            self, file_path: Union[str, pathlib.Path], write_level: Optional[enums.WriteLevel] = None
-    ) -> None:
+    def write(self, file_path: Union[str, pathlib.Path], write_level: Optional[enums.WriteLevel] = None) -> None:
         """Write a dataset to file"""
         write_level = (
             min(enums.get_enum("write_level")) if write_level is None else enums.get_value("write_level", write_level)
@@ -78,12 +81,16 @@ class Dataset:
         file_path = pathlib.Path(file_path).resolve()
         file_path.parent.mkdir(parents=True, exist_ok=True)
 
+        # Dictionary to keep track of object references
+        # key: object(TimeAraay, PostionArray, etc) id, value: field_name
+        memo = {}
         with h5py.File(file_path, mode="w") as h5_file:
 
             # Write each field
             for field_name, field in self._fields.items():
                 h5_group = h5_file.create_group(field_name)
-                field.write(h5_group, write_level=write_level)
+                memo[id(getattr(self, field_name))] = field_name
+                field.write(h5_group, memo, write_level=write_level)
 
             # Write meta-information
             self.meta.write(h5_file.create_group("__meta__"))
@@ -94,30 +101,6 @@ class Dataset:
             h5_file.attrs["num_obs"] = self.num_obs
             h5_file.attrs["vars"] = _h5utils.dict2h5attr(self.vars)
             h5_file.attrs["version"] = self.version
-
-    def copy_from(self, other: "Dataset") -> None:
-        """Copy observations from another dataset
-
-        Args:
-            other_dset (Dataset):  The other dataset.
-            meta_key (str):        Dictionary key for introduction of an additional level in dictionary.
-        """
-
-        # Check and update number of observations
-        if self.num_obs and self.num_obs != other.num_obs:
-            raise ValueError(
-                f"The other dataset {other.name!r}' has {other.num_obs} observations, "
-                f"which is incompatible with self.num_obs = {self.num_obs}"
-            )
-        self._num_obs = other.num_obs
-
-        # Copy and register fields
-        self._fields = dict()
-        for field_name, field in other._fields.items():
-            self._fields[field_name] = field.copy()
-
-        # Update meta information
-        self.meta.copy_from(other.meta)
 
     def subset(self, idx: np.array) -> None:
         """Remove observations from all fields based on index
@@ -210,6 +193,10 @@ class Dataset:
         """Calculate mean of a field"""
         return self.apply(np.mean, field, **filters)
 
+    def std(self, field: str, **filters: Any) -> float:
+        """Calculate the standard deviation of a field"""
+        return self.apply(np.std, field, **filters)
+
     def count(self, field: str, **filters: Any) -> int:
         """Count the number of unique values in a field"""
         return len(self.unique(field, **filters))
@@ -226,7 +213,7 @@ class Dataset:
     @num_obs.setter
     def num_obs(self, value: int):
         """Set the number of observations in dataset"""
-        if self._fields:
+        if self._fields and value != self._num_obs:
             raise AttributeError(
                 "Can not change number of observations after fields are added. Use 'subset' or 'extend' instead"
             )
@@ -267,23 +254,17 @@ class Dataset:
 
         return sorted(all_fields)
 
-    def __getitem__(self, key):
-        """Get a field from the dataset using dict-notation"""
-        field, _, attribute = key.partition(".")
-        if attribute:
-            return getattr(self[field], attribute)
-        else:
-            # Handle default field suffix
-            if field not in self._fields and self.default_field_suffix is not None:
-                field += self.default_field_suffix
-            return self._fields[field].data
+    def update_from(self, other: "Dataset") -> None:
+        """Transfers dataset fields from other Dataset to this Dataset
 
-    def __getattr__(self, key):
-        """Get a field from the dataset using dot-notation"""
-        try:
-            return self.__getitem__(key)
-        except KeyError:
-            raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
+        This will not create a copy of the data in the other Dataset
+        """
+        self.num_obs = other.num_obs
+        for fieldname, field in other._fields.items():
+            if fieldname in self._fields:
+                raise exceptions.FieldExistsError(f"Field {fieldname!r} already exists in dataset")
+            self._fields.update({fieldname: field})
+            setattr(self, fieldname, field.data)
 
     def _todo__setattr__(self, key, value):
         """Protect dataset fields from being accidentally overwritten"""
@@ -328,6 +309,15 @@ class Dataset:
         """A string describing the dataset"""
         fields = console.fill(f"Fields: {', '.join(self.fields)}", hanging=8)
         return f"{self!r}\n{fields}"
+
+    def __deepcopy__(self, memo):
+        new_dset = Dataset(num_obs=self.num_obs)
+        for fieldname, field in self._fields.items():
+            new_dset._fields[fieldname] = copy.deepcopy(field, memo)
+            setattr(new_dset, fieldname, new_dset._fields[fieldname].data)
+        new_dset.meta = copy.deepcopy(self.meta, memo)
+        memo[id(self)] = new_dset
+        return new_dset
 
 
 class Meta(UserDict):
@@ -381,21 +371,15 @@ def _add_field_factory(field_type: str) -> Callable:
             self.add_collection(collection, val=None)
 
         # Create field
-        field = func(
-            num_obs=self.num_obs,
-            master=self,
-            name=field_name,
-            val=val,
-            unit=unit,
-            write_level=write_level,
-            **field_args,
-        )
+        field = func(num_obs=self.num_obs, name=field_name, val=val, unit=unit, write_level=write_level, **field_args)
 
         # Add field to list of fields
         fields = self[collection] if collection else self._fields
         fields[field_name] = field
+        setattr(self, name, field.data)
 
     _add_field.__doc__ = _add_field.__doc__.format(field_type=field_type)
+
     return _add_field
 
 

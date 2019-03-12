@@ -105,7 +105,7 @@ class TimeArray(np.ndarray):
         return obj
 
     def __array_finalize__(self, obj):
-        """Called automatically when a new SigmaArray is created"""
+        """Called automatically when a new TimeArray is created"""
         if obj is None:
             return
 
@@ -128,6 +128,10 @@ class TimeArray(np.ndarray):
             self._update_hash()
 
     @property
+    def val(self):
+        return np.asarray(self)
+
+    @property
     def SCALES(self):
         return tuple(sorted(self._scales))
 
@@ -145,7 +149,15 @@ class TimeArray(np.ndarray):
         return cls._scales[scale]
 
     @classmethod
-    def create(cls, val: np.ndarray, scale: str, format: str, val2: Optional[np.ndarray] = None) -> "TimeArray":
+    def create(
+        cls,
+        val: np.ndarray,
+        scale: str,
+        format: str,
+        val2: Optional[np.ndarray] = None,
+        _jd1: Optional[np.ndarray] = None,
+        _jd2: Optional[np.ndarray] = None,
+    ) -> "TimeArray":
         """Factory for creating TimeArrays for different scales
 
         See each time class for exact optional parameters.
@@ -158,7 +170,7 @@ class TimeArray(np.ndarray):
         Returns:
             Array with times in the given scale.
         """
-        return cls._cls_scale(scale)(val, val2=val2, format=format)
+        return cls._cls_scale(scale)(val, val2=val2, format=format, _jd1=_jd1, _jd2=_jd2)
 
     @classmethod
     def from_jds(cls, jd1: np.ndarray, jd2: np.ndarray, format: str) -> "TimeArray":
@@ -306,6 +318,37 @@ class TimeArray(np.ndarray):
         # Raise error for unknown attributes
         else:
             raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
+
+    def __deepcopy__(self, memo):
+        """Deep copy a TimeArray
+        """
+        time = self.create(val=self.val.copy(), format=self.format, scale=self.scale, _jd1=self.jd1, _jd2=self.jd2)
+        memo[id(time)] = time
+        return time
+
+    @classmethod
+    def _read(self, h5_group, memo):
+        scale = h5_group.attrs["scale"]
+        format = h5_group.attrs["format"]
+        val = h5_group[h5_group.attrs["fieldname"]][...]
+        jd1 = h5_group["jd1"][...]
+        jd2 = h5_group["jd2"][...]
+        time = TimeArray.create(val, scale=scale, format=format, _jd1=jd1, _jd2=jd2)
+        memo[f"{h5_group.attrs['fieldname']}"] = time
+        return time
+
+    def _write(self, h5_group, memo):
+        h5_group.attrs["scale"] = self.scale
+        h5_group.attrs["format"] = self.format
+        h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.shape, dtype=self.dtype)
+        h5_field[...] = self.val
+
+        h5_field = h5_group.create_dataset("jd1", self.jd1.shape, dtype=self.jd1.dtype)
+        h5_field[...] = self.data.jd1
+        h5_field = h5_group.create_dataset("jd2", self.shape, dtype=self.jd2.dtype)
+        h5_field[...] = self.data.jd2
+
+        memo[id(self)] = h5_group.attrs["fieldname"]
 
     def __dir__(self):
         """List all fields and attributes on the Time array"""

@@ -21,23 +21,21 @@ class FieldType(abc.ABC):
     _subfields: List[str] = list()
     _factory = None
 
-    def __init__(self, num_obs, master, name, val, unit=None, write_level=None, **field_args):
+    def __init__(self, num_obs, name, val, unit=None, write_level=None, **field_args):
         """Create a new field"""
         self.num_obs = num_obs
-        self._master = master
         self.name = name
         self._unit = unit
         self._write_level = (
             max(enums.get_enum("write_level")) if write_level is None else enums.get_value("write_level", write_level)
         )
-        self._field_args = field_args
 
         # Use _post_init to set up the actual data structure
         self.data = None
-        self._post_init(val=val)
+        self._post_init(val, **field_args)
 
     @abc.abstractmethod
-    def _post_init(self) -> None:
+    def _post_init(self, val, **field_args) -> None:
         """Do post initialization and validation"""
 
     @property
@@ -46,32 +44,32 @@ class FieldType(abc.ABC):
         return self.__module__.rpartition(".")[-1]
 
     @classmethod
-    def read(cls, h5_group, master) -> "FieldType":
+    def read(cls, h5_group, memo) -> "FieldType":
         """Read a field from a HDF5 data source"""
-        field = cls._read(h5_group, master)
+        field = cls._read(h5_group, memo)
         if field:  # TODO: Test can be removed when read is implemented on all fields
             field._unit = _h5utils.h5attr2tuple(h5_group.attrs["unit"])
-            if not field._unit:
+            if not any(field._unit):
                 field._unit = None
             field._write_level = enums.get_value("write_level", h5_group.attrs["write_level"])
         return field
 
     @classmethod
     @abc.abstractmethod
-    def _read(cls, h5_group, master) -> "FieldType":
+    def _read(cls, h5_group, memo) -> "FieldType":
         """Read a field from a HDF5 data source"""
 
-    def write(self, h5_group, write_level: enums.WriteLevel) -> None:
+    def write(self, h5_group, memo, write_level: enums.WriteLevel) -> None:
         """Write data to a HDF5 data source"""
         if self._write_level < write_level:
             return
 
-        self._write(h5_group)
+        self._write(h5_group, memo)
         h5_group.attrs["unit"] = "" if self._unit is None else _h5utils.sequence2h5attr(self._unit)
         h5_group.attrs["write_level"] = self._write_level.name
 
     @abc.abstractmethod
-    def _write(self, h5_group) -> None:
+    def _write(self, h5_group, memo) -> None:
         """Write values of field to HDF5"""
 
     def _fields_at_write_level(self, write_level: enums.WriteLevel) -> List[str]:
@@ -80,22 +78,6 @@ class FieldType(abc.ABC):
         """
         print("at_write_level")
         return [self.name] + self._subfields
-
-    def copy(self) -> "FieldType":
-        """Make a copy of field"""
-        cls = self.__class__
-        return cls(
-            num_obs=self.num_obs,
-            master=self._master,
-            name=self.name,
-            val=np.asarray(self.data).copy(),
-            unit=self._unit,
-            write_level=self._write_level.name,
-            **self._field_args,
-        )
-
-    def copy_from(self, other_field) -> None:
-        """Copy data from another field"""
 
     def subset(self, idx: np.array) -> None:
         """Remove observations from a field based on index"""

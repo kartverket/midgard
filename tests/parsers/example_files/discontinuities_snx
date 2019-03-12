@@ -1,0 +1,44 @@
+%=SNX 2.02 IGN 17:029:00000 IGN 94:001:00000 17:029:00000 P 00000 1 X
+*-------------------------------------------------------------------------------
++SOLUTION/DISCONTINUITY
+ 0194  A    1 P 00:000:00000 03:160:00000 P - antenna change
+ 0194  A    2 P 03:160:00000 03:268:71406 P - EQ M8.3 - Hokkaido, Japan region
+ 0194  A    3 P 03:268:71406 05:228:09988 P - EQ M7.2 - near the east coast of Honshu, Japan
+ 0194  A    4 P 05:228:09988 08:165:85425 P - EQ M6.9 - eastern Honshu, Japan
+ 0194  A    5 P 08:165:85425 11:070:20783 P - EQ M9.0 - near the east coast of Honshu, Japan
+ 0194  A    6 P 11:070:20783 12:252:00000 P - unknown
+ 0194  A    7 P 12:252:00000 00:000:00000 P - 
+ 0194  A    1 P 00:000:00000 03:268:71406 V - EQ M8.3 - Hokkaido, Japan region
+ 0194  A    2 P 03:268:71406 05:228:09988 V - EQ M7.2 - near the east coast of Honshu, Japan
+ 0194  A    3 P 05:228:09988 08:165:85425 V - EQ M6.9 - eastern Honshu, Japan
+ 0194  A    4 P 08:165:85425 00:000:00000 V - 
+ AB06  A    1 P 00:000:00000 00:000:00000 P - 
+ AB06  A    1 P 00:000:00000 00:000:00000 V - 
+ AB07  A    1 P 00:000:00000 10:224:00000 P - non linearity
+ AB07  A    2 P 10:224:00000 12:097:00000 P - non linearity
+ AB07  A    3 P 12:097:00000 00:000:00000 P - 
+ AB07  A    1 P 00:000:00000 10:224:00000 V - non linearity
+ AB07  A    2 P 10:224:00000 12:097:00000 V - non linearity
+ AB07  A    3 P 12:097:00000 00:000:00000 V - 
+ AB09  A    1 P 00:000:00000 00:000:00000 P - 
+ AB09  A    1 P 00:000:00000 00:000:00000 V - 
+ AB11  A    1 P 00:000:00000 00:000:00000 P - 
+ AB11  A    1 P 00:000:00000 00:000:00000 V - 
+ AB15  A    1 P 00:000:00000 00:000:00000 P - 
+ AB15  A    1 P 00:000:00000 00:000:00000 V - 
+ AB21  A    1 P 00:000:00000 08:123:05617 P - EQ M6.6 - Andreanof Islands, Aleutian Islands, Alaska
+ AB21  A    2 P 08:123:05617 10:092:50460 P - antenna change
+ AB21  A    3 P 10:092:50460 10:246:40567 P - EQ M6.5 - Andreanof Islands, Aleutian Islands, Alaska
+ AB21  A    4 P 10:246:40567 13:242:59103 P - EQ M7.0 - 101km SW of Atka, Alaska
+ AB21  A    5 P 13:242:59103 00:000:00000 P - 
+ AB21  A    1 P 00:000:00000 00:000:00000 V - 
+ ZWE2  A    1 P 00:000:00000 07:164:43200 P - antenna change
+ ZWE2  A    2 P 07:164:43200 00:000:00000 P - 
+ ZWE2  A    1 P 00:000:00000 00:000:00000 V - 
+ ZWEN  A    1 P 00:000:00000 95:067:00000 P - receiver change
+ ZWEN  A    2 P 95:067:00000 00:251:00000 P - receiver change
+ ZWEN  A    3 P 00:251:00000 00:265:00000 P - antenna change
+ ZWEN  A    4 P 00:265:00000 04:266:00000 P - antenna change
+ ZWEN  A    5 P 04:266:00000 00:000:00000 P - 
+ ZWEN  A    1 P 00:000:00000 00:000:00000 V - 
+-SOLUTION/DISCONTINUITY

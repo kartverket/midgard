@@ -51,7 +51,7 @@ class AnubisXtrParser(parsers.Parser):
                     # Find column indices
                     start, end = itertools.tee(re.finditer(r"\S\s", line), 2)
                     next(end)
-                    col_slices = [slice(s.end(), e.end()) for s, e in zip(start, end)][2:]
+                    col_slices = [slice(s.end() - 1, e.end() - 1) for s, e in zip(start, end)][2:]
                     col_names = [line[s].strip().strip("_") for s in col_slices]
 
                     # Make sure column names are unique

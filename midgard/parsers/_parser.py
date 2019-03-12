@@ -18,7 +18,6 @@ Example:
 # Standard library imports
 import pathlib
 from typing import Any, Callable, Dict, List, NoReturn, Optional, Union
-import warnings
 
 # Third party imports
 import pandas as pd
@@ -79,7 +78,7 @@ class Parser:
             self.read_data()
 
         if not self.data_available:  # May have been set to False by self.read_data()
-            warnings.warn(f"No data found by {self.__class__.__name__} in {self.file_path}")
+            log.warn(f"No data found by {self.__class__.__name__} in {self.file_path}")
             return self
 
         self.postprocess_data()

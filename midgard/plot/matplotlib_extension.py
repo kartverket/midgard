@@ -2,6 +2,7 @@
 from typing import Any, Dict, List, Tuple, Union
 
 # External library imports
+from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -88,6 +89,7 @@ def plot_scatter_subplots(
     y_unit: str = "",
     figure_path: str = "plot_scatter_subplot.png",
     opt_args: Union[Dict[str, Any], None] = None,
+    events: Union[Tuple[Any, str, str], None] = None,  # TODO: description
 ) -> None:
     """Generate scatter subplot
 
@@ -129,6 +131,7 @@ def plot_scatter_subplots(
         "figsize": (6, 8),
         "fsize_subtitle": 8,
         "marker": ".",
+        "legend": False,
         "plot_to": "console",
         "reg_line": False,
         "sharex": True,
@@ -147,21 +150,35 @@ def plot_scatter_subplots(
     )
     fig.suptitle(f"{options['title']}", y=1.0)
 
+    # Get label colors for events
+    if events:
+        custom_lines, cmap = _get_label_color(events)
+
     # Plot each subplot row
     for ax, y_array, ylabel in zip(axes, y_arrays, ylabels):
 
         plot_scatter_subplot_row(ax, x_array, y_array, xlabel, ylabel, x_unit=x_unit, y_unit=y_unit, opt_args=options)
-        #TODO: ax.axvline(x=2017.0)
 
+        # Plot vertical line for events in each subplot
+        if events:
+            for idx, (label, entries) in enumerate(sorted(events.items())):
+                [ax.axvline(x=e, label=label, color=cmap(idx)) for e in entries]
 
     # Plot x-axis label only once below the last subplot row
     ax.set(xlabel=xlabel)
+
+    # Plot event legend
+    if events:
+        plt.legend(custom_lines, sorted(events.keys()), bbox_to_anchor=(1.0, -0.4), loc=1, borderaxespad=0.0, ncol=3)
 
     # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
     fig.autofmt_xdate()
 
     # Automatically adjusts subplot params so that the subplot(s) fits in to the figure area
-    plt.tight_layout()
+    fig.tight_layout()
+
+    # Adjust plot axes (to place title correctly)
+    fig.subplots_adjust(top=0.95)
 
     # Save plot as file or show it on console
     if options["plot_to"] == "console":
@@ -173,6 +190,16 @@ def plot_scatter_subplots(
 
     # Clear the current figure
     plt.clf()
+
+
+def _get_label_color(labels, cmap="tab10"):
+    # TODO: description
+    cmap = plt.get_cmap(cmap)
+    custom_lines = list()
+    for idx in range(0, len(labels)):
+        custom_lines.append(Line2D([0], [0], color=cmap(idx)))
+
+    return custom_lines, cmap
 
 
 def plot_scatter_subplot_row(

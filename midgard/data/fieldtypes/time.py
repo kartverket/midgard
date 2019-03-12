@@ -1,13 +1,9 @@
 """A Dataset time field
 
 """
-
-# Third party imports
-import numpy as np
-
 # Midgard imports
 from midgard.data.fieldtypes._fieldtype import FieldType
-from midgard.data.time import Time
+from midgard.data.time import Time, TimeArray
 from midgard.dev import exceptions
 from midgard.dev import plugins
 
@@ -17,14 +13,12 @@ class TimeField(FieldType):
 
     _factory = staticmethod(Time)
 
-    def _post_init(self, val):
+    def _post_init(self, val, **field_args):
         """Initialize float field"""
-        data = self._factory(
-            val,
-            val2=self._field_args.get("val2"),
-            scale=self._field_args.get("scale"),
-            format=self._field_args.get("format"),
-        )
+        if isinstance(val, TimeArray):
+            data = val
+        else:
+            data = self._factory(val, **field_args)
 
         # Check that unit is not given, overwrite with time scale
         if self._unit is not None:
@@ -39,10 +33,13 @@ class TimeField(FieldType):
         self.data = data
 
     @classmethod
-    def _read(cls, h5_group, master) -> "TimeField":
+    def _read(cls, h5_group, memo) -> "TimeField":
         """Read a TimeField from a HDF5 data source"""
-        print("TimeField._read not implemented")
+        name = h5_group.attrs["fieldname"]
+        time = TimeArray._read(h5_group, memo)
+        return cls(num_obs=len(time), name=name, val=time)
 
-    def _write(self, h5_group, subfields) -> None:
+    def _write(self, h5_group, memo) -> None:
         """Write a TimeField to a HDF5 data source"""
-        print("TimeField._write not implemented")
+        h5_group.attrs["fieldname"] = self.name
+        self.data._write(h5_group, memo)

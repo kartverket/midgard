@@ -53,7 +53,6 @@ class FileConfiguration(Configuration):
         is_zipped: Optional[bool] = None,
         download_missing: bool = True,
         use_aliases: bool = True,
-        logger: Optional[Callable] = None,
         **open_args: Any,
     ) -> Iterator:
         """Open a file based on information in a configuration

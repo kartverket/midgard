@@ -15,7 +15,7 @@ class FloatField(FieldType):
 
     _factory = staticmethod(np.array)
 
-    def _post_init(self, val):
+    def _post_init(self, val, **field_args):
         """Initialize float field"""
         data = self._factory(val, dtype=float)
 
@@ -42,13 +42,13 @@ class FloatField(FieldType):
         self.data = data
 
     @classmethod
-    def _read(cls, h5_group, master) -> "FieldType":
+    def _read(cls, h5_group, _) -> "FieldType":
         """Read a field from a HDF5 data source"""
         name = h5_group.attrs["fieldname"]
         val = h5_group[name][...]
-        return cls(num_obs=len(val), master=master, name=name, val=val)
+        return cls(num_obs=len(val), name=name, val=val)
 
-    def _write(self, h5_group) -> None:
+    def _write(self, h5_group, _) -> None:
         """Write data to a HDF5 data source"""
         h5_group.attrs["fieldname"] = self.name
         h5_field = h5_group.create_dataset(self.name, self.data.shape, dtype=self.data.dtype)

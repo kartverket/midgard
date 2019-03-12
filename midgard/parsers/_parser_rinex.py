@@ -284,56 +284,27 @@ class RinexParser(Parser):
                                                        'sat': ['R01', 'R02', 'R07', 'R08']}}}
 
         TODO: Maybe better to add information to header['obstypes']?
+        TODO: Check of number of satellites
         """
-
-        # import IPython; IPython.embed()
-        # phase_shift = self.header.setdefault("phase_shift", {})
-        # if field['sat_sys']:
-        #    phase_shift.setdefault(fields['sat_sys'], {}).update({fields['obs_type']: {}})
-
-        #    if field['satellites']
-        #    phase_shift[fields['sat_sys']][fields['obs_type']].update({'corr': fields['correction'], 'sat': fields[satellites].split()})
         phase_shift = self.header.setdefault("phase_shift", {})
 
-        prev_idx = -1  # MURKS
         if fields["sat_sys"]:
-            phase_shift.setdefault(fields["sat_sys"], {}).update({fields["obs_type"]: {}})
-            prev_idx = -1
+            sat_sys = fields["sat_sys"]
+            obs_type = fields["obs_type"]
+            phase_shift.setdefault(sat_sys, {}).update({obs_type: {}})
+        else:
+            sat_sys, obs_type = next((c["sat_sys"], c["obs_type"]) for c in cache[::-1] if c["sat_sys"])
 
-        if fields["num_satellite"]:
-            phase_shift[fields["sat_sys"]][fields["obs_type"]].update(
+        if fields["correction"]:
+            phase_shift[sat_sys][obs_type].update(
                 {"corr": float(fields["correction"]), "sat": fields["satellites"].split()}
             )
-        else:
-            if fields["satellites"]:
-                sat_sys = cache[prev_idx]["sat_sys"]
-                obs_type = cache[prev_idx]["obs_type"]
-                phase_shift[sat_sys][obs_type]["sat"] += fields["satellites"].split()
-                prev_idx -= 1
+            return phase_shift
 
-        print("MURKS:", phase_shift)
-        # if cache:
-        #    if fields['num_satellite']
+        if fields["satellites"]:
+            phase_shift[sat_sys][obs_type]["sat"].extend(fields["satellites"].split())
+
         return phase_shift
-
-        if fields["sat_sys"]:
-            phase_shift.setdefault(fields["sat_sys"], {})
-            cache["sat_sys"] = fields["sat_sys"]
-            cache["obs_type"] = fields["obs_type"]
-            cache["corr"] = float(fields["correction"])
-            cache["sat"] = fields["satellites"]
-
-        # if cache["sat_sys"] not in self.header["phase_shift"]:
-        #    phase_shift.update({cache["sat_sys"]: {}})
-
-        cache["sat"].extend(line["satellites"].split())
-
-        if cache["obs_type"]:
-            self.header["phase_shift"][cache["sat_sys"]].update(
-                {cache["obs_type"]: {"corr": cache["corr"], "sat": cache["sat"]}}
-            )
-
-        return fields
 
     def parse_scale_factor(self, fields: _FieldStr) -> _FieldVal:
         """Parse entries of RINEX header `SYS / SCALE FACTOR` to instance variable `header`

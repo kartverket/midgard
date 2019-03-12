@@ -97,7 +97,7 @@ class CollectionField(FieldType):
 
     _factory = staticmethod(Collection)
 
-    def _post_init(self, val):
+    def _post_init(self, val, **field_args):
         """Initialize field"""
         self.data = self._factory()
 
@@ -110,21 +110,21 @@ class CollectionField(FieldType):
         return self.data.fields
 
     @classmethod
-    def read(cls, h5_group, master):
+    def read(cls, h5_group, memo):
         name = h5_group.attrs["fieldname"]
-        field = cls(num_obs=None, master=master, name=name, val=None)  # num_obs and val not used
+        field = cls(num_obs=None, name=name, val=None)  # num_obs and val not used
         fields = _h5utils.h5attr2dict(h5_group.attrs["fields"])
         for fieldname, fieldtype in fields.items():
-            field.data[fieldname] = fieldtypes.function(fieldtype).read(h5_group[fieldname], master=master)
+            field.data[fieldname] = fieldtypes.function(fieldtype).read(h5_group[fieldname])
 
         return field
 
     @classmethod
-    def _read(cls, h5_group, master):
+    def _read(cls, h5_group, memo):
         """ Abstract field needs implementation, but is not used by collections"""
         pass
 
-    def write(self, h5_group, write_level):
+    def write(self, h5_group, memo, write_level):
         """Write data to a HDF5 data source"""
         # Write each field in the collection
         h5_group.attrs["fieldname"] = self.name
@@ -135,6 +135,6 @@ class CollectionField(FieldType):
         fields = {fn: f.fieldtype for fn, f in self.data._fields.items()}
         h5_group.attrs["fields"] = _h5utils.dict2h5attr(fields)
 
-    def _write(self, h5_group):
+    def _write(self, h5_group, memo):
         """Abstract method needs implementation, but is not used by collections"""
         pass

@@ -94,7 +94,6 @@ class TimeseriesEnvParser(LineParser):
             val=np.stack((self.data["east"], self.data["north"], self.data["vertical"]), axis=1)
             * Unit.millimeter2meter,
             system="enu",
-            unit="meter",
             ref_pos=ref_pos,
         )
 
@@ -103,6 +102,6 @@ class TimeseriesEnvParser(LineParser):
         dset.add_sigma(name="pos_sigma", val=dset.pos.val, sigma=sigma * Unit.millimeter2meter, unit="meter")
 
         # Add time
-        dset.add_time(name="time", val=self.data["year"], scale="utc", format="year", write_level="operational")
+        dset.add_time(name="time", val=self.data["year"], scale="utc", format="decimalyear", write_level="operational")
 
         return dset

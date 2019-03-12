@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.files - Midgard v0.2.0</title>
+        <title>midgard.files - Midgard v0.3.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v0.3.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -304,33 +304,7 @@ at the path suffix. For more control, you can set the parameter to True or False
 <h3 id="url"><strong>URL</strong></h3>
 <p>Full name: <code>midgard.files.url.URL</code></p>
 <p>Signature: <code>()</code></p>
-<p>Simple wrapper around String to have URLs work similar to pathlib.Path</p>
-<h4 id="urldownload_to">URL.<strong>download_to</strong>()</h4>
-<p>Full name: <code>midgard.files.url.download_to</code></p>
-<p>Signature: <code>(self, path:Union[str, pathlib.Path]) -&gt; None</code></p>
-<p>Download the URL to path</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>path</code>:  Path to save the URL.</li>
-</ul>
-<h4 id="urlexists">URL.<strong>exists</strong>()</h4>
-<p>Full name: <code>midgard.files.url.exists</code></p>
-<p>Signature: <code>(self) -&gt; bool</code></p>
-<p>Check whether the given URL returns a valid document</p>
-<p>Try to download the first byte of the document (avoid downloading a big file if it exists).</p>
-<p>Warning: Because of network latency, this will be a slow operation.</p>
-<p>Return:
-    True if URL leads to a valid document, False otherwise.</p>
-<h4 id="urlwith_name">URL.<strong>with_name</strong>()</h4>
-<p>Full name: <code>midgard.files.url.with_name</code></p>
-<p>Signature: <code>(self, name:str) -&gt; 'URL'</code></p>
-<p>Replace part of URL after the last / with a new name</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>name</code>:  New name.</li>
-</ul>
-<p>Return:
-    URL with part after the last / replaced with the new name.</p></div>
+<p>Simple wrapper around String to have URLs work similar to pathlib.Path</p></div>
         </div>
 
         <footer class="col-md-12">

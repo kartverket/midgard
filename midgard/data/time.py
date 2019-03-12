@@ -13,7 +13,14 @@ from midgard.data._time import TimeArray
 # from midgard.data._position_delta import PositionDeltaArray
 
 
-def Time(val: np.ndarray, scale: str, format: str, val2: Optional[np.ndarray] = None) -> "TimeArray":
+def Time(
+    val: np.ndarray,
+    scale: str,
+    format: str,
+    val2: Optional[np.ndarray] = None,
+    _jd1: Optional[np.ndarray] = None,
+    _jd2: Optional[np.ndarray] = None,
+) -> "TimeArray":
     """Factory for creating TimeArrays for different systems
 
     See each time class for exact optional parameters.
@@ -27,7 +34,7 @@ def Time(val: np.ndarray, scale: str, format: str, val2: Optional[np.ndarray] = 
     Returns:
         Array with epochs in the given time scale and format
     """
-    return TimeArray.create(val=val, val2=val2, scale=scale, format=format)
+    return TimeArray.create(val=val, val2=val2, scale=scale, format=format, _jd1=_jd1, _jd2=_jd2)
 
 
 # Make classmethods available

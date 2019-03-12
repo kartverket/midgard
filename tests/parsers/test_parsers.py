@@ -86,6 +86,16 @@ def test_parser_bcecmp_sisre():
     assert "E26" in parser["satellite"]
 
 
+def test_parser_discontinuities_snx():
+    """Test that parsing discontinuities_snx gives expected output"""
+    parser = get_parser("discontinuities_snx").as_dict()
+
+    assert len(parser) == 9
+    assert "0194" in parser
+    assert "solution_discontinuity" in parser["AB06"]
+    assert "point_code" in parser["AB06"]["solution_discontinuity"][0]
+
+
 def test_parser_gipsy_tdp():
     """Test that parsing gipsy_tdp gives expected output"""
     parser = get_parser("gipsy_tdp").as_dict()

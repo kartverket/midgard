@@ -1,25 +1,23 @@
-"""A Dataset sigma field
+"""A Dataset text field
 
 """
 
+# Third party imports
+import numpy as np
+
 # Midgard imports
 from midgard.data.fieldtypes._fieldtype import FieldType
-from midgard.data.sigma import SigmaArray
 from midgard.dev import plugins
 
 
 @plugins.register
-class SigmaField(FieldType):
+class TextField(FieldType):
 
-    _subfields = ["sigma"]
-    _factory = staticmethod(SigmaArray)
+    _factory = staticmethod(np.array)
 
-    def _post_init(self, val, **field_args):
+    def _post_init(self, val):
         """Initialize float field"""
-        if isinstance(val, SigmaArray):
-            data = val
-        else:
-            data = self._factory(val, **field_args)
+        data = self._factory(val, dtype=str)
 
         # Check that the correct number of observations are given
         if len(data) != self.num_obs:
@@ -40,21 +38,20 @@ class SigmaField(FieldType):
             elif len(self._unit) != cols:
                 raise ValueError(f"Number of units ({len(self._units)}) must equal number of columns ({cols})")
 
-        # Store the data as a SigmaArray
+        # Store the data as a regular numpy array
         self.data = data
 
     @classmethod
-    def _read(cls, h5_group, _) -> "SigmaField":
-        """Read a SigmaField from a HDF5 data source"""
+    def _read(cls, h5_group, _) -> "FieldType":
+        """Read a field from a HDF5 data source"""
         name = h5_group.attrs["fieldname"]
         val = h5_group[name][...]
-        sigma = h5_group["sigma"][...]
-        return cls(num_obs=len(val), name=name, val=val, sigma=sigma)
+        return cls(num_obs=len(val), name=name, val=val)
 
     def _write(self, h5_group, _) -> None:
-        """Write a SigmaField to a HDF5 data source"""
+        """Write data to a HDF5 data source"""
         h5_group.attrs["fieldname"] = self.name
-        h5_field = h5_group.create_dataset(self.name, self.data.shape, dtype=self.data.dtype)
-        h5_field[...] = self.data
-        h5_field = h5_group.create_dataset("sigma", self.data.shape, dtype=self.data.sigma.dtype)
-        h5_field[...] = self.data.sigma
+        # Convert text from unicode to string to avoid error in h5py
+        data = np.asarray(self.data, dtype=np.string_)
+        h5_field = h5_group.create_dataset(self.name, self.data.shape, dtype=data.dtype)
+        h5_field[...] = data

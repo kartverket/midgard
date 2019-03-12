@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v0.2.0</title>
+        <title>midgard.dev - Midgard v0.3.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.2.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v0.3.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -142,6 +142,7 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#midgarddev">midgard.dev</a></li>
+            <li><a href="#midgarddevcache">midgard.dev.cache</a></li>
             <li><a href="#midgarddevconsole">midgard.dev.console</a></li>
             <li><a href="#midgarddevexceptions">midgard.dev.exceptions</a></li>
             <li><a href="#midgarddevlibrary">midgard.dev.library</a></li>
@@ -155,6 +156,29 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="midgarddev">midgard.dev</h1>
+<h2 id="midgarddevcache">midgard.dev.cache</h2>
+<p>Midgard library module for caching</p>
+<p><strong>Description:</strong></p>
+<p>Adds caching to properties on classes, using the recipe explained in Python
+Cookbook, 3rd ed. Recipe 8.10.</p>
+<p>Also, adds a cached property that may depend on other data, with the
+possibility to reset the cache if the dependencies change.</p>
+<h3 id="dependent_property"><strong>dependent_property</strong></h3>
+<p>Full name: <code>midgard.dev.cache.dependent_property</code></p>
+<p>Signature: <code>()</code></p>
+<p>Decorator for cached properties that can be reset when dependencies change</p>
+<h3 id="forget_dependent_values"><strong>forget_dependent_values</strong>()</h3>
+<p>Full name: <code>midgard.dev.cache.forget_dependent_values</code></p>
+<p>Signature: <code>(obj:object, *dependencies:str) -&gt; None</code></p>
+<p>Reset cache when given dependencies change</p>
+<h3 id="property"><strong>property</strong></h3>
+<p>Full name: <code>midgard.dev.cache.property</code></p>
+<p>Signature: <code>(fget:Callable) -&gt; None</code></p>
+<p>Cached property, see Python Cookbook, 3rd ed. Recipe 8.10.</p>
+<h3 id="register_dependencies"><strong>register_dependencies</strong></h3>
+<p>Full name: <code>midgard.dev.cache.register_dependencies</code></p>
+<p>Signature: <code>()</code></p>
+<p>Metaclass for registering dependencies using dot notation</p>
 <h2 id="midgarddevconsole">midgard.dev.console</h2>
 <p>Simpler dealing with the console</p>
 <p><strong>Description:</strong></p>
@@ -389,79 +413,14 @@ INFO  [My prefix] Calculating the inverse of a  5x3  matrix
 <p>Full name: <code>midgard.dev.log.ConsoleLogger</code></p>
 <p>Signature: <code>(log_level:Union[str, NoneType]=None, prefix:str='', use_command_line:bool=True) -&gt; None</code></p>
 <p>Log to the console, the log level can also be set using command line parameters</p>
-<h4 id="consoleloggerblank">ConsoleLogger.<strong>blank</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.blank</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Log blank line</p>
-<h4 id="consoleloggerget_color">ConsoleLogger.<strong>get_color</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.get_color</code></p>
-<p>Signature: <code>(level:midgard.collections.enums.LogLevel) -&gt; str</code></p>
-<p>Get color string for the given log level</p>
-<h4 id="consoleloggeris_level">ConsoleLogger.<strong>is_level</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.is_level</code></p>
-<p>Signature: <code>(level:str) -&gt; bool</code></p>
-<p>Checks that level is a valid log level</p>
-<h4 id="consoleloggerlog">ConsoleLogger.<strong>log</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.log</code></p>
-<p>Signature: <code>(self, level:midgard.collections.enums.LogLevel, log_text:str) -&gt; None</code></p>
-<p>Log text at given level</p>
-<h4 id="consoleloggername-str">ConsoleLogger.name (str)</h4>
-<p><code>name = 'console'</code></p>
 <h3 id="filelogger"><strong>FileLogger</strong></h3>
 <p>Full name: <code>midgard.dev.log.FileLogger</code></p>
 <p>Signature: <code>(file_path:Union[str, pathlib.Path], log_level:Union[str, NoneType]=None, prefix:str='', rotation:Union[int, NoneType]=None) -&gt; None</code></p>
 <p>Log to a file, the log files can be rotated so that older files are kept</p>
-<h4 id="fileloggerblank">FileLogger.<strong>blank</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.blank</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Log blank line</p>
-<h4 id="fileloggerget_color">FileLogger.<strong>get_color</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.get_color</code></p>
-<p>Signature: <code>(level:midgard.collections.enums.LogLevel) -&gt; str</code></p>
-<p>Get color string for the given log level</p>
-<h4 id="fileloggeris_level">FileLogger.<strong>is_level</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.is_level</code></p>
-<p>Signature: <code>(level:str) -&gt; bool</code></p>
-<p>Checks that level is a valid log level</p>
-<h4 id="fileloggerlog">FileLogger.<strong>log</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.log</code></p>
-<p>Signature: <code>(self, level:midgard.collections.enums.LogLevel, log_text:str) -&gt; None</code></p>
-<p>Log text at given level</p>
-<h4 id="fileloggername-str">FileLogger.name (str)</h4>
-<p><code>name = 'logger'</code></p>
-<h4 id="fileloggerrotate_files">FileLogger.<strong>rotate_files</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.rotate_files</code></p>
-<p>Signature: <code>(self, rotation:int) -&gt; None</code></p>
-<p>Perform necessary rolling of log files</p>
-<p>Rolls the log files. That is, if there are old log files, they will be
-moved to files with extension .0, .1 and so on. The number of rolled
-logs to keep is specified by the rotation parameter.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>rotation</code>:  Number of log files to keep.</li>
-</ul>
 <h3 id="logger"><strong>Logger</strong></h3>
 <p>Full name: <code>midgard.dev.log.Logger</code></p>
 <p>Signature: <code>(log_level:Union[str, NoneType]=None, prefix:str='')</code></p>
 <p>Abstract class that can be specialized to create new loggers</p>
-<h4 id="loggerblank">Logger.<strong>blank</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.blank</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Log blank line</p>
-<h4 id="loggerget_color">Logger.<strong>get_color</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.get_color</code></p>
-<p>Signature: <code>(level:midgard.collections.enums.LogLevel) -&gt; str</code></p>
-<p>Get color string for the given log level</p>
-<h4 id="loggeris_level">Logger.<strong>is_level</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.is_level</code></p>
-<p>Signature: <code>(level:str) -&gt; bool</code></p>
-<p>Checks that level is a valid log level</p>
-<h4 id="loggerlog">Logger.<strong>log</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.log</code></p>
-<p>Signature: <code>(self, level:midgard.collections.enums.LogLevel, log_text:str) -&gt; None</code></p>
-<p>Log text at given level</p>
-<h4 id="loggername-str">Logger.name (str)</h4>
-<p><code>name = 'logger'</code></p>
 <h3 id="all"><strong>all</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.all</code></p>
 <p>Signature: <code>(log_text:str, *, level:str='all') -&gt; None</code></p>
@@ -490,35 +449,6 @@ of the given arguments and keywords.</p>
 <p>Full name: <code>midgard.dev.log.file_init</code></p>
 <p>Signature: <code>(file_path:Union[str, pathlib.Path], log_level:Union[str, NoneType]=None, prefix:str='', rotation:Union[int, NoneType]=None) -&gt; None</code></p>
 <p>Log to a file, the log files can be rotated so that older files are kept</p>
-<h4 id="file_initblank">file_init.<strong>blank</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.blank</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Log blank line</p>
-<h4 id="file_initget_color">file_init.<strong>get_color</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.get_color</code></p>
-<p>Signature: <code>(level:midgard.collections.enums.LogLevel) -&gt; str</code></p>
-<p>Get color string for the given log level</p>
-<h4 id="file_initis_level">file_init.<strong>is_level</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.is_level</code></p>
-<p>Signature: <code>(level:str) -&gt; bool</code></p>
-<p>Checks that level is a valid log level</p>
-<h4 id="file_initlog">file_init.<strong>log</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.log</code></p>
-<p>Signature: <code>(self, level:midgard.collections.enums.LogLevel, log_text:str) -&gt; None</code></p>
-<p>Log text at given level</p>
-<h4 id="file_initname-str">file_init.name (str)</h4>
-<p><code>name = 'logger'</code></p>
-<h4 id="file_initrotate_files">file_init.<strong>rotate_files</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.rotate_files</code></p>
-<p>Signature: <code>(self, rotation:int) -&gt; None</code></p>
-<p>Perform necessary rolling of log files</p>
-<p>Rolls the log files. That is, if there are old log files, they will be
-moved to files with extension .0, .1 and so on. The number of rolled
-logs to keep is specified by the rotation parameter.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>rotation</code>:  Number of log files to keep.</li>
-</ul>
 <h3 id="info"><strong>info</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.info</code></p>
 <p>Signature: <code>(log_text:str, *, level:str='info') -&gt; None</code></p>
@@ -528,24 +458,6 @@ of the given arguments and keywords.</p>
 <p>Full name: <code>midgard.dev.log.init</code></p>
 <p>Signature: <code>(log_level:Union[str, NoneType]=None, prefix:str='', use_command_line:bool=True) -&gt; None</code></p>
 <p>Log to the console, the log level can also be set using command line parameters</p>
-<h4 id="initblank">init.<strong>blank</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.blank</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Log blank line</p>
-<h4 id="initget_color">init.<strong>get_color</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.get_color</code></p>
-<p>Signature: <code>(level:midgard.collections.enums.LogLevel) -&gt; str</code></p>
-<p>Get color string for the given log level</p>
-<h4 id="initis_level">init.<strong>is_level</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.is_level</code></p>
-<p>Signature: <code>(level:str) -&gt; bool</code></p>
-<p>Checks that level is a valid log level</p>
-<h4 id="initlog">init.<strong>log</strong>()</h4>
-<p>Full name: <code>midgard.dev.log.log</code></p>
-<p>Signature: <code>(self, level:midgard.collections.enums.LogLevel, log_text:str) -&gt; None</code></p>
-<p>Log text at given level</p>
-<h4 id="initname-str">init.name (str)</h4>
-<p><code>name = 'console'</code></p>
 <h3 id="log"><strong>log</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.log</code></p>
 <p>Signature: <code>(log_text:str, level:str) -&gt; None</code></p>
@@ -901,91 +813,14 @@ documented.</p>
 <p>Full name: <code>midgard.dev.profiler.CProfile</code></p>
 <p>Signature: <code>()</code></p>
 <p>cprofile is used for profiling the whole program</p>
-<h4 id="cprofileend">CProfile.<strong>end</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.end</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Stop profiler</p>
-<h4 id="cprofileextension-notimplementedtype">CProfile.extension (NotImplementedType)</h4>
-<p><code>extension = NotImplemented</code></p>
-<h4 id="cprofileoption-str">CProfile.option (str)</h4>
-<p><code>option = '--profiler'</code></p>
-<h4 id="cprofilepip_name-str">CProfile.pip_name (str)</h4>
-<p><code>pip_name = 'cprofile'</code></p>
-<h4 id="cprofilesetup">CProfile.<strong>setup</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.setup</code></p>
-<p>Signature: <code>(self, options)</code></p>
-<p>Set up profiler</p>
-<h4 id="cprofileshow">CProfile.<strong>show</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.show</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Show results of profiler session in console</p>
-<h4 id="cprofilestart">CProfile.<strong>start</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.start</code></p>
-<p>Signature: <code>(self)</code></p>
-<h4 id="cprofilewrite">CProfile.<strong>write</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.write</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Write results of profiler session to disk</p>
 <h3 id="lineprofiler"><strong>LineProfiler</strong></h3>
 <p>Full name: <code>midgard.dev.profiler.LineProfiler</code></p>
 <p>Signature: <code>()</code></p>
 <p>line_profiler is used to profile one or a few functions in detail</p>
-<h4 id="lineprofilerend">LineProfiler.<strong>end</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.end</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Stop profiler</p>
-<h4 id="lineprofilerextension-notimplementedtype">LineProfiler.extension (NotImplementedType)</h4>
-<p><code>extension = NotImplemented</code></p>
-<h4 id="lineprofileroption-str">LineProfiler.option (str)</h4>
-<p><code>option = '--line_profiler'</code></p>
-<h4 id="lineprofilerpip_name-str">LineProfiler.pip_name (str)</h4>
-<p><code>pip_name = 'line_profiler'</code></p>
-<h4 id="lineprofilersetup">LineProfiler.<strong>setup</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.setup</code></p>
-<p>Signature: <code>(self, options)</code></p>
-<p>Set up profiler</p>
-<h4 id="lineprofilershow">LineProfiler.<strong>show</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.show</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Show results of profiler session in console</p>
-<h4 id="lineprofilerstart">LineProfiler.<strong>start</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.start</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Start profiler</p>
-<h4 id="lineprofilerwrite">LineProfiler.<strong>write</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.write</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Write results of profiler session to disk</p>
 <h3 id="profiler"><strong>Profiler</strong></h3>
 <p>Full name: <code>midgard.dev.profiler.Profiler</code></p>
 <p>Signature: <code>()</code></p>
 <p>Base class for profilers</p>
-<h4 id="profilerend">Profiler.<strong>end</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.end</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Stop profiler</p>
-<h4 id="profilerextension-notimplementedtype">Profiler.extension (NotImplementedType)</h4>
-<p><code>extension = NotImplemented</code></p>
-<h4 id="profileroption-notimplementedtype">Profiler.option (NotImplementedType)</h4>
-<p><code>option = NotImplemented</code></p>
-<h4 id="profilerpip_name-notimplementedtype">Profiler.pip_name (NotImplementedType)</h4>
-<p><code>pip_name = NotImplemented</code></p>
-<h4 id="profilersetup">Profiler.<strong>setup</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.setup</code></p>
-<p>Signature: <code>(self, options)</code></p>
-<p>Set up profiler</p>
-<h4 id="profilershow">Profiler.<strong>show</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.show</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Show results of profiler session in console</p>
-<h4 id="profilerstart">Profiler.<strong>start</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.start</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Start profiler</p>
-<h4 id="profilerwrite">Profiler.<strong>write</strong>()</h4>
-<p>Full name: <code>midgard.dev.profiler.write</code></p>
-<p>Signature: <code>(self)</code></p>
-<p>Write results of profiler session to disk</p>
 <h2 id="midgarddevtimer">midgard.dev.timer</h2>
 <p>Class for timing the running time of functions and code blocks</p>
 <p><strong>Description:</strong></p>
@@ -1025,73 +860,11 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f15061d2ea0&gt;, level='info')) -&gt; None</code></p>
-<h4 id="accumulatedtimerelapsed">AccumulatedTimer.<strong>elapsed</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.elapsed</code></p>
-<p>Signature: <code>(self) -&gt; float</code></p>
-<p>Log the time elapsed</p>
-<p>Can be used explicitly to log the time since a timer started without
-ending the timer.</p>
-<p><strong>Returns:</strong></p>
-<p>The time elapsed in seconds.</p>
-<h4 id="accumulatedtimerend">AccumulatedTimer.<strong>end</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.end</code></p>
-<p>Signature: <code>(self) -&gt; float</code></p>
-<p>End the timer and log the time elapsed</p>
-<p><strong>Returns:</strong></p>
-<p>The time elapsed in seconds.</p>
-<h4 id="accumulatedtimerpause">AccumulatedTimer.<strong>pause</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.pause</code></p>
-<p>Signature: <code>(self) -&gt; float</code></p>
-<p>Pause the timer without logging. Use .start() to restart the timer</p>
-<h4 id="accumulatedtimerreset">AccumulatedTimer.<strong>reset</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.reset</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Reset the timer back to 0</p>
-<h4 id="accumulatedtimerstart">AccumulatedTimer.<strong>start</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.start</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Start the timer</p>
-<h4 id="accumulatedtimertimer">AccumulatedTimer.<strong>timer</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.timer</code></p>
-<p>Signature: <code>() -&gt; float</code></p>
-<p>Get current value of timer</p>
-<p>Using the built-in <code>time.perf_counter</code> to do the timing.</p>
-<p><strong>Returns:</strong></p>
-<p>Current value of timer.</p>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7efd5b0b7378&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f15061d2ea0&gt;, level='info')) -&gt; None</code></p>
-<p>Class for timing running time of functions and code blocks.</p>
-<h4 id="timerelapsed">Timer.<strong>elapsed</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.elapsed</code></p>
-<p>Signature: <code>(self) -&gt; float</code></p>
-<p>Log the time elapsed</p>
-<p>Can be used explicitly to log the time since a timer started without
-ending the timer.</p>
-<p><strong>Returns:</strong></p>
-<p>The time elapsed in seconds.</p>
-<h4 id="timerend">Timer.<strong>end</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.end</code></p>
-<p>Signature: <code>(self) -&gt; float</code></p>
-<p>End the timer and log the time elapsed</p>
-<p><strong>Returns:</strong></p>
-<p>The time elapsed in seconds.</p>
-<h4 id="timerpause">Timer.<strong>pause</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.pause</code></p>
-<p>Signature: <code>(self) -&gt; float</code></p>
-<p>Pause the timer without logging. Use .start() to restart the timer</p>
-<h4 id="timerstart">Timer.<strong>start</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.start</code></p>
-<p>Signature: <code>(self) -&gt; None</code></p>
-<p>Start the timer</p>
-<h4 id="timertimer">Timer.<strong>timer</strong>()</h4>
-<p>Full name: <code>midgard.dev.timer.timer</code></p>
-<p>Signature: <code>() -&gt; float</code></p>
-<p>Get current value of timer</p>
-<p>Using the built-in <code>time.perf_counter</code> to do the timing.</p>
-<p><strong>Returns:</strong></p>
-<p>Current value of timer.</p></div>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7efd5b0b7378&gt;, level='info')) -&gt; None</code></p>
+<p>Class for timing running time of functions and code blocks.</p></div>
         </div>
 
         <footer class="col-md-12">
