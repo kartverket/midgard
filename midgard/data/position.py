@@ -8,7 +8,8 @@ import numpy as np
 
 # Midgard imports
 from midgard.data import _position
-from midgard.math import transformation
+from midgard.data._position import PositionArray, PositionDeltaArray, PosVelArray, PosVelDeltaArray
+from midgard.math import transformation as trans
 
 
 def Position(val: np.ndarray, system: str, **pos_args: Any) -> "PositionArray":
@@ -24,12 +25,10 @@ def Position(val: np.ndarray, system: str, **pos_args: Any) -> "PositionArray":
     Returns:
         Array with positions in the given system.
     """
-    return _position.PositionArray.create(val, system, **pos_args)
+    return PositionArray.create(val, system, **pos_args)
 
 
-def PositionDelta(
-    val: np.ndarray, system: str, ref_pos: _position.PositionArray, **delta_args: Any
-) -> _position.PositionDeltaArray:
+def PositionDelta(val: np.ndarray, system: str, ref_pos: "PositionArray", **delta_args: Any) -> "PositionDeltaArray":
     """Factory for creating PositionArrays for different systems
 
     See each position class for exact optional parameters.
@@ -43,7 +42,7 @@ def PositionDelta(
     Returns:
         Array with positions in the given system.
     """
-    return _position.PositionDeltaArray.create(val, system, ref_pos, **delta_args)
+    return PositionDeltaArray.create(val, system, ref_pos, **delta_args)
 
 
 def PosVel(val: np.ndarray, system: str, **pos_args: Any) -> "PosVelArray":
@@ -59,12 +58,10 @@ def PosVel(val: np.ndarray, system: str, **pos_args: Any) -> "PosVelArray":
     Returns:
         Array with positions in the given system.
     """
-    return _position.PosVelArray.create(val, system, **pos_args)
+    return PosVelArray.create(val, system, **pos_args)
 
 
-def PosVelDelta(
-    val: np.ndarray, system: str, ref_pos: _position.PosVelArray, **delta_args: Any
-) -> _position.PosVelDeltaArray:
+def PosVelDelta(val: np.ndarray, system: str, ref_pos: "PosVelArray", **delta_args: Any) -> "PosVelDeltaArray":
     """Factory for creating PosVelArrays for different systems
 
     See each position class for exact optional parameters.
@@ -78,28 +75,56 @@ def PosVelDelta(
     Returns:
         Array with positions in the given system.
     """
-    return _position.PosVelDeltaArray.create(val, system, ref_pos, **delta_args)
+    return PosVelDeltaArray.create(val, system, ref_pos, **delta_args)
+
+
+def is_position(val):
+    try:
+        return val.cls_name == "PositionArray"
+    except AttributeError:
+        return False
+
+
+def is_position_delta(val):
+    try:
+        return val.cls_name == "PositionDeltaArray"
+    except AttributeError:
+        return False
+
+
+def is_posvel(val):
+    try:
+        return val.cls_name == "PosVelArray"
+    except AttributeError:
+        return False
+
+
+def is_posvel_delta(val):
+    try:
+        return val.cls_name == "PosVelDeltaArray"
+    except AttributeError:
+        return False
 
 
 #
 # Attributes
 #
-_position.register_attribute(_position.PosVelArray, "other", _position.PosVelArray)
-_position.register_attribute(_position.PositionArray, "other", _position.PositionArray)
+_position.register_attribute(PosVelArray, "other")
+_position.register_attribute(PositionArray, "other")
 
 #
 # Position systems
 #
-@_position.register_system(convert_to=dict(llh=transformation.trs2llh))
-class TrsPosition(_position.PositionArray):
+@_position.register_system(convert_to=dict(llh=trans.trs2llh))
+class TrsPosition(PositionArray):
 
     system = "trs"
     column_names = ("x", "y", "z")
     _units = ("meter", "meter", "meter")
 
 
-@_position.register_system(convert_to=dict(trs=transformation.llh2trs))
-class LlhPosition(_position.PositionArray):
+@_position.register_system(convert_to=dict(trs=trans.llh2trs))
+class LlhPosition(PositionArray):
 
     system = "llh"
     column_names = ("lat", "lon", "height")
@@ -109,19 +134,27 @@ class LlhPosition(_position.PositionArray):
 #
 # Position delta systems
 #
-@_position.register_system(convert_to=dict(enu=transformation.delta_trs2enu))
-class TrsPositionDelta(_position.PositionDeltaArray):
+@_position.register_system(convert_to=dict(enu=trans.delta_trs2enu))
+class TrsPositionDelta(PositionDeltaArray):
 
     system = "trs"
     column_names = ("x", "y", "z")
     _units = ("meter", "meter", "meter")
 
 
-@_position.register_system(convert_to=dict(trs=transformation.delta_enu2trs))
-class EnuPositionDelta(_position.PositionDeltaArray):
+@_position.register_system(convert_to=dict(trs=trans.delta_enu2trs))
+class EnuPositionDelta(PositionDeltaArray):
 
     system = "enu"
     column_names = ("east", "north", "up")
+    _units = ("meter", "meter", "meter")
+
+
+@_position.register_system(convert_to=dict())
+class AcrPositionDelta(PositionDeltaArray):
+
+    system = "acr"
+    column_names = ("along", "cross", "radial")
     _units = ("meter", "meter", "meter")
 
 
@@ -139,7 +172,6 @@ class TrsVelocity(_position.VelocityArray):
 #
 # Velocity delta systems
 #
-@_position.register_system(convert_to=dict(enu=transformation.delta_trs2enu))
 class TrsVelocityDelta(_position.VelocityDeltaArray):
 
     system = "trs"
@@ -147,7 +179,7 @@ class TrsVelocityDelta(_position.VelocityDeltaArray):
     _units = ("meter/second", "meter/second", "meter/second")
 
 
-@_position.register_system(convert_to=dict(trs=transformation.delta_enu2trs))
+@_position.register_system(convert_to=dict(trs=trans.delta_enu2trs))
 class EnuVelocityDelta(_position.VelocityDeltaArray):
 
     system = "enu"
@@ -155,31 +187,82 @@ class EnuVelocityDelta(_position.VelocityDeltaArray):
     _units = ("meter/second", "meter/second", "meter/second")
 
 
+class AcrVelocityDelta(_position.VelocityDeltaArray):
+
+    system = "acr"
+    column_names = ("valong", "vacross", "vradial")
+    _units = ("meter/second", "meter/second", "meter/second")
+
+
 #
 # PosVel systems
 #
-@_position.register_system(convert_to=dict())
-class TrsPosVel(_position.PosVelArray):
+@_position.register_system(convert_to=dict(kepler=trans.trs2kepler))
+class TrsPosVel(PosVelArray):
 
     system = "trs"
     column_names = ("x", "y", "z", "vx", "vy", "vz")
     _units = ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
 
 
+@_position.register_system(convert_to=dict(trs=trans.kepler2trs))
+class KeplerPosVel(PosVelArray):
+
+    system = "kepler"
+    column_names = ("a", "e", "i", "Omega", "omega", "E")
+    _units = ("meter", "unitless", "radians", "radians", "radians", "radians")
+
+    @property
+    @_position.register_field(units=("radians",))
+    def M(self):
+        r"""Compute mean anomaly.
+
+        Determination of mean anomaly is based on Eq. 2.65 in :cite:`montenbruck2012`.
+
+        Returns:
+            numpy.ndarray: Mean anomaly in [rad]
+        """
+        e = self.kepler.e
+        E = self.kepler.E
+        return E - e * np.sin(E)
+
+    @property
+    @_position.register_field(units=("radians",))
+    def f(self):
+        r"""Compute true anomaly.
+
+        Determination of true anomaly is based on Eq. 2.67 in :cite:`montenbruck2012`.
+
+        Returns:
+            numpy.ndarray: True anomaly in [rad]
+        """
+        e = self.kepler.e
+        E = self.kepler.E
+        return np.arctan2(np.sqrt(1 - e ** 2) * np.sin(E), (np.cos(E) - e))
+
+
 #
 # PosVelDelta systems
 #
-@_position.register_system(convert_to=dict(enu=transformation.delta_trs2enu_posvel))
-class TrsPosVelDelta(_position.PosVelDeltaArray):
+@_position.register_system(convert_to=dict(enu=trans.delta_trs2enu_posvel, acr=trans.delta_trs2acr_posvel))
+class TrsPosVelDelta(PosVelDeltaArray):
 
     system = "trs"
     column_names = ("x", "y", "z", "vx", "vy", "vz")
     _units = ("meter", "meter", "meter", "meter", "meter", "meter")
 
 
-@_position.register_system(convert_to=dict(trs=transformation.delta_enu2trs_posvel))
-class EnuPosVelDelta(_position.PosVelDeltaArray):
+@_position.register_system(convert_to=dict(trs=trans.delta_enu2trs_posvel))
+class EnuPosVelDelta(PosVelDeltaArray):
 
     system = "enu"
     column_names = ("east", "north", "up", "veast", "vnorth", "vup")
+    _units = ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
+
+
+@_position.register_system(convert_to=dict(trs=trans.delta_acr2trs_posvel))
+class AcrPosVelDelta(PosVelDeltaArray):
+
+    system = "acr"
+    column_names = ("along", "cross", "radial", "valong", "vacross", "vradial")
     _units = ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")

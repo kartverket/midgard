@@ -135,6 +135,7 @@ class Configuration:
         """Read a configuration from one or more files
 
         Args:
+            cfg_name:    Name of configuration.
             file_paths:  File(s) that will be read.
 
         Returns:
@@ -267,7 +268,7 @@ class Configuration:
 
             1. An explicit value given in `value`. None is used as a marker for no value.
             2. Looked up in the current configuration.
-            3. Looked up in any fallback confiurations that are defined.
+            3. Looked up in any fallback configurations that are defined.
             4. The default value is used.
 
         If `value` is not None, that value is simply returned as a `ConfigurationEntry`. If `default` is not given (is
@@ -488,6 +489,7 @@ class Configuration:
         if options is None:
             options = sys.argv[1:]
 
+        updated_options = set()
         for option in options:
             if not (option.startswith("--") and "=" in option):
                 continue
@@ -502,17 +504,22 @@ class Configuration:
                 continue
             if not opt_section:
                 opt_section = self.master_section.name
-            self.update(
-                opt_section,
-                opt_key,
-                opt_value,
-                profile=profile,
-                source=f"{source} ({option})",
-                allow_new=allow_new,
-                _update_sections=False,
-            )
+            try:
+                self.update(
+                    opt_section,
+                    opt_key,
+                    opt_value,
+                    profile=profile,
+                    source=f"{source} ({option})",
+                    allow_new=allow_new,
+                    _update_sections=False,
+                )
+                updated_options.add(option)
+            except exceptions.MissingEntryError:
+                pass
 
         self._set_sections_for_profiles()
+        return list(set(options) - updated_options)
 
     def update_from_dict(
         self,
@@ -1094,7 +1101,7 @@ def _replace(string: str, replace_vars: Dict[str, str], default: Optional[str] =
         if replacement is None:
             replacement = var_expr if default is None else default  # Default replacements
         else:
-            replacement = _replace(replacement, replace_vars, default)  # Nested replacements
+            replacement = _replace(str(replacement), replace_vars, default)  # Nested replacements
 
         # Use str.format to handle format specifiers
         string = string.replace(var_expr, var_expr.format(**{var: replacement}))

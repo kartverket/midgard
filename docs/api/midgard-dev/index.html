@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v0.3.0</title>
+        <title>midgard.dev - Midgard v1.0.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.3.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -142,12 +142,12 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#midgarddev">midgard.dev</a></li>
-            <li><a href="#midgarddevcache">midgard.dev.cache</a></li>
+            <li><a href="#midgarddev__marked_for_deletion_cache">midgard.dev.__marked_for_deletion_cache</a></li>
+            <li><a href="#midgarddev__marked_for_deletion_optional">midgard.dev.__marked_for_deletion_optional</a></li>
             <li><a href="#midgarddevconsole">midgard.dev.console</a></li>
             <li><a href="#midgarddevexceptions">midgard.dev.exceptions</a></li>
             <li><a href="#midgarddevlibrary">midgard.dev.library</a></li>
             <li><a href="#midgarddevlog">midgard.dev.log</a></li>
-            <li><a href="#midgarddevoptional">midgard.dev.optional</a></li>
             <li><a href="#midgarddevplugins">midgard.dev.plugins</a></li>
             <li><a href="#midgarddevprofiler">midgard.dev.profiler</a></li>
             <li><a href="#midgarddevtimer">midgard.dev.timer</a></li>
@@ -156,7 +156,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="midgarddev">midgard.dev</h1>
-<h2 id="midgarddevcache">midgard.dev.cache</h2>
+<h2 id="midgarddev__marked_for_deletion_cache">midgard.dev.__marked_for_deletion_cache</h2>
 <p>Midgard library module for caching</p>
 <p><strong>Description:</strong></p>
 <p>Adds caching to properties on classes, using the recipe explained in Python
@@ -164,30 +164,68 @@ Cookbook, 3rd ed. Recipe 8.10.</p>
 <p>Also, adds a cached property that may depend on other data, with the
 possibility to reset the cache if the dependencies change.</p>
 <h3 id="dependent_property"><strong>dependent_property</strong></h3>
-<p>Full name: <code>midgard.dev.cache.dependent_property</code></p>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_cache.dependent_property</code></p>
 <p>Signature: <code>()</code></p>
 <p>Decorator for cached properties that can be reset when dependencies change</p>
 <h3 id="forget_dependent_values"><strong>forget_dependent_values</strong>()</h3>
-<p>Full name: <code>midgard.dev.cache.forget_dependent_values</code></p>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_cache.forget_dependent_values</code></p>
 <p>Signature: <code>(obj:object, *dependencies:str) -&gt; None</code></p>
 <p>Reset cache when given dependencies change</p>
 <h3 id="property"><strong>property</strong></h3>
-<p>Full name: <code>midgard.dev.cache.property</code></p>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_cache.property</code></p>
 <p>Signature: <code>(fget:Callable) -&gt; None</code></p>
 <p>Cached property, see Python Cookbook, 3rd ed. Recipe 8.10.</p>
 <h3 id="register_dependencies"><strong>register_dependencies</strong></h3>
-<p>Full name: <code>midgard.dev.cache.register_dependencies</code></p>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_cache.register_dependencies</code></p>
 <p>Signature: <code>()</code></p>
 <p>Metaclass for registering dependencies using dot notation</p>
+<h2 id="midgarddev__marked_for_deletion_optional">midgard.dev.__marked_for_deletion_optional</h2>
+<p>Midgard library module for handling optional dependencies</p>
+<p><strong>Description:</strong></p>
+<p>Import dependencies that are only necessary for specific parts of Midgard. Using this module will delay raising an
+ImportError until the dependency is actually used. This means that if one for instance only wants to run a GNSS
+analysis (or only use a Rinex-parser) installing special libraries only used for VLBI is not necessary.</p>
+<p><strong>Examples:</strong></p>
+<p>The optional import is typically used as follows::</p>
+<pre><code>from midgard.lib import optional
+netCDF4 = optional.optional_import('netCDF4')
+</code></pre>
+<p>Delete this?</p>
+<h3 id="emptystringmock"><strong>EmptyStringMock</strong></h3>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_optional.EmptyStringMock</code></p>
+<p>Signature: <code>(name:str, raise_error:bool=True, attrs:Union[Dict[str, Any], NoneType]=None, error_msg:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>A mock object whose properties are all empty strings</p>
+<h3 id="simplemock"><strong>SimpleMock</strong></h3>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_optional.SimpleMock</code></p>
+<p>Signature: <code>(name:str, raise_error:bool=True, attrs:Union[Dict[str, Any], NoneType]=None, error_msg:Union[str, NoneType]=None) -&gt; None</code></p>
+<p>Class that can stand in for any other object</p>
+<p>The SimpleMock is used to stand in for any library that can not be imported. The mock object simply returns itself
+whenever it is called, or any attributes are looked up on the object. This is done, to avoid ImportErrors when a
+library is imported, but never used (for instance if a plugin is loaded but never called).</p>
+<p>Instead the ImportError is raised when the SimpleMock is used in any way. The ImportError will only be raised once
+for any SimpleMock-object (which is only important if the ImportError is caught and the program carries on).</p>
+<p>The exception is if any attributes (<code>attrs</code>) are explicitly defined on the mock. No exception is raised if those
+attributes are looked up.</p>
+<h3 id="optional_import"><strong>optional_import</strong>()</h3>
+<p>Full name: <code>midgard.dev.__marked_for_deletion_optional.optional_import</code></p>
+<p>Signature: <code>(module_name:str, raise_error:bool=True, mock_cls:type=&lt;class 'midgard.dev.__marked_for_deletion_optional.SimpleMock'&gt;, attrs:Union[Dict[str, Any], NoneType]=None) -&gt; Union[Any, midgard.dev.__marked_for_deletion_optional.SimpleMock]</code></p>
+<p>Try to import an optional module</p>
+<p>If the module does not exist, a SimpleMock-object is returned instead. If this SimpleMock-object is later used, an
+ImportError will be raised then (if <code>raise_error</code> is True, which is default).</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>module_name</code>:   Name of module to import.</li>
+<li><code>raise_error</code>:   Whether an ImportError should be raised if the module does not exist, but is used.</li>
+<li><code>attrs</code>:         Attributes that should be added to the SimpleMock used if the module does not exist.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Imported module object, or a SimpleMock-object if the module can not be imported.</p>
 <h2 id="midgarddevconsole">midgard.dev.console</h2>
 <p>Simpler dealing with the console</p>
 <p><strong>Description:</strong></p>
 <p>Utilities for using the console. Mainly wrappers around other libraries to make them easier and more intuitive to use.</p>
 <p>Size of console: The two functions <code>lines()</code> and <code>columns()</code> report the current size of the console.</p>
 <p>Textwrapping: The function <code>fill()</code> can be used to rewrap a text-string so that it fits inside the console.</p>
-<p>Color: The sub-module <code>color</code> can be used to set the foreground and background colors. Note that the color
-functionality depends on the external package <code>colorama</code>. If <code>colorama</code> is not installed, color gracefully falls back
-to not showing any color.</p>
 <p><strong>Examples:</strong></p>
 <pre><code>&gt;&gt;&gt; from midgard.dev import console
 &gt;&gt;&gt; console.columns()  # doctest: +SKIP
@@ -336,7 +374,7 @@ indent (no indent on the first line) of <code>hanging</code> spaces.</p>
 mock is used for anything, a warning will be printed. This is done to avoid
 dependencies to all the C/C++-libraries for Python programs only using some of
 them.</p>
-<h3 id="simplemock"><strong>SimpleMock</strong></h3>
+<h3 id="simplemock_1"><strong>SimpleMock</strong></h3>
 <p>Full name: <code>midgard.dev.library.SimpleMock</code></p>
 <p>Signature: <code>(name, raise_error=True)</code></p>
 <p>Class that can stand in for any other object</p>
@@ -476,46 +514,6 @@ of the given arguments and keywords.</p>
 <p>Signature: <code>(log_text:str, *, level:str='warn') -&gt; None</code></p>
 <p>partial(func, <em>args, </em>*keywords) - new function with partial application
 of the given arguments and keywords.</p>
-<h2 id="midgarddevoptional">midgard.dev.optional</h2>
-<p>Midgard library module for handling optional dependencies</p>
-<p><strong>Description:</strong></p>
-<p>Import dependencies that are only necessary for specific parts of Midgard. Using this module will delay raising an
-ImportError until the dependency is actually used. This means that if one for instance only wants to run a GNSS
-analysis (or only use a Rinex-parser) installing special libraries only used for VLBI is not necessary.</p>
-<p><strong>Examples:</strong></p>
-<p>The optional import is typically used as follows::</p>
-<pre><code>from midgard.lib import optional
-netCDF4 = optional.optional_import('netCDF4')
-</code></pre>
-<h3 id="emptystringmock"><strong>EmptyStringMock</strong></h3>
-<p>Full name: <code>midgard.dev.optional.EmptyStringMock</code></p>
-<p>Signature: <code>(name:str, raise_error:bool=True, attrs:Union[Dict[str, Any], NoneType]=None, error_msg:Union[str, NoneType]=None) -&gt; None</code></p>
-<p>A mock object whose properties are all empty strings</p>
-<h3 id="simplemock_1"><strong>SimpleMock</strong></h3>
-<p>Full name: <code>midgard.dev.optional.SimpleMock</code></p>
-<p>Signature: <code>(name:str, raise_error:bool=True, attrs:Union[Dict[str, Any], NoneType]=None, error_msg:Union[str, NoneType]=None) -&gt; None</code></p>
-<p>Class that can stand in for any other object</p>
-<p>The SimpleMock is used to stand in for any library that can not be imported. The mock object simply returns itself
-whenever it is called, or any attributes are looked up on the object. This is done, to avoid ImportErrors when a
-library is imported, but never used (for instance if a plugin is loaded but never called).</p>
-<p>Instead the ImportError is raised when the SimpleMock is used in any way. The ImportError will only be raised once
-for any SimpleMock-object (which is only important if the ImportError is caught and the program carries on).</p>
-<p>The exception is if any attributes (<code>attrs</code>) are explicitly defined on the mock. No exception is raised if those
-attributes are looked up.</p>
-<h3 id="optional_import"><strong>optional_import</strong>()</h3>
-<p>Full name: <code>midgard.dev.optional.optional_import</code></p>
-<p>Signature: <code>(module_name:str, raise_error:bool=True, mock_cls:type=&lt;class 'midgard.dev.optional.SimpleMock'&gt;, attrs:Union[Dict[str, Any], NoneType]=None) -&gt; Union[Any, midgard.dev.optional.SimpleMock]</code></p>
-<p>Try to import an optional module</p>
-<p>If the module does not exist, a SimpleMock-object is returned instead. If this SimpleMock-object is later used, an
-ImportError will be raised then (if <code>raise_error</code> is True, which is default).</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>module_name</code>:   Name of module to import.</li>
-<li><code>raise_error</code>:   Whether an ImportError should be raised if the module does not exist, but is used.</li>
-<li><code>attrs</code>:         Attributes that should be added to the SimpleMock used if the module does not exist.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Imported module object, or a SimpleMock-object if the module can not be imported.</p>
 <h2 id="midgarddevplugins">midgard.dev.plugins</h2>
 <p>Set up a plug-in architecture for Midgard</p>
 <p><strong>Description:</strong></p>
@@ -526,7 +524,7 @@ registering themselves using the <code>register</code> decorator:</p>
 <pre><code>from midgard.dev import plugins
 
 @plugins.register
-def simple_model(rundate, tech, dset):
+def simple_model(*args, **kwargs):
     ...
 </code></pre>
 <p>Plug-ins are registered based on the name of the module (file) they are defined
@@ -860,10 +858,10 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7efd5b0b7378&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f800f4530d0&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7efd5b0b7378&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f800f4530d0&gt;, level='info')) -&gt; None</code></p>
 <p>Class for timing running time of functions and code blocks.</p></div>
         </div>
 

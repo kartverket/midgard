@@ -14,7 +14,7 @@ Reads data from files timeseries files in ENV (east, north, vertical) format
 
 """
 # Standard library imports
-from typing import Any, Dict
+from typing import Any, Dict, List, Union
 
 # External library imports
 import numpy as np
@@ -77,7 +77,15 @@ class TimeseriesEnvParser(LineParser):
             autostrip=True,
         )
 
-    def as_dataset(self, ref_pos):
+    def as_dataset(self, ref_pos: Union[np.ndarray, List[float]]) -> "Dataset":
+        """Return the parsed data as a Dataset
+
+        Args:
+            ref_pos: Reference position given in terrestrial reference system and meters
+
+        Returns:
+            A dataset containing the data.
+        """
 
         # Initialize dataset
         dset = dataset.Dataset()
@@ -88,7 +96,6 @@ class TimeseriesEnvParser(LineParser):
 
         # Add position
         ref_pos = position.Position(np.repeat(np.array([ref_pos]), dset.num_obs, axis=0), system="trs")
-        # dset.add_position("ref_pos", ...other="sat_pos")
         dset.add_position_delta(
             name="pos",
             val=np.stack((self.data["east"], self.data["north"], self.data["vertical"]), axis=1)
@@ -97,11 +104,11 @@ class TimeseriesEnvParser(LineParser):
             ref_pos=ref_pos,
         )
 
-        # Add position sigma -> TODO: Has to be improved.
+        # Add position sigma
         sigma = np.stack((self.data["east_sigma"], self.data["north_sigma"], self.data["vertical_sigma"]), axis=1)
         dset.add_sigma(name="pos_sigma", val=dset.pos.val, sigma=sigma * Unit.millimeter2meter, unit="meter")
 
         # Add time
-        dset.add_time(name="time", val=self.data["year"], scale="utc", format="decimalyear", write_level="operational")
+        dset.add_time(name="time", val=self.data["year"], scale="utc", fmt="decimalyear", write_level="operational")
 
         return dset

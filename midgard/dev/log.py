@@ -152,6 +152,7 @@ class FileLogger(Logger):
 
         # Store file path and generate name
         self.file_path = pathlib.Path(file_path).resolve()
+        file_path.parent.mkdir(parents=True, exist_ok=True)
         self.name = f"file://{self.file_path}"
 
         # Rotate old log files and open log file for writing

@@ -34,32 +34,33 @@ class BcecmpParser(ChainParser):
 
     The following **data** are available after reading BCEcmp Software output file:
 
-    | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | age_min              | age of ephemeris in [min]                                                            |
-    | clk_diff_sys         | Satellite clock correction difference in [m]                                         |
-    | dalong_track         | Along-track orbit difference in [m]                                                  |
-    | dcross_track         | Cross-track orbit difference in [m]                                                  |
-    | dradial              | Radial orbit difference in [m]                                                       |
-    | dradial_wul          | Worst-user-location (wul) SISRE?                                                     |
-    | satellite            | Satellite PRN number together with GNSS identifier (e.g. G07)                        |
-    | sisre                | Signal-in-space range error [m]                                                      |
-    | time                 | Observation time                                                                     |
-    | used_iodc            | GPS: IODC (Clock issue of data indicates changes (set equal to IODE))                |
-    |                      | QZSS: IODC                                                                           |
-    | used_iode            | Ephemeris issue of data indicates changes to the broadcast ephemeris:                |
-    |                      |   - GPS: Ephemeris issue of data (IODE), which is set equal to IODC                  |
-    |                      |   - Galileo: Issue of Data of the NAV batch (IODnav)                                 |
-    |                      |   - QZSS: Ephemeris issue of data (IODE)                                             |
-    |                      |   - BeiDou: Age of Data Ephemeris (AODE)                                             |
-    |                      |   - IRNSS: Issue of Data, Ephemeris and Clock (IODEC)                                |
+    | Key                   | Description                                                                          |
+    |-----------------------|--------------------------------------------------------------------------------------|
+    | age_min               | age of ephemeris in [min]                                                            |
+    | clk_diff_with_dt_mean | Satellite clock correction difference corrected for average satellite clock offset   |
+    |                       | difference for given GNSS and epoch in [m]                                           |
+    | dalong_track          | Along-track orbit difference in [m]                                                  |
+    | dcross_track          | Cross-track orbit difference in [m]                                                  |
+    | dradial               | Radial orbit difference in [m]                                                       |
+    | dradial_wul           | Worst-user-location (wul) SISRE?                                                     |
+    | satellite             | Satellite PRN number together with GNSS identifier (e.g. G07)                        |
+    | sisre                 | Signal-in-space range error [m]                                                      |
+    | time                  | Observation time                                                                     |
+    | used_iodc             | GPS: IODC (Clock issue of data indicates changes (set equal to IODE))                |
+    |                       | QZSS: IODC                                                                           |
+    | used_iode             | Ephemeris issue of data indicates changes to the broadcast ephemeris:                |
+    |                       |   - GPS: Ephemeris issue of data (IODE), which is set equal to IODC                  |
+    |                       |   - Galileo: Issue of Data of the NAV batch (IODnav)                                 |
+    |                       |   - QZSS: Ephemeris issue of data (IODE)                                             |
+    |                       |   - BeiDou: Age of Data Ephemeris (AODE)                                             |
+    |                       |   - IRNSS: Issue of Data, Ephemeris and Clock (IODEC)                                |
 
     and **meta**-data:
 
-    | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | Key                   | Description                                                                          |
+    |-----------------------|--------------------------------------------------------------------------------------|
+    | \__data_path__        | File path                                                                            |
+    | \__parser_name__      | Parser name                                                                          |
     """
 
     #
@@ -87,7 +88,7 @@ class BcecmpParser(ChainParser):
                         "dradial": (29, 39),
                         "dalong_track": (39, 47),
                         "dcross_track": (47, 55),
-                        "clk_diff_sys": (55, 64),
+                        "clk_diff_with_dt_mean": (55, 64),
                         "dradial_wul": (64, 73),
                         "sisre": (73, 82),
                         "used_iode": (82, 91),

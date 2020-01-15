@@ -10,10 +10,14 @@ import pytest
 # Midgard imports
 from midgard.dev import console
 
-
 #
 # Test data sets
 #
+@pytest.fixture
+def text(request):
+    return request.getfixturevalue(request.param.__name__)
+
+
 @pytest.fixture
 def two_words():
     """A two words text with newlines"""
@@ -45,7 +49,7 @@ def one_paragraph_width_80():
     ).strip()
 
 
-@pytest.fixture
+@pytest.fixture()
 def one_paragraph_ragged_left():
     """A one paragraph text with a ragged left margin"""
     return dedent(
@@ -84,8 +88,7 @@ def test_fill_one_paragraph(one_paragraph_width_80):
     assert filled_text == one_paragraph_width_80
 
 
-# TODO: Is this the proper way to parametrize with fixtures?
-@pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
+@pytest.mark.parametrize("text", (one_sentence, one_paragraph_width_80, one_paragraph_ragged_left), indirect=True)
 def test_hanging_indent(text):
     """Test that hanging indents work as expected"""
     width = len(text) // 2  # Should force fill to three lines
@@ -95,7 +98,7 @@ def test_hanging_indent(text):
     assert filled_text.count("\n    ") == num_lines - 1  # 4 spaces indent
 
 
-@pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
+@pytest.mark.parametrize("text", (one_sentence, one_paragraph_width_80, one_paragraph_ragged_left), indirect=True)
 def test_dedent(text):
     """Test that dedentation works, indent first so that there are some spaces to dedent"""
     dedented_text = "\n" + console.dedent(console.indent(text, 8), num_spaces=3)
@@ -116,7 +119,7 @@ def test_dedent_all(one_paragraph_ragged_left):
     assert dedented_text == one_paragraph_ragged_left
 
 
-@pytest.mark.parametrize("text", (one_sentence(), one_paragraph_width_80(), one_paragraph_ragged_left()))
+@pytest.mark.parametrize("text", (one_sentence, one_paragraph_width_80, one_paragraph_ragged_left), indirect=True)
 def test_indent(text):
     """Test that indentation works"""
     indented_text = "\n" + console.indent(text, num_spaces=3)

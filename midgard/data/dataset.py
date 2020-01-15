@@ -8,7 +8,7 @@ Description:
 from collections import UserDict
 import copy
 import pathlib
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union, Hashable, Collection
 
 # Third party imports
 import h5py
@@ -23,6 +23,8 @@ from midgard.dev import exceptions
 from midgard.dev import log
 from midgard.data import _h5utils
 from midgard.data import fieldtypes
+from midgard.data.time import Time
+from midgard.math.unit import Unit
 
 # Version of Dataset
 __version__ = "3.0"
@@ -35,10 +37,10 @@ class Dataset:
 
     def __init__(self, num_obs: int = 0) -> None:
         """Initialize an empty dataset"""
-        self._fields = dict()
         self.meta = Meta()
         self.vars = dict()
 
+        self._fields = dict()
         self._num_obs = num_obs
         self._default_field_suffix = None
 
@@ -56,100 +58,197 @@ class Dataset:
         with h5py.File(file_path, mode="r") as h5_file:
             num_obs = h5_file.attrs["num_obs"]
             dset = cls(num_obs=num_obs)
-            dset.vars.update(_h5utils.h5attr2dict(h5_file.attrs["vars"]))
+            dset.vars.update(_h5utils.decode_h5attr(h5_file.attrs["vars"]))
 
             # Read fields
-            for fieldname, fieldtype in _h5utils.h5attr2dict(h5_file.attrs["fields"]).items():
+            for fieldname, fieldtype in _h5utils.decode_h5attr(h5_file.attrs["fields"]).items():
                 field = fieldtypes.function(fieldtype).read(h5_file[fieldname], memo)
-                if field:  # TODO: Test can be removed when all fieldtypes implement read
-                    dset._fields[fieldname] = field
-                    setattr(dset, fieldname, field.data)
-                    memo[fieldname] = field.data
+                dset._fields[fieldname] = field
+                memo[fieldname] = field.data
 
             # Read meta
             dset.meta.read(h5_file["__meta__"])
         return dset
+
+    def _construct_memo(self):
+        """ Constructs dictionary
+
+        Dictionary to keep track of object references
+            key: object(TimeArray, PostionArray, etc) id,
+            value: field_name
+        """
+        memo = dict()
+        for field in self._fields.values():
+            field.fill_memo(memo)
+        return memo
 
     def write(self, file_path: Union[str, pathlib.Path], write_level: Optional[enums.WriteLevel] = None) -> None:
         """Write a dataset to file"""
         write_level = (
             min(enums.get_enum("write_level")) if write_level is None else enums.get_value("write_level", write_level)
         )
-        log.debug(f"Write dataset to {file_path}")
+        log.debug(f"Write dataset to {file_path} with {write_level}")
 
         # Make sure directory exists
         file_path = pathlib.Path(file_path).resolve()
         file_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Dictionary to keep track of object references
-        # key: object(TimeAraay, PostionArray, etc) id, value: field_name
-        memo = {}
+        memo = self._construct_memo()
         with h5py.File(file_path, mode="w") as h5_file:
 
             # Write each field
             for field_name, field in self._fields.items():
-                h5_group = h5_file.create_group(field_name)
-                memo[id(getattr(self, field_name))] = field_name
-                field.write(h5_group, memo, write_level=write_level)
+                if field.write_level >= write_level:
+                    h5_group = h5_file.create_group(field_name)
+                    field.write(h5_group, memo, write_level=write_level)
 
             # Write meta-information
             self.meta.write(h5_file.create_group("__meta__"))
 
             # Write information about dataset
-            fields = {fn: f.fieldtype for fn, f in self._fields.items()}
-            h5_file.attrs["fields"] = _h5utils.dict2h5attr(fields)
+            fields = {fn: f.fieldtype for fn, f in self._fields.items() if f.write_level >= write_level}
+            h5_file.attrs["fields"] = _h5utils.encode_h5attr(fields)
             h5_file.attrs["num_obs"] = self.num_obs
-            h5_file.attrs["vars"] = _h5utils.dict2h5attr(self.vars)
+            h5_file.attrs["vars"] = _h5utils.encode_h5attr(self.vars)
             h5_file.attrs["version"] = self.version
 
     def subset(self, idx: np.array) -> None:
-        """Remove observations from all fields based on index
+        """Remove observations from all fields based on index"""
+        # Dictionary to keep track of object references
+        # key: object id before slicing, value: object after slicing
+        memo = dict()
 
+        for field in self._fields.values():
+            field.subset(idx, memo)
+
+        self._num_obs = int(np.sum(idx))
+
+    def extend(self, other_dataset: "Dataset", meta_key=None) -> None:
+        """Add observations from another dataset to the end of this dataset"""
+
+        # Dictionary to keep track of object references
+        # key: object id before extending, value: (object before extending, object after extending)
+        # object before extending is kept in the memo dict to make sure it is not garbage collected during the
+        # extension process.
+        memo = dict()
+
+        only_in_other = set(other_dataset._fields.keys()) - set(self._fields.keys())
+        only_in_self = set(self._fields.keys()) - set(other_dataset._fields.keys())
+
+        for field_name, field in other_dataset._fields.items():
+
+            if field_name in only_in_other:
+                # self, num_obs, name, val, unit=None, write_level=None, **field_args
+                # TODO write level, unit.. make from_field?
+                new_field = field.new_from_field()
+                new_field.prepend_empty(self.num_obs, memo)
+                self._fields[field_name] = new_field
+            else:
+                self._fields[field_name].extend(other_dataset._fields[field_name], memo)
+
+        for field_name in only_in_self:
+            self._fields[field_name].append_empty(other_dataset.num_obs, memo)
+
+        self._num_obs += other_dataset.num_obs
+
+        # Extend meta
+        if meta_key is None:
+            self.meta.update(other_dataset.meta)
+        else:
+            self.meta.setdefault(meta_key, dict()).update(other_dataset.meta)
+
+    def merge_with(self, *dsets, sort_by=None, meta_key=None):
+        """Merge in observations from other datasets 
+
+        Note that this is quite strict in terms of which datasets can extend each other. They must have exactly the
+        same tables. Tables containing several independent fields (e.g. float, text) may have different fields, in
+        which case fields from both datasets are included. If a field is only defined in one dataset, it will get
+        "empty" values for the observations in the dataset it is not defined.
+
+        Args:
+            other_dset (Sequence): List of Datasets
+            sort_by (str):         Name of field to be used for sorting the merged data
+            meta_key (str):        Dictionary key for introduction of an additional level in dictionary.
         """
-        print("subset")
-        import IPython
 
-        IPython.embed()
+        for dset in dsets:
+            self.extend(dset, meta_key)
 
-    def extend(self, other_dataset: "Dataset") -> None:
-        """Add observations from another dataset to the end of this dataset
+        memo = dict()
+        if sort_by is not None:
+            sort_idx = np.argsort(np.asarray(getattr(self, sort_by)))
 
-        """
-        print("extend")
-        import IPython
+            for field in self._fields.values():
+                field.subset(sort_idx, memo)
 
-        IPython.embed()
-
-    def filter(self, idx=None, **filters) -> np.array:
-        """Filter observations
-
-        TODO: default_field_suffix
-        """
+    def filter(self, idx=None, collection=None, **filters) -> np.array:
+        """Filter observations"""
         idx = np.ones(self.num_obs, dtype=bool) if idx is None else idx
         for field, value in filters.items():
-            idx &= self[field] == value
+            try:
+                if collection is None:
+                    field_idx = np.asarray(self[field]) == value
+                else:
+                    field_idx = np.asarray(self[f"{collection}.{field}"]) == value
+            except AttributeError as err:
+                field_idx = np.zeros(self.num_obs, dtype=bool)
+                or_fields = [f for f in self._fields if f.startswith(field + "_")]
+                if not or_fields:
+                    raise err
+                for or_field in or_fields:
+                    if collection is None:
+                        field_idx = np.logical_or(field_idx, self[or_field] == value)
+                    else:
+                        field_idx = np.logical_or(field_idx, self[collection][or_field] == value)
+            idx = np.logical_and(idx, field_idx)
         return idx
 
-    def unique(self, field, **filters) -> np.array:
-        """List unique values of a given field
+    def unique(self, field, collection=None, **filters) -> np.array:
+        """List unique values of a given field"""
+        idx = self.filter(collection=collection, **filters)
+        container = self
 
-        TODO: default_field_suffix
-        """
-        idx = self.filter(**filters)
-        return np.unique(self[field][idx])
+        if collection is not None:
+            container = self[collection]
 
-    def for_each(self, key):
-        """Do something for each suffix
+        try:
+            # convert to np.ndarray and find unique index (np.unique does not work on immutable arrays like TimeArray)
+            _, indicies = np.unique(np.asarray(container[field][idx]), return_index=True)
+            unique_idx = np.zeros(np.sum(idx), dtype=bool)
+            unique_idx[indicies] = True
+            return container[field][idx][unique_idx]
+        except AttributeError as err:
+            or_fields = [f for f in self._fields if f.startswith(field + "_")]
+            if not or_fields:
+                raise err
+            # TODO: test how this work for immutable arrays
+            concat_field = container[or_fields[0]][idx]
+            for or_field in or_fields[1:]:
+                concat_field = np.concatenate((concat_field, container[or_field][idx]))
+                _, indicies = np.unique(concat_field, return_index=True)
+            return concat_field[indicies]
 
-        """
+    def for_each_suffix(self, key):
+        """Do something for each suffix"""
+        *collections, key = key.split(".")
+        container = self
+        for c in collections:
+            container = container._fields[c].data
         previous_field_suffix = self.default_field_suffix
-        suffixes = [f[len(key) :] for f in self.fields if f.startswith(key) and "." not in f]
-        multipliers = [-1, 1] if len(suffixes) == 2 else [1] * len(suffixes)
-        for multiplier, suffix in zip(multipliers, suffixes):
+        sm = [(f[len(key) :], container._fields[f].multiplier) for f in container._fields if f.startswith(key)]
+        for suffix, multiplier in sm:
+            if suffix and not suffix[1:].isdigit():
+                continue
             self.default_field_suffix = suffix
             yield multiplier
 
         self.default_field_suffix = previous_field_suffix
+
+    def for_each_fieldtype(self, fieldtype):
+        for field in self._fields.values():
+            module = field.__module__.split(".")[-1]
+            if fieldtype == module:
+                yield field.data
 
     def unit(self, field):
         """Unit for values in a given field"""
@@ -159,15 +258,24 @@ class Dataset:
         except KeyError:
             raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
 
+    def unit_short(self, field):
+        units = self.unit(field)
+        if units is None:
+            return tuple()
+        return tuple([Unit.symbol(u) for u in units])
+
     def plot_values(self, field: str) -> np.array:
         """Return values of a field in a form that can be plotted"""
-        return self._fields[field].plot_values
+
+        mainfield, _, subfield = field.partition(".")
+        return self._fields[mainfield].plot_values(subfield)
 
     def as_dict(self, fields=None) -> Dict[str, Any]:
         """Return a representation of the dataset as a dictionary"""
         fields_dict = dict()
         for field in self._fields.values():
-            fields_dict.update(field.as_dict(fields=fields))
+            field_dict = field.as_dict(fields=fields)
+            fields_dict.update(field_dict)
 
         return fields_dict
 
@@ -182,7 +290,10 @@ class Dataset:
     def apply(self, func: Callable, field: str, **filters: Any) -> Any:
         """Apply a function to a field"""
         idx = self.filter(**filters)
-        values = self[field][idx]
+        values = []
+        for _ in self.for_each_suffix(field):
+            values.append(self[field][idx])
+        values = np.hstack(values)
         return func(values)
 
     def rms(self, field: str, **filters: Any) -> float:
@@ -225,6 +336,8 @@ class Dataset:
         """Default field suffix
 
         """
+        if self._default_field_suffix is None:
+            return ""
         return self._default_field_suffix
 
     @default_field_suffix.setter
@@ -243,6 +356,9 @@ class Dataset:
                 suffix = "_" + suffix
         else:
             suffix = None
+
+        for collection in self.for_each_fieldtype("collection"):
+            collection.default_field_suffix = suffix
         self._default_field_suffix = suffix
 
     @property
@@ -251,6 +367,15 @@ class Dataset:
         all_fields = list()
         for field in self._fields.values():
             all_fields.extend(field.subfields)
+
+        return sorted(all_fields)
+
+    @property
+    def plot_fields(self):
+        """Names of fields in the dataset that would make sense to plot"""
+        all_fields = list()
+        for field in self._fields.values():
+            all_fields.extend(field.plot_fields)
 
         return sorted(all_fields)
 
@@ -264,11 +389,50 @@ class Dataset:
             if fieldname in self._fields:
                 raise exceptions.FieldExistsError(f"Field {fieldname!r} already exists in dataset")
             self._fields.update({fieldname: field})
-            setattr(self, fieldname, field.data)
+        self.meta.update(other.meta)
 
-    def _todo__setattr__(self, key, value):
+    def __getitem__(self, key):
+        """Get a field from the dataset using dict-notation"""
+        mainfield, _, subfield = key.partition(".")
+        if not subfield:
+            return getattr(self, key)
+        else:
+            return getattr(getattr(self, mainfield), subfield)
+
+    def __getattr__(self, key):
+        """Get a field from the dataset using dot-notation"""
+        if key == "_fields" or key == "default_field_suffix":
+            return self.__getattribute__(key)
+
+        container = self
+        field = key
+        if "." in key:
+            collection, _, field = key.partition(".")
+            container = self[collection]
+        if container.default_field_suffix is not None:
+            field_with_suffix = field + container.default_field_suffix
+            if field_with_suffix in container._fields:
+                return container._fields[field_with_suffix].data
+        if field in container._fields:
+            return container._fields[field].data
+
+            # Raise error for unknown attributes
+        else:
+            raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}")
+
+    def __setattr__(self, key, value):
         """Protect dataset fields from being accidentally overwritten"""
-        print("__setattr__")
+        try:
+            if key in self._fields:
+                if id(value) != id(self._fields[key].data):
+                    raise AttributeError(
+                        "Can't set attribute '{}' on '{}' object, use dset.{}[:] instead"
+                        "".format(key, type(self).__name__, key)
+                    )
+        except AttributeError:
+            # if self._fields is not set yet
+            pass
+        super().__setattr__(key, value)
 
     def _todo__delitem__(self, key):
         """Delete a field from the dataset"""
@@ -314,7 +478,6 @@ class Dataset:
         new_dset = Dataset(num_obs=self.num_obs)
         for fieldname, field in self._fields.items():
             new_dset._fields[fieldname] = copy.deepcopy(field, memo)
-            setattr(new_dset, fieldname, new_dset._fields[fieldname].data)
         new_dset.meta = copy.deepcopy(self.meta, memo)
         memo[id(self)] = new_dset
         return new_dset
@@ -322,36 +485,39 @@ class Dataset:
 
 class Meta(UserDict):
     def read(self, h5_group):
-        pass
+        """Read meta data from hdf5-file"""
+        for k, v in h5_group.attrs.items():
+            self.data[k] = _h5utils.decode_h5attr(v)
 
     def write(self, h5_group):
-        pass
+        """Write meta data to hdf5-file"""
+        for k, v in self.items():
+            h5_group.attrs[k] = _h5utils.encode_h5attr(v)
 
-    def add(self, section, name, value):
+    def add(self, name: Hashable, value: Collection, section: Optional[Hashable] = None) -> None:
         """Add information to the metaset"""
-        print("add")
-        import IPython
+        meta_section = self.data.setdefault(section, dict()) if section else self.data
+        meta_section[name] = value
 
-        IPython.embed()
-
-    def add_event(self, timestamp, event_type, description):
+    def add_event(self, time: "Time", event_type: str, description: str) -> None:
         """Add event to the metaset"""
-        print(f"add_event: {timestamp} {event_type} {description}")
         events = self.setdefault("__events__", dict())
-        events.setdefault(event_type, list()).append((timestamp.isoformat(), description))
-        # events.setdefault(event_type, list()).append((timestamp.utc.isot, description))
+        events.setdefault(event_type, list()).append((time.utc.isot, description))
 
-    def get_events(self, *event_types):
+    def get_events(self, *event_types: List[str]):
         """Get events from the metaset"""
-        print("get_event")
         all_events = self.get("__events__", dict())
         if not event_types:
             event_types = all_events.keys()
 
-        return sorted(set((ts, k, desc) for k, v in all_events.items() for (ts, desc) in v if k in event_types))
-
-    def copy_from(self, other):
-        self.data = copy.deepcopy(other.data)
+        return sorted(
+            set(
+                (Time(ts, scale="utc", fmt="isot"), k, desc)
+                for k, v in all_events.items()
+                for (ts, desc) in v
+                if k in event_types
+            )
+        )
 
 
 #
@@ -360,7 +526,7 @@ class Meta(UserDict):
 def _add_field_factory(field_type: str) -> Callable:
     func = fieldtypes.function(field_type)
 
-    def _add_field(self, name, val, unit=None, write_level=None, suffix=None, **field_args):
+    def _add_field(self, name, val=None, unit=None, write_level=None, suffix=None, **field_args):
         """Add a {field_type} field to the dataset"""
         if name in self._fields:
             raise exceptions.FieldExistsError(f"Field {name!r} already exists in dataset")
@@ -368,15 +534,13 @@ def _add_field_factory(field_type: str) -> Callable:
         # Create collections for nested fields
         collection, _, field_name = name.rpartition(".")
         if collection and collection not in self._fields:
-            self.add_collection(collection, val=None)
+            self.add_collection(collection)
 
         # Create field
         field = func(num_obs=self.num_obs, name=field_name, val=val, unit=unit, write_level=write_level, **field_args)
-
         # Add field to list of fields
-        fields = self[collection] if collection else self._fields
+        fields = getattr(self, collection) if collection else self._fields
         fields[field_name] = field
-        setattr(self, name, field.data)
 
     _add_field.__doc__ = _add_field.__doc__.format(field_type=field_type)
 

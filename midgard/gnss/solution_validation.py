@@ -44,6 +44,7 @@ from scipy import stats
 
 # Midgard imports
 from midgard.dev import log
+from midgard.gnss.compute_dops import compute_dops
 
 
 # Define the function parser
@@ -53,61 +54,6 @@ def get_my_parser():
     )
 
     return parser
-
-
-def compute_dops(az: np.ndarray, el: np.ndarray, el_mask: float = 0, min_num_sats: int = 4) -> Tuple[np.ndarray, ...]:
-    """Compute DOP (dilution of precision)
-
-    Args:
-        az:  Satellite azimuth angle (radians)
-        el:  Satellite elevation angle (radians)
-        el_mask: Elevation cut-off angle (radians)
-        min_num_sats: Minimum number of satellites for a valid solution
-
-    Returns:
-        Tuple with GDOP, PDOP, HDOP and VDOP
-    """
-    gdop = np.array([0.0])
-    pdop = np.array([0.0])
-    hdop = np.array([0.0])
-    vdop = np.array([0.0])
-
-    # Make sure that we have enough valid satellites
-    n_valid_sats = np.sum(el >= el_mask)
-    if n_valid_sats < min_num_sats:
-        log.warn(
-            f"Not enough valid observation={n_valid_sats:02d}, at least {min_num_sats:02d} observations are needed ...!"
-        )
-        return gdop, pdop, hdop, vdop
-
-    # Construct the design matrix H based on observed & valid satellites
-    #    NB: treat H as a vector
-    #
-    #       | cos(e1)sin(a1)   cos(e1)cos(a1)   sin(e1)   1  |
-    #       | cos(e2)sin(a2)   cos(e2)cos(a2)   sin(e2)   1  |
-    #       | cos(e3)sin(a3)   cos(e3)cos(a3)   sin(a3)   1  |
-    #  H =  | cos(e4)sin(a4)   cos(e4)cos(a4)   sin(e4)   1  |
-    #       |    ..               ..             ..      ..  |
-    #       | cos(e_n)sin(a_n) cos(e_n)cos(a_n) sin(a_n)  1  |
-    H = np.stack((np.cos(el) * np.sin(az), np.cos(el) * np.cos(az), np.sin(el), np.ones(el.shape)), axis=1)
-    Q = H.T @ H  # H^t*H
-
-    # User info
-    log.debug("Q=H^t*H::")
-    log.debug(Q)
-
-    # Check if the inverse of Q exists by computing the conditional number OR computation of the detereminant
-    if not np.isfinite(np.linalg.cond(Q)):
-        log.warn("error computing the inverse of the co-factor matrix Q")
-
-    else:
-        Q = np.linalg.inv(Q)  # (H*H^t)^{-1}
-        gdop = np.sqrt(np.trace(Q))  # GDOP
-        pdop = np.sqrt(np.trace(Q[0:3]))  # PDOP
-        hdop = np.sqrt(np.trace(Q[0:2]))  # HDOP
-        vdop = np.sqrt(np.trace(Q[0:1]))  # VDOP
-
-    return gdop, pdop, hdop, vdop
 
 
 def comp_quality_indicators(sol_vc_mat: np.ndarray) -> tuple:
@@ -145,10 +91,10 @@ def comp_quality_indicators(sol_vc_mat: np.ndarray) -> tuple:
     # 3. Compute the circular error probable (CEP)
     std_of_unknown = np.sqrt(np.diag(sol_vc_mat))
     std_ratio = std_of_unknown[0] / std_of_unknown[1]
-    if .2 <= std_ratio <= 1.0:
+    if 0.2 <= std_ratio <= 1.0:
         cep = 0.589 * (std_of_unknown[0] + std_of_unknown[1])
     else:
-        cep = .0
+        cep = 0.0
 
     return drms, cep, see
 

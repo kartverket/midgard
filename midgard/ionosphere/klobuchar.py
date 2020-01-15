@@ -33,7 +33,7 @@ from midgard.dev import log
 from midgard.math.constant import constant
 
 
-def klobuchar(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=log.info):
+def klobuchar(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=log.debug):
     """Compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model)
 
     GPS and  BeiDou satellite navigation systems use this model. The implementation is based on original paper of

@@ -1,13 +1,14 @@
 """A Dataset float field
 
 """
-
 # Third party imports
 import numpy as np
 
 # Midgard imports
 from midgard.data.fieldtypes._fieldtype import FieldType
+from midgard.dev import exceptions
 from midgard.dev import plugins
+from midgard.math.unit import Unit
 
 
 @plugins.register
@@ -17,6 +18,11 @@ class FloatField(FieldType):
 
     def _post_init(self, val, **field_args):
         """Initialize float field"""
+        if field_args:
+            raise exceptions.InitializationError(
+                f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
+            )
+
         data = self._factory(val, dtype=float)
 
         # Check that the correct number of observations are given
@@ -36,20 +42,64 @@ class FloatField(FieldType):
             if isinstance(self._unit, str):
                 self._unit = (self._unit,) * cols
             elif len(self._unit) != cols:
-                raise ValueError(f"Number of units ({len(self._units)}) must equal number of columns ({cols})")
+                raise ValueError(f"Number of units ({len(self._unit)}) must equal number of columns ({cols})")
 
         # Store the data as a regular numpy array
         self.data = data
 
+    def _prepend_empty(self, num_obs, memo):
+        empty_shape = (num_obs, *self.data.shape[1:])
+        empty = np.full(empty_shape, np.nan)
+
+        old_id = id(self.data)
+        new_data = np.insert(self.data, 0, empty, axis=0)
+        memo[old_id] = (self.data, new_data)
+        self.data = new_data
+
+    def _append_empty(self, num_obs, memo):
+        empty_shape = (num_obs, *self.data.shape[1:])
+        empty = np.full(empty_shape, np.nan)
+
+        old_id = id(self.data)
+        new_data = np.insert(self.data, self.num_obs, empty, axis=0)
+        memo[old_id] = (self.data, new_data)
+        self.data = new_data
+
+    def _extend(self, other_field, memo) -> None:
+        """Add observations from another field"""
+        if other_field.data.ndim != self.data.ndim:
+            raise ValueError(
+                f"Field '{self.name}' cannot be extended. Dimensions must be equal. ({other_field.data.ndim} != {self.data.ndim})"
+            )
+
+        try:
+            factors = [Unit(from_unit, to_unit) for from_unit, to_unit in zip(other_field._unit, self._unit)]
+        except exceptions.UnitError:
+            raise exceptions.UnitError(
+                f"Cannot extend field '{self.name}'. {other_field._unit} cannot be converted to {self._unit}"
+            )
+        except TypeError:
+            if self._unit == other_field._unit == None:
+                factors = 1
+            else:
+                raise exceptions.UnitError(
+                    f"Cannot extend field '{self.name}'. {other_field._unit} cannot be converted to {self._unit}"
+                )
+        old_id = id(self.data)
+        self.data = np.insert(self.data, self.num_obs, other_field.data * factors, axis=0)
+        memo[old_id] = self.data
+
     @classmethod
-    def _read(cls, h5_group, _) -> "FieldType":
+    def _read(cls, h5_group, memo) -> "FieldType":
         """Read a field from a HDF5 data source"""
         name = h5_group.attrs["fieldname"]
-        val = h5_group[name][...]
-        return cls(num_obs=len(val), name=name, val=val)
+        if name in memo:
+            val = memo[name]
+        else:
+            val = h5_group[name][...]
+        return cls(num_obs=len(val), name=name.split(".")[-1], val=val)
 
     def _write(self, h5_group, _) -> None:
         """Write data to a HDF5 data source"""
-        h5_group.attrs["fieldname"] = self.name
-        h5_field = h5_group.create_dataset(self.name, self.data.shape, dtype=self.data.dtype)
+        h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.data.shape, dtype=self.data.dtype)
         h5_field[...] = self.data

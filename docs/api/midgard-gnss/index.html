@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.gnss - Midgard v0.3.0</title>
+        <title>midgard.gnss - Midgard v1.0.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.3.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -142,6 +142,8 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#midgardgnss">midgard.gnss</a></li>
+            <li><a href="#midgardgnsscompute_dops">midgard.gnss.compute_dops</a></li>
+            <li><a href="#midgardgnssgnss">midgard.gnss.gnss</a></li>
             <li><a href="#midgardgnsssolution_validation">midgard.gnss.solution_validation</a></li>
         <li class="main "><a href="#todo-this-should-be-done-via-midgardtestsgnss">TODO: This should be done via midgard/tests/gnss !!!</a></li>
             <li><a href="#prolog-str">prolog (str)</a></li>
@@ -151,6 +153,79 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="midgardgnss">midgard.gnss</h1>
+<h2 id="midgardgnsscompute_dops">midgard.gnss.compute_dops</h2>
+<p>Compute DOP (dilution of precision)</p>
+<p><strong>Description:</strong></p>
+<p>Calculate GDOP, PDOP, TDOP, HDOP and VDOP based on elevation and azimuth between station and satellite for each 
+observation epoch.</p>
+<h3 id="compute_dops"><strong>compute_dops</strong>()</h3>
+<p>Full name: <code>midgard.gnss.compute_dops.compute_dops</code></p>
+<p>Signature: <code>(az:numpy.ndarray, el:numpy.ndarray) -&gt; Tuple[numpy.ndarray, ...]</code></p>
+<p>Compute dilution of precision (DOP) for an observation epoch</p>
+<p>It should be noted, that the weight of observations is not considered. The observation weight matrix is assumed to
+be an identity matrix. The cofactor matrix Q is related to a topocentric coordinate system (north, east, up):</p>
+<pre><code>        | q_nn q_ne q_nu q_nt |
+    Q = | q_ne q_ee q_eu q_et |
+        | q_nu q_eu q_nn q_nt |
+        | q_nt q_et q_nt q_tt |
+</code></pre>
+<p>Reference: Banerjee, P. and Bose, A. (1996): "Evaluation of GPS PDOP from elevation and azimuth of satellites",
+    Indian Journal of Radio &amp; Space Physics, Vol. 25, April 1996, pp. 110-113</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>az</code>:  Satellite azimuth angle (radians)</li>
+<li><code>el</code>:  Satellite elevation angle (radians)</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Tuple with GDOP, PDOP, TDOP, HDOP and VDOP</p>
+<h2 id="midgardgnssgnss">midgard.gnss.gnss</h2>
+<p>Midgard library module including functions for GNSS modeling</p>
+<p><strong>Example:</strong></p>
+<pre><code>from migard.gnss import gnss
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>This module will provide functions for GNSS modeling.</p>
+<h3 id="get_rinex_file_version"><strong>get_rinex_file_version</strong>()</h3>
+<p>Full name: <code>midgard.gnss.gnss.get_rinex_file_version</code></p>
+<p>Signature: <code>(file_path:pathlib.PosixPath) -&gt; str</code></p>
+<p>Get RINEX file version for a given file key</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:  File path to broadcast orbit file.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>RINEX file version</p>
+<h3 id="gpssec2jd"><strong>gpssec2jd</strong>()</h3>
+<p>Full name: <code>midgard.gnss.gnss.gpssec2jd</code></p>
+<p>Signature: <code>(wwww:float, sec:float) -&gt; Tuple[float, ...]</code></p>
+<p>Conversion from GPS week and second to Julian Date (JD)</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>wwww</code>: GPS week</li>
+<li><code>sec</code>:  GPS second</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>tuple</code>:         with following elements</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jd_day</td>
+<td>Julian day</td>
+</tr>
+<tr>
+<td>jd_frac</td>
+<td>Fractional part of Julian day</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardgnsssolution_validation">midgard.gnss.solution_validation</h2>
 <h3 id="comp_quality_indicators"><strong>comp_quality_indicators</strong>()</h3>
 <p>Full name: <code>midgard.gnss.solution_validation.comp_quality_indicators</code></p>
@@ -166,19 +241,6 @@
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Tuple with DRMS, CEP and SEE</p>
-<h3 id="compute_dops"><strong>compute_dops</strong>()</h3>
-<p>Full name: <code>midgard.gnss.solution_validation.compute_dops</code></p>
-<p>Signature: <code>(az:numpy.ndarray, el:numpy.ndarray, el_mask:float=0, min_num_sats:int=4) -&gt; Tuple[numpy.ndarray, ...]</code></p>
-<p>Compute DOP (dilution of precision)</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>az</code>:  Satellite azimuth angle (radians)</li>
-<li><code>el</code>:  Satellite elevation angle (radians)</li>
-<li><code>el_mask</code>: Elevation cut-off angle (radians)</li>
-<li><code>min_num_sats</code>: Minimum number of satellites for a valid solution</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Tuple with GDOP, PDOP, HDOP and VDOP</p>
 <h3 id="epilog-str">epilog (str)</h3>
 <p><code>epilog = '\n**EXAMPLE**\n    sol_validation (residuals, alpha_sign_level n_params)\n    args:\n    residuals       (I): postfit residuals \n    alpha_sign_level(I): alpha significance level and defines the rejection area.\n                         possible values of alpha = 0.05 (95%), 0.01 (99%) and 0.001 (99.9%)\n    n_params        (I): number of estimated parameters (states).\n    \n\nKeywords: Chi-square distribution,\n'</code></p>
 <h3 id="get_my_parser"><strong>get_my_parser</strong>()</h3>

@@ -14,7 +14,6 @@ from typing import Dict
 import numpy as np
 
 # Midgard imports
-# from midgard.dev import cache  # TODO
 from midgard.dev import exceptions
 
 
@@ -30,7 +29,7 @@ def get(ellipsoid: str) -> "Ellipsoid":
         raise exceptions.UnknownSystemError(f"Ellipsoid {ellipsoid!r} unknown. Use one of {ellipsoids}")
 
 
-@dataclass
+@dataclass(eq=True, frozen=True)
 class Ellipsoid:
     name: str
     a: float
@@ -69,9 +68,9 @@ class Ellipsoid:
 #
 # Ellipsoids, see https://en.wikipedia.org/wiki/Earth_ellipsoid
 #
-sphere = Ellipsoid("sphere", a=6371008.8, f_inv=math.inf, description="Regular sphere, mean radius")
-WGS72 = Ellipsoid("WGS72", a=6378135, f_inv=298.26, description="WGS72")
-GRS80 = Ellipsoid("GRS80", a=6378137, f_inv=298.257222101, description="Used by ITRS")
-WGS84 = Ellipsoid("WGS84", a=6378137, f_inv=298.257223563, description="Used by GPS")
-IERS2003 = Ellipsoid("IERS2003", a=6378136.6, f_inv=298.25642, description="IERS conventions 2003, p. 12")
-IERS2010 = Ellipsoid("IERS2010", a=6378136.6, f_inv=298.25642, description="IERS conventions 2010, p. 18")
+sphere = Ellipsoid("sphere", a=6_371_008.8, f_inv=math.inf, description="Regular sphere, mean radius")
+WGS72 = Ellipsoid("WGS72", a=6_378_135, f_inv=298.26, description="WGS72")
+GRS80 = Ellipsoid("GRS80", a=6_378_137, f_inv=298.257_222_101, description="Used by ITRS")
+WGS84 = Ellipsoid("WGS84", a=6_378_137, f_inv=298.257_223_563, description="Used by GPS")
+IERS2003 = Ellipsoid("IERS2003", a=6_378_136.6, f_inv=298.25642, description="IERS conventions 2003, p. 12")
+IERS2010 = Ellipsoid("IERS2010", a=6_378_136.6, f_inv=298.25642, description="IERS conventions 2010, p. 18")

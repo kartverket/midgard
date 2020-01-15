@@ -52,7 +52,7 @@ class DiscontinuitiesSnxParser(SinexParser):
         """Parse SOLUTION/DISCONTINUITY SINEX block
         """
         for d in data:
-            site_key = d["site_code"]
+            site_key = d["site_code"].lower()
             add_dict = {n: d[n] for n in d.dtype.names}  # Generate dictionary with all SINEX field entries
             del add_dict["site_code"]
             self.data.setdefault(site_key, dict())

@@ -6,6 +6,10 @@ Description:
 Custom enumerations used for structured names. You can add your own enumerations in your own application by importing
 `register_enum` and using that to register your own enums.
 
+References:
+
+[1] RINEX Version 3.04 (2018): RINEX The receiver independent exchange format version 3.04, November 23, 2018
+
 
 Example:
 --------
@@ -37,11 +41,11 @@ Use enumerations in your code:
 """
 
 # Standard library imports
+import colorama
 import enum
 from typing import Any, Callable, Dict, List
 
 # Midgard imports
-from midgard.dev.console import color
 from midgard.dev import exceptions
 
 
@@ -163,9 +167,9 @@ class LogLevel(int, enum.Enum):
 class LogColor(str, enum.Enum):
     """Colors used when logging"""
 
-    warn = color.Fore.YELLOW
-    error = color.Fore.RED
-    fatal = color.Style.BRIGHT + color.Fore.RED
+    warn = colorama.Fore.YELLOW
+    error = colorama.Fore.RED
+    fatal = colorama.Style.BRIGHT + colorama.Fore.RED
 
 
 @register_enum("write_level")
@@ -177,13 +181,178 @@ class WriteLevel(enum.IntEnum):
     operational = enum.auto()
 
 
+## Define relation between GNSS frequency number and GNSS frequency name (RINEX format definition)
+#
+#  References: RINEX 3.04 format [1], section 5.1
+#
+# Overview over frequency number (1 .. 9) and observation code dependent on GNSS with the GNSS RINEX identifiers:
+#
+#  C = Beidou
+#  E = Galileo
+#  G = GPS
+#  I = IRNSS
+#  J = QZSS
+#  S = SBAS
+# __________________________________
+#  freq |  C     E    G   I   J   S
+# ______|___________________________
+#   1   |  B1    E1   L1      L1  L1
+#   2   |  B1_2       L2      L2
+#   5   |  B2a   E5a  L5  L5  L5  L5
+#   6   |  B3    E6           L6
+#   7   |  B2b   E5b
+#   8   |  B2    E5
+#   9   |                 S
+# ______|___________________________
+
+
+@register_enum("gnss_num2freq_C")
+class BeidouFreqNum2Freq(str, enum.Enum):
+    f1 = "B1"
+    f2 = "B1_2"
+    f5 = "B2a"
+    f6 = "B3"
+    f7 = "B2b"
+    f8 = "B2"
+
+
+@register_enum("gnss_num2freq_E")
+class GalileoFreqNum2Freq(str, enum.Enum):
+    f1 = "E1"
+    f5 = "E5a"
+    f6 = "E6"
+    f7 = "E5b"
+    f8 = "E5"
+
+
+@register_enum("gnss_num2freq_G")
+class GpsFreqNum2Freq(str, enum.Enum):
+    f1 = "L1"
+    f2 = "L2"
+    f5 = "L5"
+
+
+@register_enum("gnss_num2freq_R")
+class GlonassFreqNum2Freq(str, enum.Enum):
+    f1 = "G1"
+    f2 = "G2"
+    f3 = "G3"
+    f4 = "G1a"
+    f6 = "G2a"
+
+
+@register_enum("gnss_num2freq_I")
+class IrnssFreqNum2Freq(str, enum.Enum):
+    f5 = "L5"
+    f9 = "S"
+
+
+@register_enum("gnss_num2freq_J")
+class QzssFreqNum2Freq(str, enum.Enum):
+    f1 = "L1"
+    f2 = "L2"
+    f5 = "L5"
+    f6 = "L6"
+
+
+@register_enum("gnss_num2freq_S")
+class SbasFreqNum2Freq(str, enum.Enum):
+    f1 = "L1"
+    f5 = "L5"
+
+
+## GNSS frequencies
+#
+#  Unit: \f$ s^{-1} \f$.
+#
+#  References: RINEX 3.04 format [1], section 5.1
+#
+@register_enum("gnss_freq_C")
+class BeidouFrequency(float, enum.Enum):
+    """BeiDou frequencies in Hz"""
+
+    B1 = f1 = 1575.42e6
+    B1_2 = f2 = 1561.098e6
+    B2a = f5 = 1176.45e6
+    B2b = f7 = 1207.14e6
+    B2 = f8 = 1191.795e6
+    B3 = f6 = 1268.52e6
+
+
+@register_enum("gnss_freq_E")
+class GalileoFrequency(float, enum.Enum):
+    """Galileo frequencies in Hz"""
+
+    E1 = f1 = 1575.42e6
+    E5 = f8 = 1191.795e6
+    E5a = f5 = 1176.45e6
+    E5b = f7 = 1207.140e6
+    E6 = f6 = 1278.75e6
+
+
 @register_enum("gnss_freq_G")
 class GPSFrequency(float, enum.Enum):
-    """GPS frequencies"""
+    """GPS frequencies in Hz"""
 
-    L1 = 1575.42e+6
-    L2 = 1227.60e+6
-    L5 = 1176.45e+6
+    L1 = f1 = 1575.42e6
+    L2 = f2 = 1227.60e6
+    L5 = f5 = 1176.45e6
+
+
+@register_enum("gnss_freq_I")
+class IrnssFrequency(float, enum.Enum):
+    """IRNSS frequencies in Hz"""
+
+    L5 = f5 = 1176.45e6
+    S = f9 = 2492.028e6
+
+
+@register_enum("gnss_freq_J")
+class QzssFrequency(float, enum.Enum):
+    """QZSS frequencies in Hz"""
+
+    L1 = f1 = 1575.42e6
+    L2 = f2 = 1227.60e6
+    L5 = f5 = 1176.45e6
+    L6 = f6 = 1278.75e6
+
+
+@register_enum("gnss_freq_S")
+class SbasFrequency(float, enum.Enum):
+    """SBAS frequencies in Hz"""
+
+    L1 = f1 = 1575.42e6
+    L5 = f5 = 1176.45e6
+
+
+## RINEX GNSS identifier to GNSS name
+#
+#  References: RINEX 3.04 format [1], section 5.1
+#
+@register_enum("gnss_id_to_name")
+class GnssIdToName(str, enum.Enum):
+    """RINEX GNSS identifier to GNSS name"""
+
+    C = "BeiDou"
+    E = "Galileo"
+    G = "GPS"
+    I = "IRNSS"
+    J = "QZSS"
+    R = "GLONASS"
+    S = "SBAS"
+
+
+@register_enum("gnss_name_to_id")
+class GnssNameToId(str, enum.Enum):
+    """GNSS name to RINEX GNSS identifier"""
+
+    beidou = "C"
+    galileo = "E"
+    gps = "G"
+    irnss = "I"
+    qzss = "J"
+    glonass = "R"
+    sbas = "S"
 
 
 # Examples

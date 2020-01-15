@@ -72,7 +72,6 @@ import numpy as np
 import pint
 
 # Midgard imports
-# from midgard.dev import cache  # TODO
 from midgard.dev import exceptions
 
 # Type that can be either float or numpy array
@@ -91,7 +90,6 @@ class _convert_units(type):
 
     _ureg = pint.UnitRegistry()
 
-    # @cache.function  # TODO
     def __call__(cls, from_unit: str, to_unit: Optional[str] = None) -> Any:  # type: ignore
         """Calculate the conversion scale between from_unit and to_unit
 
@@ -104,10 +102,13 @@ class _convert_units(type):
         Returns:
             Scale to multiply by to convert from from_unit to to_unit, or from_unit as a Quantity.
         """
-        if to_unit is None:
-            return cls._ureg(from_unit)
-        else:
-            return cls._ureg(from_unit).to(to_unit).magnitude
+        try:
+            if to_unit is None:
+                return cls._ureg(from_unit)
+            else:
+                return cls._ureg(from_unit).to(to_unit).magnitude
+        except pint.errors.DimensionalityError as err:
+            raise exceptions.UnitError(err)
 
     def __getattr__(cls, key: str) -> Any:
         """Simplify notation for converting between units
@@ -163,14 +164,14 @@ class _convert_units(type):
         """
         return lambda value: cls._ureg.Quantity(value, cls._ureg(from_unit)).to(cls._ureg(to_unit)).magnitude
 
-    def register(cls, unit: str) -> Callable:
+    def register(cls, unit: Tuple, module=None) -> Callable:
         """Register unit of a function/method/property
 
         This method should be used as a decorator on the function/method/property, and specify the unit of the value
         returned by that function/method/property. For instance
 
             @property
-            @Unit.register('meter')
+            @Unit.register(('meter',))
             def calculate_delay(...):
                 return delay_in_meters
 
@@ -186,7 +187,7 @@ class _convert_units(type):
 
         def register_decorator(func: Callable) -> Callable:
             """Register unit of func in _UNITS-dictionary"""
-            module_name = func.__module__
+            module_name = module.__name__ if module else func.__module__
             func_name = func.__name__
             _UNITS.setdefault(module_name, dict())[func_name] = unit
 
@@ -424,6 +425,22 @@ class Unit(metaclass=_convert_units):
             raise ValueError("hours must be non-negative")
 
         return 15 * cls.dms_to_rad(hours, minutes, seconds)
+
+    @classmethod
+    def symbol(cls, unit: str):
+        if unit == "unitless" or unit == "dimensionless":
+            return ""
+        try:
+            unit = str(cls(unit).u)
+        except pint.errors.UndefinedUnitError:
+            return unit
+        try:
+            return cls._ureg._units[unit].symbol
+        except KeyError:
+            for u in cls._ureg._units.keys():
+                if u != cls._ureg._units[u].symbol:
+                    unit = unit.replace(u, cls._ureg._units[u].symbol).replace(" ", "")
+            return unit
 
 
 # Read extra units defined specially for Midgard

@@ -28,7 +28,7 @@ class TerraposResidualParser(LineParser):
     Following **data** are available after reading Terrapos residual file:
 
     | Parameter           | Description                                                                           |
-    |----------------------|--------------------------------------------------------------------------------------|
+    |---------------------|---------------------------------------------------------------------------------------|
     | azimuth             | Azimuth of satellites in [deg]                                                        |
     | elevation           | Elevation of satellites in [deg]                                                      |
     | gpsweek             | GPS week                                                                              |

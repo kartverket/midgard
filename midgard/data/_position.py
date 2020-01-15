@@ -3,25 +3,27 @@
 # Standard library imports
 from typing import Any, Callable, Dict, List, Tuple
 import copy
+import sys
+import weakref
 
 # Third party imports
 import numpy as np
 
 # Midgard imports
 from midgard.dev import exceptions
-from midgard.math.constant import constant
 from midgard.math import rotation
 from midgard.math import ellipsoid
+from midgard.math import nputil
 
-_ATTRIBUTES: Dict[str, Dict[str, Callable]] = dict()  # Populated by register_attribute()
-_FIELDS: Dict[str, List[str]] = dict()  # Populated by register_field()
+_ATTRIBUTES: Dict[str, List[str]] = dict()  # Populated by register_attribute()
+_FIELDS: Dict[str, Dict[str, str]] = dict()  # Populated by register_field()
 _UNITS: Dict[str, Dict[str, str]] = dict()  # Populated by register_field()
 _SYSTEMS: Dict[str, Dict[str, Callable]] = dict()  # Populated by register_system()
 _CONVERSIONS: Dict[str, Dict[Tuple[str, str], Callable]] = dict()  # Populated by register_system()
 _CONVERSION_HOPS: Dict[str, Dict[Tuple[str, str], List[str]]] = dict()  # Cache for to_system()
 
 
-def register_attribute(cls: Callable, name: str, attr_cls: Callable) -> None:
+def register_attribute(cls: Callable, name: str) -> None:
     """Function used to register new attributes on position arrays
 
     The registered attributes will be available as attributes on PositionArray
@@ -32,23 +34,24 @@ def register_attribute(cls: Callable, name: str, attr_cls: Callable) -> None:
     is to allow additional attributes to be added on all position systems.
 
     Args:
-        cls:      Name of class to register the attribute for
+        cls:      Class to register the attribute for
         name:     Name of attribute
-        attr_cls: Class of attribute
-
     """
-    _ATTRIBUTES.setdefault(cls.__name__, dict()).setdefault(name, attr_cls)
+    _ATTRIBUTES.setdefault(cls.__name__, list()).append(name)
 
 
-def register_field(units: List[str]) -> Callable:
+def register_field(units: List[str], dependence: str = None) -> Callable:
     """Decorator used to register fields and their units
 
+    Args: 
+    units:             units for the field (tuple of strings)
+    dependance:        name of attribute that needs to be set for field to make sense
     """
 
     def wrapper(func: Callable) -> Callable:
         field = func.__name__
         func_class = func.__qualname__.split(".")[0]
-        _FIELDS.setdefault(func_class, list()).append(field)
+        _FIELDS.setdefault(func_class, dict())[field] = dependence
         _UNITS.setdefault(func_class, dict())[field] = units
         return func
 
@@ -72,7 +75,7 @@ def register_system(
 
     def wrapper(cls: Callable) -> Callable:
         name = cls.system
-        _SYSTEMS.setdefault(cls.cls_name, dict())[name] = cls
+        _SYSTEMS[cls.cls_name][name] = cls
 
         if convert_to:
             for to_system, converter in convert_to.items():
@@ -107,6 +110,7 @@ def _find_conversion_hops(cls: str, hop: Tuple[str, str]) -> List[Tuple[str, str
 class PosBase(np.ndarray):
     """Base class for the various position and velocity arrays"""
 
+    cls_name = "noname"
     system = None
     column_names = None
     _units = None
@@ -114,7 +118,9 @@ class PosBase(np.ndarray):
     @property
     def val(self):
         """Position as a plain numpy array"""
-        return np.asarray(self)
+        if "val" not in self._cache:
+            self._cache["val"] = np.asarray(self)
+        return self._cache["val"]
 
     @property
     def mat(self):
@@ -144,11 +150,34 @@ class PosBase(np.ndarray):
 
                    [[1., 1., 0.]]])
         """
-        is_transposed = self.flags.f_contiguous  # Because we forced order == "C" on creation
-        if is_transposed:
-            return self.val[:, None, :].T
-        else:
-            return self.val[:, :, None]
+        if "mat" not in self._cache:
+            if self.is_transposed:
+                if self.ndim == 1:
+                    self._cache["mat"] = self.val[None, :].T
+                else:
+                    self._cache["mat"] = self.val[:, None, :].T
+            else:
+                if self.ndim == 1:
+                    self._cache["mat"] = self.val[:, None]
+                else:
+                    self._cache["mat"] = self.val[:, :, None]
+        return self._cache["mat"]
+
+    @property
+    def is_transposed(self):
+        # Because we forced order == "C" on creation
+        return self.flags.f_contiguous
+
+    @property
+    def unit_vector(self):
+        """Compute unit vector of position from system origo"""
+        return nputil.unit_vector(self.val)
+
+    @property
+    @register_field(units=("meter"))
+    def length(self):
+        """Compute length"""
+        return nputil.norm(self)
 
     def to_system(self, system: str) -> "PosDeltaBase":
         """Convert to a different system
@@ -168,10 +197,14 @@ class PosBase(np.ndarray):
             systems = ", ".join(_SYSTEMS[self.cls_name])
             raise exceptions.UnknownSystemError(f"System {system!r} unknown. Use one of {systems}")
 
+        if system in self._cache:
+            return self._cache[system]
+
         # Convert to new system
         hop = (self.system, system)
         if hop in _CONVERSIONS[self.cls_name]:
-            return _SYSTEMS[self.cls_name][system].convert_to(self, _CONVERSIONS[self.cls_name][hop])
+            self._cache[system] = _SYSTEMS[self.cls_name][system].convert_to(self, _CONVERSIONS[self.cls_name][hop])
+            return self._cache[system]
 
         if hop not in _CONVERSION_HOPS.setdefault(self.cls_name, {}):
             _CONVERSION_HOPS[self.cls_name][hop] = _find_conversion_hops(self.cls_name, hop)
@@ -179,6 +212,7 @@ class PosBase(np.ndarray):
         val = self
         for one_hop in _CONVERSION_HOPS[self.cls_name][hop]:
             val = _SYSTEMS[self.cls_name][one_hop[-1]].convert_to(val, _CONVERSIONS[self.cls_name][one_hop])
+            self._cache[one_hop[-1]] = val
         return val
 
     @classmethod
@@ -198,6 +232,14 @@ class PosBase(np.ndarray):
         elif field in _UNITS.get(cls.cls_name, {}):
             return _UNITS[cls.cls_name][field]
 
+        # Units of system specific properties
+        elif field in _UNITS.get(cls.__name__, {}):
+            return _UNITS[cls.__name__][field]
+
+        # Units of properties of parent class
+        elif field in _UNITS.get(getattr(cls.__base__.__base__, "cls_name", ""), {}):
+            return _UNITS[cls.__base__.__base__.cls_name][field]
+
         # Units of systems
         elif mainfield in _SYSTEMS[cls.cls_name]:
             return _SYSTEMS[cls.cls_name][mainfield].unit(subfield)
@@ -207,15 +249,116 @@ class PosBase(np.ndarray):
 
     @classmethod
     def _fieldnames(cls):
-        return (
-            list(cls._attributes().keys())
-            + _FIELDS.get(cls.cls_name, [])
-            + [f"{s}.{c}" for s, sc in _SYSTEMS[cls.cls_name].items() for c in sc.column_names]
-        )
+        return cls._attributes() + cls._fields() + cls._system_columns() + cls._systems()
+
+    def plot_fields(self):
+        try:
+            parent_fields = self.__class__.__base__.__base__._fields()
+        except AttributeError:
+            parent_fields = list()
+
+        systems_and_attributes = []
+        for system in self._systems():
+            try:
+                _find_conversion_hops(self.cls_name, (self.system, system))
+                # Add systems
+                systems_and_attributes.append(system)
+                for column in _SYSTEMS[self.cls_name][system].column_names:
+                    # Add system columns
+                    systems_and_attributes.append(f"{system}.{column}")
+                for system_field in _FIELDS.get(_SYSTEMS[self.cls_name][system].__name__, {}):
+                    # Add system fields
+                    systems_and_attributes.append(f"{system}.{system_field}")
+            except exceptions.UnknownConversionError:
+                pass  # Skip systems that cannot be converted to
+
+        fields = []
+        # merge self fields and parent fields to one dictionary
+        parent_cls = self.__class__.__base__.__base__.cls_name
+        fields_dict = {**_FIELDS.get(self.cls_name, {}), **_FIELDS.get(parent_cls, {})}
+        for field, dependence in fields_dict.items():
+            try:
+                # Add fields that depend on some attribute being defined
+                if dependence:
+                    attr_value = getattr(self, field, None)
+                    if attr_value is not None:
+                        fields.append(field)
+                    else:
+                        if field in parent_fields:
+                            parent_fields.remove(field)
+
+            except exceptions.InitializationError:
+                # Skip attributes that cannot be computed
+                if field in parent_fields:
+                    parent_fields.remove(field)
+
+        return fields + systems_and_attributes + parent_fields
+
+    @classmethod
+    def _fields(cls):
+        return list(_FIELDS.get(cls.cls_name, {}).keys())
 
     @classmethod
     def _attributes(cls):
-        return _ATTRIBUTES.get(cls.cls_name, {})
+        return _ATTRIBUTES.get(cls.cls_name, [])
+
+    @classmethod
+    def _systems(cls):
+        return list(_SYSTEMS.get(cls.cls_name, {}).keys())
+
+    @classmethod
+    def _system_columns(cls):
+        return [f"{s}.{c}" for s, sc in _SYSTEMS[cls.cls_name].items() for c in sc.column_names]
+
+    def __setitem__(self, key, item):
+        self.clear_cache()  # Clear cache when any elements change
+        if self._dependent_objs:
+            for o in self._dependent_objs:
+                if o() is None:
+                    continue
+                o().clear_cache()  # Clear cache of dependent obj
+        return super().__setitem__(key, item)
+
+    def __setattr__(self, key, value):
+        self.clear_cache()  # Clear cache if any attributes change
+        if key in self._attributes():
+            prev_attr_value = getattr(self, key, None)
+            if prev_attr_value is not None:
+                try:
+                    prev_attr_value.remove_dependency(self)
+                except AttributeError:
+                    pass
+            if value is not None:
+                try:
+                    value.add_dependency(self)
+                except AttributeError:
+                    pass
+        return super().__setattr__(key, value)
+
+    def add_dependency(self, dependency):
+        self._dependent_objs.append(weakref.ref(dependency))
+
+        # Clean out references that have been garbage collected
+        dead_refs = [obj for obj in self._dependent_objs if obj() is None]
+        for element in dead_refs:
+            self._dependent_objs.remove(element)
+
+    def remove_dependency(self, dependency):
+        try:
+            idx = next(idx for idx, obj in enumerate(self._dependent_objs) if id(obj()) == id(dependency))
+            del self._dependent_objs[idx]
+        except StopIteration:
+            pass
+
+    def clear_cache(self):
+        if getattr(self, "_cache", {}) is not None:
+            for k, v in getattr(self, "_cache", {}).items():
+                if k in self._systems():
+                    try:
+                        v.other.remove_dependency(v)
+                    except AttributeError:
+                        pass
+        super().__setattr__("_cache", dict())
 
     def __getattr__(self, key):
         """Get attributes with dot notation
@@ -228,6 +371,11 @@ class PosBase(np.ndarray):
         Returns:
             Value of attribute.
         """
+        mainfield, _, subfield = key.partition(".")
+
+        if subfield:
+            return getattr(getattr(self, mainfield), subfield)
+
         # Convert to a different system
         if key in _SYSTEMS[self.cls_name]:
             return self.to_system(key)
@@ -235,7 +383,13 @@ class PosBase(np.ndarray):
         # Return one column as a regular numpy array
         elif key in self.column_names:
             idx = self.column_names.index(key)
-            return self.val[:, idx]
+            if self.ndim == 1:
+                return self.val[idx]
+            else:
+                if self.is_transposed:
+                    return self.val[idx, :]
+                else:
+                    return self.val[:, idx]
 
         # Raise error for unknown attributes
         else:
@@ -327,6 +481,7 @@ class PositionArray(PosBase):
     """
 
     cls_name = "PositionArray"
+    systems = _SYSTEMS.setdefault(cls_name, dict())
 
     def __new__(cls, val, ellipsoid=ellipsoid.GRS80, **pos_args):
         """Create a new Position"""
@@ -338,13 +493,16 @@ class PositionArray(PosBase):
         obj = np.asarray(val, dtype=float, order="C").view(cls)
         obj.system = cls.system
         obj.ellipsoid = ellipsoid
-        for attr in cls._attributes().keys():
+        for attr in cls._attributes():
             setattr(obj, attr, pos_args.get(attr))
 
         return obj
 
     def __array_finalize__(self, obj):
         """Called automatically when a new Position is created"""
+        self._cache = dict()
+        self._dependent_objs = list()
+
         if obj is None:
             return
 
@@ -354,16 +512,42 @@ class PositionArray(PosBase):
             column_names = ", ".join(self.column_names)
             raise ValueError(f"{type(self).__name__!r} requires {num_columns} columns: {column_names}")
 
-        if self.ndim == 1:
-            self.resize(1, num_columns)
-        elif self.ndim != 2:
+        if self.ndim > 2:
             raise ValueError(f"{type(self).__name__!r} must be a 1- or 2-dimensional array with {num_columns} columns")
 
         # Copy attributes from the original object
         self.system = getattr(obj, "system", None)
         self.ellipsoid = getattr(obj, "ellipsoid", ellipsoid.GRS80)
-        for attr in self._attributes().keys():
-            setattr(self, attr, getattr(obj, attr, None))
+        for attr in self._attributes():
+            attr_sliced = getattr(obj, f"_{attr}_sliced", None)
+            if attr_sliced is not None:
+
+                setattr(self, attr, attr_sliced)
+            else:
+                setattr(self, attr, getattr(obj, attr, None))
+
+    def __getitem__(self, item):
+        """Update attributes with correct shape, used by __array_finalize__"""
+
+        # Get column
+        if isinstance(item, int) and self.is_transposed:
+            return getattr(self, self.column_names[item])
+
+        from_super = super().__getitem__(item)
+
+        # Get row or rows
+        if isinstance(item, (int, np.int_, slice)):
+            pos_args = {}
+            for attr in self._attributes():
+                orig_value = getattr(self, attr, None)
+                if orig_value is not None:
+                    sliced_value = orig_value[item]
+                    sliced_attr = f"_{attr}_sliced"
+                    setattr(self, sliced_attr, sliced_value)
+                    pos_args[attr] = sliced_value
+            return self.__class__(from_super, self.ellipsoid, **pos_args)
+
+        return from_super
 
     @staticmethod
     def create(val: np.ndarray, system: str, **pos_args: Any) -> "PositionArray":
@@ -386,14 +570,25 @@ class PositionArray(PosBase):
         return _SYSTEMS["PositionArray"][system](val, **pos_args)
 
     @classmethod
+    def fieldnames(cls):
+        fields = PositionArray._fieldnames()
+        return fields
+
+    @classmethod
     def from_position(cls, val: np.ndarray, other: "PositionArray") -> "PositionArray":
         """Create a new position with given values and same attributes as other position
 
         Factory method for creating a new position array with the given
         values. Attributes will be copied from the other position.
         """
-        attrs = {a: getattr(other, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(other, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][other.system](val, **attrs)
+
+    @classmethod
+    def empty_from(cls, other: "PositionArray") -> "PositionArray":
+        """Create a new position delta of the same type as other but with NaN values
+        """
+        return _SYSTEMS[cls.cls_name][other.system](np.full(other.shape, fill_value=np.nan), ellipsoid=ellipsoid)
 
     @classmethod
     def convert_to(cls, pos: "PositionArray", converter: Callable) -> "PositionArray":
@@ -401,8 +596,85 @@ class PositionArray(PosBase):
 
         Applies the converter function that is provides and copies all registered attributes to the new position 
         """
-        attrs = {a: getattr(pos, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(pos, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][cls.system](converter(pos), **attrs)
+
+    def subset(self, idx, memo):
+        """Create a subset """
+        old_id = id(self)
+        if old_id in memo:
+            return memo[old_id]
+
+        val = np.asarray(self)[idx]
+        pos_args = dict()
+
+        for attr_name in self._attributes():
+            attr = getattr(self, attr_name, None)
+            if attr is None:
+                continue
+
+            old_id_attr = id(attr)
+            if old_id_attr in memo:
+                pos_args[attr_name] = memo[old_id_attr]
+            else:
+                pos_args[attr_name] = attr.subset(idx, memo)
+                memo[old_id_attr] = pos_args[attr_name]
+
+        new_pos = _SYSTEMS[self.cls_name][self.system](val, **pos_args)
+        memo[old_id] = new_pos
+        return new_pos
+
+    @classmethod
+    def insert(cls, a, pos, b, memo):
+        """Insert b into a at index pos"""
+        old_id_a = id(a)
+        if old_id_a in memo:
+            return memo[old_id_a][-1]
+
+        old_id_b = id(b)
+        if old_id_b in memo:
+            return memo[old_id_b][-1]
+
+        if b is not None:
+            val = np.insert(np.asarray(a), pos, np.asarray(b.to_system(a.system)), axis=0)
+        else:
+            val = np.asarray(a)
+
+        pos_args = dict()
+
+        for attr_name in cls._attributes():
+            a_attr = getattr(a, attr_name, None)
+            b_attr = getattr(b, attr_name, None)
+            if a_attr is None and b_attr is None:
+                continue
+
+            old_id_a_attr = id(a_attr)
+            old_id_b_attr = id(b_attr)
+            if old_id_a_attr in memo:
+                pos_args[attr_name] = memo[old_id_a_attr][-1]
+            elif old_id_b_attr in memo:
+                pos_args[attr_name] = memo[old_id_b_attr][-1]
+            else:
+                if a_attr is not None and b_attr is not None:
+                    attr_cls = a_attr.__class__
+                    pos_args[attr_name] = attr_cls.insert(a_attr, pos, b_attr, memo)
+                elif a_attr is None:
+                    attr_cls = a_attr.__class__
+                    print("todo: check empty_from argument")
+                    empty_attr = attr_cls.empty_from(a)
+                    pos_args[attr_name] = attr_cls.insert(empty_attr, pos, b_attr, memo)
+                    memo.pop(id(empty_attr), None)
+                elif b_attr is None:
+                    attr_cls = a_attr.__class__
+                    print("todo: check empty_from argument")
+                    empty_attr = attr_cls.empty_from(a)
+                    pos_args[attr_name] = attr_cls.insert(a_attr, pos, empty_attr, memo)
+                    memo.pop(id(empty_attr), None)
+
+        new_pos = _SYSTEMS[cls.cls_name][a.system](val, ellipsoid=a.ellipsoid, **pos_args)
+        memo[old_id_a] = (a, new_pos)
+        memo[old_id_b] = (b, new_pos)
+        return new_pos
 
     @property
     def pos(self):
@@ -410,34 +682,33 @@ class PositionArray(PosBase):
         return self
 
     @property
-    @register_field(units=("unitless", "unitless", "unitless"))
     def enu2trs(self):
-        lat, lon, _ = self.pos.llh.val.T
-        return rotation.enu2trs(lat, lon)
+        if "enu2trs" not in self._cache:
+            lat, lon, _ = self.pos.llh.val.T
+            self._cache["enu2trs"] = rotation.enu2trs(lat, lon)
+        return self._cache["enu2trs"]
 
     @property
-    @register_field(units=("unitless", "unitless", "unitless"))
     def trs2enu(self):
-        lat, lon, _ = self.pos.llh.val.T
-        return rotation.enu2trs(lat, lon)
+        if "trs2enu" not in self._cache:
+            lat, lon, _ = self.pos.llh.val.T
+            self._cache["trs2enu"] = rotation.trs2enu(lat, lon)
+        return self._cache["trs2enu"]
 
     @property
-    @register_field(units=("unitless", "unitless", "unitless"))
     def enu_east(self):
         """ Unit vector for in the east direction"""
-        return self.enu2trs[:, :, 0:1]
+        return nputil.take(self.enu2trs, 0)
 
     @property
-    @register_field(units=("unitless", "unitless", "unitless"))
     def enu_north(self):
         """ Unit vector for in the north direction"""
-        return self.enu2trs[:, :, 1:2]
+        return nputil.take(self.enu2trs, 1)
 
     @property
-    @register_field(units=("unitless", "unitless", "unitless"))
     def enu_up(self):
         """ Unit vector for in the up direction"""
-        return self.enu2trs[:, :, 2:3]
+        return nputil.take(self.enu2trs, 2)
 
     def vector_to(self, other: "PositionArray") -> np.ndarray:
         """Vector to other positions in current system
@@ -451,7 +722,7 @@ class PositionArray(PosBase):
         return other.pos.to_system(self.system).val - self.pos.val
 
     @property
-    @register_field(units=("meter", "meter", "meter"))
+    @register_field(units=("meter", "meter", "meter"), dependence="other")
     def vector(self):
         """Vector to registered other position"""
         if self.other is None:
@@ -467,123 +738,77 @@ class PositionArray(PosBase):
         Returns:
             Array of distances to other position array.
         """
-        return np.linalg.norm(self.vector_to(other), axis=1)
+        return nputil.norm(self.vector_to(other))
 
     @property
-    @register_field(units=("meter",))
+    @register_field(units=("meter",), dependence="other")
     def distance(self):
         """Distance to registered other position"""
         if self.other is None:
             raise exceptions.InitializationError("Other position is not defined")
-        return self.distance_to(self.other)
+
+        if "distance" not in self._cache:
+            self._cache["distance"] = self.distance_to(self.other)
+        return self._cache["distance"]
 
     def direction_to(self, other):
-        try:
-            return self.vector_to(other) / self.distance_to(other)[:, None]
-        except AttributeError:
+        if isinstance(other, PositionArray):
+            return self.vector_to(other) / nputil.col(self.distance_to(other))
+        else:
             return other.direction_from(self)
 
     @property
-    @register_field(units=("unitless", "unitless", "unitless"))
+    @register_field(units=("unitless", "unitless", "unitless"), dependence="other")
     def direction(self):
         if self.other is None:
             raise exceptions.InitializationError("Other position is not defined")
-        return self.direction_to(self.other)
 
-    def aberrated_direction_to(self, other):
-        return other.aberrated_direction_from(self)
-
-    @property
-    @register_field(units=("unitless", "unitless", "unitless"))
-    def aberrated_direction(self):
-        if self.other is None:
-            raise exceptions.InitializationError("Other position is not defined")
-        return self.aberrated_direction_to(self.other)
-
-    def aberrated_direction_from(self, other):
-        """Calculate aberrated direction vector from earth based position"""
-        return other.direction_to(self - other.aberration_to(self))  # Todo: Check + or -
-
-    def aberration_to(self, other):
-        flight_time = self.distance_to(other) / constant.c
-        rotation_angle = flight_time * constant.omega
-
-        return (rotation.R3(rotation_angle) @ other.mat)[:, :, 0] - other.val
-
-    @property
-    @register_field(units=("meter", "meter", "meter"))
-    def aberration(self):
-        if self.other is None:
-            raise exceptions.InitializationError("Other position is not defined")
-        return self.aberration_to(self.other)
+        if "direction" not in self._cache:
+            self._cache["direction"] = self.direction_to(self.other)
+        return self._cache["direction"]
 
     def azimuth_to(self, other):
-        east_proj = (self.trs.direction_to(other)[:, None, :] @ self.enu_east)[:, 0, 0]
-        north_proj = (self.trs.direction_to(other)[:, None, :] @ self.enu_north)[:, 0, 0]
+        trs_dir = self.trs.direction_to(other.trs)
+        east_proj = np.squeeze(nputil.row(trs_dir) @ nputil.col(self.enu_east))
+        north_proj = np.squeeze(nputil.row(trs_dir) @ nputil.col(self.enu_north))
 
         return np.arctan2(east_proj, north_proj)
 
     @property
-    @register_field(units=("radians",))
+    @register_field(units=("radians",), dependence="other")
     def azimuth(self):
         if self.other is None:
             raise exceptions.InitializationError("Other position is not defined")
-        return self.azimuth_to(self.other)
 
-    def aberrated_azimuth_to(self, other):
-        east_proj = (self.trs.aberrated_direction_to(other)[:, None, :] @ self.enu_east)[:, 0, 0]
-        north_proj = (self.trs.aberrated_direction_to(other)[:, None, :] @ self.enu_north)[:, 0, 0]
-
-        return np.arctan2(east_proj, north_proj)
-
-    @property
-    @register_field(units=("radians",))
-    def aberrated_azimuth(self):
-        if self.other is None:
-            raise exceptions.InitializationError("Other position is not defined")
-        return self.aberrated_azimuth_to(self.other)
+        if "azimuth" not in self._cache:
+            self._cache["azimuth"] = self.azimuth_to(self.other)
+        return self._cache["azimuth"]
 
     def elevation_to(self, other):
-        up_proj = (self.trs.direction_to(other)[:, None, :] @ self.enu_up)[:, 0, 0]
+        trs_dir = self.trs.direction_to(other.trs)
+        up_proj = np.squeeze(nputil.row(trs_dir) @ nputil.col(self.enu_up))
 
         return np.arcsin(up_proj)
 
     @property
-    @register_field(units=("radians",))
+    @register_field(units=("radians",), dependence="other")
     def elevation(self):
         if self.other is None:
             raise exceptions.InitializationError("Other position is not defined")
-        return self.elevation_to(self.other)
 
-    def aberrated_elevation_to(self, other):
-        up_proj = (self.trs.aberrated_direction_to(other)[:, None, :] @ self.enu_up)[:, 0, 0]
-
-        return np.arcsin(up_proj)
-
-    @property
-    @register_field(units=("radians",))
-    def aberrated_elevation(self):
-        if self.other is None:
-            raise exceptions.InitializationError("Other position is not defined")
-        return self.aberrated_elevation_to(self.other)
+        if "elevation" not in self._cache:
+            self._cache["elevation"] = self.elevation_to(self.other)
+        return self._cache["elevation"]
 
     def zenith_distance_to(self, other):
         return np.pi / 2 - self.elevation_to(other)
 
     @property
-    @register_field(units=("radians",))
+    @register_field(units=("radians",), dependence="other")
     def zenith_distance(self):
-        return np.pi / 2 - self.elevation
-
-    def aberrated_zenith_distance_to(self, other):
-        return np.pi / 2 - self.aberrated_elevation_to(other)
-
-    @property
-    @register_field(units=("radians",))
-    def aberrated_zenith_distance(self):
-        if self.other is None:
-            raise exceptions.InitializationError("Other position is not defined")
-        return self.aberrated_zenith_distance_to(self.other)
+        if "zenith_distance" not in self._cache:
+            self._cache["zenith_distance"] = np.pi / 2 - self.elevation
+        return self._cache["zenith_distance"]
 
     def __add__(self, other):
         """self + other"""
@@ -600,19 +825,11 @@ class PositionArray(PosBase):
 
     def __radd__(self, other):
         """other + self"""
-        if isinstance(other, PositionDeltaArray):
-            if self.system != other.system:
-                return NotImplemented
-
-        elif isinstance(other, PositionArray):
-            # pos1 + pos2 does not make sense
-            return NotImplemented
 
         return NotImplemented
 
     def __sub__(self, other):
         """self - other"""
-
         if isinstance(other, PositionArray):
             if self.system != other.system:
                 return NotImplemented
@@ -630,14 +847,6 @@ class PositionArray(PosBase):
 
     def __rsub__(self, other):
         """other - self"""
-        if isinstance(other, PositionArray):
-            if self.system != other.system:
-                return NotImplemented
-
-        elif isinstance(other, PositionDeltaArray):
-            if self.system != other.system:
-                return NotImplemented
-
         return NotImplemented
 
     def __deepcopy__(self, memo):
@@ -645,7 +854,7 @@ class PositionArray(PosBase):
 
         Makes sure references to other objects are updated correctly
         """
-        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in self._attributes().keys()}
+        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in self._attributes()}
         new_pos = PositionArray.create(val=np.asarray(self).copy(), system=self.system, **attrs)
         memo[id(self)] = new_pos
         return new_pos
@@ -656,19 +865,35 @@ class PositionArray(PosBase):
         ellipsoid_ = ellipsoid.get(h5_group.attrs["ellipsoid"])
 
         pos_args = {}
-        for a, attr_cls in PositionArray._attributes().items():
+        for a in PositionArray._attributes():
             if a in h5_group.attrs:
                 # attribute is a reference to the data of another field
-                pos_args.update({a: memo[h5_group.attrs[a]]})
+                fieldname = h5_group.attrs[a]
+                if fieldname in memo:
+                    # the other field has already been read
+                    pos_args.update({a: memo[fieldname]})
+                else:
+                    # the other field has not been read yet
+                    attr_group = h5_group.parent[fieldname]
+                    cls_module, _, cls_name = attr_group.attrs["__class__"].rpartition(".")
+                    attr_cls = getattr(sys.modules[cls_module], cls_name)
+                    arg = attr_cls._read(attr_group, memo)
+                    pos_args.update({a: arg})
+                    memo[fieldname] = arg
+
             elif a in h5_group and isinstance(h5_group[a], type(h5_group)):
                 # attribute is a part of this group and is not in a separate field
+                cls_module, _, cls_name = h5_group[a].attrs["__class__"].rpartition(".")
+                attr_cls = getattr(sys.modules[cls_module], cls_name)
                 arg = attr_cls._read(h5_group[a], memo)
                 pos_args.update({a: arg})
                 memo[f"{h5_group.attrs['fieldname']}.{a}"] = arg
 
         val = h5_group[h5_group.attrs["fieldname"]][...]
 
-        return cls.create(val, system=system, ellipsoid=ellipsoid_, **pos_args)
+        pos = cls.create(val, system=system, ellipsoid=ellipsoid_, **pos_args)
+        memo[f"{h5_group.attrs['fieldname']}"] = pos
+        return pos
 
     def _write(self, h5_group, memo):
         h5_group.attrs["system"] = self.system
@@ -676,7 +901,7 @@ class PositionArray(PosBase):
         h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.shape, dtype=self.dtype)
         h5_field[...] = self.val
 
-        for a in PositionArray._attributes().keys():
+        for a in PositionArray._attributes():
             attr = getattr(self, a, None)
             if attr is None:
                 continue
@@ -688,8 +913,11 @@ class PositionArray(PosBase):
                 # attribute is stored as part of this in PositionArray
                 h5_sub_group = h5_group.create_group(a)
                 h5_sub_group.attrs["fieldname"] = a
+                h5_sub_group.attrs["__class__"] = f"{attr.__class__.__module__}.{attr.__class__.__name__}"
                 memo[id(attr)] = f"{h5_group.attrs['fieldname']}.{a}"
                 attr._write(h5_sub_group, memo)  # Potential recursive call
+
+        memo[id(self)] = h5_group.attrs["fieldname"]
 
 
 class PositionDeltaArray(PosBase):
@@ -700,9 +928,8 @@ class PositionDeltaArray(PosBase):
     factory function.
     """
 
-    system = None
-    column_names = None
     cls_name = "PositionDeltaArray"
+    systems = _SYSTEMS.setdefault(cls_name, dict())
 
     def __new__(cls, val, ref_pos, **delta_args):
         """Create a new Positiondelta"""
@@ -714,13 +941,16 @@ class PositionDeltaArray(PosBase):
         obj = np.asarray(val, dtype=float, order="C").view(cls)
         obj.system = cls.system
         obj.ref_pos = ref_pos
-        for attr in cls._attributes().keys():
+        for attr in cls._attributes():
             setattr(obj, attr, delta_args.get(attr))
 
         return obj
 
     def __array_finalize__(self, obj):
         """Called automatically when a new PositionDelta is created"""
+        self._cache = dict()
+        self._dependent_objs = list()
+
         if obj is None:
             return
 
@@ -730,14 +960,40 @@ class PositionDeltaArray(PosBase):
             column_names = ", ".join(self.column_names)
             raise ValueError(f"{type(self).__name__!r} requires {num_columns} columns: {column_names}")
 
-        if self.ndim == 1:
-            self.resize(1, num_columns)
-        elif self.ndim != 2:
+        if self.ndim > 2:
             raise ValueError(f"{type(self).__name__!r} must be a 1- or 2-dimensional array with {num_columns} columns")
 
         # Copy attributes from the original object
         self.system = getattr(obj, "system", None)
-        self.ref_pos = getattr(obj, "ref_pos", None)
+
+        for attr in self._attributes() + ["ref_pos"]:
+            attr_sliced = getattr(obj, f"_{attr}_sliced", None)
+            if attr_sliced is not None:
+                setattr(self, attr, attr_sliced)
+            else:
+                setattr(self, attr, getattr(obj, attr, None))
+
+    def __getitem__(self, item):
+        """Update attributes with correct shape, used by __array_finalize__"""
+        # Get column
+        if isinstance(item, int) and self.is_transposed:
+            return getattr(self, self.column_names[item])
+
+        from_super = super().__getitem__(item)
+
+        # Get row or rows
+        if isinstance(item, (int, np.int_, slice)):
+            pos_args = {}
+            for attr in self._attributes() + ["ref_pos"]:
+                orig_value = getattr(self, attr, None)
+                if orig_value is not None:
+                    sliced_value = orig_value[item]
+                    sliced_attr = f"_{attr}_sliced"
+                    setattr(self, sliced_attr, sliced_value)
+                    pos_args[attr] = sliced_value
+            return self.__class__(from_super, **pos_args)
+
+        return from_super
 
     @staticmethod
     def create(val: np.ndarray, system: str, ref_pos, **delta_args: Any) -> "PositionDeltaArray":
@@ -761,14 +1017,30 @@ class PositionDeltaArray(PosBase):
         return _SYSTEMS["PositionDeltaArray"][system](val, ref_pos, **delta_args)
 
     @classmethod
+    def fieldnames(cls):
+        fields = PositionDeltaArray._fieldnames()
+        return fields
+
+    @classmethod
     def from_position(cls, val: np.ndarray, other: "PositionArray") -> "PositionDeltaArray":
         """Create a new position delta with given values and same attributes as other position
 
         Factory method for creating a new position array with the given
         values. Attributes will be copied from the other position.
         """
-        attrs = {a: getattr(other, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(other, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][other.system](val, ref_pos=other, **attrs)
+
+    @classmethod
+    def empty_from(cls, other: "PositionDeltaArray") -> "PositionDeltaArray":
+        """Create a new position delta of the same type as other but with NaN values
+        """
+        ref_pos = _SYSTEMS[other.ref_pos.cls_name][other.ref_pos.system](
+            np.full(other.shape, fill_value=np.nan), ellipsoid=other.ellipsoid
+        )
+        return _SYSTEMS[cls.cls_name][other.system](
+            np.full(other.shape, fill_value=np.nan), ellipsoid=ellipsoid, ref_pos=ref_pos
+        )
 
     @classmethod
     def from_position_delta(cls, val: np.ndarray, other: "PositionDeltaArray") -> "PositionDeltaArray":
@@ -777,7 +1049,7 @@ class PositionDeltaArray(PosBase):
         Factory method for creating a new position array with the given
         values. Attributes will be copied from the other position.
         """
-        attrs = {a: getattr(other, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(other, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][other.system](val, ref_pos=other.ref_pos, **attrs)
 
     @classmethod
@@ -786,8 +1058,95 @@ class PositionDeltaArray(PosBase):
 
         Applies the converter function that is provides and copies all registered attributes to the new position delta 
         """
-        attrs = {a: getattr(pos_delta, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(pos_delta, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][cls.system](converter(pos_delta), ref_pos=pos_delta.ref_pos, **attrs)
+
+    def subset(self, idx, memo):
+        """Create a subset """
+        old_id = id(self)
+        if old_id in memo:
+            return memo[old_id]
+
+        old_id_ref_pos = id(self.ref_pos)
+
+        val = np.asarray(self)[idx]
+        pos_args = dict()
+
+        for attr_name in self._attributes():
+            attr = getattr(self, attr_name, None)
+            if attr is None:
+                continue
+
+            old_id_attr = id(attr)
+            if old_id_attr in memo:
+                pos_args[attr_name] = memo[old_id_attr]
+            else:
+                pos_args[attr_name] = attr.subset(idx, memo)
+                memo[old_id_attr] = pos_args[attr_name]
+
+        if old_id_ref_pos in memo:
+            ref_pos = memo[old_id_ref_pos]
+        else:
+            ref_pos = self.ref_pos.subset(idx, memo)
+            memo[old_id_ref_pos] = ref_pos
+
+        new_posdelta = _SYSTEMS[self.cls_name][self.system](val, ref_pos=ref_pos, **pos_args)
+        memo[old_id] = new_posdelta
+        return new_posdelta
+
+    @classmethod
+    def insert(cls, a, pos, b, memo):
+        """Insert b into a at index pos"""
+        old_id_a = id(a)
+        if old_id_a in memo:
+            return memo[old_id_a][-1]
+
+        old_id_b = id(b)
+        if old_id_b in memo:
+            return memo[old_id_b][-1]
+
+        old_id_ref_pos = id(a.ref_pos)
+
+        val = np.insert(np.asarray(a), pos, np.asarray(b.to_system(a.system)), axis=0)
+        pos_args = dict()
+
+        for attr_name in cls._attributes():
+            a_attr = getattr(a, attr_name, None)
+            b_attr = getattr(b, attr_name, None)
+            if a_attr is None and b_attr is None:
+                continue
+
+            old_id_a_attr = id(a_attr)
+            old_id_b_attr = id(b_attr)
+            if old_id_a_attr in memo:
+                pos_args[attr_name] = memo[old_id_a_attr][-1]
+            elif old_id_b_attr in memo:
+                pos_args[attr_name] = memo[old_id_b_attr][-1]
+            else:
+                if a_attr is not None and b_attr is not None:
+                    attr_cls = a_attr.__class__
+                    pos_args[attr_name] = attr_cls.insert(a_attr, pos, b_attr, memo)
+                elif a_attr is None:
+                    attr_cls = a_attr.__class__
+                    empty_attr = attr_cls.empty_from(a)
+                    pos_args[attr_name] = attr_cls.insert(empty_attr, pos, b_attr, memo)
+                    memo.pop(id(empty_attr), None)
+                elif b_attr is None:
+                    attr_cls = a_attr.__class__
+                    empty_attr = attr_cls.empty_from(a)
+                    pos_args[attr_name] = attr_cls.insert(a_attr, pos, empty_attr, memo)
+                    memo.pop(id(empty_attr), None)
+
+        if old_id_ref_pos in memo:
+            new_ref_pos = memo[old_id_ref_pos][-1]
+        else:
+            new_ref_pos = a.ref_pos.insert(a.ref_pos, pos, b.ref_pos, memo)
+            memo[old_id_ref_pos] = (a.ref_pos, new_ref_pos)
+
+        new_posdelta = _SYSTEMS[cls.cls_name][a.system](val, ref_pos=new_ref_pos, **pos_args)
+        memo[old_id_a] = (a, new_posdelta)
+        memo[old_id_b] = (b, new_posdelta)
+        return new_posdelta
 
     @property
     def pos(self):
@@ -850,7 +1209,7 @@ class PositionDeltaArray(PosBase):
 
         Makes sure references to other objects are updated correctly
         """
-        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in list(self._attributes().keys()) + ["ref_pos"]}
+        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in self._attributes() + ["ref_pos"]}
         new_pos = PositionDeltaArray.create(val=np.asarray(self).copy(), system=self.system, **attrs)
         memo[id(self)] = new_pos
         return new_pos
@@ -859,29 +1218,43 @@ class PositionDeltaArray(PosBase):
     def _read(cls, h5_group, memo):
         system = h5_group.attrs["system"]
 
-        cls_args = {"ref_pos": PositionArray}
         delta_args = {}
-        for a, attr_cls in {**PositionDeltaArray._attributes(), **cls_args}.items():
+        for a in cls._attributes() + ["ref_pos"]:
             if a in h5_group.attrs:
                 # attribute is a reference to the data of another field
-                delta_args.update({a: memo[h5_group.attrs[a]]})
+                fieldname = h5_group.attrs[a]
+                if fieldname in memo:
+                    # the other field has already been read
+                    delta_args.update({a: memo[fieldname]})
+                else:
+                    # the other field has not been read yet
+                    attr_group = h5_group.parent[fieldname]
+                    cls_module, _, cls_name = attr_group.attrs["__class__"].rpartition(".")
+                    attr_cls = getattr(sys.modules[cls_module], cls_name)
+                    arg = attr_cls._read(attr_group, memo)
+                    delta_args.update({a: arg})
+                    memo[fieldname] = arg
+
             elif a in h5_group and isinstance(h5_group[a], type(h5_group)):
                 # attribute is a part of this group and is not in a separate field
+                cls_module, _, cls_name = h5_group[a].attrs["__class__"].rpartition(".")
+                attr_cls = getattr(sys.modules[cls_module], cls_name)
                 arg = attr_cls._read(h5_group[a], memo)
                 delta_args.update({a: arg})
                 memo[f"{h5_group.attrs['fieldname']}.{a}"] = arg
 
         val = h5_group[h5_group.attrs["fieldname"]][...]
 
-        return cls.create(val, system=system, **delta_args)
+        posdelta = cls.create(val, system=system, **delta_args)
+        memo[f"{h5_group.attrs['fieldname']}"] = posdelta
+        return posdelta
 
     def _write(self, h5_group, memo):
         h5_group.attrs["system"] = self.system
         h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.shape, dtype=self.dtype)
         h5_field[...] = self.val
 
-        cls_args = {"ref_pos": PositionArray}
-        for a in {**PositionDeltaArray._attributes(), **cls_args}.keys():
+        for a in self._attributes() + ["ref_pos"]:
             attr = getattr(self, a, None)
             if attr is None:
                 continue
@@ -890,11 +1263,14 @@ class PositionDeltaArray(PosBase):
                 # attribute is a reference to the data of another field
                 h5_group.attrs[a] = memo[id(attr)]
             else:
-                # attribute is stored as part of this in PositionArray
+                # attribute is stored as part of this in PositionDeltaArray
                 h5_sub_group = h5_group.create_group(a)
                 h5_sub_group.attrs["fieldname"] = a
+                h5_sub_group.attrs["__class__"] = f"{attr.__class__.__module__}.{attr.__class__.__name__}"
                 memo[id(attr)] = f"{h5_group.attrs['fieldname']}.{a}"
                 attr._write(h5_sub_group, memo)  # Potential recursive call
+
+        memo[id(self)] = h5_group.attrs["fieldname"]
 
 
 class VelocityArray(PosBase):
@@ -905,6 +1281,7 @@ class VelocityArray(PosBase):
     """
 
     cls_name = "VelocityArray"
+    systems = _SYSTEMS.setdefault(cls_name, dict())
 
     def __new__(cls, val, ref_pos, **vel_args):
         """Create a new VelocityArray"""
@@ -917,13 +1294,16 @@ class VelocityArray(PosBase):
         obj.system = cls.system
         # Reference position needed to make conversions to other systems
         obj.ref_pos = ref_pos
-        for attr in cls._attributes().keys():
+        for attr in cls._attributes():
             setattr(obj, attr, vel_args.get(attr))
 
         return obj
 
     def __array_finalize__(self, obj):
         """Called automatically when a new PositionDelta is created"""
+        self._cache = dict()
+        self._dependent_objs = list()
+
         if obj is None:
             return
 
@@ -933,9 +1313,7 @@ class VelocityArray(PosBase):
             column_names = ", ".join(self.column_names)
             raise ValueError(f"{type(self).__name__!r} requires {num_columns} columns: {column_names}")
 
-        if self.ndim == 1:
-            self.resize(1, num_columns)
-        elif self.ndim != 2:
+        if self.ndim > 2:
             raise ValueError(f"{type(self).__name__!r} must be a 1- or 2-dimensional array with {num_columns} columns")
 
         # Copy attributes from the original object
@@ -948,7 +1326,7 @@ class VelocityArray(PosBase):
 
         Applies the converter function that is provides and copies all registered attributes to the new position 
         """
-        attrs = {a: getattr(vel, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(vel, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][cls.system](converter(vel), ref_pos=vel.ref_pos, **attrs)
 
     def __add__(self, _):
@@ -976,6 +1354,7 @@ class VelocityDeltaArray(PosBase):
     """
 
     cls_name = "VelocityDeltaArray"
+    systems = _SYSTEMS.setdefault(cls_name, dict())
 
     def __new__(cls, val, ref_pos, **vel_args):
         """Create a new VelocityArray"""
@@ -988,13 +1367,16 @@ class VelocityDeltaArray(PosBase):
         obj.system = cls.system
         # Reference position needed to make conversions to other systems
         obj.ref_pos = ref_pos
-        for attr in cls._attributes().keys():
+        for attr in cls._attributes():
             setattr(obj, attr, vel_args.get(attr))
 
         return obj
 
     def __array_finalize__(self, obj):
         """Called automatically when a new VelocityDelta is created"""
+        self._cache = dict()
+        self._dependent_objs = list()
+
         if obj is None:
             return
 
@@ -1004,9 +1386,7 @@ class VelocityDeltaArray(PosBase):
             column_names = ", ".join(self.column_names)
             raise ValueError(f"{type(self).__name__!r} requires {num_columns} columns: {column_names}")
 
-        if self.ndim == 1:
-            self.resize(1, num_columns)
-        elif self.ndim != 2:
+        if self.ndim > 2:
             raise ValueError(f"{type(self).__name__!r} must be a 1- or 2-dimensional array with {num_columns} columns")
 
         # Copy attributes from the original object
@@ -1019,7 +1399,7 @@ class VelocityDeltaArray(PosBase):
 
         Applies the converter function that is provides and copies all registered attributes to the new position 
         """
-        attrs = {a: getattr(vel, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(vel, a, None) for a in cls._attributes()}
         return _SYSTEMS[cls.cls_name][cls.system](converter(vel), ref_pos=vel.ref_pos, **attrs)
 
     def __add__(self, _):
@@ -1048,6 +1428,7 @@ class PosVelArray(PositionArray):
     """
 
     cls_name = "PosVelArray"
+    systems = _SYSTEMS.setdefault(cls_name, dict())
 
     @staticmethod
     def create(val: np.ndarray, system: str, **pos_args: Any) -> "PosVelArray":
@@ -1070,13 +1451,18 @@ class PosVelArray(PositionArray):
         return _SYSTEMS["PosVelArray"][system](val, **pos_args)
 
     @classmethod
+    def fieldnames(cls):
+        fields = PosVelArray._fieldnames() + PositionArray._fields()
+        return fields
+
+    @classmethod
     def from_posvel(cls, val: np.ndarray, other: "PosVelArray") -> "PosVelArray":
         """Create a new posvel object with given values and same attributes as other 
 
         Factory method for creating a array with the given
         values. Attributes will be copied from the other position.
         """
-        attrs = {a: getattr(other, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(other, a, None) for a in cls._attributes()}
         return _SYSTEMS["PosVelArray"][other.system](val, **attrs)
 
     @classmethod
@@ -1085,18 +1471,68 @@ class PosVelArray(PositionArray):
 
         Applies the converter function that is provides and copies all registered attributes to the new position 
         """
-        attrs = {a: getattr(pos, a, None) for a in cls._attributes().keys()}
+        attrs = {a: getattr(pos, a, None) for a in cls._attributes()}
         return _SYSTEMS["PosVelArray"][cls.system](converter(pos), **attrs)
 
     @property
     def pos(self):
-        attrs = {a: getattr(self, a, None) for a in self._attributes().keys()}
-        return _SYSTEMS["PositionArray"][self.system](self.val[:, 0:3], **attrs)
+        if "pos" not in self._cache:
+            attrs = {a: getattr(self, a, None) for a in self._attributes()}
+            if self.ndim == 1:
+                val = self.val[0:3]
+            else:
+                val = self.val[:, 0:3]
+            self._cache["pos"] = _SYSTEMS["PositionArray"][self.system](val, **attrs)
+        return self._cache["pos"]
 
     @property
     def vel(self):
-        attrs = {a: getattr(self, a, None) for a in self._attributes().keys()}
-        return _SYSTEMS["VelocityArray"][self.system](self.val[:, 3:6], ref_pos=self.pos, **attrs)
+        if "vel" not in self._cache:
+            attrs = {a: getattr(self, a, None) for a in self._attributes()}
+            if self.ndim == 1:
+                val = self.val[3:6]
+            else:
+                val = self.val[:, 3:6]
+            self._cache["vel"] = _SYSTEMS["VelocityArray"][self.system](val, ref_pos=self.pos, **attrs)
+        return self._cache["vel"]
+
+    @property
+    def acr2trs(self):
+        """Transformation matrix from local orbital reference system given with along-track, cross-track and radial
+        directions to ITRS."""
+        if "acr2trs" not in self._cache:
+            if self.ndim == 1:
+                self._cache["acr2trs"] = self.trs2acr.T
+            else:
+                self._cache["acr2trs"] = self.trs2acr.transpose(0, 2, 1)
+        return self._cache["acr2trs"]
+
+    @property
+    def trs2acr(self):
+        """Transformation matrix from ITRS to local orbital reference system given with along-track, cross-track and
+        radial."""
+        if "trs2acr" not in self._cache:
+            r_unit = self.trs.pos.unit_vector
+            v_unit = self.trs.vel.unit_vector
+            c_unit = nputil.unit_vector(np.cross(r_unit, v_unit))
+            a_unit = nputil.unit_vector(np.cross(c_unit, r_unit))
+            self._cache["trs2acr"] = np.stack((a_unit, c_unit, r_unit), axis=1)
+        return self._cache["trs2acr"]
+
+    @property
+    def acr_along(self):
+        """ Unit vector for in the along-track direction"""
+        return self.acr2trs[:, :, 0:1]
+
+    @property
+    def acr_cross(self):
+        """ Unit vector for in the cross-track direction"""
+        return self.acr2trs[:, :, 1:2]
+
+    @property
+    def acr_radial(self):
+        """ Unit vector for in the radial (up) direction"""
+        return self.trs.pos.unit_vector
 
     def __add__(self, other):
         """self + other"""
@@ -1158,7 +1594,7 @@ class PosVelArray(PositionArray):
 
         Makes sure references to other objects are updated correctly
         """
-        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in self._attributes().keys()}
+        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in self._attributes()}
         new_pos = PosVelArray.create(val=np.asarray(self).copy(), system=self.system, **attrs)
         memo[id(self)] = new_pos
         return new_pos
@@ -1169,19 +1605,33 @@ class PosVelArray(PositionArray):
         ellipsoid_ = ellipsoid.get(h5_group.attrs["ellipsoid"])
 
         pos_args = {}
-        for a, attr_cls in PosVelArray._attributes().items():
+        for a in PosVelArray._attributes():
             if a in h5_group.attrs:
                 # attribute is a reference to the data of another field
-                pos_args.update({a: memo[h5_group.attrs[a]]})
+                fieldname = h5_group.attrs[a]
+                if fieldname in memo:
+                    # the other field has already been read
+                    pos_args.update({a: memo[fieldname]})
+                else:
+                    # the other field has not been read yet
+                    attr_group = h5_group.parent[fieldname]
+                    cls_module, _, cls_name = attr_group.attrs["__class__"].rpartition(".")
+                    attr_cls = getattr(sys.modules[cls_module], cls_name)
+                    arg = attr_cls._read(attr_group, memo)
+                    pos_args.update({a: arg})
+                    memo[fieldname] = arg
             elif a in h5_group and isinstance(h5_group[a], type(h5_group)):
                 # attribute is a part of this group and is not in a separate field
+                cls_module, _, cls_name = h5_group[a].attrs["__class__"].rpartition(".")
+                attr_cls = getattr(sys.modules[cls_module], cls_name)
                 arg = attr_cls._read(h5_group[a], memo)
                 pos_args.update({a: arg})
                 memo[f"{h5_group.attrs['fieldname']}.{a}"] = arg
 
         val = h5_group[h5_group.attrs["fieldname"]][...]
-
-        return cls.create(val, system=system, ellipsoid=ellipsoid_, **pos_args)
+        posvel = cls.create(val, system=system, ellipsoid=ellipsoid_, **pos_args)
+        memo[f"{h5_group.attrs['fieldname']}"] = posvel
+        return posvel
 
     def _write(self, h5_group, memo):
         h5_group.attrs["system"] = self.system
@@ -1189,7 +1639,7 @@ class PosVelArray(PositionArray):
         h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.shape, dtype=self.dtype)
         h5_field[...] = self.val
 
-        for a in PosVelArray._attributes().keys():
+        for a in PosVelArray._attributes():
             attr = getattr(self, a, None)
             if attr is None:
                 continue
@@ -1201,8 +1651,11 @@ class PosVelArray(PositionArray):
                 # attribute is stored as part of this in PosVelArray
                 h5_sub_group = h5_group.create_group(a)
                 h5_sub_group.attrs["fieldname"] = a
+                h5_sub_group.attrs["__class__"] = f"{attr.__class__.__module__}.{attr.__class__.__name__}"
                 memo[id(attr)] = f"{h5_group.attrs['fieldname']}.{a}"
                 attr._write(h5_sub_group, memo)  # Potential recursive call
+
+        memo[id(self)] = h5_group.attrs["fieldname"]
 
 
 #
@@ -1216,9 +1669,8 @@ class PosVelDeltaArray(PositionDeltaArray):
     factory function.
     """
 
-    system = None
-    column_names = None
     cls_name = "PosVelDeltaArray"
+    systems = _SYSTEMS.setdefault(cls_name, dict())
 
     @staticmethod
     def create(val: np.ndarray, system: str, ref_pos, **delta_args: Any) -> "PosVelDeltaArray":
@@ -1241,15 +1693,28 @@ class PosVelDeltaArray(PositionDeltaArray):
 
         return _SYSTEMS["PosVelDeltaArray"][system](val, ref_pos, **delta_args)
 
+    @classmethod
+    def fieldnames(cls):
+        fields = PosVelDeltaArray._fieldnames() + PositionDeltaArray._fields()
+        return fields
+
     @property
     def pos(self):
-        attrs = {a: getattr(self, a, None) for a in self._attributes().keys()}
-        return _SYSTEMS["PositionDeltaArray"][self.system](self.val[:, 0:3], ref_pos=self.ref_pos, **attrs)
+        if "pos" not in self._cache:
+            attrs = {a: getattr(self, a, None) for a in self._attributes()}
+            self._cache["pos"] = _SYSTEMS["PositionDeltaArray"][self.system](
+                self.val[:, 0:3], ref_pos=self.ref_pos, **attrs
+            )
+        return self._cache["pos"]
 
     @property
     def vel(self):
-        attrs = {a: getattr(self, a, None) for a in self._attributes().keys()}
-        return _SYSTEMS["VelocityDeltaArray"][self.system](self.val[:, 3:6], ref_pos=self.ref_pos, **attrs)
+        if "vel" not in self._cache:
+            attrs = {a: getattr(self, a, None) for a in self._attributes()}
+            self._cache["vel"] = _SYSTEMS["VelocityDeltaArray"][self.system](
+                self.val[:, 3:6], ref_pos=self.ref_pos, **attrs
+            )
+        return self._cache["vel"]
 
     def __sub__(self, other):
         """self - other"""
@@ -1272,7 +1737,7 @@ class PosVelDeltaArray(PositionDeltaArray):
  
         Makes sure references to other objects are updated correctly
         """
-        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in list(self._attributes().keys()) + ["ref_pos"]}
+        attrs = {a: copy.deepcopy(getattr(self, a, None), memo) for a in self._attributes() + ["ref_pos"]}
         new_pos = PosVelDeltaArray.create(val=np.asarray(self).copy(), system=self.system, **attrs)
         memo[id(self)] = new_pos
         return new_pos
@@ -1281,29 +1746,43 @@ class PosVelDeltaArray(PositionDeltaArray):
     def _read(cls, h5_group, memo):
         system = h5_group.attrs["system"]
 
-        cls_args = {"ref_pos": PosVelArray}
         delta_args = {}
-        for a, attr_cls in {**cls._attributes(), **cls_args}.items():
+        for a in cls._attributes() + ["ref_pos"]:
             if a in h5_group.attrs:
                 # attribute is a reference to the data of another field
-                delta_args.update({a: memo[h5_group.attrs[a]]})
+                fieldname = h5_group.attrs[a]
+                if fieldname in memo:
+                    # the other field has already been read
+                    delta_args.update({a: memo[fieldname]})
+                else:
+                    # the other field has not been read yet
+                    attr_group = h5_group.parent[fieldname]
+                    cls_module, _, cls_name = attr_group.attrs["__class__"].rpartition(".")
+                    attr_cls = getattr(sys.modules[cls_module], cls_name)
+                    arg = attr_cls._read(attr_group, memo)
+                    delta_args.update({a: arg})
+                    memo[fieldname] = arg
+
             elif a in h5_group and isinstance(h5_group[a], type(h5_group)):
                 # attribute is a part of this group and is not in a separate field
+                cls_module, _, cls_name = h5_group[a].attrs["__class__"].rpartition(".")
+                attr_cls = getattr(sys.modules[cls_module], cls_name)
                 arg = attr_cls._read(h5_group[a], memo)
                 delta_args.update({a: arg})
                 memo[f"{h5_group.attrs['fieldname']}.{a}"] = arg
 
         val = h5_group[h5_group.attrs["fieldname"]][...]
 
-        return cls.create(val, system=system, **delta_args)
+        posveldelta = cls.create(val, system=system, **delta_args)
+        memo[f"{h5_group.attrs['fieldname']}"] = posveldelta
+        return posveldelta
 
     def _write(self, h5_group, memo):
         h5_group.attrs["system"] = self.system
         h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.shape, dtype=self.dtype)
         h5_field[...] = self.val
 
-        cls_args = {"ref_pos": PosVelArray}
-        for a in {**PosVelDeltaArray._attributes(), **cls_args}.keys():
+        for a in self._attributes() + ["ref_pos"]:
             attr = getattr(self, a, None)
             if attr is None:
                 continue
@@ -1315,5 +1794,6 @@ class PosVelDeltaArray(PositionDeltaArray):
                 # attribute is stored as part of this in PosVelArray
                 h5_sub_group = h5_group.create_group(a)
                 h5_sub_group.attrs["fieldname"] = a
+                h5_sub_group.attrs["__class__"] = f"{attr.__class__.__module__}.{attr.__class__.__name__}"
                 memo[id(attr)] = f"{h5_group.attrs['fieldname']}.{a}"
                 attr._write(h5_sub_group, memo)  # Potential recursive call

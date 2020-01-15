@@ -19,13 +19,13 @@ TIME_MESSAGE = "Wasted time:"
 RE_TIME_MESSAGE = re.compile(TIME_MESSAGE + r" 0\.\d{4} seconds")
 
 
-@Timer(TIME_MESSAGE)
+@Timer(TIME_MESSAGE, logger=print)
 def timewaster(num):
     """Just waste a little bit of time"""
     sum(n ** 2 for n in range(num))
 
 
-@AccumulatedTimer(TIME_MESSAGE)
+@AccumulatedTimer(TIME_MESSAGE, logger=print)
 def accumulated_timewaste(num):
     """Just waste a little bit of time"""
     sum(n ** 2 for n in range(num))
@@ -55,7 +55,7 @@ def test_timer_as_decorator(capsys):
 
 def test_timer_as_context_manager(capsys):
     """Test that timed context prints timing information"""
-    with Timer(TIME_MESSAGE):
+    with Timer(TIME_MESSAGE, logger=print):
         sum(n ** 2 for n in range(1000))
     stdout, stderr = capsys.readouterr()
     assert RE_TIME_MESSAGE.match(stdout)
@@ -65,7 +65,7 @@ def test_timer_as_context_manager(capsys):
 
 def test_explicit_timer(capsys):
     """Test that timed section prints timing information"""
-    t = Timer(TIME_MESSAGE)
+    t = Timer(TIME_MESSAGE, logger=print)
     t.start()
     sum(n ** 2 for n in range(1000))
     t.end()
@@ -77,14 +77,14 @@ def test_explicit_timer(capsys):
 
 def test_error_if_timer_not_running():
     """Test that timer raises error if it is stopped before started"""
-    t = Timer(TIME_MESSAGE)
+    t = Timer(TIME_MESSAGE, logger=print)
     with pytest.raises(exceptions.TimerNotRunning):
         t.end()
 
 
 def test_access_timer_object_in_context(capsys):
     """Test that we can access the timer object inside a context"""
-    with Timer(TIME_MESSAGE) as t:
+    with Timer(TIME_MESSAGE, logger=print) as t:
         assert isinstance(t, Timer)
         assert t.text.startswith(TIME_MESSAGE)
     _, _ = capsys.readouterr()  # Do not print log message to standard out
@@ -93,7 +93,7 @@ def test_access_timer_object_in_context(capsys):
 def test_text_with_format(capsys):
     """Test that we can explicitly add point where time is inserted in text"""
     time_message = "Used {} to run the code"
-    with Timer(time_message):
+    with Timer(time_message, logger=print):
         sum(n ** 2 for n in range(1000))
     stdout, stderr = capsys.readouterr()
     assert re.match(time_message.format(r"0\.\d{4} seconds"), stdout)
@@ -103,7 +103,7 @@ def test_text_with_format(capsys):
 
 def test_format_of_time_elapsed(capsys):
     """Test that we can change the format of the time elapsed"""
-    with Timer(TIME_MESSAGE, fmt=".8f"):
+    with Timer(TIME_MESSAGE, fmt=".8f", logger=print):
         sum(n ** 2 for n in range(1000))
     stdout, stderr = capsys.readouterr()
     assert re.match(TIME_MESSAGE + r" 0\.\d{8} seconds", stdout)
@@ -121,7 +121,7 @@ def test_custom_logger():
 
 def test_timer_without_text(capsys):
     """Test that timer with None text does not print anything"""
-    with Timer(None):
+    with Timer(None, logger=print):
         sum(n ** 2 for n in range(1000))
 
     stdout, stderr = capsys.readouterr()
@@ -144,7 +144,7 @@ def test_accumulated_decorator(capsys):
 
 def test_accumulated_context_manager(capsys):
     """Test that context manager timer can accumulate"""
-    t = AccumulatedTimer(TIME_MESSAGE)
+    t = AccumulatedTimer(TIME_MESSAGE, logger=print)
     with t:
         sum(n ** 2 for n in range(1000))
     with t:
@@ -160,7 +160,7 @@ def test_accumulated_context_manager(capsys):
 
 def test_accumulated_explicit_timer(capsys):
     """Test that explicit timer can accumulate"""
-    t = AccumulatedTimer(TIME_MESSAGE)
+    t = AccumulatedTimer(TIME_MESSAGE, logger=print)
     t.start()
     sum(n ** 2 for n in range(1000))
     t.end()
@@ -178,7 +178,7 @@ def test_accumulated_explicit_timer(capsys):
 
 def test_accumulated_explicit_timer_with_pause(capsys):
     """Test that explicit timer can be paused"""
-    t = AccumulatedTimer(TIME_MESSAGE)
+    t = AccumulatedTimer(TIME_MESSAGE, logger=print)
     laps = list()
     for _ in range(3):
         t.start()

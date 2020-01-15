@@ -72,11 +72,10 @@ def config_options():
 
 
 @pytest.fixture
-def config_dict():
+def config_dict(gps_dict):
     """A test configuration based on a dictionary"""
-    cfg_dict = gps_dict()
     cfg = config.Configuration("dictionary")
-    cfg.update_from_dict(cfg_dict, section="gps")
+    cfg.update_from_dict(gps_dict, section="gps")
     return cfg
 
 
@@ -87,9 +86,9 @@ def gps_dict():
 
 
 @pytest.fixture
-def config_section():
+def config_section(config_dict):
     """A section with test data"""
-    return config_dict().gps
+    return config_dict.gps
 
 
 #

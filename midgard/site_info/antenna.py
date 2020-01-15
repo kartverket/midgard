@@ -294,7 +294,12 @@ class AntennaSinex(AntennaBase):
     """
 
     source = "sinex"
-    fields = dict(type="antenna_type", serial_number="serial_number", radome_type="radome_type")
+    fields = dict(
+        type="antenna_type",
+        serial_number="serial_number",
+        radome_type="radome_type",
+        radome_serial_number="radome_type",
+    )
 
     @property
     def date_installed(self) -> datetime:

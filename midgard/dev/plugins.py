@@ -11,7 +11,7 @@ registering themselves using the `register` decorator:
     from midgard.dev import plugins
 
     @plugins.register
-    def simple_model(rundate, tech, dset):
+    def simple_model(*args, **kwargs):
         ...
 
 Plug-ins are registered based on the name of the module (file) they are defined

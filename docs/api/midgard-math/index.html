@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.math - Midgard v0.3.0</title>
+        <title>midgard.math - Midgard v1.0.0</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v0.3.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -145,6 +145,7 @@
             <li><a href="#midgardmathconstant">midgard.math.constant</a></li>
             <li><a href="#midgardmathellipsoid">midgard.math.ellipsoid</a></li>
             <li><a href="#midgardmathinterpolation">midgard.math.interpolation</a></li>
+            <li><a href="#midgardmathnputil">midgard.math.nputil</a></li>
             <li><a href="#midgardmathrotation">midgard.math.rotation</a></li>
             <li><a href="#midgardmathtransformation">midgard.math.transformation</a></li>
             <li><a href="#midgardmathunit">midgard.math.unit</a></li>
@@ -372,6 +373,41 @@ finding the closest original point and essentially picking the <code>window // 2
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Same function.</p>
+<h2 id="midgardmathnputil">midgard.math.nputil</h2>
+<p>Utility wrapper for numpy functions</p>
+<p>Makes sure numpy functions can be called in a similar fashion for different use cases
+ + both 1- and 2-dimensional input
+ + both single values and arrays</p>
+<h3 id="hasharray"><strong>HashArray</strong></h3>
+<p>Full name: <code>midgard.math.nputil.HashArray</code></p>
+<p>Signature: <code>(val)</code></p>
+<h3 id="col"><strong>col</strong>()</h3>
+<p>Full name: <code>midgard.math.nputil.col</code></p>
+<p>Signature: <code>(vector)</code></p>
+<h3 id="hashable"><strong>hashable</strong>()</h3>
+<p>Full name: <code>midgard.math.nputil.hashable</code></p>
+<p>Signature: <code>(func)</code></p>
+<p>Decorator for functions with numpy arrays as input arguments that will benefit from caching</p>
+<p>Example:</p>
+<p>from midgard.math import nputil
+from functools import lru_cache</p>
+<p>@nputil.hashable
+@lru_cache()
+def test_func(a: np.ndarray, b: np.ndarray = None)
+    do_something
+    return something</p>
+<h3 id="norm"><strong>norm</strong>()</h3>
+<p>Full name: <code>midgard.math.nputil.norm</code></p>
+<p>Signature: <code>(vector)</code></p>
+<h3 id="row"><strong>row</strong>()</h3>
+<p>Full name: <code>midgard.math.nputil.row</code></p>
+<p>Signature: <code>(vector)</code></p>
+<h3 id="take"><strong>take</strong>()</h3>
+<p>Full name: <code>midgard.math.nputil.take</code></p>
+<p>Signature: <code>(vector, item)</code></p>
+<h3 id="unit_vector"><strong>unit_vector</strong>()</h3>
+<p>Full name: <code>midgard.math.nputil.unit_vector</code></p>
+<p>Signature: <code>(vector)</code></p>
 <h2 id="midgardmathrotation">midgard.math.rotation</h2>
 <p>Library for basic rotation matrices</p>
 <p><strong>Description:</strong></p>
@@ -485,6 +521,10 @@ lon (Float or Array):   Longitude of origin of ENU coordinate system.</p>
 <h2 id="midgardmathtransformation">midgard.math.transformation</h2>
 <p>Midgard library module for handling of geodetic conversions</p>
 <p><strong>Description:</strong></p>
+<h3 id="delta_acr2trs_posvel"><strong>delta_acr2trs_posvel</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.delta_acr2trs_posvel</code></p>
+<p>Signature: <code>(acr:'AcrPosVelDelta') -&gt; 'TrsPosVelDelta'</code></p>
+<p>Convert position deltas from ACR to TRS</p>
 <h3 id="delta_enu2trs"><strong>delta_enu2trs</strong>()</h3>
 <p>Full name: <code>midgard.math.transformation.delta_enu2trs</code></p>
 <p>Signature: <code>(enu:'EnuPositionDelta') -&gt; 'TrsPositionDelta'</code></p>
@@ -493,6 +533,10 @@ lon (Float or Array):   Longitude of origin of ENU coordinate system.</p>
 <p>Full name: <code>midgard.math.transformation.delta_enu2trs_posvel</code></p>
 <p>Signature: <code>(enu:'EnuPosVelDelta') -&gt; 'TrsPosVelDelta'</code></p>
 <p>Convert position deltas from ENU to TRS</p>
+<h3 id="delta_trs2acr_posvel"><strong>delta_trs2acr_posvel</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.delta_trs2acr_posvel</code></p>
+<p>Signature: <code>(trs:'TrsPosVelDelta') -&gt; 'AcrPosVelDelta'</code></p>
+<p>Convert position deltas from TRS to ACR</p>
 <h3 id="delta_trs2enu"><strong>delta_trs2enu</strong>()</h3>
 <p>Full name: <code>midgard.math.transformation.delta_trs2enu</code></p>
 <p>Signature: <code>(trs:'TrsPositionDelta') -&gt; 'EnuPositionDelta'</code></p>
@@ -501,11 +545,38 @@ lon (Float or Array):   Longitude of origin of ENU coordinate system.</p>
 <p>Full name: <code>midgard.math.transformation.delta_trs2enu_posvel</code></p>
 <p>Signature: <code>(trs:'TrsPosVelDelta') -&gt; 'EnuPosVelDelta'</code></p>
 <p>Convert position deltas from TRS to ENU</p>
+<h3 id="kepler2trs"><strong>kepler2trs</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.kepler2trs</code></p>
+<p>Signature: <code>(kepler:'KeplerPosVel') -&gt; 'TrsPosVel'</code></p>
+<p>Compute orbit position and velocity vector in geocentric equatorial coordinate system based on Keplerian
+elements for elliptic orbits.</p>
+<p>The implementation is based on Section 2.2.3 in :cite:<code>montenbruck2012</code>.</p>
 <h3 id="llh2trs"><strong>llh2trs</strong>()</h3>
 <p>Full name: <code>midgard.math.transformation.llh2trs</code></p>
 <p>Signature: <code>(llh:numpy.ndarray, ellipsoid:midgard.math.ellipsoid.Ellipsoid=None) -&gt; numpy.ndarray</code></p>
 <p>Convert geodetic latitude-, longitude-, height-coordinates to geocentric xyz-coordinates</p>
 <p>Reimplementation of GD2GCE.for from the IUA SOFA software collection.</p>
+<h3 id="trs2kepler"><strong>trs2kepler</strong>()</h3>
+<p>Full name: <code>midgard.math.transformation.trs2kepler</code></p>
+<p>Signature: <code>(trs:'TrsPosVel') -&gt; 'KeplerPosVel'</code></p>
+<p>Compute Keplerian elements for elliptic orbit based on orbit position and velocity vector given in ITRS.</p>
+<p>The used equations are described in Section 2.2.4 in Montenbruck :cite:<code>montenbruck2012</code>.</p>
+<p>The position and velocity vector in ITRS and GM must be given in consistent units, which are [m], [m/s] and
+[m^3/s^2]. The resulting unit of the semimajor axis is implied by the unity of the position vector, i.e. [m].</p>
+<p>.. note::
+The function cannot be used with position/velocity vectors describing a circular or non-inclined orbit.</p>
+<p><strong>Returns:</strong></p>
+<p>tuple with numpy.ndarray types: Tuple with following Keplerian elements:</p>
+<p>===============  ======  ==================================================================================
+ Keys             Unit     Description
+===============  ======  ==================================================================================
+ a                m       Semimajor axis
+ e                        Eccentricity of the orbit
+ i                rad     Inclination
+ Omega            rad     Right ascension of the ascending node
+ omega            rad     Argument of perigee
+ E                rad     Eccentric anomaly
+===============  ======  ==================================================================================</p>
 <h3 id="trs2llh"><strong>trs2llh</strong>()</h3>
 <p>Full name: <code>midgard.math.transformation.trs2llh</code></p>
 <p>Signature: <code>(trs:numpy.ndarray, ellipsoid:midgard.math.ellipsoid.Ellipsoid=None) -&gt; numpy.ndarray</code></p>

@@ -9,9 +9,6 @@ Size of console: The two functions `lines()` and `columns()` report the current 
 
 Textwrapping: The function `fill()` can be used to rewrap a text-string so that it fits inside the console.
 
-Color: The sub-module `color` can be used to set the foreground and background colors. Note that the color
-functionality depends on the external package `colorama`. If `colorama` is not installed, color gracefully falls back
-to not showing any color.
 
 
 Examples:
@@ -35,19 +32,13 @@ Examples:
 """
 
 # Standard library imports
+import colorama
 import shutil
 import textwrap
 from typing import Any, Optional
 
-# Midgard imports
-from midgard.dev import optional
 
-# Use colorama for coloring in the console, graceful fallback to no color if colorama is not installed
-_empty_string = optional.EmptyStringMock("_empty_string")
-color = optional.optional_import(
-    "colorama", attrs=dict(init=lambda **_: None, Back=_empty_string, Fore=_empty_string, Style=_empty_string)
-)
-color.init(autoreset=True)
+colorama.init(autoreset=True)
 
 
 def lines() -> int:

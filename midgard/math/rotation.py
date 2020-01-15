@@ -27,9 +27,13 @@ array([[[ 1.        ,  0.        ,  0.        ],
 """
 # Standard library imports
 from typing import TypeVar
+from functools import lru_cache
 
 # Third party imports
 import numpy as np
+
+# Midgard imports
+from midgard.math import nputil
 
 # Type specification: scalar float or numpy array
 np_float = TypeVar("np_float", float, np.ndarray)
@@ -119,6 +123,8 @@ def dR3(angle: np_float) -> np.ndarray:
     return _roll_axes(np.array([[-sinA, cosA, zero], [-cosA, -sinA, zero], [zero, zero, zero]]))
 
 
+@nputil.hashable
+@lru_cache()
 def enu2trs(lat: np_float, lon: np_float) -> np.ndarray:
     """Rotation matrix for rotating an ENU coordinate system to an earth oriented one
 
@@ -147,6 +153,8 @@ def enu2trs(lat: np_float, lon: np_float) -> np.ndarray:
     )
 
 
+@nputil.hashable
+@lru_cache()
 def trs2enu(lat: np_float, lon: np_float) -> np.ndarray:
     """Rotation matrix for rotating an earth oriented coordinate system to an ENU one
 

@@ -36,9 +36,7 @@
 # [10] IRNSS-ICD-SPS (2014), Indian Regional Navigation Satellite System - Signal in space ICD for standard positioning
 #      service, ISRO Satellite Centre, Indian Space Research Organization, Bangalore, Version 1.0
 #
-# [11] Gurtner, W. and Estey, L. (2015). Rinex: The receiver independent exchange format version 3.03.
-#
-# [12] Montenbruck, O., Steigenberger, P., and Hauschild, A. (2018). Multi-GNSS Signal-in-Space Range Error Assessment -
+# [11] Montenbruck, O., Steigenberger, P., and Hauschild, A. (2018). Multi-GNSS Signal-in-Space Range Error Assessment -
 #      Methodology Results. Advances in Space Research, DOI 10.1016/j.asr.2018.03.041.
 
 
@@ -162,6 +160,18 @@ iers_2010    = 1.48082686741e-8
 __unit__     =
 default      = %(iers_2010)s
 iers_2010    = 2443144.5003725
+
+## Integer part of T_0
+[T_0_jd1]
+__unit__     =
+default      = %(iers_2010)s
+iers_2010    = 2443144.0
+
+## Fractional part of T_0
+[T_0_jd2]
+__unit__     =
+default      = %(iers_2010)s
+iers_2010    = 0.5003725
 
 
 ## \f$ TDB_0 \f$: Defining constant in transformation between TCB and TDB.
@@ -396,6 +406,17 @@ iers_2010    = 7.292115e-5
 jgs          = 7.2921151467e-5
 wgs84        = 7.2921151467e-5
 
+## \f$ \J \f$: The Earth's angular momentum per unit mass
+#
+#  Unit:       \f$ m^2 / s \f$
+#
+#  Reference:  iers_2010  - IERS Conventions [1], section 10.3
+[J]
+__unit__     = meter**2 per second
+default      = %(iers_2010)s
+iers_2010    = 9.8e8
+
+
 ## \f$ \rho_w \f$: Density of sea water
 #
 #  Unit:       \f$ kg / m^3 \f$.
@@ -418,114 +439,6 @@ default      = %(iers_2010)s
 iers_2010    = 9.7803278
 
 
-## \f$ f_1, \ldots, f_n \f$: GNSS frequencies
-#
-#  Unit:      \f$ s^{-1} \f$.
-#
-#  References: RINEX 3.03 format [11], section 5.1
-#
-# Overview over frequency number (1 .. 9) and observation code dependent on GNSS (C, E, G, I and J):
-# ______________________________
-#  freq |  C   E    G   I   J
-# ______|_______________________
-#   1   |      E1   L1      L1
-#   2   |  B1       L2      L2
-#   5   |      E5a  L5  L5  L5
-#   6   |  B3  E6
-#   7   |  B2  E5b
-#   8   |      E5
-#   9   |               S
-# ______|_______________________
-#
-[gnss_freq_1]
-__unit__     = hertz
-default      = %(G)s
-E            = 1575.42e+6
-G            = 1575.42e+6
-J            = 1575.42e+6
-
-[gnss_freq_2]
-__unit__     = hertz
-default      = %(G)s
-C            = 1561.098e+6
-G            = 1227.60e+6
-J            = 1227.60e+6
-
-[gnss_freq_5]
-__unit__     = hertz
-default      = %(G)s
-E            = 1176.45e+6
-G            = 1176.45e+6
-I            = 1176.45e+6
-J            = 1176.45e+6
-
-[gnss_freq_6]
-__unit__     = hertz
-default      = %(E)s
-C            = 1268.52e+6
-E            = 1278.75e+6
-J            = 1278.75e+6
-
-[gnss_freq_7]
-__unit__     = hertz
-default      = %(E)s
-C            = 1207.14e+6
-E            = 1207.14e+6
-
-[gnss_freq_8]
-__unit__     = hertz
-default      = %(E)s
-E            = 1191.795e+6
-
-[gnss_freq_9]
-__unit__     = hertz
-default      = %(I)s
-I            = 2492.028e+6
-
-#TODO: What is a better solution for defining GNSS frequencies (above or under)?
-[gnss_freq_C]
-__unit__     = hertz
-default      = %(B1)s
-B1           = 1561.098e+6
-B2           = 1207.14e+6
-B3           = 1268.52e+6
-
-[gnss_freq_E]
-__unit__     = hertz
-default      = %(E1)s
-E1           = 1575.42e+6
-E5           = 1191.795e+6
-E5a          = 1176.45e+6
-E5b          = 1207.140e+6
-E6           = 1278.75e+6
-
-[gnss_freq_G]
-__unit__     = hertz
-default      = %(L1)s
-L1           = 1575.42e+6
-L2           = 1227.60e+6
-L5           = 1176.45e+6
-
-[gnss_freq_I]
-__unit__     = hertz
-default      = %(L5)s
-L5           = 1176.45e+6
-S            = 2492.028e+6
-
-[gnss_freq_J]
-__unit__     = hertz
-default      = %(L1)s
-L1           = 1575.42e+6
-L2           = 1227.60e+6
-L5           = 1176.45e+6
-
-[gnss_freq_S]
-__unit__     = hertz
-default      = %(L1)s
-L1           = 1575.42e+6
-L5           = 1176.45e+6
-
-
 ## \f$ w_{R} \f$: Global average signal-in-space ranging error (SISRE) radial weight factor
 #
 # Note: The radial SISRE weight factors are given for an elevation of 0 and 5 degrees, except for QZSS (J) with 
@@ -534,7 +447,7 @@ L5           = 1176.45e+6
 #  Unit:      None.
 #
 #  References:
-#      Montenbruck 2018 [4], table 4
+#      Montenbruck 2018 [11], table 4
 [sisre_weight_radial_0deg]
 __unit__     =
 default      = %(G)s
@@ -562,7 +475,7 @@ R            = 0.149
 #  Unit:      None.
 #
 #  References:
-#      Montenbruck 2018 [4], table 4
+#      Montenbruck 2018 [11], table 4
 [sisre_weight_radial_5deg]
 __unit__     =
 default      = %(G)s

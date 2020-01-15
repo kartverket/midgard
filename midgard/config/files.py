@@ -23,10 +23,11 @@ make sure files are properly closed they should normally be used with a context 
 # Standard library imports
 import builtins
 from contextlib import contextmanager
+import gzip
 import itertools
 import pathlib
 import re
-from typing import Any, Callable, Dict, Iterator, List, Optional
+from typing import Any, Callable, Dict, Iterator, List, Optional, TypeVar
 
 # Third party imports
 import pycurl
@@ -37,6 +38,9 @@ from midgard.dev import console
 from midgard.dev import log
 from midgard.files import files
 from midgard.files import url
+
+# Type specification: scalar float or numpy array
+path_type = TypeVar("path_type", str, pathlib.Path)
 
 
 class FileConfiguration(Configuration):
@@ -98,6 +102,56 @@ class FileConfiguration(Configuration):
         try:
             with files.open(file_path, create_dirs=create_dirs, open_as_gzip=is_zipped, **open_args) as fid:
                 yield fid
+        except Exception:
+            raise
+
+    @contextmanager
+    def open_path(
+        self,
+        file_path: path_type,
+        description: str = "",
+        create_dirs: bool = False,
+        is_zipped: Optional[bool] = None,
+        write_log: bool = True,
+        **open_args: Any,
+    ) -> Iterator:
+        """Open a file with given path
+
+        Open a local file based on file name. This function behaves similar to the built-in open-function, but is also
+        able to create intermediate directories and open gzipped files. The function should typically be used with a
+        context manager as follows:
+
+        Example:
+            with files.open_path('local_output.txt', mode='rt') as fid:
+                for line in fid:
+                    print(line.strip())
+
+        Args:
+            file_path:       The file_path, should be a full path.
+            description:     Description used for logging.
+            create_dirs:     True or False, if True missing directories are created.
+            is_zipped:       True or False, if True the gzip module will be used.
+            open_args:       All keyword arguments are passed on to the built-in open.
+
+        Returns:
+            File object representing the file.
+        """
+        mode = open_args.get("mode", "r")
+        if "mode" in open_args:  # TODO: "mode" should maybe be a required argument
+            del open_args["mode"]
+        if write_log:
+            _log_file_open(file_path, description, mode)
+        if create_dirs:
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+        is_zipped = self.is_path_zipped(file_path) if is_zipped is None else is_zipped
+
+        try:
+            if is_zipped:
+                with gzip.open(file_path, mode=mode, **open_args) as fid:
+                    yield fid
+            else:
+                with builtins.open(file_path, mode=mode, **open_args) as fid:
+                    yield fid
         except Exception:
             raise
 
@@ -212,7 +266,7 @@ class FileConfiguration(Configuration):
             return file_path.with_name(file_path.name.replace("{gz}", ""))
 
     @classmethod
-    def _empty_file(cls, file_path: pathlib.Path) -> bool:
+    def empty_file(cls, file_path: pathlib.Path) -> bool:
         """Check if a file is empty
 
         Args:
@@ -247,6 +301,7 @@ class FileConfiguration(Configuration):
         except OSError:
             return False
 
+    @staticmethod
     def is_path_zipped(file_path):
         """Indicate whether a path is to a gzipped file or not
 

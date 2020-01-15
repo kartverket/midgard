@@ -86,14 +86,23 @@ def test_parser_bcecmp_sisre():
     assert "E26" in parser["satellite"]
 
 
+def test_parser_csv_():
+    """Test that parsing csv_ gives expected output"""
+    parser = get_parser("csv_").as_dict()
+
+    assert len(parser) == 13
+    assert "GPSEpoch" in parser
+    assert 2047 in parser["GPSWeek"]
+
+
 def test_parser_discontinuities_snx():
     """Test that parsing discontinuities_snx gives expected output"""
     parser = get_parser("discontinuities_snx").as_dict()
 
     assert len(parser) == 9
     assert "0194" in parser
-    assert "solution_discontinuity" in parser["AB06"]
-    assert "point_code" in parser["AB06"]["solution_discontinuity"][0]
+    assert "solution_discontinuity" in parser["ab06"]
+    assert "point_code" in parser["ab06"]["solution_discontinuity"][0]
 
 
 def test_parser_gipsy_tdp():
@@ -144,6 +153,24 @@ def test_parser_rinex3_obs_with_writer():
     pass
 
 
+def test_parser_gnss_bernese_crd():
+    """Test that parsing gnss_bernese_crd gives expected output"""
+    parser = get_parser("gnss_bernese_crd").as_dict()
+
+    assert len(parser) == 5
+    assert "AASC" in parser
+    assert "num" in parser["AASC"]
+
+
+def test_parser_spring_csv():
+    """Test that parsing spring_csv gives expected output"""
+    parser = get_parser("spring_csv").as_dict()
+
+    assert len(parser) == 17
+    assert "GPSEpoch" in parser
+    assert 2047 in parser["GPSWeek"]
+
+
 def test_parser_terrapos_position():
     """Test that parsing terrapos_position gives expected output"""
     parser = get_parser("terrapos_position").as_dict()
@@ -170,6 +197,15 @@ def test_parser_timeseries_env():
     assert len(parser) == 8
     assert "date" in parser
     assert "14AUG31" in parser["date"]
+
+
+def test_parser_timeseries_tsview():
+    """Test that parsing timeseries_tsview gives expected output"""
+    parser = get_parser("timeseries_tsview").as_dict()
+
+    assert len(parser) == 4
+    assert "mjd" in parser
+    assert 51058.5 in parser["mjd"]
 
 
 def test_parser_vlbi_source_names():
