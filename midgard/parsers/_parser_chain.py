@@ -19,6 +19,7 @@ import itertools
 from typing import Any, Callable, Dict, NamedTuple, Optional
 
 # Midgard imports
+from midgard.files import files
 from midgard.parsers._parser import Parser
 
 
@@ -87,7 +88,7 @@ class ChainParser(Parser):
         parser = next(parsers_chain)  # Pointing to first parser
         cache = dict(line_num=0)
 
-        with open(self.file_path, mode="rt", encoding=self.file_encoding) as fid:
+        with files.open(self.file_path, mode="rt", encoding=self.file_encoding) as fid:
             # Get iterators for current and next line
             line_iter, next_line_iter = itertools.tee(fid)
             next(next_line_iter, None)

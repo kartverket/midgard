@@ -13,6 +13,7 @@ from midgard.dev import plugins
 @plugins.register
 class BoolField(FieldType):
 
+    dtype = bool
     _factory = staticmethod(np.array)
 
     def _post_init(self, val, **field_args):
@@ -22,7 +23,10 @@ class BoolField(FieldType):
                 f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
             )
 
-        data = self._factory(val, dtype=bool)
+        if isinstance(val, np.ndarray):
+            data = val
+        else:
+            data = self._factory(val, dtype=self.dtype)
 
         # Check that the correct number of observations are given
         if len(data) != self.num_obs:

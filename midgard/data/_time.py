@@ -295,7 +295,7 @@ class TimeBase(np.ndarray):
 
         # Units of properties
         else:
-            return self._unit(field)
+            return self._unit
 
     @lru_cache()
     def to_format(self, fmt: str):
@@ -318,6 +318,10 @@ class TimeBase(np.ndarray):
 
         Add time scales and formats to attributes on Time arrays.
         """
+        if "." in key:
+            mainfield, _, subfield = key.partition(".")
+            return getattr(getattr(self, mainfield), subfield)
+
         # Convert to a different scale
         if key in self._scales():
             return self.to_scale(key)
@@ -347,17 +351,17 @@ class TimeBase(np.ndarray):
     copy = __copy__
 
     def __getitem__(self, item):
-        """Update _sigma_sliced with correct shape, used by __array_finalize__"""
+        """Update _jd*_sliced with correct shape, used by __array_finalize__"""
         fmt_ndim = self._formats()[self.fmt].ndim
-        if isinstance(item, tuple):
-            if fmt_ndim > 1 and len(item) > 1:
-                # Only use item row to slice jds
-                super().__setattr__("_jd1_sliced", self.jd1[item[0]])
-                super().__setattr__("_jd2_sliced", self.jd2[item[0]])
-        if isinstance(self.jd1, np.ndarray):
-            super().__setattr__("_jd1_sliced", self.jd1[item])
-        if isinstance(self.jd2, np.ndarray):
-            super().__setattr__("_jd2_sliced", self.jd2[item])
+        if isinstance(item, tuple) and fmt_ndim > 1 and len(item) > 1:
+            # Only use item row to slice jds
+            super().__setattr__("_jd1_sliced", self.jd1[item[-1]])
+            super().__setattr__("_jd2_sliced", self.jd2[item[-1]])
+        else:
+            if isinstance(self.jd1, np.ndarray):
+                super().__setattr__("_jd1_sliced", self.jd1[item])
+            if isinstance(self.jd2, np.ndarray):
+                super().__setattr__("_jd2_sliced", self.jd2[item])
         if isinstance(item, (int, np.int_)):
             return self._scales()[self.scale].from_jds(self._jd1_sliced, self._jd2_sliced, self.fmt)
         return super().__getitem__(item)
@@ -397,8 +401,9 @@ class TimeArray(TimeBase):
     """Base class for time objects. Is immutable to allow the data to be hashable"""
 
     cls_name = "TimeArray"
+    type = "time"
     _SCALES.setdefault(cls_name, dict())
-    _unit = staticmethod(Unit.unit_factory(__name__))
+    _unit = None
 
     @classmethod
     def now(cls, scale="utc", fmt="datetime") -> "TimeArray":
@@ -455,6 +460,37 @@ class TimeArray(TimeBase):
             jd1, jd2 = _CONVERSIONS[one_hop](converted_time)
             converted_time = self._scales()[one_hop[-1]].from_jds(jd1, jd2, self.fmt)
         return converted_time
+
+    def plot_fields(self):
+        scales_and_formats = []
+        for scale in self._scales():
+            try:
+                _find_conversion_hops((self.scale, scale))
+                # Add scales
+                scales_and_formats.append(scale)
+                scale_time = getattr(self, scale)
+                fmt_cls = self.cls_name.replace("Array", "Format")
+                for fmt in _FORMATS.get(fmt_cls, {}):
+                    # Add system fields
+                    try:
+                        fmt_time = getattr(scale_time, fmt)
+                        if isinstance(fmt_time, np.ndarray) and fmt_time.dtype.type is np.str_:
+                            # Skip string formats
+                            continue
+                        if isinstance(fmt_time, str):
+                            # Skip string formats
+                            continue
+                        if isinstance(fmt_time, tuple) and hasattr(fmt_time, "_fields"):
+                            for f in fmt_time._fields:
+                                scales_and_formats.append(f"{scale}.{fmt}.{f}")
+                        else:
+                            scales_and_formats.append(f"{scale}.{fmt}")
+                    except ValueError:
+                        pass  # Skip formats that are invalid for that scale
+            except exceptions.UnknownConversionError:
+                pass  # Skip systems that cannot be converted to
+
+        return scales_and_formats
 
     @property
     @Unit.register(("year",))
@@ -672,14 +708,39 @@ class TimeDeltaArray(TimeBase):
     """Base class for time delta objects. Is immutable to allow the data to be hashable"""
 
     cls_name = "TimeDeltaArray"
+    type = "time_delta"
     _SCALES.setdefault(cls_name, dict())
-    _unit = staticmethod(Unit.unit_factory(__name__))
+    _unit = None
 
     @classmethod
     def empty_from(cls, other: "TimeDeltaArray") -> "TimeDeltaArray":
         """Create a new time of the same type as other but with empty(datetime.min) values
         """
         return _SCALES[other.scale](np.full(other.shape, fill_value=timedelta(seconds=0)), fmt="timedelta")
+
+    def plot_fields(self):
+        scales_and_formats = []
+        try:
+            # Add scale
+            scales_and_formats.append(self.scale)
+            fmt_cls = self.cls_name.replace("Array", "Format")
+            for fmt in _FORMATS.get(fmt_cls, {}):
+                # Add system fields
+                try:
+                    fmt_time = getattr(self, fmt)
+                    if isinstance(fmt_time, np.ndarray) and fmt_time.dtype.type is np.str_:
+                        # Skip string formats
+                        continue
+                    if isinstance(fmt_time, str):
+                        # Skip string formats
+                        continue
+                    scales_and_formats.append(f"{self.scale}.{fmt}")
+                except ValueError:
+                    pass  # Skip formats that are invalid for that scale
+        except exceptions.UnknownConversionError:
+            pass  # Skip systems that cannot be converted to
+
+        return scales_and_formats
 
     @classmethod
     def _scales(cls):
@@ -1106,13 +1167,13 @@ class TimeGPSWeekSec(TimeFormat):
             raise ValueError(f"Format {cls.fmt} is only available for time scale gps")
 
         if isinstance(val, cls.WeekSec):
-            week = val.week
-            sec = val.seconds
+            week = np.asarray(val.week)
+            sec = np.asarray(val.seconds)
         elif val2 is None:
             raise ValueError(f"val2 should be seconds (not {val2}) for format {cls.fmt}")
         else:
-            week = val
-            sec = val2
+            week = np.asarray(val)
+            sec = np.asarray(val2)
 
         # Determine GPS day
         wd = np.floor((sec + 0.5 * cls.day2seconds) / cls.day2seconds)  # 0.5 d = 43200.0 s

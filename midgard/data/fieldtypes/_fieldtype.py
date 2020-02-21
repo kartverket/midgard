@@ -4,6 +4,7 @@
 
 # Standard library imports
 import abc
+import copy
 from typing import Any, Dict, List
 
 # Third party imports
@@ -22,6 +23,7 @@ class FieldType(abc.ABC):
     _subfields: List[str] = list()
     _plotfields: List[str] = list()
     _factory = None
+    dtype = None
 
     def __init__(self, num_obs, name, val=None, unit=None, write_level=None, multiplier=1, **field_args):
         """Create a new field"""
@@ -37,13 +39,13 @@ class FieldType(abc.ABC):
         self.multiplier = multiplier
         self._post_init(val, **field_args)
 
-    def new_from_field(self):
-        """Create a new field with the same parameters as self
+    def copy(self):
+        """Shallow copy. self.data is not copied"""
+        return copy.copy(self)
 
-        Note: this will not create a copy of the data
-        """
-        cls = self.__class__
-        return cls(self.num_obs, self.name, self.data, self._unit, self._write_level.name)
+    def deepcopy(self):
+        """Deep copy. self.data is copied"""
+        return copy.deepcopy(self)
 
     @abc.abstractmethod
     def _post_init(self, val, **field_args) -> None:
@@ -66,11 +68,7 @@ class FieldType(abc.ABC):
         if not any(field._unit):
             field._unit = None
         field._write_level = enums.get_value("write_level", h5_group.attrs["write_level"])
-        try:
-            # Remove try except later. Timeseries do not have multiplier for older versions
-            field.multiplier = h5_group.attrs["multiplier"]
-        except KeyError:
-            field.multiplier = 1
+        field.multiplier = h5_group.attrs["multiplier"]
         return field
 
     @classmethod
@@ -96,13 +94,6 @@ class FieldType(abc.ABC):
     @abc.abstractmethod
     def _write(self, h5_group, memo) -> None:
         """Write values of field to HDF5"""
-
-    def _fields_at_write_level(self, write_level: enums.WriteLevel) -> List[str]:
-        """Names of all subfields at or above the given write level
-
-        """
-        print("at_write_level")
-        return [self.name] + self._subfields
 
     def subset(self, idx: np.array, memo) -> None:
         """Remove observations from a field based on index"""
@@ -189,7 +180,7 @@ class FieldType(abc.ABC):
                         value = np.squeeze(attr_value)
                     else:
                         continue
-                except exceptions.InitializationError:
+                except (exceptions.InitializationError, exceptions.UnknownConversionError):
                     continue
             else:
                 value = np.squeeze(self.data)
@@ -234,31 +225,3 @@ class FieldType(abc.ABC):
         if not self._plotfields:
             return self.subfields
         return [self.name] + [f"{self.name}.{f}" for f in sorted(self._plotfields)]
-
-    # def __getitem__(self, key):
-    #     """Pass item access on to the underlying data structure"""
-    #     return self.data[key]
-
-    # def __getattr__(self, key):
-    #     """Get a subfield from field or attribute from underlying data structure"""
-    #     return getattr(self.data, key)
-
-    # def __dir__(self):
-    #     """List all subfields and attributes on the field"""
-    #     return dir(super()) + dir(self.data)
-
-    # def __len__(self) -> int:
-    #     """Length of dataset is equal to number of observations"""
-    #     return self.num_obs
-
-    # def __repr__(self) -> str:
-    #     """A string representing the field
-
-    #     """
-    #     return repr(self.data)
-
-    # def __str__(self) -> str:
-    #     """A string describing the field
-
-    #     """
-    #     return str(self.data)

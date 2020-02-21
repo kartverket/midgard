@@ -11,7 +11,7 @@ import pandas as pd
 # Midgard imports
 from midgard.dev import plugins
 from midgard.parsers.wip_rinex_obs import RinexObsParser
-from midgard.parsers.rinex3_obs_header import Rinex3ObsHeaderMixin
+from midgard.parsers.wip_rinex3_obs_header import Rinex3ObsHeaderMixin
 
 
 @plugins.register

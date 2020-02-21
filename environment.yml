@@ -5,7 +5,9 @@ dependencies:
   - python>=3.6
   - bumpversion
   - dataclasses
+  - colorama
   - flit
+  - h5py
   - importlib_resources
   - ipython
   - mkdocs

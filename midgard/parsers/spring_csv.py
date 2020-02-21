@@ -18,7 +18,6 @@ import dateutil.parser
 
 # Midgard imports
 from midgard.data import dataset
-from midgard.parsers import Parser
 from midgard.parsers.csv_ import CsvParser
 from midgard.dev import plugins
 

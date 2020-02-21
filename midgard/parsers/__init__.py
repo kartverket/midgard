@@ -66,7 +66,7 @@ def parse_file(
         file_path:      Path to file that should be parsed.
         encoding:       Encoding in file that is parsed.
         timer_logger:   Logging function that will be used to log timing information.
-        use_cache:      Whether to use a cache to avoid parsing the same file several times.
+        use_cache:      Whether to use a cache to avoid parsing the same file several times. (TODO: implement this)
         parser_args:    Input arguments to the parser
 
     Returns:

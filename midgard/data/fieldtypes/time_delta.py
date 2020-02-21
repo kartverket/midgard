@@ -37,16 +37,17 @@ class TimeDeltaField(FieldType):
             data = self._factory(val, scale, fmt, **field_args)
 
         # Check that unit is not given, overwrite with time scale
-        if self._unit is not None and self._unit != (data.scale,):
+        if self._unit is not None:
             raise exceptions.InitializationError("Parameter 'unit' should not be specified for times")
-        self._unit = (data.scale,)
+        self._unit = None
 
         # Check that the correct number of observations are given
         if len(data) != self.num_obs:
             raise ValueError(f"{self.name!r} initialized with {len(data)} values, expected {self.num_obs}")
 
-        # Store the data as a TimeArray
+        # Store the data as a TimeDeltaArray
         self.data = data
+        self._plotfields = data.plot_fields()
 
     def plot_values(self, field=None):
         """Return values of the field in a form that can be plotted"""

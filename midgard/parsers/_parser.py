@@ -33,12 +33,12 @@ class Parser:
     instance ChainParser, LineParser, SinexParser etc
 
     Attributes:
-        file_path (Path):             Path to the datafile that will be read.
-        file_encoding (String):       Encoding of the datafile.
-        parser_name (String):         Name of the parser (as needed to call parsers.parse_...).
-        data_available (Boolean):     Indicator of whether data are available.
         data (Dict):                  The (observation) data read from file.
+        data_available (Boolean):     Indicator of whether data are available.
+        file_encoding (String):       Encoding of the datafile.
+        file_path (Path):             Path to the datafile that will be read.
         meta (Dict):                  Metainformation read from file.
+        parser_name (String):         Name of the parser (as needed to call parsers.parse_...).        
     """
 
     def __init__(self, file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None:
@@ -154,29 +154,10 @@ class Parser:
         Returns:
             Dataset:  The parsed data.
         """
-        # from midgard import data
-        #
-        # dset = data.Dataset.from_dict(self.data)
-        #
-        # return dset
-        raise NotImplementedError
+        from midgard.data import dataset
 
-    def update_dataset(self, dset: Any) -> NoReturn:
-        """Update the given dataset with the parsed data
-
-        This is a basic implementation, assuming the `self.data`-dictionary has
-        a simple structure. More advanced parsers may need to reimplement this
-        method.
-
-        Args:
-            dset:  The dataset to update with parsed data.
-        """
-        # parser_dset = self.as_dataset()
-        # if new fields:
-        #     dset.add ...
-        # elif new epochs:
-        #     dset.extend ...
-        raise NotImplementedError
+        dset = dataset.Dataset.from_dict(self.data)
+        return dset
 
     def __repr__(self) -> str:
         """Simple string representation of the parser"""

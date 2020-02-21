@@ -4,7 +4,7 @@
 # Midgard imports
 from midgard.dev import plugins
 from midgard.parsers.wip_rinex_clk import RinexClkParser
-from midgard.parsers.rinex3_clk_header import Rinex3ClkHeaderMixin
+from midgard.parsers.wip_rinex3_clk_header import Rinex3ClkHeaderMixin
 
 
 @plugins.register

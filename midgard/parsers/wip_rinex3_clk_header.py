@@ -1,8 +1,7 @@
 """RINEX clock header classes for file format version 3.xx
 """
 # Standard library imports
-from datetime import datetime
-from typing import Any, Dict, Tuple
+from typing import Tuple
 
 # Midgard imports
 from midgard.dev import plugins

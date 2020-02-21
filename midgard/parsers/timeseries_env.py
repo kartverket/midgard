@@ -22,7 +22,6 @@ import numpy as np
 # Midgard imports
 from midgard.data import dataset
 from midgard.data import position
-from midgard.data import time
 from midgard.dev import log
 from midgard.dev import plugins
 from midgard.math.unit import Unit

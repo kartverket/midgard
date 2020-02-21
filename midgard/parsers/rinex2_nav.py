@@ -2,18 +2,13 @@
 
 Example:
 --------
-
-    from midgard.data import dataset
     from midgard import parsers
 
     # Parse data
     parser = parsers.parse_file(parser_name="rinex2_nav", file_path=file_path)
 
-    # Create a empty Dataset
-    dset = data.Dataset()
-
-    # Fill Dataset with parsed data
-    parser.write_to_dataset(dset)
+    # Get Dataset with parsed data
+    dset = parser.as_dataset()
 
 
 Description:
@@ -32,14 +27,14 @@ The navigation message is not defined for GALILEO, BeiDou, QZSS and IRNSS in RIN
 from datetime import datetime, timedelta
 import dateutil.parser
 import itertools
-from typing import Iterable
+from typing import Any, Callable, Dict, Iterable, List, Tuple, Union
 
 # External library imports
 import numpy as np
 
 # Midgard imports
 from midgard.parsers import ChainParser, ParserDef
-from midgard.config import config
+from midgard.data import dataset
 from midgard.data.time import Time
 from midgard.dev import log
 from midgard.dev import plugins
@@ -79,57 +74,49 @@ class Rinex2NavParser(ChainParser):
     #TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.
 
     Attributes:
-        data (dict):             Dict containing the (navigation) data read from file.
-        data_available (bool):   Indicator of whether data are available.
-        day_offset (int):        Day offset used to calculate the number of days to read.
-        dependencies (list):     List of files that have been read by the parser.
-        file_key (str):          Key to the SP3 orbit file defined in files.conf file.
-        file_path (pathlib.PosixPath):  File path to SP3 orbit file.
-        meta (dict):             Dict containing the metainformation read from file, whereby the current day define the
-                                 key and the values are the RINEX header entries.
-        rundate (datetime.date): Date of model run.
-        system(str):             GNSS identifier.
-        vars (dict):             Variables needed to identify RINEX observation file based on definition in files.conf
-                                 file.
+        data (Dict):                  The (observation) data read from file.
+        data_available (Boolean):     Indicator of whether data are available.
+        file_encoding (String):       Encoding of the datafile.
+        file_path (Path):             Path to the datafile that will be read.
+        meta (Dict):                  Metainformation read from file.
+        parser_name (String):         Name of the parser (as needed to call parsers.parse_...).        
+        system (String):              GNSS identifier.
 
     Methods:
-        calculate_data()          Carry out the defined calculators
-        copy_cache_to_data()      Copy contents of the cache to the data datastructure
-        copy_cache_to_meta()      Copy contents of the cache to the meta datastructure
-        parse()                   Parse data
-        parse_default()           Add the contents of line to data
-        parse_default_meta()      Add the contents of line to meta
-        parse_line()              Parse line
-        read_data()               Read data from datafiles
-        setup_calculators()       List steps necessary for postprocessing
-        setup_parsers()           Setup parser definition
-        write_to_dataset()        Write data based on GNSS SP3 orbit file
+        as_dataframe()                Return the parsed data as a Pandas DataFrame
+        as_dataset()                  Return the parsed data as a Midgard Dataset
+        as_dict()                     Return the parsed data as a dictionary
+        parse()                       Parse data
+        parse_line()                  Parse line
+        postprocess_data()            Do simple manipulations on the data after they are read
+        read_data()                   Read data from the data file
+        setup_parser()                Set up information needed for the parser
+        setup_postprocessors()        List postprocessors that should be called after parsing
 
-        _check_nav_message()      Check correctness of navigation message
+        _check_nav_message()          Check correctness of navigation message
         _get_system_from_file_extension()  Get GNSS by reading RINEX navigation file extension
-        _parse_file()             Read a data file and parse the content
-        _parse_float()            Parse float entries of SP3 header to instance variable 'meta'
-        _parse_ion_alpha()        Parse entries of RINEX header `ION ALPHA` to instance variable `meta`.
-        _parse_ion_beta()         Parse entries of RINEX header `ION BETA` to instance variable `meta`.
-        _parse_obs_float()        Parse float entries of RINEX navigation data block to instance variable 'data'.
-        _parse_observation_epoch()  Parse observation epoch information of RINEX navigation data record
-        _parse_string()           Parse string entries of SP3 header to instance variable 'meta'
-        _parse_string_list()      Parse string entries of RINEX header to instance variable 'meta' in a list
-        _parse_time_system_corr() Not defined.
+        _parse_file()                 Read a data file and parse the content
+        _parse_ion_alpha()            Parse entries of RINEX header `ION ALPHA` to instance variable `meta`.
+        _parse_ion_beta()             Parse entries of RINEX header `ION BETA` to instance variable `meta`.
+        _parse_obs_float()            Parse float entries of RINEX navigation data block to instance variable 'data'.
+        _parse_observation_epoch()    Parse observation epoch information of RINEX navigation data record
+        _parse_string()               Parse string entries of SP3 header to instance variable 'meta'
+        _parse_string_list()          Parse string entries of RINEX header to instance variable 'meta' in a list
+        _parse_time_system_corr()     Parse entries of RINEX header `DELTA-UTC: A0,A1,T,W` to instance variable `meta`.
         _rename_fields_based_on_system()  Rename general GNSS fields to GNSS specific ones
-        _time_system_correction() Apply correction to given time system for getting GPS time scale
+        _time_system_correction()     Apply correction to given time system for getting GPS time scale
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Tuple[Any], **kwargs: Dict[Any, Any]):
         """
         Args:
-            rundate (datetime.datetime):   The model run date.
-            station (str):                 Station name.
+            args:   Parameters without keyword.
+            kargs:  Keyword arguments.
         """
         super().__init__(*args, **kwargs)
         self.system = self._get_system_from_file_extension()  # TODO: Check design of solution?
 
-    def _get_system_from_file_extension(self):
+    def _get_system_from_file_extension(self) -> None:
         """Get GNSS by reading RINEX navigation file extension
 
         For RINEX 2.11 navigation files is only the file extension an indicator, which GNSS is used.
@@ -288,13 +275,7 @@ class Rinex2NavParser(ChainParser):
 
         return itertools.chain([header_parser], itertools.repeat(data_parser))
 
-    def _parse_float(self, line, _):
-        """Parse float entries of RINEX header to instance variable 'meta'
-        """
-        for k, v in line.items():
-            self.meta[k] = float(v)
-
-    def _parse_ion_alpha(self, line, _):
+    def _parse_ion_alpha(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse entries of RINEX header `ION ALPHA` to instance variable `meta`.
 
                 self.meta['iono_para'] = { <gnss_id>: { 'para': [<parameter list>] }}
@@ -302,12 +283,10 @@ class Rinex2NavParser(ChainParser):
            Note: The ionospheric correction parameters are GNSS dependent, but we assume that is only used for GPS in
                  RINEX format version 2.11.
 
-            ===========  =================  ======================================================================
-             GNSS ID      Parameters         Description
-            ===========  =================  ======================================================================
-             GPSA         alpha0 - alpha3    Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in
-                                             :cite:`is-gps-200h`)
-            ===========  =================  ======================================================================
+            | GNSS ID  | Parameters             | Description                                                        |
+            |----------|------------------------|--------------------------------------------------------------------|
+            | GPSA     | alpha0 - alpha3        | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in |
+            |          |                        | :cite:`is-gps-200h`)                                               |
         """
         para = list()
 
@@ -317,7 +296,7 @@ class Rinex2NavParser(ChainParser):
 
         self.meta.setdefault("iono_para", dict()).update({"GPSA": {"para": para}})
 
-    def _parse_ion_beta(self, line, _):
+    def _parse_ion_beta(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse entries of RINEX header `ION BETA` to instance variable `meta`.
 
                 self.meta['iono_para'] = { <gnss_id>: { 'para': [<parameter list>] }}
@@ -325,12 +304,11 @@ class Rinex2NavParser(ChainParser):
            Note: The ionospheric correction parameters are GNSS dependent, but we assume that is only used for GPS in
                  RINEX format version 2.11.
 
-            ===========  =================  ======================================================================
-             GNSS ID    Parameters               Description
-            ===========  =================  ======================================================================
-             GPSB         beta0 - beta3     Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in
-                                            :cite:`is-gps-200h`)
-            ===========  =================  ======================================================================
+            | GNSS ID  | Parameters             | Description                                                        |
+            |----------|------------------------|--------------------------------------------------------------------|
+            | GPSB     | beta0 - beta3          | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in |
+            |          |                        | :cite:`is-gps-200h`)                                               |
+        
         """
         para = list()
 
@@ -340,7 +318,7 @@ class Rinex2NavParser(ChainParser):
 
         self.meta.setdefault("iono_para", dict()).update({"GPSB": {"para": para}})
 
-    def _parse_leap_seconds(self, line, _):
+    def _parse_leap_seconds(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse entries of RINEX header `LEAP SECONDS` to instance variable `meta`.
 
             self.meta['leap_seconds'] = { 'leap_seconds': <value>,
@@ -356,7 +334,7 @@ class Rinex2NavParser(ChainParser):
         for field in line:
             self.meta.setdefault("leap_seconds", dict()).update({field: line[field]})
 
-    def _parse_obs_float(self, line, cache):
+    def _parse_obs_float(self, line: Dict[str, str], cache: Dict[str, Any]) -> None:
         """Parse float entries of RINEX navigation data block to instance variable 'data'.
         """
 
@@ -368,19 +346,19 @@ class Rinex2NavParser(ChainParser):
         for k, v in line.items():
             self.data.setdefault(k, list()).append(_float(v))
 
-    def _parse_string(self, line, _):
+    def _parse_string(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse string entries of RINEX header to instance variable 'meta'
         """
         for k, v in line.items():
             self.meta[k] = v
 
-    def _parse_string_list(self, line, _):
+    def _parse_string_list(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse string entries of RINEX header to instance variable 'meta' in a list
         """
         for k, v in line.items():
             self.meta.setdefault(k, list()).append(v)
 
-    def _parse_observation_epoch(self, line, cache):
+    def _parse_observation_epoch(self, line: Dict[str, str], cache: Dict[str, Any]) -> None:
         """Parse observation epoch information of RINEX navigation data record
 
         Only the last 2-digits of the year is given in the observation epoch, therefore it is necessary to get the
@@ -418,7 +396,7 @@ class Rinex2NavParser(ChainParser):
         self.data.setdefault("sat_clock_drift", list()).append(_float(line["sat_clock_drift"]))
         self.data.setdefault("sat_clock_drift_rate", list()).append(_float(line["sat_clock_drift_rate"]))
 
-    def _parse_time_system_corr(self, line, _):
+    def _parse_time_system_corr(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse entries of RINEX header `DELTA-UTC: A0,A1,T,W` to instance variable `meta`.
 
                 self.meta['time_sys_corr'] = { <corr_type>: { 'a0': <value>,
@@ -429,11 +407,9 @@ class Rinex2NavParser(ChainParser):
            The 'DELTA-UTC: A0,A1,T,W' header entry seems to be only defined for GPS in RINEX navigation file format
            2.11 (see :cite:`rinex2`) with following correction type:
 
-            ===========  =====================  ======================
-             Type         Parameters             Description
-            ===========  =====================  ======================
-             GPUT         a0, a1                 GPS to UTC
-            ===========  =====================  ======================
+            | Type       | Parameters           | Description |
+            |------------|----------------------|-------------|
+            | GPUT       | a0, a1               | GPS to UTC  |
 
         """
         self.meta.setdefault("time_sys_corr", dict()).update(
@@ -441,9 +417,9 @@ class Rinex2NavParser(ChainParser):
         )
 
     #
-    # SETUP CALCULATION
+    # SETUP POSTPROCESSORS
     #
-    def setup_postprocessors(self):
+    def setup_postprocessors(self) -> List[Callable[[], None]]:
         """List steps necessary for postprocessing
         """
         return [
@@ -453,7 +429,7 @@ class Rinex2NavParser(ChainParser):
             self._determine_message_type,
         ]
 
-    def _rename_fields_based_on_system(self):
+    def _rename_fields_based_on_system(self) -> None:
         """Rename general GNSS fields to GNSS specific ones
 
         Several fields in the RINEX navigation message have a different meaning depending on the GNSS. As a first step
@@ -462,71 +438,72 @@ class Rinex2NavParser(ChainParser):
         fields are renamed in this routine depending on the GNSS. In the following table the relationship between
         the general field and the new GNSS dependent fields are shown:
 
-        ===================== ==================== =================================================================
-         General field         New field            Description
-        ===================== ==================== =================================================================
-        gnss_data_info                              Depending on GNSS this field has different meaning:
-                               E: data_source        - Galileo: Data source information about the broadcast
-                                                       ephemeris block, that means if the ephemeris block is based
-                                                       on FNAV or INAV navigation message.
-                               G: codes_l2           - GPS: Codes on L2 channel. Indication which codes are used
-                                                       on L2 channel (P code, C/A code). See section 20.3.3.3.1.2
-                                                       in :cite:`is-gps-200h`).
-                               J: codes_l2           - QZSS: Codes on L2 channel. Indication if either C/A- or P-
-                                                       code is used on L2 channel (0: spare, 1: P-code, 2: L1C/A
-                                                       code). See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.
-                               C, I, R: None         - BeiDou, IRNSS and GLONASS: not used
-
-        gnss_interval                               Interval indicates either the curve-fit interval for GPS or QZSS
-                                                    ephemeris or for BeiDou the extrapolation interval for clock
-                                                    correction parameters:
-                                                    BeiDou to the clock correction parameters:
-                               C: age_of_clock_corr   - BeiDou: Age of data, clock (AODC) is the extrapolated interval
-                                                        of clock correction parameters. It indicates the time
-                                                        difference between the reference epoch of clock correction
-                                                        parameters and the last observation epoch for extrapolating
-                                                        clock correction parameters. Meaning of AODC
-                                                         < 25  Age of the satellite clock correction parameters in hours
-                                                           25  Age of the satellite clock correction parameters is two days
-                                                           ...
-                                                        See section 5.2.4.9 in :cite:`bds-sis-icd`.
-                               G: fit_interval        - GPS: Indicates the curve-fit interval used by the GPS Control
-                                                        Segment in determining the ephemeris parameters, which is
-                                                        given in HOURS (see section 6.6 in :cite:`rinex2`).
-                               J: fit_interval        - QZSS: Fit interval is given as flag (see section 4.1.2.7 in
-                                                        :cite:`is-qzss-pnt-001`)
-                                                              0 - 2 hours
-                                                              1 - more than 2 hours
-                                                              blank - not known
-                               E, I, R: None          - Galileo, IRNSS and GLONASS: not used
-
-        gnss_iodc_groupdelay                        Clock issue of data or group delay depending on GNSS:
-                               C: tgd_b2_b3           - BeiDou: B2/B3 TGD2
-                               E: bgd_e1_e5b          - Galileo: E1-E5b BGD (see section 5.1.5 in 
-                                                        :cite:`galileo-os-sis-icd`)
-                               G: iodc                - GPS: IODC (Clock issue of data indicates changes
-                                                        (set equal to IODE))
-                               J: iodc                - QZSS: IODC
-                               I, R: None             - IRNSS and GLONASS: not used
-
-        gnss_l2p_flag                               L2 P-code data flag is only used by GPS and QZSS:
-                               G: l2p_flag            - GPS: When bit 1 of word four is a "1", it shall indicate that
-                                                        the NAV data stream was commanded OFF on the P-code of the L2
-                                                        channel (see section 20.3.3.3.1.6 in :cite:`is-gps-200h`).
-                               J: l2p_flag            - QZSS: L2P data flag set to 1 since QZSS does not track L2P.
-                                                        See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.
-                               C, E, I, R: None       - BeiDou, Galileo, IRNSS and GLONASS: not used
-
-        gnss_tgd_bgd                                Total group delay (TGD) or broadcast group delay (BGD) for
-                                                    Galileo:
-                               C: tgd_b1_b3           - BeiDou: B1/B3 TGD1
-                               E: bgd_e1_e5a          - Galileo: E1-E5a BGD (see section 5.1.5 in 
-                                                        :cite:`galileo-os-sis-icd`)
-                               G: tgd                 - GPS: TGD (:math:`L_1 - L_2` delay correction term. See
-                                                        section 20.3.3.3.3.2 in :cite:`is-gps-200h`.)
-                               I: tgd                 - IRNSS: TGD
-                               J: tgd                 - QZSS: TGD
-                               R: None                - GLONASS: not used
+       |  General field       | New field           | Description                                                       |
+       |----------------------|-------------------- |-------------------------------------------------------------------|
+       | gnss_data_info       |                     | Depending on GNSS this field has different meaning:               |
+       |                      | E: data_source      |  - Galileo: Data source information about the broadcast           |
+       |                      |                     |    ephemeris block, that means if the ephemeris block is based    |
+       |                      |                     |    on FNAV or INAV navigation message.                            |
+       |                      | G: codes_l2         |  - GPS: Codes on L2 channel. Indication which codes are used      |
+       |                      |                     |    on L2 channel (P code, C/A code). See section 20.3.3.3.1.2     |
+       |                      |                     |    in :cite:`is-gps-200h`).                                       |
+       |                      | J: codes_l2         |  - QZSS: Codes on L2 channel. Indication if either C/A- or P-     |
+       |                      |                     |    code is used on L2 channel (0: spare, 1: P-code, 2: L1C/A      |
+       |                      |                     |    code). See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.         |
+       |                      | C, I, R: None       |  - BeiDou, IRNSS and GLONASS: not used                            |
+       |                      |                     |                                                                   |
+       | gnss_interval        |                     | Interval indicates either the curve-fit interval for GPS or QZSS  |
+       |                      |                     | ephemeris or for BeiDou the extrapolation interval for clock      |
+       |                      |                     | correction parameters:                                            |
+       |                      |                     | BeiDou to the clock correction parameters:                        |
+       |                      | C: age_of_clock_corr|   - BeiDou: Age of data, clock (AODC) is the extrapolated         |
+       |                      |                     |     interval of clock correction parameters. It indicates the time|
+       |                      |                     |     difference between the reference epoch of clock correction    |
+       |                      |                     |     parameters and the last observation epoch for extrapolating   |
+       |                      |                     |     clock correction parameters. Meaning of AODC                  |
+       |                      |                     |      < 25  Age of the satellite clock correction parameters in    |
+       |                      |                     |            hours                                                  |
+       |                      |                     |        25  Age of the satellite clock correction parameters is    |
+       |                      |                     |            two days                                               |
+       |                      |                     |        ...                                                        |
+       |                      |                     |     See section 5.2.4.9 in :cite:`bds-sis-icd`.                   |
+       |                      | G: fit_interval     |   - GPS: Indicates the curve-fit interval used by the GPS Control |
+       |                      |                     |     Segment in determining the ephemeris parameters, which is     |
+       |                      |                     |     given in HOURS (see section 6.6 in :cite:`rinex2`).           |
+       |                      | J: fit_interval     |   - QZSS: Fit interval is given as flag (see section 4.1.2.7 in   |
+       |                      |                     |     :cite:`is-qzss-pnt-001`)                                      |
+       |                      |                     |           0 - 2 hours                                             |
+       |                      |                     |           1 - more than 2 hours                                   |
+       |                      |                     |           blank - not known                                       |
+       |                      | E, I, R: None       |   - Galileo, IRNSS and GLONASS: not used                          |
+       |                      |                     |                                                                   |
+       | gnss_iodc_groupdelay |                     | Clock issue of data or group delay depending on GNSS:             |
+       |                      | C: tgd_b2_b3        |   - BeiDou: B2/B3 TGD2                                            |
+       |                      | E: bgd_e1_e5b       |   - Galileo: E1-E5b BGD (see section 5.1.5 in                     |
+       |                      |                     |     :cite:`galileo-os-sis-icd`)                                   |
+       |                      | G: iodc             |   - GPS: IODC (Clock issue of data indicates changes              |
+       |                      |                     |     (set equal to IODE))                                          |
+       |                      | J: iodc             |   - QZSS: IODC                                                    |
+       |                      | I, R: None          |   - IRNSS and GLONASS: not used                                   |
+       |                      |                     |                                                                   |
+       | gnss_l2p_flag        |                     | L2 P-code data flag is only used by GPS and QZSS:                 |
+       |                      | G: l2p_flag         |   - GPS: When bit 1 of word four is a "1", it shall indicate that |
+       |                      |                     |     the NAV data stream was commanded OFF on the P-code of the L2 |
+       |                      |                     |     channel (see section 20.3.3.3.1.6 in :cite:`is-gps-200h`).    |
+       |                      | J: l2p_flag         |   - QZSS: L2P data flag set to 1 since QZSS does not track L2P.   |
+       |                      |                     |     See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.               |
+       |                      | C, E, I, R: None    |   - BeiDou, Galileo, IRNSS and GLONASS: not used                  |
+       |                      |                     |                                                                   |
+       | gnss_tgd_bgd         |                     | Total group delay (TGD) or broadcast group delay (BGD) for        |
+       |                      |                     | Galileo:                                                          |
+       |                      | C: tgd_b1_b3        |   - BeiDou: B1/B3 TGD1                                            |
+       |                      | E: bgd_e1_e5a       |   - Galileo: E1-E5a BGD (see section 5.1.5 in                     |
+       |                      |                     |     :cite:`galileo-os-sis-icd`)                                   |
+       |                      | G: tgd              |   - GPS: TGD (:math:`L_1 - L_2` delay correction term. See        |
+       |                      |                     |     section 20.3.3.3.3.2 in :cite:`is-gps-200h`.)                 |
+       |                      | I: tgd              |   - IRNSS: TGD                                                    |
+       |                      | J: tgd              |   - QZSS: TGD                                                     |
+       |                      | R: None             |   - GLONASS: not used                                             |
         """
         for field, names in SYSNAMES.items():
             if field in self.data:
@@ -541,7 +518,7 @@ class Rinex2NavParser(ChainParser):
                     self.data[new_field] = self.data[field]
                     del self.data[field]
 
-    def _check_nav_message(self):
+    def _check_nav_message(self) -> None:
         """Check correctness of navigation message.
 
         Issue of ephemeris data (IODE) and clock issue of data (IODC) should be equal (see Sections 20.3.3.3.1.5,
@@ -555,7 +532,7 @@ class Rinex2NavParser(ChainParser):
         # if set(self.data["gnss_iodc_groupdelay"]).difference(set(self.data["iode"])):
         #    log.fatal("Issue of ephemeris data (IODE) and clock issue of data (IODC) are not equal.")
 
-    def _determine_message_type(self):
+    def _determine_message_type(self) -> None:
         """Determine navigation message type and save it in 'data' dictionary under 'nav_type' key
 
         The navigation message type is dependent on the GNSS:
@@ -568,14 +545,21 @@ class Rinex2NavParser(ChainParser):
         in Section 8.3 in :cite:`rinex3` and section 5.1.3 in :cite:`galileo-os-sis-icd` (for Galileo F/NAV and I/NAV
         message).
 
-        The mask for checking I/NAV and F/NAV navigation messages uses bit 8 and 9 of the data source entry in
-        RINEX 'BROADCAST ORBIT - 5' record. If bit 8 is set (e.g. 258), than the satellite clock correction is given
-        for E5a-E1 (I/NAV message) and if bit 9 (e.g. 513, 516, 517) is set, than the satellite clock correction is
-        given for E5b-E1 (F/NAV message).
+        The mask for checking I/NAV and F/NAV navigation messages is based on RINEX 'BROADCAST ORBIT - 5' definition:
+            - if bit 0 is set (e.g. 513):       E1-B signal is used for generation of I/NAV message
+            - if bit 1 is set (e.g. 258):       E5a-I signal is used for generation of F/NAV message
+            - if bit 2 is set (e.g. 516):       E5b-I signal is used for generation of I/NAV message
+            - if bit 0 and 2 is set (e.g. 517): I/NAV message is merged together based on E1-B and E5b-I signal
+            - if bit 8 is set (e.g. 258):       Satellite clock correction is given for E5a-E1 (I/NAV message) 
+            - if bit 9 is set (e.g. 513):       Satellite clock correction is given for E5b-E1 (F/NAV message).
         """
-        # TODO: Does it exist a better solution to detect INAV and FNAV message types?
         # Mask definition for Galileo navigation messages
         nav_mask = {
+            # 9876543210 bit number
+            0b0100000001: "INAV_E1",  # = 257     Note: af0-af2, Toc, SISA are for E5a,E1
+            0b0100001001: "INAV_E1",  # = 265     Note: af0-af2, Toc, SISA are for E5a,E1
+            0b0100010001: "INAV_E1",  # = 273     Note: af0-af2, Toc, SISA are for E5a,E1
+            0b0100011001: "INAV_E1",  # = 281     Note: af0-af2, Toc, SISA are for E5a,E1
             0b1000000001: "INAV_E1",  # = 513  <- normally used
             0b1000001001: "INAV_E1",  # = 521
             0b1000010001: "INAV_E1",  # = 529
@@ -584,6 +568,10 @@ class Rinex2NavParser(ChainParser):
             0b1000001100: "INAV_E5b",  # = 524
             0b1000010100: "INAV_E5b",  # = 532
             0b1000011100: "INAV_E5b",  # = 540
+            0b0100000101: "INAV_E1E5b",  # = 261     Note: af0-af2, Toc, SISA are for E5a,E1
+            0b0100001101: "INAV_E1E5b",  # = 269     Note: af0-af2, Toc, SISA are for E5a,E1
+            0b0100010101: "INAV_E1E5b",  # = 277     Note: af0-af2, Toc, SISA are for E5a,E1
+            0b0100011101: "INAV_E1E5b",  # = 285     Note: af0-af2, Toc, SISA are for E5a,E1
             0b1000000101: "INAV_E1E5b",  # = 517  <- normally used
             0b1000001101: "INAV_E1E5b",  # = 525
             0b1000010101: "INAV_E1E5b",  # = 533
@@ -592,6 +580,10 @@ class Rinex2NavParser(ChainParser):
             0b0100001010: "FNAV_E5a",  # = 266
             0b0100010010: "FNAV_E5a",  # = 274
             0b0100011010: "FNAV_E5a",  # = 282
+            0b1000000010: "FNAV_E5a",  # = 514     Note: af0-af2, Toc, SISA are for E5b,E1
+            0b1000001010: "FNAV_E5a",  # = 522     Note: af0-af2, Toc, SISA are for E5b,E1
+            0b1000010010: "FNAV_E5a",  # = 530     Note: af0-af2, Toc, SISA are for E5b,E1
+            0b1000011010: "FNAV_E5a",  # = 538     Note: af0-af2, Toc, SISA are for E5b,E1
         }
 
         self.data["nav_type"] = np.full(len(self.data["time"]), "", dtype=object)
@@ -624,7 +616,7 @@ class Rinex2NavParser(ChainParser):
 
                 self.data["nav_type"][idx] = type_tmp
 
-    def _time_system_correction(self):
+    def _time_system_correction(self) -> None:
         """Apply correction to given time system for getting GPS time scale
 
         Following relationship are given between GNSS time scale (either BeiDou, Galileo, IRNSS or QZSS)
@@ -660,7 +652,7 @@ class Rinex2NavParser(ChainParser):
 
         # Time conversion is only necessary for C-BeiDou navigation files (Note: M-Mixed are not defined for RINEX 2.11
         # format)
-        if system is "C":
+        if system == "C":
 
             # Convert observation time entries to GPS time scale by adding system time offset
             self.data["time"] = [
@@ -729,140 +721,137 @@ class Rinex2NavParser(ChainParser):
     #
     # WRITE DATA
     #
-    def write_to_dataset(self, dset):
+    def as_dataset(self) -> "Dataset":
         """Store GNSS RINEX navigation data in a dataset
 
-        Args:
-            dset (Dataset): The Dataset where broadcast ephemeris are stored with following fields:
+        Returns:
+            Midgard Dataset where broadcast ephemeris are stored with following fields:
 
-            ==================== ====== ================ ===============================================================
-            Field                System Unit             Description
-            ==================== ====== ================ ===============================================================
-            age_of_clock_corr    C                       BeiDou: Age of data, clock (AODC) is the extrapolated interval
-                                                           of clock correction parameters. It indicates the time
-                                                           difference between the reference epoch of clock correction
-                                                           parameters and the last observation epoch for extrapolating
-                                                           clock correction parameters. Meaning of AODC
-                                                           < 25  Age of the satellite clock correction parameters in
-                                                                 hours
-                                                             25  Age of the satellite clock correction parameters is
-                                                                 two days
-                                                            ...
-                                                           See section 5.2.4.9 in :cite:`bds-sis-icd`.
-            bgd_e1_e5b            E                      Galileo: group delay E1-E5b BGD (see section 5.1.5 in
-                                                           :cite:`galileo-os-sis-icd`)
-            cic, cis             CEGIJ  rad              Correction coefficients of inclination
-            crc, crs             CEGIJ  m                Correction coefficients of orbit radius
-            cuc, cus             CEGIJ  rad              Correction coefficients of argument of perigee
-            codes_l2               G J                   GPS: Codes on L2 channel. Indication which codes are used
-                                                           on L2 channel (P code, C/A code). See section 20.3.3.3.1.2
-                                                           in :cite:`is-gps-200h`).
-                                                         QZSS: Codes on L2 channel. Indication if either C/A- or P-
-                                                           code is used on L2 channel (0: spare, 1: P-code, 2: L1C/A
-                                                           code). See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.
-            data_source           E                      Galileo: Data source information about the broadcast
-                                                           ephemeris block, that means if the ephemeris block is based
-                                                           on FNAV or INAV navigation message.
-            delta_n              CEGIJ  rad/s            Mean motion difference from computed value
-            e                    CEGIJ                   Eccentricity of the orbit
-            fit_interval           G J                   GPS: Indicates the curve-fit interval used by the GPS Control
-                                                          Segment in determining the ephemeris parameters, which is
-                                                          given in HOURS (see section 6.6 in :cite:`rinex2`).
-                                                        QZSS: Fit interval is given as flag (see section 4.1.2.7 in
-                                                         :cite:`is-qzss-pnt-001`):
-                                                            0 - 2 hours
-                                                            1 - more than 2 hours
-                                                            blank - not known
-            gnss_week            CEGIJ                   Week number of ephemeris reference epoch, whichs depends on the
-                                                         used GNSS. The week number is converted to GPS week.
-            i0                   CEGIJ  rad              Inclination angle at the reference time
-            idot                 CEGIJ  rad/s            Rate of change of inclination angle
-            iodc                   G J                   GPS: IODC (Clock issue of data indicates changes (set equal to
-                                                           IODE))
-                                                         QZSS: IODC
-            iode                 CEGIJ                   Ephemeris issue of data indicates changes to the broadcast
-                                                         ephemeris:
-                                                           - GPS: Ephemeris issue of data (IODE), which is set equal to
-                                                             IODC
-                                                           - Galileo: Issue of Data of the NAV batch (IODnav)
-                                                           - QZSS: Ephemeris issue of data (IODE)
-                                                           - BeiDou: Age of Data Ephemeris (AODE)
-                                                           - IRNSS: Issue of Data, Ephemeris and Clock (IODEC)
-            lp2_flag               G J                   L2 P-code data flag:
-                                                           - GPS: When bit 1 of word four is a "1", it shall indicate
-                                                             that the NAV data stream was commanded OFF on the P-code
-                                                             of the L2 channel (see section 20.3.3.3.1.6 in
-                                                             :cite:`is-gps-200h`).
-                                                           - QZSS: L2P data flag set to 1 since QZSS does not track L2P.
-                                                             See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.
-            m0                   CEGIJ  rad              Mean anomaly at reference epoch
-            omega                CEGIJ  rad              Argument of perigee
-            Omega                CEGIJ  rad              Longitude of ascending node of orbit plane at weekly epoch
-            Omega_dot            CEGIJ  rad/s            Rate of change of right ascension of the ascending node
-            sat_clock_bias       CEGIJ  s                Satellite clock offset from GPS time
-            sat_clock_drift      CEGIJ  s/s              Satellite clock frequency offset
-            sat_clock_drift_rate CEGIJ  :math:`s/s^2`    Satellite clock frequency drift
-            satellite            CEGIJ                   Satellite PRN number
-            sqrt_a               CEGIJ  :math:`\sqrt{m}` Square root of semi-major axis of the orbit
-            sv_accuracy          CEGIJ  m                Satellite accuracy index, which is different for GNSS:
-                                                           - GPS: SV accuracy in meters (see section 20.3.3.3.1.3 in
-                                                             :cite:`is-gps-200h`)
-                                                           - Galileo: SISA signal in space accuracy in meters
-                                                             (see section 5.1.11 in :cite:`galileo-os-sis-icd`)
-                                                           - BeiDou: Is that the user range accuracy index (URAI) in
-                                                             meters (see section 5.2.4.5 in :cite:`bds-sis-icd`)
-                                                           - QZSS: Is that the user range accuracy index?
-                                                             (see table 4.1.2-4 in :cite:`is-qzss-pnt-001`)
-                                                           - IRNSS: User range accuracy in meters (see section 6.2.1.4
-                                                             :cite:`irnss-icd-sps`)
-            sv_health            CEGIJ                   The definition of the satellite vehicle health flags depends on
-                                                         GNSS:
-                                                           - GPS: see section 20.3.3.3.1.4 in :cite:`is-gps-200h`
-                                                           - Galileo: see section 5.1.9.3 in :cite:`galileo-os-sis-icd`
-                                                           - BeiDou: see section 5.2.4.6 in :cite:`bds-sis-icd`
-                                                           - QZSS: see section 4.1.2.3 in :cite:`is-qzss-pnt-001`
-                                                           - IRNSS: see section 6.2.1.6 in :cite:`irnss-icd-sps`
-            system               CEGIJ                   GNSS identifier
-            tgd                    GIJ                   Total group delay (TGD) for GPS, IRNSS and QZSS:
-                                                           - GPS: TGD (:math:`L_1 - L_2` delay correction term. See
-                                                             section 20.3.3.3.3.2 in :cite:`is-gps-200h`.)
-            tgd_b1_b3            C                       BeiDou: total group delay (TGD1) for frequencies B1/B3
-            tgd_b2_b3            C                       BeiDou: total group delay (TGD2) for frequencies B2/B3
-            time                                         Time of clock (Toc), which is related to GPS time scale. That
-                                                         means all the different GNSS time systems (GPS: GPS time,
-                                                         Galileo: GAL time, QZSS: QZS time, BeiDou: BDT time, IRNSS:
-                                                         IRN time) are converted to GPS time scale.
-            time.data                                    TODO
-            time.utc                                     TODO
-            toe                  CEGIJ  s                Time of ephemeris, that means fractional part of current GPS
-                                                         week of ephemeris reference epoch. The week is dependent
-                                                         on GNSS (GPS: GPS week, Galileo: GAL week, QZSS: GPS week,
-                                                         BeiDou: BDT week, IRNSS: IRN week), therefore the different
-                                                         GNSS weeks are converted to GPS week.
-            transmission_time    CEGIJ  s                Transmission time of message converted to GPS time scale.
-            ==================== ====== ================ ===============================================================
+            
+       | Field               | System | Unit            | Description                                                    |
+       |---------------------|--------|-----------------|----------------------------------------------------------------|
+       | age_of_clock_corr   | C      |                 | BeiDou: Age of data, clock (AODC) is the extrapolated interval |
+       |                     |        |                 |   of clock correction parameters. It indicates the time        |
+       |                     |        |                 |   difference between the reference epoch of clock correction   |
+       |                     |        |                 |   parameters and the last observation epoch for extrapolating  |
+       |                     |        |                 |   clock correction parameters. Meaning of AODC                 |
+       |                     |        |                 |   < 25  Age of the satellite clock correction parameters in    |
+       |                     |        |                 |         hours                                                  |
+       |                     |        |                 |     25  Age of the satellite clock correction parameters is    |
+       |                     |        |                 |         two days                                               |
+       |                     |        |                 |    ...                                                         |
+       |                     |        |                 |   See section 5.2.4.9 in :cite:`bds-sis-icd`.                  |
+       | bgd_e1_e5b          |  E     |                 | Galileo: group delay E1-E5b BGD (see section 5.1.5 in          |
+       |                     |        |                 |   :cite:`galileo-os-sis-icd`)                                  |
+       | cic, cis            | CEGIJ  | rad             | Correction coefficients of inclination                         |
+       | crc, crs            | CEGIJ  | m               | Correction coefficients of orbit radius                        |
+       | cuc, cus            | CEGIJ  | rad             | Correction coefficients of argument of perigee                 |
+       | codes_l2            |   G J  |                 | GPS: Codes on L2 channel. Indication which codes are used      |
+       |                     |        |                 |   on L2 channel (P code, C/A code). See section 20.3.3.3.1.2   |
+       |                     |        |                 |   in :cite:`is-gps-200h`).                                     |
+       |                     |        |                 | QZSS: Codes on L2 channel. Indication if either C/A- or P-     |
+       |                     |        |                 |   code is used on L2 channel (0: spare, 1: P-code, 2: L1C/A    |
+       |                     |        |                 |   code). See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.       |
+       | data_source         |  E     |                 | Galileo: Data source information about the broadcast           |
+       |                     |        |                 |   ephemeris block, that means if the ephemeris block is based  |
+       |                     |        |                 |   on FNAV or INAV navigation message.                          |
+       | delta_n             | CEGIJ  | rad/s           | Mean motion difference from computed value                     |
+       | e                   | CEGIJ  |                 | Eccentricity of the orbit                                      |
+       | fit_interval        |   G J  |                 | GPS: Indicates the curve-fit interval used by the GPS Control  |
+       |                     |        |                 |  Segment in determining the ephemeris parameters, which is     |
+       |                     |        |                 |  given in HOURS (see section 6.6 in :cite:`rinex2`).           |
+       |                     |        |                 | QZSS: Fit interval is given as flag (see section 4.1.2.7 in    |
+       |                     |        |                 | :cite:`is-qzss-pnt-001`):                                      |
+       |                     |        |                 |    0 - 2 hours                                                 |
+       |                     |        |                 |    1 - more than 2 hours                                       |
+       |                     |        |                 |    blank - not known                                           |
+       | gnss_week           | CEGIJ  |                 | Week number of ephemeris reference epoch, whichs depends on the|
+       |                     |        |                 | used GNSS. The week number is converted to GPS week.           |
+       | i0                  | CEGIJ  | rad             | Inclination angle at the reference time                        |
+       | idot                | CEGIJ  | rad/s           | Rate of change of inclination angle                            |
+       | iodc                |   G J  |                 | GPS: IODC (Clock issue of data indicates changes (set equal to |
+       |                     |        |                 |   IODE))                                                       |
+       |                     |        |                 | QZSS: IODC                                                     |
+       | iode                | CEGIJ  |                 | Ephemeris issue of data indicates changes to the broadcast     |
+       |                     |        |                 | ephemeris:                                                     |
+       |                     |        |                 |   - GPS: Ephemeris issue of data (IODE), which is set equal to |
+       |                     |        |                 |     IODC                                                       |
+       |                     |        |                 |   - Galileo: Issue of Data of the NAV batch (IODnav)           |
+       |                     |        |                 |   - QZSS: Ephemeris issue of data (IODE)                       |
+       |                     |        |                 |   - BeiDou: Age of Data Ephemeris (AODE)                       |
+       |                     |        |                 |   - IRNSS: Issue of Data, Ephemeris and Clock (IODEC)          |
+       | lp2_flag            |   G J  |                 | L2 P-code data flag:                                           |
+       |                     |        |                 |   - GPS: When bit 1 of word four is a "1", it shall indicate   |
+       |                     |        |                 |     that the NAV data stream was commanded OFF on the P-code   |
+       |                     |        |                 |     of the L2 channel (see section 20.3.3.3.1.6 in             |
+       |                     |        |                 |     :cite:`is-gps-200h`).                                      |
+       |                     |        |                 |   - QZSS: L2P data flag set to 1 since QZSS does not track L2P.|
+       |                     |        |                 |     See section 4.1.2.7 in :cite:`is-qzss-pnt-001`.            |
+       | m0                  | CEGIJ  | rad             | Mean anomaly at reference epoch                                |
+       | omega               | CEGIJ  | rad             | Argument of perigee                                            |
+       | Omega               | CEGIJ  | rad             | Longitude of ascending node of orbit plane at weekly epoch     |
+       | Omega_dot           | CEGIJ  | rad/s           | Rate of change of right ascension of the ascending node        |
+       | sat_clock_bias      | CEGIJ  | s               | Satellite clock offset from GPS time                           |
+       | sat_clock_drift     | CEGIJ  | s/s             | Satellite clock frequency offset                               |
+       | sat_clock_drift_rate| CEGIJ  | :math:`s/s^2`   | Satellite clock frequency drift                                |
+       | satellite           | CEGIJ  |                 | Satellite PRN number                                           |
+       | sqrt_a              | CEGIJ  | :math:`\sqrt{m}`| Square root of semi-major axis of the orbit                    |
+       | sv_accuracy         | CEGIJ  | m               | Satellite accuracy index, which is different for GNSS:         |
+       |                     |        |                 |   - GPS: SV accuracy in meters (see section 20.3.3.3.1.3 in    |
+       |                     |        |                 |     :cite:`is-gps-200h`)                                       |
+       |                     |        |                 |   - Galileo: SISA signal in space accuracy in meters           |
+       |                     |        |                 |     (see section 5.1.11 in :cite:`galileo-os-sis-icd`)         |
+       |                     |        |                 |   - BeiDou: Is that the user range accuracy index (URAI) in    |
+       |                     |        |                 |     meters (see section 5.2.4.5 in :cite:`bds-sis-icd`)        |
+       |                     |        |                 |   - QZSS: Is that the user range accuracy index?               |
+       |                     |        |                 |     (see table 4.1.2-4 in :cite:`is-qzss-pnt-001`)             |
+       |                     |        |                 |   - IRNSS: User range accuracy in meters (see section 6.2.1.4  |
+       |                     |        |                 |     :cite:`irnss-icd-sps`)                                     |
+       | sv_health           | CEGIJ  |                 | The definition of the satellite vehicle health flags depends on|
+       |                     |        |                 | GNSS:                                                          |
+       |                     |        |                 |   - GPS: see section 20.3.3.3.1.4 in :cite:`is-gps-200h`       |
+       |                     |        |                 |   - Galileo: see section 5.1.9.3 in :cite:`galileo-os-sis-icd` |
+       |                     |        |                 |   - BeiDou: see section 5.2.4.6 in :cite:`bds-sis-icd`         |
+       |                     |        |                 |   - QZSS: see section 4.1.2.3 in :cite:`is-qzss-pnt-001`       |
+       |                     |        |                 |   - IRNSS: see section 6.2.1.6 in :cite:`irnss-icd-sps`        |
+       | system              | CEGIJ  |                 | GNSS identifier                                                |
+       | tgd                 |   GIJ  |                 | Total group delay (TGD) for GPS, IRNSS and QZSS:               |
+       |                     |        |                 |   - GPS: TGD (:math:`L_1 - L_2` delay correction term. See     |
+       |                     |        |                 |     section 20.3.3.3.3.2 in :cite:`is-gps-200h`.)              |
+       | tgd_b1_b3           | C      |                 | BeiDou: total group delay (TGD1) for frequencies B1/B3         |
+       | tgd_b2_b3           | C      |                 | BeiDou: total group delay (TGD2) for frequencies B2/B3         |
+       | time                |        |                 | Time of clock (Toc), which is related to GPS time scale. That  |
+       |                     |        |                 | means all the different GNSS time systems (GPS: GPS time,      |
+       |                     |        |                 | Galileo: GAL time, QZSS: QZS time, BeiDou: BDT time, IRNSS:    |
+       |                     |        |                 | IRN time) are converted to GPS time scale.                     |
+       | time.data           |        |                 | TODO                                                           |
+       | time.utc            |        |                 | TODO                                                           |
+       | toe                 | CEGIJ  | s               | Time of ephemeris, that means fractional part of current GPS   |
+       |                     |        |                 | week of ephemeris reference epoch. The week is dependent       |
+       |                     |        |                 | on GNSS (GPS: GPS week, Galileo: GAL week, QZSS: GPS week,     |
+       |                     |        |                 | BeiDou: BDT week, IRNSS: IRN week), therefore the different    |
+       |                     |        |                 | GNSS weeks are converted to GPS week.                          |
+       | transmission_time   | CEGIJ  | s               | Transmission time of message converted to GPS time scale.      |
 
             and following Dataset `meta` data, whereby the `meta` data are saved in a dictionary with current days
             as keys:
 
-            ==================== ======= ===========================================================================
-             Entry                Type    Description
-            ==================== ======= ===========================================================================
-            comment               list    List with comment lines
-            file_created          str     Date of file creation
-            file_type             str     File type
-            iono_para             dict    Dictionary with GNSS dependent ionospheric correction parameters (assumed
-                                          that is defined only for GPS by using RINEX 2.11 format)
-            leap_seconds          dict    Dictionary with information related to leap seconds (compatible with RINEX
-                                          3.xx navigation file data struture)
-            program               str     Name of program creating current file
-            run_by                str     Name of agency creating current file
-            time_sys_corr         dict    Dictionary with GNSS time system corrections
-            version               str     Format version
-            ==================== ======= ===========================================================================
+      |  Entry              | Type  | Description                                                                |
+      |---------------------|-------|----------------------------------------------------------------------------|
+      | comment             | list  | List with comment lines                                                    |
+      | file_created        | str   | Date of file creation                                                      |
+      | file_type           | str   | File type                                                                  |
+      | iono_para           | dict  | Dictionary with GNSS dependent ionospheric correction parameters (assumed  |
+      |                     |       | that is defined only for GPS by using RINEX 2.11 format)                   |
+      | leap_seconds        | dict  | Dictionary with information related to leap seconds (compatible with RINEX |
+      |                     |       | 3.xx navigation file data struture)                                        |
+      | program             | str   | Name of program creating current file                                      |
+      | run_by              | str   | Name of agency creating current file                                       |
+      | time_sys_corr       | dict  | Dictionary with GNSS time system corrections                               |
+      | version             | str   | Format version                                                             |
         """
 
-        dset.num_obs = len(self.data["time"])
+        dset = dataset.Dataset(num_obs=len(self.data["time"]))
         dset.meta.update(self.meta)
 
         for k, v in self.data.items():
@@ -875,18 +864,20 @@ class Rinex2NavParser(ChainParser):
                 if isinstance(v, list):
                     dset.add_float(k, val=np.array(v))
 
+        return dset
+
 
 # TODO: Maybe better to have this routine in a module.
-def _float(value):
+def _float(value: str) -> float:
     """Convert string to float value
 
     Convert a string to a floating point number (including, e.g. -0.5960D-01). Whitespace or empty value is set to 0.0.
 
     Args:
-        value (str):   string value
+        value:   string value
 
     Returns:
-        float: float value
+        Float value
     """
     if value.isspace() or not value:
         return 0.0
@@ -895,13 +886,13 @@ def _float(value):
 
 
 # TODO: Maybe better to have this routine in a module.
-def _isinteger(x):
+def _isinteger(x: Union[float, np.ndarray]) -> np.ndarray:
     """Check for integer type in given array
 
     Args:
-        x (float or numpy.ndarray):  Float numbers
+        x:  Float numbers
 
     Returns:
-        numpy.ndarray:  Array boolean values, whereby True means integer value
+        Array boolean values, whereby True means integer value
     """
     return np.equal(np.mod(x, 1), 0)

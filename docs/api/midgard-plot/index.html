@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.0.0</title>
+        <title>midgard.plot - Midgard v1.1.1</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -462,7 +462,7 @@ In addition a legend is added with information about the labels.</p>
    opt_args:    Dictionary with options, which overwrite default plot configuration.</p>
 <h3 id="plot_scatter_subplots"><strong>plot_scatter_subplots</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_scatter_subplots</code></p>
-<p>Signature: <code>(x_array:'ndarray', y_arrays:List[_ForwardRef('ndarray')], xlabel:str, ylabels:List[str], x_unit:str='', y_units:Union[List[str], NoneType]=None, colors:Union[List[str], NoneType]=None, figure_path:str='plot_scatter_subplot.png', opt_args:Dict[str, Any]={}, events:Union[Dict[str, List[Any]], NoneType]=None) -&gt; None</code></p>
+<p>Signature: <code>(x_array:numpy.ndarray, y_arrays:List[numpy.ndarray], xlabel:str, ylabels:List[str], x_unit:str='', y_units:Union[List[str], NoneType]=None, colors:Union[List[str], NoneType]=None, figure_path:str='plot_scatter_subplot.png', opt_args:Dict[str, Any]={}, events:Union[Dict[str, List[Any]], NoneType]=None) -&gt; None</code></p>
 <p>Generate scatter subplot</p>
 <p>The subplot has only one column. The number of rows is defined via the chosen number of y-axis data.</p>
 <p>Following <strong>opt_arg</strong> options can be selected:</p>
@@ -646,7 +646,7 @@ In addition a legend is added with information about the labels.</p>
                    x-axis data. Event colors are automatically chosen based on 'colormap'. </p>
 <h3 id="plot_subplot_row"><strong>plot_subplot_row</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_subplot_row</code></p>
-<p>Signature: <code>(ax:'AxesSubplot', x_array:'ndarray', y_array:'ndarray', xlabel:str='', ylabel:str='', x_unit:str='', y_unit:str='', label:str='', color:Union[NoneType, _ForwardRef('ndarray')]=None, opt_args:Dict[str, Any]={}) -&gt; None</code></p>
+<p>Signature: <code>(ax:'AxesSubplot', x_array:numpy.ndarray, y_array:numpy.ndarray, xlabel:str='', ylabel:str='', x_unit:str='', y_unit:str='', label:str='', color:Union[NoneType, numpy.ndarray]=None, opt_args:Dict[str, Any]={}) -&gt; None</code></p>
 <p>Generate single row of plot subplot</p>
 <p>Following <strong>options</strong> can be selected:</p>
 <table>

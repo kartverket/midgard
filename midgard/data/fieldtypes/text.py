@@ -14,6 +14,7 @@ from midgard.dev import plugins
 @plugins.register
 class TextField(FieldType):
 
+    dtype = str
     _factory = staticmethod(np.array)
 
     def _post_init(self, val, **field_args):
@@ -23,7 +24,10 @@ class TextField(FieldType):
                 f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
             )
 
-        data = self._factory(val, dtype=str)
+        if isinstance(val, np.ndarray):
+            data = val
+        else:
+            data = self._factory(val, dtype=self.dtype)
 
         # Check that the correct number of observations are given
         if len(data) != self.num_obs:
@@ -96,12 +100,13 @@ class TextField(FieldType):
         if name in memo:
             val = memo[name]
         else:
-            val = h5_group[name][...]
+            # Convert back from byte-string to unicode
+            val = np.asarray(h5_group[name][...], dtype=np.str_)
         return cls(num_obs=len(val), name=name.split(".")[-1], val=val)
 
     def _write(self, h5_group, _) -> None:
         """Write data to a HDF5 data source"""
-        # Convert text from unicode to string to avoid error in h5py
+        # Convert text from unicode to byte-string to avoid error in h5py
         data = np.asarray(self.data, dtype=np.string_)
         h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.data.shape, dtype=data.dtype)
         h5_field[...] = data

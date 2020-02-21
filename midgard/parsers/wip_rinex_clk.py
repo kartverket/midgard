@@ -2,7 +2,7 @@
 """
 
 # Standard library imports
-from typing import Any, Type
+from typing import Any
 
 # Midgard imports
 from midgard.dev import exceptions
@@ -15,7 +15,7 @@ def rinex_clk(**parser_args: Any) -> parsers.RinexParser:
     """Dispatch to correct subclass based on version in Rinex file"""
 
     # Import parsers locally to avoid circular imports
-    from midgard.parsers import rinex3_clk
+    from midgard.parsers import wip_rinex3_clk as rinex3_clk
 
     _PARSERS = {"3": rinex3_clk.Rinex3ClkParser}
 

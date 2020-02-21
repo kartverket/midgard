@@ -25,6 +25,7 @@ import pandas as pd
 
 # Midgard imports
 from midgard.dev import log
+from midgard.files import files
 from midgard.parsers._parser import Parser
 from midgard.math.unit import Unit
 
@@ -222,7 +223,7 @@ class SinexParser(Parser):
         each block so that self.data is properly populated.
         """
         # Read raw sinex data to self._sinex from file
-        with open(self.file_path, mode="rb") as fid:
+        with files.open(self.file_path, mode="rb") as fid:
             if self._header:
                 self.parse_header_line(next(fid))  # Header must be first line
             self.parse_blocks(fid)

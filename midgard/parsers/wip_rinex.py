@@ -2,15 +2,15 @@
 """
 
 # Standard library imports
-from typing import Any, Type
+from typing import Any
 
 # Midgard imports
 from midgard.dev import exceptions
 from midgard.dev import plugins
 from midgard import parsers
-from midgard.parsers import wip_rinex_clk, wip_rinex_nav, wip_rinex_obs
+from midgard.parsers import wip_rinex_clk as rinex_clk, wip_rinex_nav as rinex_nav, wip_rinex_obs as rinex_obs
 
-_PARSERS = {"C": wip_rinex_clk.rinex_clk, "N": wip_rinex_nav.rinex_nav, "O": wip_rinex_obs.rinex_obs}
+_PARSERS = {"C": rinex_clk.rinex_clk, "N": rinex_nav.rinex_nav, "O": rinex_obs.rinex_obs}
 
 
 @plugins.register

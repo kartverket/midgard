@@ -39,9 +39,6 @@ def compute_dops(az: np.ndarray, el: np.ndarray) -> Tuple[np.ndarray, ...]:
         Tuple with GDOP, PDOP, TDOP, HDOP and VDOP
     """
 
-    hdop = np.array([0.0])
-    vdop = np.array([0.0])
-
     # Construct the design matrix H based on observed & valid satellites
     #
     #       | -cos(e1) * cos(a1)   -cos(e1) * sin(a1)   -sin(e1)   1  |

@@ -13,15 +13,15 @@ from datetime import datetime
 from typing import Any, Dict, List, Tuple, Union
 
 # External library imports
-from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+from matplotlib.colors import ListedColormap
 from matplotlib.lines import Line2D
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 
 # Midgard imports
+from midgard.dev import log
 from midgard.math.unit import Unit
 
 
@@ -141,7 +141,7 @@ def plot_bar_dataframe_columns(
 
     # Assign to each label a color
     if label in df.columns:
-        legend_labels, cmap = _get_label_color(len(set(df.label)), colors=colors, cmap=options["colormap"])
+        legend_labels, cmap = _get_label_color(len(set(df[label])), colors=colors, cmap=options["colormap"])
 
         colors_dict = dict()
         for idx, label_ in enumerate(_ordered_set(df[label])):
@@ -168,7 +168,7 @@ def plot_bar_dataframe_columns(
     # Make legend
     if label in df.columns and options["legend"]:
         options["legend_location"] = "right" if options["legend_location"] == None else options["legend_location"]
-        _plot_legend(legend_labels, _ordered_set(df.label), options)
+        _plot_legend(legend_labels, _ordered_set(df[label]), options)
 
     # Automatically adjusts
     plt.tight_layout()
@@ -385,8 +385,8 @@ def plot(
 
 
 def plot_scatter_subplots(
-    x_array: "ndarray",
-    y_arrays: List["ndarray"],
+    x_array: np.ndarray,
+    y_arrays: List[np.ndarray],
     xlabel: str,
     ylabels: List[str],
     x_unit: str = "",
@@ -551,14 +551,14 @@ def plot_scatter_subplots(
 
 def plot_subplot_row(
     ax: "AxesSubplot",
-    x_array: "ndarray",
-    y_array: "ndarray",
+    x_array: np.ndarray,
+    y_array: np.ndarray,
     xlabel: str = "",
     ylabel: str = "",
     x_unit: str = "",
     y_unit: str = "",
     label: str = "",
-    color: Union[None, "ndarray"] = None,
+    color: Union[None, np.ndarray] = None,
     opt_args: Dict[str, Any] = {},
 ) -> None:
     """Generate single row of plot subplot
@@ -709,7 +709,7 @@ def plot_subplot_row(
 # AUXILIARY FUNCTIONS
 #
 def _add_histogram_to_scatter(
-    ax: "AxesSubplot", x_array: "ndarray", y_array: "ndarray", opt_args: Union[Dict[str, Any], None] = None
+    ax: "AxesSubplot", x_array: np.ndarray, y_array: np.ndarray, opt_args: Union[Dict[str, Any], None] = None
 ) -> None:
     """Add histograms to scatter plot
 
@@ -742,7 +742,7 @@ def _add_histogram_to_scatter(
     # ax.set_aspect(1.)
 
     # Determine histogram axis limits
-    binwidth = 0.25
+    binwidth = 0.1
     xymax = (
         max(np.abs(y_array))
         if isinstance(x_array[0], datetime)

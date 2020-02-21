@@ -14,7 +14,6 @@ Description:
 """
 # Standard library imports
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Union
 
 # External library imports
 import numpy as np

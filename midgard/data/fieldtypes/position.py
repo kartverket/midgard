@@ -22,6 +22,10 @@ class PositionField(FieldType):
         """Initialize float field"""
 
         if isinstance(val, PositionArray):
+            if val.cls_name != "PositionArray":
+                raise exceptions.InitializationError(
+                    f"Argument 'val' cannot be of type '{val.cls_name}', must be of type 'PositionArray' or numpy/list"
+                )
             data = val
         else:
             try:

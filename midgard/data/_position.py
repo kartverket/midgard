@@ -243,7 +243,6 @@ class PosBase(np.ndarray):
         # Units of systems
         elif mainfield in _SYSTEMS[cls.cls_name]:
             return _SYSTEMS[cls.cls_name][mainfield].unit(subfield)
-
         else:
             raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
 
@@ -292,7 +291,7 @@ class PosBase(np.ndarray):
                 if field in parent_fields:
                     parent_fields.remove(field)
 
-        return fields + systems_and_attributes + parent_fields
+        return list(set(fields + systems_and_attributes + parent_fields))
 
     @classmethod
     def _fields(cls):
@@ -481,6 +480,7 @@ class PositionArray(PosBase):
     """
 
     cls_name = "PositionArray"
+    type = "position"
     systems = _SYSTEMS.setdefault(cls_name, dict())
 
     def __new__(cls, val, ellipsoid=ellipsoid.GRS80, **pos_args):
@@ -929,6 +929,7 @@ class PositionDeltaArray(PosBase):
     """
 
     cls_name = "PositionDeltaArray"
+    type = "position_delta"
     systems = _SYSTEMS.setdefault(cls_name, dict())
 
     def __new__(cls, val, ref_pos, **delta_args):
@@ -1428,6 +1429,7 @@ class PosVelArray(PositionArray):
     """
 
     cls_name = "PosVelArray"
+    type = "posvel"
     systems = _SYSTEMS.setdefault(cls_name, dict())
 
     @staticmethod
@@ -1670,6 +1672,7 @@ class PosVelDeltaArray(PositionDeltaArray):
     """
 
     cls_name = "PosVelDeltaArray"
+    type = "posvel_delta"
     systems = _SYSTEMS.setdefault(cls_name, dict())
 
     @staticmethod
@@ -1718,19 +1721,15 @@ class PosVelDeltaArray(PositionDeltaArray):
 
     def __sub__(self, other):
         """self - other"""
-
-        if isinstance(other, PosVelArray):
+        if isinstance(other, PosVelDeltaArray):
             if self.system != other.system:
                 return NotImplemented
-            try:
-                return PosVelDeltaArray.from_position(val=self.val - other.val, other=self)
-            except KeyError:
-                return NotImplemented
+            return other.from_position_delta(val=self.val - other.val, other=self)
 
-        elif isinstance(other, PosVelDeltaArray):
+        elif isinstance(other, PosVelArray):
             if self.system != other.system:
                 return NotImplemented
-            return self.from_position(val=self.val - other.val, other=self)
+            return other.from_position(val=self.val - other.val, other=other)
 
     def __deepcopy__(self, memo):
         """Deep copy a PositionDeltaArray

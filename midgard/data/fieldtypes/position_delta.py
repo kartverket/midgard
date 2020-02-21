@@ -21,6 +21,10 @@ class PositionDeltaField(FieldType):
     def _post_init(self, val, **field_args):
         """Initialize position delta field"""
         if isinstance(val, PositionDeltaArray):
+            if val.cls_name != "PositionDeltaArray":
+                raise exceptions.InitializationError(
+                    f"Argument 'val' cannot be of type '{val.cls_name}', must be of type 'PositionDeltaArray' or numpy/list"
+                )
             data = val
         else:
             try:

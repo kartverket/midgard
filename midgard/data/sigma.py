@@ -10,6 +10,9 @@ import numpy as np
 
 
 class SigmaArray(np.ndarray):
+
+    type = "sigma"
+
     def __new__(cls, values, sigma=None):
         """Create a new SigmaArray"""
         obj = np.asarray(values, dtype=float).view(cls)
@@ -152,7 +155,7 @@ class SigmaArray(np.ndarray):
 
     def __setitem__(self, item, value):
         """TODO"""
-        return super().__setitem(item, value)
+        return super().__setitem__(item, value)
 
     def __getitem__(self, item):
         """Update _sigma_sliced with correct shape, used by __array_finalize__"""

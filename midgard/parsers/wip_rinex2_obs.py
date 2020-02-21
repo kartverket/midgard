@@ -1,7 +1,7 @@
 """A parser for reading RINEX observation files with version 2.xx
 """
 # Standard library imports
-from typing import Any, Dict, Tuple
+from typing import Tuple
 
 # Midgard imports
 from midgard.dev import plugins

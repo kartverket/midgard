@@ -154,3 +154,15 @@ def test_properties():
     assert (t1.sec_of_day == np.array([3661, 3661])).all()
     assert (t1.yydddsssss == np.array(["00:001:03661", "01:001:03661"])).all()
     assert (t1.doy == np.array([1, 1])).all()
+
+
+def test_is_tests():
+    t = time.Time(datetime(2000, 1, 1, 1, 1, 1), scale="utc", fmt="datetime")
+    dt = time.TimeDelta(30, scale="utc", fmt="seconds")
+
+    assert time.Time.is_time(t) == True
+    assert time.Time.is_time(dt) == False
+    assert time.Time.is_time(8) == False
+    assert time.Time.is_timedelta(t) == False
+    assert time.Time.is_timedelta(dt) == True
+    assert time.Time.is_timedelta(9) == False

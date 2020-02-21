@@ -4,7 +4,7 @@
 # Midgard imports
 from midgard.dev import plugins
 from midgard.parsers.wip_rinex_nav import RinexNavParser
-from midgard.parsers.rinex2_nav_header import Rinex2NavHeaderMixin
+from midgard.parsers.wip_rinex2_nav_header import Rinex2NavHeaderMixin
 
 
 @plugins.register

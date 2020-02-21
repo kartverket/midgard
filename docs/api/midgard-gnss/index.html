@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.gnss - Midgard v1.0.0</title>
+        <title>midgard.gnss - Midgard v1.1.1</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -144,9 +144,10 @@
         <li class="main active"><a href="#midgardgnss">midgard.gnss</a></li>
             <li><a href="#midgardgnsscompute_dops">midgard.gnss.compute_dops</a></li>
             <li><a href="#midgardgnssgnss">midgard.gnss.gnss</a></li>
+            <li><a href="#midgardgnssrec_velocity_est">midgard.gnss.rec_velocity_est</a></li>
             <li><a href="#midgardgnsssolution_validation">midgard.gnss.solution_validation</a></li>
         <li class="main "><a href="#todo-this-should-be-done-via-midgardtestsgnss">TODO: This should be done via midgard/tests/gnss !!!</a></li>
-            <li><a href="#prolog-str">prolog (str)</a></li>
+            <li><a href="#prolog-str_1">prolog (str)</a></li>
             <li><a href="#sol_validation">sol_validation()</a></li>
     </ul>
 </div></div>
@@ -226,6 +227,18 @@ be an identity matrix. The cofactor matrix Q is related to a topocentric coordin
 </tr>
 </tbody>
 </table>
+<h2 id="midgardgnssrec_velocity_est">midgard.gnss.rec_velocity_est</h2>
+<h3 id="e_omga-float">E_OMGA (float)</h3>
+<p><code>E_OMGA = 7.2921151467e-05</code></p>
+<h3 id="epilog-str">epilog (str)</h3>
+<p><code>epilog = '\n**EXAMPLE**\n    rec_velocity_est.py \n    args:\n    NONE\n               \n**COPYRIGHT**\n    | Copyright 2019, by the Geodetic Institute, NMA\n    | All rights reserved\n\n**AUTHORS**\n    | Mohammed Ouassou \n    | Geodetic Institute, NMA\n    | Kartverksveien 21, N-3511\n    | Hønefoss, Norway\n  \n'</code></p>
+<h3 id="lambda_e1-float">lambda_E1 (float)</h3>
+<p><code>lambda_E1 = 0.19029367279836487</code></p>
+<h3 id="prolog-str">prolog (str)</h3>
+<p><code>prolog = '\n**PROGRAM**\n    rec_velocity_est.py\n      \n**PURPOSE**\n   "GNSS Receiver velocity estimation by Doppler measurements\n    \n    Doppler shift, affecting  the frequency of the signal received from  a GNSS satellite, is related to the user-satellite relative motion \n    and is useful to study  the receiver  motion.  Using measurements from at least four simultaneous Doppler measurements, Least Square (LS) \n    or Kalman filter (KF) estimation techniques can be employed to obtain an estimate of the four unknown dx=(Vx, Vy, Vz, rate(cdt) ).\n    \n    FACTS:\n        F.1 The design matrix  H of the Doppler based velocity model is the same as the pseudorange  case. Constellation geometry influences the \n            velocity accuracy according to DOP.\n        F.2 The measurement errors is composed of systematic errors (orbital errors, atmosphere, and so forth) and the measurement noise. \n            Noting that the Doppler is the time derivative of the carrier phase, the systematic Doppler errors are the time derivative of the \n            carrier phase errors and changing slowly with time. The magnitude is at the level of millimeters per seconds. \n        F.3 Geometry factors influences the estimation process.    \n        F.4 The implementation is based on the paper of Mark Petovello (GNSS solutions).\n    \n    VALIDATION:\n        V.1 CNES software package SPRING is used to validate the implemented SPV.\n        V.2 Solution validation is based on Chi-square test and GDOP values on epoch-by-epoch basis\n   \n**USAGE**\n'</code></p>
+<h3 id="spvdoppler"><strong>spvDoppler</strong></h3>
+<p>Full name: <code>midgard.gnss.rec_velocity_est.spvDoppler</code></p>
+<p>Signature: <code>(z, H, x, dx, Qx)</code></p>
 <h2 id="midgardgnsssolution_validation">midgard.gnss.solution_validation</h2>
 <h3 id="comp_quality_indicators"><strong>comp_quality_indicators</strong>()</h3>
 <p>Full name: <code>midgard.gnss.solution_validation.comp_quality_indicators</code></p>
@@ -241,7 +254,7 @@ be an identity matrix. The cofactor matrix Q is related to a topocentric coordin
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Tuple with DRMS, CEP and SEE</p>
-<h3 id="epilog-str">epilog (str)</h3>
+<h3 id="epilog-str_1">epilog (str)</h3>
 <p><code>epilog = '\n**EXAMPLE**\n    sol_validation (residuals, alpha_sign_level n_params)\n    args:\n    residuals       (I): postfit residuals \n    alpha_sign_level(I): alpha significance level and defines the rejection area.\n                         possible values of alpha = 0.05 (95%), 0.01 (99%) and 0.001 (99.9%)\n    n_params        (I): number of estimated parameters (states).\n    \n\nKeywords: Chi-square distribution,\n'</code></p>
 <h3 id="get_my_parser"><strong>get_my_parser</strong>()</h3>
 <p>Full name: <code>midgard.gnss.solution_validation.get_my_parser</code></p>
@@ -251,7 +264,7 @@ be an identity matrix. The cofactor matrix Q is related to a topocentric coordin
 <p>Signature: <code>()</code></p>
 <p>Main program for testing solution validation implementation</p>
 <h1 id="todo-this-should-be-done-via-midgardtestsgnss">TODO: This should be done via midgard/tests/gnss !!!</h1>
-<h3 id="prolog-str">prolog (str)</h3>
+<h3 id="prolog-str_1">prolog (str)</h3>
 <p><code>prolog = '\n**PROGRAM**\n    solution_validation.py\n      \n**PURPOSE**\n    Perform Chi-square test for residuals. Degrees of freedom (df) refers to the number of values that\n    are free to vary df = number of valid satellites (nv) - number of parameters to be estimated (nx) - 1.\n    GNSS solution validation based on the argument alpha, the level of significance (e.g. 99%), and\n    defines the rejection level of the crossing events. \n    Note that this is different from the false alarm rate, which instead refers to error type I\n    \n**USAGE**\n'</code></p>
 <h3 id="sol_validation"><strong>sol_validation</strong>()</h3>
 <p>Full name: <code>midgard.gnss.solution_validation.sol_validation</code></p>

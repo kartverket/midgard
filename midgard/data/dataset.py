@@ -7,6 +7,7 @@ Description:
 # Standard library imports
 from collections import UserDict
 import copy
+import numbers
 import pathlib
 from typing import Any, Callable, Dict, List, Optional, Union, Hashable, Collection
 
@@ -18,11 +19,11 @@ import pandas as pd
 # Midgard imports
 import midgard
 from midgard.collections import enums
-from midgard.dev import console
 from midgard.dev import exceptions
 from midgard.dev import log
 from midgard.data import _h5utils
 from midgard.data import fieldtypes
+from midgard.data import collection
 from midgard.data.time import Time
 from midgard.math.unit import Unit
 
@@ -30,19 +31,18 @@ from midgard.math.unit import Unit
 __version__ = "3.0"
 
 
-class Dataset:
+class Dataset(collection.Collection):
     """A dataset representing fields of data arrays"""
 
     version = f"Dataset v{__version__}, Midgard v{midgard.__version__}"
+    type = "dataset"
 
     def __init__(self, num_obs: int = 0) -> None:
         """Initialize an empty dataset"""
+        super().__init__()
         self.meta = Meta()
         self.vars = dict()
-
-        self._fields = dict()
         self._num_obs = num_obs
-        self._default_field_suffix = None
 
     @classmethod
     def read(cls, file_path: Union[str, pathlib.Path]) -> "Dataset":
@@ -68,6 +68,21 @@ class Dataset:
 
             # Read meta
             dset.meta.read(h5_file["__meta__"])
+        return dset
+
+    @classmethod
+    def from_dict(cls, data):
+        """ Convert a simple data dictionary to a dataset.
+
+        All entries in the dictionary must be of the same length
+        """
+        num_obs = len(data[list(data.keys()).pop()])  # Take num obs from one random field
+        dset = cls(num_obs)
+        for field in data.keys():
+            if isinstance(data[field][0], numbers.Number):
+                dset.add_float(field, val=data[field])
+            elif isinstance(data[field][0], str):
+                dset.add_text(field, val=data[field])
         return dset
 
     def _construct_memo(self):
@@ -138,9 +153,7 @@ class Dataset:
         for field_name, field in other_dataset._fields.items():
 
             if field_name in only_in_other:
-                # self, num_obs, name, val, unit=None, write_level=None, **field_args
-                # TODO write level, unit.. make from_field?
-                new_field = field.new_from_field()
+                new_field = field.copy()
                 new_field.prepend_empty(self.num_obs, memo)
                 self._fields[field_name] = new_field
             else:
@@ -160,11 +173,6 @@ class Dataset:
     def merge_with(self, *dsets, sort_by=None, meta_key=None):
         """Merge in observations from other datasets 
 
-        Note that this is quite strict in terms of which datasets can extend each other. They must have exactly the
-        same tables. Tables containing several independent fields (e.g. float, text) may have different fields, in
-        which case fields from both datasets are included. If a field is only defined in one dataset, it will get
-        "empty" values for the observations in the dataset it is not defined.
-
         Args:
             other_dset (Sequence): List of Datasets
             sort_by (str):         Name of field to be used for sorting the merged data
@@ -180,6 +188,58 @@ class Dataset:
 
             for field in self._fields.values():
                 field.subset(sort_idx, memo)
+
+    def difference(self, other, index_by=None, copy_self_on_error=False, copy_other_on_error=False):
+        if index_by is None:
+            if len(self) != len(other):
+                raise ValueError(
+                    f"Cannot compute difference between datasets with different number of observations ({self.num_obs} vs {other.num_obs})"
+                )
+            num_obs = len(self)
+            self_idx = np.ones(len(self), dtype=bool)
+            other_idx = np.ones(len(other), dtype=bool)
+        else:
+            _index_by = index_by.split(",")
+            self_index_data = [self[n.strip()] for n in _index_by]
+            other_index_data = [other[n.strip()] for n in _index_by]
+            A = np.rec.fromarrays(self_index_data)
+            B = np.rec.fromarrays(other_index_data)
+            common, self_idx, other_idx = np.intersect1d(A, B, return_indices=True)
+            num_obs = len(common)
+
+        result = self._difference(
+            other,
+            num_obs,
+            self_idx,
+            other_idx,
+            copy_self_on_error=copy_self_on_error,
+            copy_other_on_error=copy_other_on_error,
+        )
+
+        # Overwrite field index_by difference with original value
+        if index_by is not None:
+            _index_by = index_by.split(",")
+            for index_field in _index_by:
+                index_field = index_field.strip()
+                try:
+                    del result[index_field]
+                except AttributeError:
+                    # Field does not exists so no need to delete
+                    pass
+
+                index_data = self[index_field][self_idx]
+                fieldtype = fieldtypes.fieldtype(index_data)
+                func = fieldtypes.function(fieldtype)
+                field = func(
+                    num_obs=num_obs,
+                    name=index_field,
+                    val=index_data,
+                    unit=self._fields[index_field]._unit,
+                    write_level=self._fields[index_field]._write_level.name,
+                )
+                result._fields[index_field] = field
+
+        return result
 
     def filter(self, idx=None, collection=None, **filters) -> np.array:
         """Filter observations"""
@@ -227,36 +287,6 @@ class Dataset:
                 concat_field = np.concatenate((concat_field, container[or_field][idx]))
                 _, indicies = np.unique(concat_field, return_index=True)
             return concat_field[indicies]
-
-    def for_each_suffix(self, key):
-        """Do something for each suffix"""
-        *collections, key = key.split(".")
-        container = self
-        for c in collections:
-            container = container._fields[c].data
-        previous_field_suffix = self.default_field_suffix
-        sm = [(f[len(key) :], container._fields[f].multiplier) for f in container._fields if f.startswith(key)]
-        for suffix, multiplier in sm:
-            if suffix and not suffix[1:].isdigit():
-                continue
-            self.default_field_suffix = suffix
-            yield multiplier
-
-        self.default_field_suffix = previous_field_suffix
-
-    def for_each_fieldtype(self, fieldtype):
-        for field in self._fields.values():
-            module = field.__module__.split(".")[-1]
-            if fieldtype == module:
-                yield field.data
-
-    def unit(self, field):
-        """Unit for values in a given field"""
-        mainfield, _, subfield = field.partition(".")
-        try:
-            return self._fields[mainfield].unit(subfield)
-        except KeyError:
-            raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
 
     def unit_short(self, field):
         units = self.unit(field)
@@ -331,54 +361,6 @@ class Dataset:
 
         self._num_obs = value
 
-    @property
-    def default_field_suffix(self):
-        """Default field suffix
-
-        """
-        if self._default_field_suffix is None:
-            return ""
-        return self._default_field_suffix
-
-    @default_field_suffix.setter
-    def default_field_suffix(self, suffix):
-        """Set the default field suffix
-
-        TODO: Could we possibly use a context manager for these things?
-
-              E.g.:
-                   with dset.suffix("1"):
-                       models.calculate(dset)
-        """
-        if suffix:
-            suffix = str(suffix)
-            if not suffix.startswith("_"):
-                suffix = "_" + suffix
-        else:
-            suffix = None
-
-        for collection in self.for_each_fieldtype("collection"):
-            collection.default_field_suffix = suffix
-        self._default_field_suffix = suffix
-
-    @property
-    def fields(self):
-        """Names of fields in the dataset"""
-        all_fields = list()
-        for field in self._fields.values():
-            all_fields.extend(field.subfields)
-
-        return sorted(all_fields)
-
-    @property
-    def plot_fields(self):
-        """Names of fields in the dataset that would make sense to plot"""
-        all_fields = list()
-        for field in self._fields.values():
-            all_fields.extend(field.plot_fields)
-
-        return sorted(all_fields)
-
     def update_from(self, other: "Dataset") -> None:
         """Transfers dataset fields from other Dataset to this Dataset
 
@@ -391,74 +373,10 @@ class Dataset:
             self._fields.update({fieldname: field})
         self.meta.update(other.meta)
 
-    def __getitem__(self, key):
-        """Get a field from the dataset using dict-notation"""
-        mainfield, _, subfield = key.partition(".")
-        if not subfield:
-            return getattr(self, key)
-        else:
-            return getattr(getattr(self, mainfield), subfield)
-
-    def __getattr__(self, key):
-        """Get a field from the dataset using dot-notation"""
-        if key == "_fields" or key == "default_field_suffix":
-            return self.__getattribute__(key)
-
-        container = self
-        field = key
-        if "." in key:
-            collection, _, field = key.partition(".")
-            container = self[collection]
-        if container.default_field_suffix is not None:
-            field_with_suffix = field + container.default_field_suffix
-            if field_with_suffix in container._fields:
-                return container._fields[field_with_suffix].data
-        if field in container._fields:
-            return container._fields[field].data
-
-            # Raise error for unknown attributes
-        else:
-            raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}")
-
-    def __setattr__(self, key, value):
-        """Protect dataset fields from being accidentally overwritten"""
-        try:
-            if key in self._fields:
-                if id(value) != id(self._fields[key].data):
-                    raise AttributeError(
-                        "Can't set attribute '{}' on '{}' object, use dset.{}[:] instead"
-                        "".format(key, type(self).__name__, key)
-                    )
-        except AttributeError:
-            # if self._fields is not set yet
-            pass
-        super().__setattr__(key, value)
-
-    def _todo__delitem__(self, key):
-        """Delete a field from the dataset"""
-        print("__delitem__")
-
-    def _todo__delattr__(self, key):
-        """Delete a field from the dataset"""
-        print("__delattr__")
-
-    def __dir__(self):
-        """List all fields and attributes on the dataset"""
-        return super().__dir__() + self.fields
-
-    def _ipython_key_completions_(self) -> List[str]:
-        """Tab completion for dict-style lookups in ipython
-
-        See http://ipython.readthedocs.io/en/stable/config/integrating.html
-
-        Returns:
-            Fieldnames in the dataset.
-        """
-        return self.fields
-
-    def __bool__(self) -> bool:
-        """Dataset is truthy if it has fields with observations"""
-        return self.num_obs > 0 and len(self._fields) > 0
+    def add_field(self, fieldname: str, field: "FieldType") -> None:
+        """Update the _fields dictionary with a field"""
+        self.num_obs = field.num_obs
+        super().add_field(fieldname, field)
 
     def __len__(self) -> int:
         """Length of dataset is equal to the number of observations"""
@@ -466,13 +384,8 @@ class Dataset:
 
     def __repr__(self) -> str:
         """A string representing the dataset"""
-        info = [f"num_obs={self.num_obs}", f"num_fields={len(self.fields)}"]  # TODO: Based on some vars
+        info = [f"num_obs={self.num_obs}", f"num_fields={len(self.fields)}"]
         return f"{type(self).__name__}({', '.join(info)})"
-
-    def __str__(self) -> str:
-        """A string describing the dataset"""
-        fields = console.fill(f"Fields: {', '.join(self.fields)}", hanging=8)
-        return f"{self!r}\n{fields}"
 
     def __deepcopy__(self, memo):
         new_dset = Dataset(num_obs=self.num_obs)
@@ -526,21 +439,26 @@ class Meta(UserDict):
 def _add_field_factory(field_type: str) -> Callable:
     func = fieldtypes.function(field_type)
 
-    def _add_field(self, name, val=None, unit=None, write_level=None, suffix=None, **field_args):
+    def _add_field(self, name, val=None, unit=None, write_level=None, **field_args):
         """Add a {field_type} field to the dataset"""
         if name in self._fields:
             raise exceptions.FieldExistsError(f"Field {name!r} already exists in dataset")
 
-        # Create collections for nested fields
+        # Create collections fields
         collection, _, field_name = name.rpartition(".")
         if collection and collection not in self._fields:
             self.add_collection(collection)
+        container = getattr(self, collection) if collection else self
 
         # Create field
-        field = func(num_obs=self.num_obs, name=field_name, val=val, unit=unit, write_level=write_level, **field_args)
+        if collection and field_name in container._fields:
+            field = container._fields[field_name]
+        else:
+            field = func(
+                num_obs=self.num_obs, name=field_name, val=val, unit=unit, write_level=write_level, **field_args
+            )
         # Add field to list of fields
-        fields = getattr(self, collection) if collection else self._fields
-        fields[field_name] = field
+        container._fields[field_name] = field
 
     _add_field.__doc__ = _add_field.__doc__.format(field_type=field_type)
 

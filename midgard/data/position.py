@@ -190,7 +190,7 @@ class EnuVelocityDelta(_position.VelocityDeltaArray):
 class AcrVelocityDelta(_position.VelocityDeltaArray):
 
     system = "acr"
-    column_names = ("valong", "vacross", "vradial")
+    column_names = ("valong", "vcross", "vradial")
     _units = ("meter/second", "meter/second", "meter/second")
 
 
@@ -249,7 +249,7 @@ class TrsPosVelDelta(PosVelDeltaArray):
 
     system = "trs"
     column_names = ("x", "y", "z", "vx", "vy", "vz")
-    _units = ("meter", "meter", "meter", "meter", "meter", "meter")
+    _units = ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
 
 
 @_position.register_system(convert_to=dict(trs=trans.delta_enu2trs_posvel))
@@ -264,5 +264,5 @@ class EnuPosVelDelta(PosVelDeltaArray):
 class AcrPosVelDelta(PosVelDeltaArray):
 
     system = "acr"
-    column_names = ("along", "cross", "radial", "valong", "vacross", "vradial")
+    column_names = ("along", "cross", "radial", "valong", "vcross", "vradial")
     _units = ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")

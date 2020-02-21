@@ -137,3 +137,24 @@ def num_leading_spaces(text: str, space_char: str = " ") -> int:
         Number of leading spaces.
     """
     return len(text) - len(text.lstrip(space_char))
+
+
+def progress_bar(iteration: int, total: int, prefix: str = ""):
+    """
+    Call in a loop to create terminal progress bar
+
+    Args:
+        iteration    current iteration
+        total        total iterations
+        prefix       prefix string
+    """
+    progress = iteration / total
+    limit = int(progress * 10) - int((iteration - 1) / total * 10)
+    if limit != 0:
+        # Only print results for each 10 percent to avoid too much computational overhead
+        text = f" {prefix} [{'#'*int(progress*10)}] {progress:.2%}"
+        width = len(prefix) + 20
+        print(f"{text:<{width}}", end="\r")
+
+    if iteration == total:
+        print(f" ", end="\r")

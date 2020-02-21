@@ -55,28 +55,28 @@ _str_2h5attr = _str2h5attr
 
 def _h5attr2list(attr: str) -> List[str]:
     """Convert an HDF5 attribute to a list of strings"""
-    if not attr:
+    if not attr or attr == "list()":
         return list()
     return ast.literal_eval(attr)
 
 
 def _h5attr2tuple(attr: str) -> Tuple[str, ...]:
     """Convert an HDF5 attribute to a list of strings"""
-    if not attr:
+    if not attr or attr == "tuple()":
         return tuple()
     return ast.literal_eval(attr)
 
 
 def _h5attr2set(attr: str) -> Set[str]:
     """Convert an HDF5 attribute to a list of strings"""
-    if not attr:
+    if not attr or attr == "set()":
         return set()
     return ast.literal_eval(attr)
 
 
 def _h5attr2dict(attr: str) -> List[str]:
     """Convert an HDF5 attribute to a dictionary of strings"""
-    if not attr:
+    if not attr or attr == "dict()":
         return dict()
     return ast.literal_eval(attr)
 

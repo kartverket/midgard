@@ -1,8 +1,7 @@
 """RINEX observation header classes for file format version 3.xx
 """
 # Standard library imports
-from datetime import datetime
-from typing import Any, Dict, Tuple
+from typing import Tuple
 
 # Midgard imports
 from midgard.dev import plugins
@@ -10,8 +9,8 @@ from midgard.parsers import RinexParser, RinexHeader
 from midgard.parsers._parser_rinex import parser_cache, _FieldStr, _FieldVal
 
 
-class Rinex2ObsHeaderMixin:
-    """A mixin defining which RINEX observation headers are mandatory and optional in RINEX version 2.xx"""
+class Rinex3ObsHeaderMixin:
+    """A mixin defining which RINEX observation headers are mandatory and optional in RINEX version 3.xx"""
 
     @property
     def mandatory_headers(self) -> Tuple[RinexHeader, ...]:
@@ -57,8 +56,8 @@ class Rinex2ObsHeaderMixin:
 
 
 @plugins.register
-class Rinex2ObsHeaderParser(Rinex2ObsHeaderMixin, RinexParser):
-    """A parser for reading just the RINEX version 2.xx observation header
+class Rinex3ObsHeaderParser(Rinex3ObsHeaderMixin, RinexParser):
+    """A parser for reading just the RINEX version 3.xx observation header
 
     The data in the rinex file will not be parsed.
     """

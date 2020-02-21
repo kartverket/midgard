@@ -4,7 +4,7 @@ Example:
 --------
 
     from midgard import parsers
-    p = parsers.parse_file(parser_name='discontinuities_snx', file_path='discontinuties.snx')
+    p = parsers.parse_file(parser_name='discontinuities_snx', file_path='discontinuities_snx')
     data = p.as_dict()
 
 Description:
@@ -14,6 +14,9 @@ Reads discontinuities of GNSS station timeseries in SINEX format .
 
 
 """
+# External libray imports
+import numpy as np
+
 # Midgard imports
 from midgard.dev import plugins
 
@@ -48,9 +51,12 @@ class DiscontinuitiesSnxParser(SinexParser):
     def setup_parser(self):
         return (self.discontinuity,)
 
-    def parse_discontinuity(self, data):
+    def parse_discontinuity(self, data: np.ndarray):
         """Parse SOLUTION/DISCONTINUITY SINEX block
         """
+        import IPython
+
+        IPython.embed()
         for d in data:
             site_key = d["site_code"].lower()
             add_dict = {n: d[n] for n in d.dtype.names}  # Generate dictionary with all SINEX field entries

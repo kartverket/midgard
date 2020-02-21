@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v1.0.0</title>
+        <title>midgard.dev - Midgard v1.1.1</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -306,6 +306,14 @@ indent (no indent on the first line) of <code>hanging</code> spaces.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Number of leading spaces.</p>
+<h3 id="progress_bar"><strong>progress_bar</strong>()</h3>
+<p>Full name: <code>midgard.dev.console.progress_bar</code></p>
+<p>Signature: <code>(iteration:int, total:int, prefix:str='')</code></p>
+<p>Call in a loop to create terminal progress bar</p>
+<p><strong>Args:</strong></p>
+<p>iteration    current iteration
+total        total iterations
+prefix       prefix string</p>
 <h2 id="midgarddevexceptions">midgard.dev.exceptions</h2>
 <p>Definition of Midgard-specific exceptions</p>
 <p><strong>Description:</strong></p>
@@ -434,11 +442,43 @@ name_patterns (List):  Name mangling patterns (see above).</p>
 <h2 id="midgarddevlog">midgard.dev.log</h2>
 <p>Midgard library module for logging</p>
 <p><strong>Description:</strong></p>
-<p>This module provides simple logging inside Midgard.</p>
-<p>To use it, you must first add a an active logger. This is typically done using
-one of the init-functions: init() or file_init().</p>
-<p>To write a log message, simply call one of midgard.log.debug, midgard.log.info,
-midgard.log.warn, midgard.log.error or midgard.log.fatal with a log message.</p>
+<p>The Midgard <strong>log</strong> module provides simple logging functionality. </p>
+<p>To use it, you must first add a an active logger. This is typically done using the init-functions: <strong>init()</strong> and/or
+ <strong>file_init()</strong>. <strong>init()</strong> initializes a console logger, where logging messages are written to the console. 
+<strong>file_init()</strong> initializes a file logger, where logging messages are written to a defined file path.</p>
+<p>Following logging levels are defined:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Level</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>debug</strong></td>
+<td align="left">Debug messages</td>
+</tr>
+<tr>
+<td align="left"><strong>info</strong></td>
+<td align="left">Information messages</td>
+</tr>
+<tr>
+<td align="left"><strong>warn</strong></td>
+<td align="left">Warning messages</td>
+</tr>
+<tr>
+<td align="left"><strong>error</strong></td>
+<td align="left">Error messages</td>
+</tr>
+<tr>
+<td align="left"><strong>fatal</strong></td>
+<td align="left">Fatal error messages</td>
+</tr>
+</tbody>
+</table>
+<p>To write a log message, simply call <strong>log.{level}</strong> (e.g. log.info), whereby {level} is a placeholder for the defined
+logging levels in the table above.</p>
 <p>To add a different logger, you should subclass the Logger abstract class.</p>
 <p><strong>Example:</strong></p>
 <pre><code>&gt;&gt;&gt; from midgard.dev import log
@@ -455,6 +495,15 @@ INFO  [My prefix] Calculating the inverse of a  5x3  matrix
 <p>Full name: <code>midgard.dev.log.FileLogger</code></p>
 <p>Signature: <code>(file_path:Union[str, pathlib.Path], log_level:Union[str, NoneType]=None, prefix:str='', rotation:Union[int, NoneType]=None) -&gt; None</code></p>
 <p>Log to a file, the log files can be rotated so that older files are kept</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:      File path.</li>
+<li><code>log_level</code>:      Define level from which logging should be started.</li>
+<li><code>prefix</code>:         Add prefix to logging messages.</li>
+<li><code>rotation</code>:       Logging files are rolled based on given number of rotations. That means, if there are old 
+                    log files, they will be moved to files with extension .0, .1 and so on. If the argument
+                    is not specified, then existing logging file is overwritten from newer ones.            </li>
+</ul>
 <h3 id="logger"><strong>Logger</strong></h3>
 <p>Full name: <code>midgard.dev.log.Logger</code></p>
 <p>Signature: <code>(log_level:Union[str, NoneType]=None, prefix:str='')</code></p>
@@ -487,6 +536,15 @@ of the given arguments and keywords.</p>
 <p>Full name: <code>midgard.dev.log.file_init</code></p>
 <p>Signature: <code>(file_path:Union[str, pathlib.Path], log_level:Union[str, NoneType]=None, prefix:str='', rotation:Union[int, NoneType]=None) -&gt; None</code></p>
 <p>Log to a file, the log files can be rotated so that older files are kept</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:      File path.</li>
+<li><code>log_level</code>:      Define level from which logging should be started.</li>
+<li><code>prefix</code>:         Add prefix to logging messages.</li>
+<li><code>rotation</code>:       Logging files are rolled based on given number of rotations. That means, if there are old 
+                    log files, they will be moved to files with extension .0, .1 and so on. If the argument
+                    is not specified, then existing logging file is overwritten from newer ones.            </li>
+</ul>
 <h3 id="info"><strong>info</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.info</code></p>
 <p>Signature: <code>(log_text:str, *, level:str='info') -&gt; None</code></p>
@@ -858,10 +916,10 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f800f4530d0&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7fade17fa0d0&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f800f4530d0&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7fade17fa0d0&gt;, level='info')) -&gt; None</code></p>
 <p>Class for timing running time of functions and code blocks.</p></div>
         </div>
 

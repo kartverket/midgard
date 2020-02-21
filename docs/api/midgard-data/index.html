@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.data - Midgard v1.0.0</title>
+        <title>midgard.data - Midgard v1.1.1</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -145,6 +145,7 @@
             <li><a href="#midgarddata_h5utils">midgard.data._h5utils</a></li>
             <li><a href="#midgarddata_position">midgard.data._position</a></li>
             <li><a href="#midgarddata_time">midgard.data._time</a></li>
+            <li><a href="#midgarddatacollection">midgard.data.collection</a></li>
             <li><a href="#midgarddatadataset">midgard.data.dataset</a></li>
             <li><a href="#midgarddatafieldtypes">midgard.data.fieldtypes</a></li>
             <li><a href="#midgarddatafieldtypes_fieldtype">midgard.data.fieldtypes._fieldtype</a></li>
@@ -434,6 +435,12 @@ Returns:
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Decorator registering scale.</p>
+<h2 id="midgarddatacollection">midgard.data.collection</h2>
+<p>A collection of fields </p>
+<p>Also serves as base class for dataset</p>
+<h3 id="collection"><strong>Collection</strong></h3>
+<p>Full name: <code>midgard.data.collection.Collection</code></p>
+<p>Signature: <code>()</code></p>
 <h2 id="midgarddatadataset">midgard.data.dataset</h2>
 <p>A dataset for handling time series data</p>
 <p><strong>Description:</strong></p>
@@ -448,6 +455,10 @@ Returns:
 <p><code>field_type = 'time_delta'</code></p>
 <h2 id="midgarddatafieldtypes">midgard.data.fieldtypes</h2>
 <p>Field types that can be used by Dataset</p>
+<h3 id="fieldtype"><strong>fieldtype</strong>()</h3>
+<p>Full name: <code>midgard.data.fieldtypes.fieldtype</code></p>
+<p>Signature: <code>(data:Any) -&gt; Callable</code></p>
+<p>Find correct field type for given data</p>
 <h3 id="function"><strong>function</strong>()</h3>
 <p>Full name: <code>midgard.data.fieldtypes.function</code></p>
 <p>Signature: <code>(plugin_name:str) -&gt; Callable</code></p>
@@ -458,7 +469,7 @@ Returns:
 <p>Names of fieldtype plugins</p>
 <h2 id="midgarddatafieldtypes_fieldtype">midgard.data.fieldtypes._fieldtype</h2>
 <p>Abstract class used to define different types of tables for a Dataset</p>
-<h3 id="fieldtype"><strong>FieldType</strong></h3>
+<h3 id="fieldtype_1"><strong>FieldType</strong></h3>
 <p>Full name: <code>midgard.data.fieldtypes._fieldtype.FieldType</code></p>
 <p>Signature: <code>(num_obs, name, val=None, unit=None, write_level=None, multiplier=1, **field_args)</code></p>
 <p>Abstract class representing a type of field in the Dataset</p>
@@ -469,9 +480,6 @@ Returns:
 <p>Signature: <code>(num_obs, name, val=None, unit=None, write_level=None, multiplier=1, **field_args)</code></p>
 <h2 id="midgarddatafieldtypescollection">midgard.data.fieldtypes.collection</h2>
 <p>A Dataset collection field consisting of other fields</p>
-<h3 id="collection"><strong>Collection</strong></h3>
-<p>Full name: <code>midgard.data.fieldtypes.collection.Collection</code></p>
-<p>Signature: <code>()</code></p>
 <h3 id="collectionfield"><strong>CollectionField</strong></h3>
 <p>Full name: <code>midgard.data.fieldtypes.collection.CollectionField</code></p>
 <p>Signature: <code>(num_obs, name, val=None, unit=None, write_level=None, multiplier=1, **field_args)</code></p>

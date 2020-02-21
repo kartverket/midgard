@@ -2,7 +2,7 @@
 """
 
 # Standard library imports
-from typing import Any, Type
+from typing import Any
 
 # Midgard imports
 from midgard.dev import exceptions

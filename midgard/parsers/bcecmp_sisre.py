@@ -142,10 +142,10 @@ def _float(value: str) -> float:
     Convert a string to a floating point number (including, e.g. -0.5960D-01). Whitespace or empty value is set to 0.0.
 
     Args:
-        value (str):   string value
+        value: String value
 
     Returns:
-        float: float value
+        Float value
     """
     if value.isspace() or not value:
         return 0.0

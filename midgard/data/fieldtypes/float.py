@@ -14,6 +14,7 @@ from midgard.math.unit import Unit
 @plugins.register
 class FloatField(FieldType):
 
+    dtype = float
     _factory = staticmethod(np.array)
 
     def _post_init(self, val, **field_args):
@@ -22,8 +23,10 @@ class FloatField(FieldType):
             raise exceptions.InitializationError(
                 f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
             )
-
-        data = self._factory(val, dtype=float)
+        if isinstance(val, np.ndarray):
+            data = val
+        else:
+            data = self._factory(val, dtype=self.dtype)
 
         # Check that the correct number of observations are given
         if len(data) != self.num_obs:

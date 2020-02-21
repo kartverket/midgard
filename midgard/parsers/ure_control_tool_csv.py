@@ -22,10 +22,8 @@ import numpy as np
 
 
 # Midgard imports
-from midgard.data.position import Position
 from midgard.dev import log
 from midgard.dev import plugins
-from midgard.math.unit import Unit
 from midgard.parsers.csv_ import CsvParser
 
 

@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.writers - Midgard v1.0.0</title>
+        <title>midgard.writers - Midgard v1.1.1</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.0.0</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -144,6 +144,7 @@
         <li class="main active"><a href="#midgardwriters">midgard.writers</a></li>
             <li><a href="#names">names()</a></li>
             <li><a href="#write">write()</a></li>
+            <li><a href="#midgardwriters_writers">midgard.writers._writers</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -173,7 +174,50 @@ def write_as_fancy_format(arg_1, arg_2):
 <ul>
 <li><code>writer</code>:       Name of writer.</li>
 <li><code>writer_args</code>:  Arguments passed on to writer.</li>
-</ul></div>
+</ul>
+<h2 id="midgardwriters_writers">midgard.writers._writers</h2>
+<p>Basic functionality for writing files</p>
+<p>Description:</p>
+<p>This module contains functions for writing files.</p>
+<h3 id="get_existing_fields"><strong>get_existing_fields</strong>()</h3>
+<p>Full name: <code>midgard.writers._writers.get_existing_fields</code></p>
+<p>Signature: <code>(dset:'Dataset', writers_in:Tuple[_ForwardRef('WriterField'), ...]) -&gt; Tuple[_ForwardRef('WriterField'), ...]</code></p>
+<p>Get existing writer fields, which are given in Dataset.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>dset</code>:         Dataset, a dataset containing the data.</li>
+<li><code>writers_in</code>:   Writer fields.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Existing writer fields</p>
+<h3 id="get_field"><strong>get_field</strong>()</h3>
+<p>Full name: <code>midgard.writers._writers.get_field</code></p>
+<p>Signature: <code>(dset:'Dataset', field:str, attrs:Tuple[str], unit:str) -&gt; numpy.ndarray</code></p>
+<p>Get field values of a Dataset specified by the field attributes</p>
+<p>If necessary the unit of the data fields are corrected to the defined 'output' unit.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>dset</code>:     Dataset, a dataset containing the data.</li>
+<li><code>field</code>:    Field name.</li>
+<li><code>attrs</code>:    Field attributes (e.g. for Time object: (<scale>, <time format>)).</li>
+<li><code>unit</code>:     Unit used for output.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with Dataset field values</p>
+<h3 id="get_header"><strong>get_header</strong>()</h3>
+<p>Full name: <code>midgard.writers._writers.get_header</code></p>
+<p>Signature: <code>(fields:List[str], pgm_version:Union[NoneType, str]=None, run_by:str='', summary:Union[NoneType, str]=None, add_description:Union[NoneType, str]=None) -&gt; List[str]</code></p>
+<p>Get header</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>fields</code>:             List with fields to write.</li>
+<li><code>pgm_version</code>:        Name and version (e.g. where 1.0.0) of program, which has created the output.</li>
+<li><code>run_by</code>:             Information about who has created this file (e.g. NMA).</li>
+<li><code>summary</code>:            Short description of output file</li>
+<li><code>add_description</code>:    Additional description lines</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Header lines</p></div>
         </div>
 
         <footer class="col-md-12">

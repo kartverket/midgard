@@ -157,16 +157,97 @@ def test_slice_and_columns():
     _posdelta = position.PositionDelta([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]], system="enu", ref_pos=_pos)
 
     assert np.equal(_pos.x, np.array([1_202_462.5677, 4_075_539.6734, 1_492_404.5274])).all()
-    assert np.equal(_pos[0], np.array([1_202_462.5677, 252_734.4956, 6_237_766.1746])).all()
-    assert np.equal(_pos[-1], np.array([1_492_404.5274, -4_457_266.5326, 4_296_881.8189])).all()
+    assert np.equal(_pos[0].val, np.array([1_202_462.5677, 252_734.4956, 6_237_766.1746])).all()
+    assert np.equal(_pos[-1].val, np.array([1_492_404.5274, -4_457_266.5326, 4_296_881.8189])).all()
     assert np.equal(
-        _pos[1:],
+        _pos[1:].val,
         np.array([[4_075_539.6734, 931_735.4828, 4_801_629.4955], [1_492_404.5274, -4_457_266.5326, 4_296_881.8189]]),
     ).all()
-    assert np.equal(_pos[0].other, np.array([1, 2, 3])).all()
-    assert np.equal(_pos[-1].other, np.array([7, 8, 9])).all()
+    assert np.equal(_pos[0].other.val, np.array([1, 2, 3])).all()
+    assert np.equal(_pos[-1].other.val, np.array([7, 8, 9])).all()
     assert np.equal(_posdelta.east, np.array([0.1, 0.4, 0.7])).all()
-    assert np.equal(_posdelta[1], np.array([0.4, 0.5, 0.6])).all()
-    assert np.equal(_posdelta[1].ref_pos, np.array([4_075_539.6734, 931_735.4828, 4_801_629.4955])).all()
-    assert np.equal(_posdelta[1].ref_pos.other, np.array([4, 5, 6])).all()
-    assert np.equal(_pos[1:].other, np.array([[4, 5, 6], [7, 8, 9]])).all()
+    assert np.equal(_posdelta[1].val, np.array([0.4, 0.5, 0.6])).all()
+    assert np.equal(_posdelta[1].ref_pos.val, np.array([4_075_539.6734, 931_735.4828, 4_801_629.4955])).all()
+    assert np.equal(_posdelta[1].ref_pos.other.val, np.array([4, 5, 6])).all()
+    assert np.equal(_pos[1:].other.val, np.array([[4, 5, 6], [7, 8, 9]])).all()
+
+
+@pytest.mark.parametrize("pos", (pos_trs_a, pos_trs_s), indirect=True)
+def test_pos_unit(pos):
+    assert pos.unit() == ("meter", "meter", "meter")
+    assert pos.unit("elevation") == ("radians",)
+    assert pos.unit("llh") == ("radians", "radians", "meter")
+    assert pos.unit("x") == ("meter",)
+    assert pos.unit("llh.height") == ("meter",)
+
+
+@pytest.mark.parametrize("posvel", (posvel_trs_a, posvel_trs_s), indirect=True)
+def test_posvel_unit(posvel):
+    assert posvel.unit() == ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
+    assert posvel.unit("elevation") == ("radians",)
+    assert posvel.pos.unit("llh") == ("radians", "radians", "meter")
+    assert posvel.unit("vx") == ("meter/second",)
+    assert posvel.vel.unit() == ("meter/second", "meter/second", "meter/second")
+
+
+def test_math():
+    _pos = position.Position([[1, 2, 3], [4, 5, 6], [7, 8, 9]], system="trs")
+    _pos2 = position.Position([[1, 1, 1], [2, 2, 2], [3, 3, 3]], system="trs")
+    _posdelta = position.PositionDelta([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]], system="trs", ref_pos=_pos)
+    _posdelta2 = position.PositionDelta(
+        [[0.1, 0.1, 0.1], [0.4, 0.4, 0.4], [0.7, 0.7, 0.7]], system="trs", ref_pos=_pos
+    )
+    _posvel = position.PosVel([1, 2, 3, 0.1, 0.2, 0.3], system="trs")
+    _posvel2 = position.PosVel([1, 1, 1, 0.1, 0.1, 0.1], system="trs")
+    _posveldelta = position.PosVelDelta([0.1, 0.2, 0.3, 0.01, 0.02, 0.03], system="trs", ref_pos=_posvel)
+    _posveldelta2 = position.PosVelDelta([0.1, 0.1, 0.1, 0.01, 0.01, 0.01], system="trs", ref_pos=_posvel)
+
+    # Positions
+    new_pos = _pos + _posdelta
+    np.testing.assert_almost_equal(new_pos[0].val, [1.1, 2.2, 3.3])
+    assert new_pos.cls_name == "PositionArray"
+
+    new_pos = _posdelta + _pos
+    np.testing.assert_almost_equal(new_pos[0].val, [1.1, 2.2, 3.3])
+    assert new_pos.cls_name == "PositionArray"
+
+    new_pos2 = _pos - _pos2
+    np.testing.assert_almost_equal(new_pos2.val, [[0, 1, 2], [2, 3, 4], [4, 5, 6]])
+    assert new_pos2.cls_name == "PositionDeltaArray"
+
+    new_pos3 = _pos - _posdelta
+    np.testing.assert_almost_equal(new_pos3[0].val, [0.9, 1.8, 2.7])
+    assert new_pos3.cls_name == "PositionArray"
+
+    new_pos3 = _posdelta - _pos
+    np.testing.assert_almost_equal(new_pos3[0].val, [-0.9, -1.8, -2.7])
+    assert new_pos3.cls_name == "PositionArray"
+
+    new_posdelta = _posdelta - _posdelta2
+    np.testing.assert_almost_equal(new_posdelta.val, [[0, 0.1, 0.2], [0, 0.1, 0.2], [0, 0.1, 0.2]])
+    assert new_posdelta.cls_name == "PositionDeltaArray"
+
+    # PosVels
+    new_posvel = _posvel + _posveldelta
+    np.testing.assert_almost_equal(new_posvel.val, [1.1, 2.2, 3.3, 0.11, 0.22, 0.33])
+    assert new_posvel.cls_name == "PosVelArray"
+
+    new_posvel = _posveldelta + _posvel
+    np.testing.assert_almost_equal(new_posvel.val, [1.1, 2.2, 3.3, 0.11, 0.22, 0.33])
+    assert new_posvel.cls_name == "PosVelArray"
+
+    new_posvel2 = _posvel - _posvel2
+    np.testing.assert_almost_equal(new_posvel2.val, [0, 1, 2, 0, 0.1, 0.2])
+    assert new_posvel2.cls_name == "PosVelDeltaArray"
+
+    new_posvel3 = _posvel - _posveldelta
+    np.testing.assert_almost_equal(new_posvel3.val, [0.9, 1.8, 2.7, 0.09, 0.18, 0.27])
+    assert new_posvel3.cls_name == "PosVelArray"
+
+    new_posvel3 = _posveldelta - _posvel
+    np.testing.assert_almost_equal(new_posvel3.val, [-0.9, -1.8, -2.7, -0.09, -0.18, -0.27])
+    assert new_posvel3.cls_name == "PosVelArray"
+
+    new_posveldelta = _posveldelta - _posveldelta2
+    np.testing.assert_almost_equal(new_posveldelta.val, [0, 0.1, 0.2, 0, 0.01, 0.02])
+    assert new_posveldelta.cls_name == "PosVelDeltaArray"

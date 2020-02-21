@@ -11,3 +11,5 @@
 
 unit = []
 percent = unit / 100
+mas = milliarcsec
+masD = milliarcsec per day

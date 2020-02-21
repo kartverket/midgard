@@ -3,13 +3,24 @@
 Description:
 ------------
 
-This module provides simple logging inside Midgard.
+The Midgard **log** module provides simple logging functionality. 
 
-To use it, you must first add a an active logger. This is typically done using
-one of the init-functions: init() or file_init().
+To use it, you must first add a an active logger. This is typically done using the init-functions: **init()** and/or
+ **file_init()**. **init()** initializes a console logger, where logging messages are written to the console. 
+**file_init()** initializes a file logger, where logging messages are written to a defined file path.
 
-To write a log message, simply call one of midgard.log.debug, midgard.log.info,
-midgard.log.warn, midgard.log.error or midgard.log.fatal with a log message.
+Following logging levels are defined:
+    
+| Level      | Description          |
+|:-----------|:---------------------|
+| **debug**  | Debug messages       |
+| **info**   | Information messages |
+| **warn**   | Warning messages     |
+| **error**  | Error messages       |
+| **fatal**  | Fatal error messages |
+
+To write a log message, simply call **log.{level}** (e.g. log.info), whereby {level} is a placeholder for the defined
+logging levels in the table above.
 
 To add a different logger, you should subclass the Logger abstract class.
 
@@ -111,7 +122,15 @@ class ConsoleLogger(Logger):
     name = "console"
 
     def __init__(self, log_level: Optional[str] = None, prefix: str = "", use_command_line: bool = True) -> None:
-        """Create console logger and register as an active logger"""
+        """Create console logger and register as an active logger
+    
+        Args:
+            log_level:         Define level from which logging should be started.
+            prefix:            Add prefix to logging messages.
+            use_command_line:  Use command line for defining log level via option --<level>, whereby <level> is
+                               a placeholder for the existing logging levels 'debug', 'info', 'warn', 'error' and
+                               'fatal'. 
+        """
 
         # Use command line parameters if log level is given as `--level`
         if use_command_line:
@@ -139,7 +158,16 @@ class ConsoleLogger(Logger):
 
 
 class FileLogger(Logger):
-    """Log to a file, the log files can be rotated so that older files are kept"""
+    """Log to a file, the log files can be rotated so that older files are kept
+
+        Args:
+            file_path:      File path.
+            log_level:      Define level from which logging should be started.
+            prefix:         Add prefix to logging messages.
+            rotation:       Logging files are rolled based on given number of rotations. That means, if there are old 
+                            log files, they will be moved to files with extension .0, .1 and so on. If the argument
+                            is not specified, then existing logging file is overwritten from newer ones.            
+    """
 
     def __init__(
         self,
@@ -152,7 +180,7 @@ class FileLogger(Logger):
 
         # Store file path and generate name
         self.file_path = pathlib.Path(file_path).resolve()
-        file_path.parent.mkdir(parents=True, exist_ok=True)
+        self.file_path.parent.mkdir(parents=True, exist_ok=True)
         self.name = f"file://{self.file_path}"
 
         # Rotate old log files and open log file for writing
