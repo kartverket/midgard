@@ -172,6 +172,7 @@ class TrsVelocity(_position.VelocityArray):
 #
 # Velocity delta systems
 #
+@_position.register_system(convert_to=dict())
 class TrsVelocityDelta(_position.VelocityDeltaArray):
 
     system = "trs"
@@ -179,7 +180,7 @@ class TrsVelocityDelta(_position.VelocityDeltaArray):
     _units = ("meter/second", "meter/second", "meter/second")
 
 
-@_position.register_system(convert_to=dict(trs=trans.delta_enu2trs))
+@_position.register_system(convert_to=dict())
 class EnuVelocityDelta(_position.VelocityDeltaArray):
 
     system = "enu"
@@ -187,6 +188,7 @@ class EnuVelocityDelta(_position.VelocityDeltaArray):
     _units = ("meter/second", "meter/second", "meter/second")
 
 
+@_position.register_system(convert_to=dict())
 class AcrVelocityDelta(_position.VelocityDeltaArray):
 
     system = "acr"

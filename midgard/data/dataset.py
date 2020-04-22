@@ -147,21 +147,7 @@ class Dataset(collection.Collection):
         # extension process.
         memo = dict()
 
-        only_in_other = set(other_dataset._fields.keys()) - set(self._fields.keys())
-        only_in_self = set(self._fields.keys()) - set(other_dataset._fields.keys())
-
-        for field_name, field in other_dataset._fields.items():
-
-            if field_name in only_in_other:
-                new_field = field.copy()
-                new_field.prepend_empty(self.num_obs, memo)
-                self._fields[field_name] = new_field
-            else:
-                self._fields[field_name].extend(other_dataset._fields[field_name], memo)
-
-        for field_name in only_in_self:
-            self._fields[field_name].append_empty(other_dataset.num_obs, memo)
-
+        self._extend(other_dataset, memo)
         self._num_obs += other_dataset.num_obs
 
         # Extend meta
@@ -190,6 +176,22 @@ class Dataset(collection.Collection):
                 field.subset(sort_idx, memo)
 
     def difference(self, other, index_by=None, copy_self_on_error=False, copy_other_on_error=False):
+        """Compute the difference between two datasets: self - other
+
+        index_by fields will be copied from self to the difference dataset and excluded from the - operation
+
+        Args:
+            other:               Dataset to substract from self
+            index_by:            Comma separated text string with name of fields
+                                 (columns) that will be used to find common
+                                 elements (rows).
+            copy_self_on_error:  Copy value of fields in self to the difference 
+                                 dataset if the - operation fails for a field
+            copy_other_on_error: Copy value of fields in other to the difference
+                                 dataset if the - operation fails for a field
+        Returns:
+            A new dataset with fields that contains the differene between fields in self and other
+        """
         if index_by is None:
             if len(self) != len(other):
                 raise ValueError(
@@ -244,47 +246,55 @@ class Dataset(collection.Collection):
     def filter(self, idx=None, collection=None, **filters) -> np.array:
         """Filter observations"""
         idx = np.ones(self.num_obs, dtype=bool) if idx is None else idx
+
         for field, value in filters.items():
+            if collection is not None:
+                field = f"{collection}.{field}"
             try:
-                if collection is None:
-                    field_idx = np.asarray(self[field]) == value
-                else:
-                    field_idx = np.asarray(self[f"{collection}.{field}"]) == value
+                field_idx = np.asarray(self[field]) == value
             except AttributeError as err:
                 field_idx = np.zeros(self.num_obs, dtype=bool)
-                or_fields = [f for f in self._fields if f.startswith(field + "_")]
+                mainfield, _, subfield = field.rpartition(".")
+                container = self[mainfield] if mainfield else self
+                or_fields = [f for f in container._fields if f.startswith(subfield + "_")]
+                or_fields = [f"{mainfield}.{f}" if mainfield else f for f in or_fields]
                 if not or_fields:
                     raise err
                 for or_field in or_fields:
-                    if collection is None:
-                        field_idx = np.logical_or(field_idx, self[or_field] == value)
-                    else:
-                        field_idx = np.logical_or(field_idx, self[collection][or_field] == value)
+                    field_idx = np.logical_or(field_idx, self[or_field] == value)
             idx = np.logical_and(idx, field_idx)
         return idx
 
-    def unique(self, field, collection=None, **filters) -> np.array:
+    def unique(self, field, **filters) -> np.array:
         """List unique values of a given field"""
-        idx = self.filter(collection=collection, **filters)
-        container = self
-
-        if collection is not None:
-            container = self[collection]
-
+        idx = self.filter(**filters)
         try:
             # convert to np.ndarray and find unique index (np.unique does not work on immutable arrays like TimeArray)
-            _, indicies = np.unique(np.asarray(container[field][idx]), return_index=True)
+            _, indicies = np.unique(np.asarray(self[field][idx]), return_index=True)
             unique_idx = np.zeros(np.sum(idx), dtype=bool)
             unique_idx[indicies] = True
-            return container[field][idx][unique_idx]
+            return self[field][idx][unique_idx]
         except AttributeError as err:
-            or_fields = [f for f in self._fields if f.startswith(field + "_")]
+            mainfield, _, subfield = field.rpartition(".")
+            container = self[mainfield] if mainfield else self
+            or_fields = [f for f in container._fields if f.startswith(subfield + "_")]
+            or_fields = [f"{mainfield}.{f}" if mainfield else f for f in or_fields]
             if not or_fields:
                 raise err
-            # TODO: test how this work for immutable arrays
-            concat_field = container[or_fields[0]][idx]
-            for or_field in or_fields[1:]:
-                concat_field = np.concatenate((concat_field, container[or_field][idx]))
+
+            def _get_idx(field_num):
+                if field in filters:
+                    new_filters = filters.copy()
+                    value = new_filters.pop(field)
+                    new_filters.update({or_fields[field_num]: value})
+                    return self.filter(**new_filters)
+                return idx
+
+            idx = _get_idx(0)
+            concat_field = self[or_fields[0]][idx]
+            for i, or_field in enumerate(or_fields[1:], start=1):
+                idx = _get_idx(i)
+                concat_field = np.concatenate((concat_field, self[or_field][idx]))
                 _, indicies = np.unique(concat_field, return_index=True)
             return concat_field[indicies]
 

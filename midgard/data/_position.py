@@ -251,21 +251,23 @@ class PosBase(np.ndarray):
         return cls._attributes() + cls._fields() + cls._system_columns() + cls._systems()
 
     def plot_fields(self):
+        """Returns list of attributes that can be plotted"""
+        obj = self if len(self) == 1 else self[0]
         try:
-            parent_fields = self.__class__.__base__.__base__._fields()
+            parent_fields = obj.__class__.__base__.__base__._fields()
         except AttributeError:
             parent_fields = list()
 
         systems_and_attributes = []
-        for system in self._systems():
+        for system in obj._systems():
             try:
-                _find_conversion_hops(self.cls_name, (self.system, system))
+                _find_conversion_hops(obj.cls_name, (obj.system, system))
                 # Add systems
                 systems_and_attributes.append(system)
-                for column in _SYSTEMS[self.cls_name][system].column_names:
+                for column in _SYSTEMS[obj.cls_name][system].column_names:
                     # Add system columns
                     systems_and_attributes.append(f"{system}.{column}")
-                for system_field in _FIELDS.get(_SYSTEMS[self.cls_name][system].__name__, {}):
+                for system_field in _FIELDS.get(_SYSTEMS[obj.cls_name][system].__name__, {}):
                     # Add system fields
                     systems_and_attributes.append(f"{system}.{system_field}")
             except exceptions.UnknownConversionError:
@@ -273,18 +275,15 @@ class PosBase(np.ndarray):
 
         fields = []
         # merge self fields and parent fields to one dictionary
-        parent_cls = self.__class__.__base__.__base__.cls_name
-        fields_dict = {**_FIELDS.get(self.cls_name, {}), **_FIELDS.get(parent_cls, {})}
+        parent_cls = obj.__class__.__base__.__base__.cls_name
+        fields_dict = {**_FIELDS.get(obj.cls_name, {}), **_FIELDS.get(parent_cls, {})}
         for field, dependence in fields_dict.items():
             try:
                 # Add fields that depend on some attribute being defined
                 if dependence:
-                    attr_value = getattr(self, field, None)
+                    attr_value = getattr(obj, field, None)
                     if attr_value is not None:
                         fields.append(field)
-                    else:
-                        if field in parent_fields:
-                            parent_fields.remove(field)
 
             except exceptions.InitializationError:
                 # Skip attributes that cannot be computed
@@ -1705,18 +1704,22 @@ class PosVelDeltaArray(PositionDeltaArray):
     def pos(self):
         if "pos" not in self._cache:
             attrs = {a: getattr(self, a, None) for a in self._attributes()}
-            self._cache["pos"] = _SYSTEMS["PositionDeltaArray"][self.system](
-                self.val[:, 0:3], ref_pos=self.ref_pos, **attrs
-            )
+            if self.ndim == 1:
+                val = self.val[3:6]
+            else:
+                val = self.val[:, 3:6]
+            self._cache["pos"] = _SYSTEMS["PositionDeltaArray"][self.system](val, ref_pos=self.ref_pos, **attrs)
         return self._cache["pos"]
 
     @property
     def vel(self):
         if "vel" not in self._cache:
             attrs = {a: getattr(self, a, None) for a in self._attributes()}
-            self._cache["vel"] = _SYSTEMS["VelocityDeltaArray"][self.system](
-                self.val[:, 3:6], ref_pos=self.ref_pos, **attrs
-            )
+            if self.ndim == 1:
+                val = self.val[3:6]
+            else:
+                val = self.val[:, 3:6]
+            self._cache["vel"] = _SYSTEMS["VelocityDeltaArray"][self.system](val, ref_pos=self.ref_pos, **attrs)
         return self._cache["vel"]
 
     def __sub__(self, other):

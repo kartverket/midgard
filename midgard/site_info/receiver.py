@@ -27,8 +27,7 @@ Example:
 """
 
 # Standard library imports
-from collections import OrderedDict
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple, Union
 
 # Midgard imports
@@ -356,4 +355,6 @@ class ReceiverSinex(ReceiverBase):
         if self.info["end_time"]:
             return self.info["end_time"]
         else:
-            return datetime.max
+            return datetime.max - timedelta(days=367) # TODO: Minus 367 days is necessary because 
+                                                      #       _year2days(cls, year, scale) in ./midgard/data/_time.py
+                                                      #      does not work. Exceeding of datetime limit 9999 12 31.

@@ -23,7 +23,7 @@ class FloatField(FieldType):
             raise exceptions.InitializationError(
                 f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
             )
-        if isinstance(val, np.ndarray):
+        if isinstance(val, np.ndarray) and val.dtype == self.dtype:
             data = val
         else:
             data = self._factory(val, dtype=self.dtype)
@@ -33,11 +33,11 @@ class FloatField(FieldType):
             raise ValueError(f"{self.name!r} initialized with {len(data)} values, expected {self.num_obs}")
 
         # We only support 1- and 2-dimensional arrays
-        if data.ndim < 1 or data.ndim > 2:
-            raise ValueError(
-                f"{self.name!r} initialized with {data.ndim}-dimensional data, "
-                "only 1- and 2-dimensional values are supported"
-            )
+        #if data.ndim < 1 or data.ndim > 2:
+        #    raise ValueError(
+        #        f"{self.name!r} initialized with {data.ndim}-dimensional data, "
+        #        "only 1- and 2-dimensional values are supported"
+        #    )
 
         # Handle units
         if self._unit is not None:

@@ -353,6 +353,28 @@ class GnssNameToId(str, enum.Enum):
     qzss = "J"
     glonass = "R"
     sbas = "S"
+    
+@register_enum("gnss_3digit_id_to_id")
+class Gnss3DigitIdToId(str, enum.Enum):
+    """RINEX GNSS 3-digit identifier to RINEX GNSS identifier"""
+
+    BDS = "C"
+    GAL = "E"
+    GPS = "G"
+    IRN = "I"
+    QZS = "J"
+    GLO = "R"
+    
+@register_enum("gnss_id_to_3digit_id")
+class GnssIdTo3DigitId(str, enum.Enum):
+    """RINEX GNSS RINEX identifier to GNSS 3-digit identifier"""
+
+    C = "BDS" 
+    E = "GAL"
+    G = "GPS"
+    I = "IRN"
+    J = "QZS"
+    R = "GLO"
 
 
 # Examples

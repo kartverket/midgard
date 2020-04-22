@@ -4,7 +4,6 @@ Tests for individual parsers are in their own files
 """
 
 # Standard library imports
-from datetime import datetime
 import pathlib
 
 # Third party imports
@@ -57,26 +56,6 @@ def test_non_caching_parser():
     assert False
 
 
-def test_parser_galileo_constellation_html():
-    """Test that parsing galileo_constellation_html gives expected output"""
-    parser = get_parser("galileo_constellation_html")
-    data = parser.as_dict()
-    events = parser.meta["events"]
-
-    assert parser.satellite_name("GSAT0101")["sv_id"] == "E11"
-    assert parser.satellite_id("E01")["satellite_name"] == "GSAT0210"
-    assert "clock" in data
-    assert len(data["active_nagu"]) == 26
-    assert len(events) == 6
-    assert events[0]["date_of_publication_utc"] == "2016-08-02 07:25"
-
-
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
-def test_parser_galileo_constellation_html_download():
-    """Test that parsing galileo_constellation_html gives expected output"""
-    assert False
-
-
 def test_parser_bcecmp_sisre():
     """Test that parsing bcecmp_sisre gives expected output"""
     parser = get_parser("bcecmp_sisre").as_dict()
@@ -105,6 +84,26 @@ def test_parser_discontinuities_snx():
     assert "point_code" in parser["ab06"]["solution_discontinuity"][0]
 
 
+def test_parser_galileo_constellation_html():
+    """Test that parsing galileo_constellation_html gives expected output"""
+    parser = get_parser("galileo_constellation_html")
+    data = parser.as_dict()
+    events = parser.meta["events"]
+
+    assert parser.satellite_name("GSAT0101")["sv_id"] == "E11"
+    assert parser.satellite_id("E01")["satellite_name"] == "GSAT0210"
+    assert "clock" in data
+    assert len(data["active_nagu"]) == 26
+    assert len(events) == 6
+    assert events[0]["date_of_publication_utc"] == "2016-08-02 07:25"
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_galileo_constellation_html_download():
+    """Test that parsing galileo_constellation_html gives expected output"""
+    assert False
+
+
 def test_parser_gipsy_tdp():
     """Test that parsing gipsy_tdp gives expected output"""
     parser = get_parser("gipsy_tdp").as_dict()
@@ -112,6 +111,49 @@ def test_parser_gipsy_tdp():
     assert len(parser) == 5
     assert "time_past_j2000" in parser
     assert "TRPAZSINZIMM" in parser["name"]
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")    
+def test_parser_gipsyx_gdcov():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_gipsyx_residual():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_gipsyx_summary():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_gipsyx_tdp():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_glab_output():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_android_raw_data():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_antex():
+    pass
+
+def test_parser_gnss_bernese_crd():
+    """Test that parsing gnss_bernese_crd gives expected output"""
+    parser = get_parser("gnss_bernese_crd").as_dict()
+
+    assert len(parser) == 5
+    assert "aasc" in parser
+    assert "num" in parser["aasc"]
 
 
 def test_gnss_sinex_igs():
@@ -125,8 +167,23 @@ def test_gnss_sinex_igs():
     assert "abmf" in parser["abmf"]["site_id"]["site_code"]
 
 
-@pytest.mark.skip(reason="Rinex3 parser not yet implemented")
-def test_parser_rinex3_obs():
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_rinex2_nav():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_rinex2_obs():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_rinex3_nav():
+    pass
+
+
+@pytest.mark.skip(reason="New Rinex3 parser not yet implemented")
+def test_parser_wip_rinex3_obs():
     """Test that parsing rinex3_obs gives expected output"""
     parser = get_parser("rinex3_obs")
     data = parser.as_dict()
@@ -147,19 +204,6 @@ def test_parser_rinex3_obs():
     assert data["C1C"][0] == np.nan
 
     assert header["time_of_first_obs"] == data["epoch"][0]
-
-
-def test_parser_rinex3_obs_with_writer():
-    pass
-
-
-def test_parser_gnss_bernese_crd():
-    """Test that parsing gnss_bernese_crd gives expected output"""
-    parser = get_parser("gnss_bernese_crd").as_dict()
-
-    assert len(parser) == 5
-    assert "AASC" in parser
-    assert "num" in parser["AASC"]
 
 
 def test_parser_spring_csv():

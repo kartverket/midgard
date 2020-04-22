@@ -23,7 +23,7 @@ class BoolField(FieldType):
                 f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
             )
 
-        if isinstance(val, np.ndarray):
+        if isinstance(val, np.ndarray) and val.dtype == self.dtype:
             data = val
         else:
             data = self._factory(val, dtype=self.dtype)

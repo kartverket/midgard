@@ -47,7 +47,6 @@ class TimeField(FieldType):
 
         # Store the data as a TimeArray
         self.data = data
-        self._plotfields = data.plot_fields()
 
     def plot_values(self, field=None):
         """Return values of the field in a form that can be plotted"""

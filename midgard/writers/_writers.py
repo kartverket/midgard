@@ -15,7 +15,7 @@ import numpy as np
 import midgard
 from midgard.math.unit import Unit
 
-
+#TODO: This function should be replaced by get_existing_fields_by_attrs!!!
 def get_existing_fields(dset: "Dataset", writers_in: Tuple["WriterField", ...]) -> Tuple["WriterField", ...]:
     """Get existing writer fields, which are given in Dataset.
 
@@ -43,6 +43,33 @@ def get_existing_fields(dset: "Dataset", writers_in: Tuple["WriterField", ...]) 
     return writers_out
 
 
+def get_existing_fields_by_attrs(dset: "Dataset", writers_in: Tuple["WriterField", ...]) -> Tuple["WriterField", ...]:
+    """Get existing writer fields, which are given in Dataset.
+
+    Args:
+        dset:         Dataset, a dataset containing the data.
+        writers_in:   Fields to write/plot.
+
+    Returns:
+        Existing writer fields
+    """
+    writers_out = []
+    for writer in writers_in:
+        exists = True
+        field = dset
+        for attr in writer.attrs:
+            try:
+                field = getattr(field, attr)
+            except AttributeError:
+                exists = False
+                break
+        if exists:
+            writers_out.append(writer)
+
+    return writers_out
+
+
+#TODO: This function should be replaced by get_field_by_attrs!!!
 def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.ndarray:
     """Get field values of a Dataset specified by the field attributes
 
@@ -66,6 +93,32 @@ def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.n
     if unit.startswith("deg"):
         field_attrs = field if len(attrs) == 0 else f"{field}.{'.'.join(attrs)}"
         f = f * getattr(Unit, f"{dset.unit(field_attrs)[0]}2{unit}")
+    # -TODO
+
+    return f
+
+
+def get_field_by_attrs(dset: "Dataset", attrs: Tuple[str], unit: str) -> np.ndarray:
+    """Get field values of a Dataset specified by the field attributes
+
+    If necessary the unit of the data fields are corrected to the defined 'output' unit.
+
+    Args:
+        dset:     Dataset, a dataset containing the data.
+        attrs:    Field attributes (e.g. for Time object: (<scale>, <time format>)).
+        unit:     Unit used for output.
+
+    Returns:
+        Array with Dataset field values
+    """
+    f = dset
+    for attr in attrs:
+        f = getattr(f, attr)
+
+    # Determine output 'unit'
+    # +TODO: Does not work for all fields, because dset.unit() does not except 'time.gps.mjd'.
+    if unit.startswith("deg"):
+        f = f * getattr(Unit, f"{dset.unit({'.'.join(attrs)})[0]}2{unit}")
     # -TODO
 
     return f

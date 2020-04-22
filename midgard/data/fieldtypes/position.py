@@ -48,7 +48,6 @@ class PositionField(FieldType):
 
         # Store the data as a PositionArray
         self.data = data
-        self._plotfields = data.plot_fields()
 
     def plot_values(self, field=None) -> np.array:
         """Return values of the field in a form that can be plotted"""

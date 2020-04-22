@@ -38,7 +38,10 @@ class Collection:
     def plot_fields(self):
         """Names of fields in the collection"""
         all_fields = list()
-        for field in self._fields.values():
+        for fieldname, field in self._fields.items():
+            if fieldname.endswith("_"):
+                # Fields ending with trailing underscore should not be plotted
+                continue
             all_fields.extend(field.plot_fields)
 
         return sorted(all_fields)
@@ -94,6 +97,7 @@ class Collection:
         self._default_field_suffix = suffix
 
     def _difference(self, other, num_obs, self_idx, other_idx, copy_self_on_error=False, copy_other_on_error=False):
+        """Perform the - operation for each field in self and other"""
         result = self.__class__()
         for fieldname, field in self._fields.items():
             if fieldname in other._fields:
@@ -169,6 +173,23 @@ class Collection:
 
         return result
 
+    def _extend(self, other, memo):
+        """Extend fields in self with data from other"""
+        only_in_other = set(other._fields.keys()) - set(self._fields.keys())
+        only_in_self = set(self._fields.keys()) - set(other._fields.keys())
+
+        for field_name, field in other._fields.items():
+
+            if field_name in only_in_other:
+                new_field = field.copy()
+                new_field.prepend_empty(len(self), memo)
+                self._fields[field_name] = new_field
+            else:
+                self._fields[field_name].extend(other._fields[field_name], memo)
+
+        for field_name in only_in_self:
+            self._fields[field_name].append_empty(len(other), memo)
+
     def add_field(self, fieldname: str, field: "FieldType") -> None:
         """Update the _fields dictionary with a field"""
         self._fields[fieldname] = field
@@ -222,7 +243,13 @@ class Collection:
 
     def __delitem__(self, key):
         """Delete a field from the dataset"""
-        mainfield, _, subfield = key.partition(".")
+        try:
+            mainfield, _, subfield = key.partition(".")
+        except (TypeError, AttributeError):
+            raise IndexError(
+                f"Class {self.__class__.__name__} does not support deletion of slices. Use subset instead."
+            )
+
         if not subfield:
             delattr(self, key)
         else:
@@ -273,6 +300,7 @@ class Collection:
         return f"{self!r}\n{fields}"
 
     def __len__(self) -> int:
+        """The length of a collection is the number of rows in the fields"""
         if not self._fields:
             return 0
         first_field = list(self._fields.keys())[0]

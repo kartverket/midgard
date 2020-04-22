@@ -54,9 +54,6 @@ class DiscontinuitiesSnxParser(SinexParser):
     def parse_discontinuity(self, data: np.ndarray):
         """Parse SOLUTION/DISCONTINUITY SINEX block
         """
-        import IPython
-
-        IPython.embed()
         for d in data:
             site_key = d["site_code"].lower()
             add_dict = {n: d[n] for n in d.dtype.names}  # Generate dictionary with all SINEX field entries

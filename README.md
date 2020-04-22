@@ -23,7 +23,7 @@ install it by simply running
 ## Installing Midgard from source
 
 Midgard depends on several other brilliant Python packages, like for instance
-numpy, scipy, astropy etc. We recommend using the Anaconda distribution to ease
+numpy, scipy, etc. We recommend using the Anaconda distribution to ease
 the installation of these dependencies.
 
 ### Install Anaconda

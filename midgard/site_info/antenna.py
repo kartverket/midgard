@@ -26,16 +26,16 @@ Example:
     antenna.Antenna.get(source="sinex", station="zimm", date=datetime(2018, 10, 1), source_path="igs.snx") 
 """
 
+
+# Standard library imports
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Tuple, Union
+
 # Midgard imports
 from midgard import parsers
 from midgard.dev import log
 
 # from midgard.site_info.site_info import SiteInfoHistory, SiteInfoHistoryBase  TODO: Does not work together with registering receiver plugin?
-
-# Standard library imports
-from datetime import datetime
-from typing import Any, Dict, List, Tuple, Union
-
 
 class Antenna:
     """Main antenna class for getting antenna object depending on site information source
@@ -323,4 +323,6 @@ class AntennaSinex(AntennaBase):
         if self.info["end_time"]:
             return self.info["end_time"]
         else:
-            return datetime.max
+            return datetime.max - timedelta(days=367) # TODO: Minus 367 days is necessary because 
+                                                      #       _year2days(cls, year, scale) in ./midgard/data/_time.py
+                                                      #      does not work. Exceeding of datetime limit 9999 12 31.

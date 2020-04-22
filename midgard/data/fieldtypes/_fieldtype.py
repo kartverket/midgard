@@ -21,7 +21,7 @@ class FieldType(abc.ABC):
     """Abstract class representing a type of field in the Dataset"""
 
     _subfields: List[str] = list()
-    _plotfields: List[str] = list()
+    _plot_fields: List[str] = list()
     _factory = None
     dtype = None
 
@@ -222,6 +222,7 @@ class FieldType(abc.ABC):
     @property
     def plot_fields(self):
         """Name of all plotable subfields"""
-        if not self._plotfields:
+        try:
+            return [self.name] + [f"{self.name}.{f}" for f in sorted(self.data.plot_fields())]
+        except AttributeError:
             return self.subfields
-        return [self.name] + [f"{self.name}.{f}" for f in sorted(self._plotfields)]

@@ -207,6 +207,49 @@ class TimeBase(np.ndarray):
     def __lt__(self, other):
         return self.jd < other.jd
 
+    @lru_cache()
+    def to_scale(self, scale: str) -> "TimeBase":
+        """Convert to a different scale
+ 
+        Returns a new array with the same time in the new scale.
+ 
+        Args:
+            scale:  Name of new scale.
+ 
+        Returns:
+            TimeBase representing the same times in the new scale.
+        """
+        # Don't convert if not necessary
+        if scale == self.scale:
+            return self
+
+        # Raise error for unknown scales
+        if scale not in self._scales():
+            scales = ", ".join(self._scales())
+            raise exceptions.UnknownSystemError(f"Scale {scale!r} unknown. Use one of {scales}")
+
+        # Convert to new scale
+        hop = (self.scale, scale)
+        if hop in _CONVERSIONS:
+            jd1, jd2 = _CONVERSIONS[hop](self)
+            try:
+                return self._scales()[scale].from_jds(jd1, jd2, self.fmt)
+            except ValueError:
+                # Given format does not exist for selected time scale, use default jd
+                return self._scales()[scale].from_jds(jd1, jd2, "jd")
+        if hop not in _CONVERSION_HOPS:
+            _CONVERSION_HOPS[hop] = _find_conversion_hops(hop)
+
+        converted_time = self
+        for one_hop in _CONVERSION_HOPS[hop]:
+            jd1, jd2 = _CONVERSIONS[one_hop](converted_time)
+            try:
+                converted_time = self._scales()[one_hop[-1]].from_jds(jd1, jd2, self.fmt)
+            except ValueError:
+                # Given format does not exist for selected time scale, use default jd
+                converted_time = self._scales()[one_hop[-1]].from_jds(jd1, jd2, "jd")
+        return converted_time
+
     def subset(self, idx, memo):
         """Create a subset"""
         old_id = id(self)
@@ -334,6 +377,10 @@ class TimeBase(np.ndarray):
         else:
             raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
 
+    def __len__(self):
+        fmt_ndim = self._formats()[self.fmt].ndim
+        return int(self.size/fmt_ndim)
+
     def __setattr__(self, name, value):
         raise AttributeError(f"{self.__class__.__name__} object does not support item assignment ")
 
@@ -426,50 +473,17 @@ class TimeArray(TimeBase):
         return _FORMATS["TimeFormat"]
 
     @lru_cache()
-    def to_scale(self, scale: str) -> "TimeArray":
-        """Convert time to a different scale
-
-        Returns a new TimeArray with the same time in the new scale.
-
-        Args:
-            scale:  Name of new scale.
-
-        Returns:
-            TimeArray representing the same times in the new scale.
-        """
-        # Don't convert if not necessary
-        if scale == self.scale:
-            return self
-
-        # Raise error for unknown scales
-        if scale not in self._scales():
-            scales = ", ".join(self._scales())
-            raise exceptions.UnknownSystemError(f"Scale {scale!r} unknown. Use one of {scales}")
-
-        # Convert to new scale
-        hop = (self.scale, scale)
-        if hop in _CONVERSIONS:
-            jd1, jd2 = _CONVERSIONS[hop](self)
-            return self._scales()[scale].from_jds(jd1, jd2, self.fmt)
-
-        if hop not in _CONVERSION_HOPS:
-            _CONVERSION_HOPS[hop] = _find_conversion_hops(hop)
-
-        converted_time = self
-        for one_hop in _CONVERSION_HOPS[hop]:
-            jd1, jd2 = _CONVERSIONS[one_hop](converted_time)
-            converted_time = self._scales()[one_hop[-1]].from_jds(jd1, jd2, self.fmt)
-        return converted_time
-
     def plot_fields(self):
+        """Returns list of attributes that can be plotted"""
+        obj = self if len(self) == 1 else self[0]
         scales_and_formats = []
-        for scale in self._scales():
+        for scale in obj._scales():
             try:
-                _find_conversion_hops((self.scale, scale))
+                _find_conversion_hops((obj.scale, scale))
                 # Add scales
                 scales_and_formats.append(scale)
-                scale_time = getattr(self, scale)
-                fmt_cls = self.cls_name.replace("Array", "Format")
+                scale_time = getattr(obj, scale)
+                fmt_cls = obj.cls_name.replace("Array", "Format")
                 for fmt in _FORMATS.get(fmt_cls, {}):
                     # Add system fields
                     try:
@@ -718,23 +732,26 @@ class TimeDeltaArray(TimeBase):
         """
         return _SCALES[other.scale](np.full(other.shape, fill_value=timedelta(seconds=0)), fmt="timedelta")
 
+    @lru_cache()
     def plot_fields(self):
+        """Returns list of attributes that can be plotted"""
+        obj = self if len(self) == 1 else self[0]
         scales_and_formats = []
         try:
             # Add scale
-            scales_and_formats.append(self.scale)
-            fmt_cls = self.cls_name.replace("Array", "Format")
+            scales_and_formats.append(obj.scale)
+            fmt_cls = obj.cls_name.replace("Array", "Format")
             for fmt in _FORMATS.get(fmt_cls, {}):
                 # Add system fields
                 try:
-                    fmt_time = getattr(self, fmt)
+                    fmt_time = getattr(obj, fmt)
                     if isinstance(fmt_time, np.ndarray) and fmt_time.dtype.type is np.str_:
                         # Skip string formats
                         continue
                     if isinstance(fmt_time, str):
                         # Skip string formats
                         continue
-                    scales_and_formats.append(f"{self.scale}.{fmt}")
+                    scales_and_formats.append(f"{obj.scale}.{fmt}")
                 except ValueError:
                     pass  # Skip formats that are invalid for that scale
         except exceptions.UnknownConversionError:
@@ -1221,10 +1238,10 @@ class TimeGPSSec(TimeFormat):
         if scale != "gps":
             raise ValueError(f"Format {cls.fmt} is only available for time scale gps")
 
-        if val2 is None:
+        if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {cls.fmt}")
 
-        days = val * Unit.second2day
+        days = np.asarray(val) * Unit.second2day
         days_int = np.floor(days)
         days_frac = days - days_int
 

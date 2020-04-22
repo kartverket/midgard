@@ -4,7 +4,7 @@ See https://www.gsc-europa.eu/system-status/Constellation-Information for an exa
 """
 # Standard library imports
 import pathlib
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 import warnings
 
 # Third party imports
@@ -15,6 +15,8 @@ import pycurl
 from midgard.dev import plugins
 from midgard.parsers import Parser
 
+# Midgard imports
+from midgard.dev import log
 
 @plugins.register
 class GalileoConstellationHTMLParser(Parser):
@@ -29,7 +31,6 @@ class GalileoConstellationHTMLParser(Parser):
         self,
         file_path: Union[str, pathlib.Path],
         encoding: Optional[str] = None,
-        logger: Optional[Callable[[str], None]] = print,
         url: Optional[str] = None,
     ) -> None:
         """Set up the basic information needed by the parser
@@ -37,10 +38,9 @@ class GalileoConstellationHTMLParser(Parser):
         Args:
             file_path:    Path to file that will be read or downloaded.
             encoding:     Encoding of file that will be read.
-            logger:       Function that will be used for logging.
             url:          Optional URL from where to download constellation file.
         """
-        super().__init__(file_path, encoding, logger)
+        super().__init__(file_path, encoding)
         if not self.file_path.exists():
             self.download_html(url)
             self.data_available = self.file_path.exists()
@@ -54,7 +54,7 @@ class GalileoConstellationHTMLParser(Parser):
             url:  URL to download from, if None use self.URL instead.
         """
         url = self.URL if url is None else url
-        self.logger(f"Downloading {url} to {self.file_path}")
+        log.debug(f"Downloading {url} to {self.file_path}")
         with open(self.file_path, mode="wb") as fid:
             c = pycurl.Curl()
             c.setopt(c.URL, url)

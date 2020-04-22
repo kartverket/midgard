@@ -8,6 +8,7 @@ dependencies:
   - colorama
   - flit
   - h5py
+  - idna
   - importlib_resources
   - ipython
   - mkdocs
@@ -18,4 +19,5 @@ dependencies:
   - pycurl
   - pytest
   - pytest-cov
+  - pytoml
   - scipy

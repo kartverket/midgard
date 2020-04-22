@@ -72,6 +72,8 @@ def dset_full():
     _dset = dataset.Dataset(5)
     _dset.add_bool("idx", val=[0, 1, 1, 0, 1])
     _dset.add_float("numbers", val=[1, 2, 3, 4, 5])
+    _dset.add_float("numbers_1", val=[2, 2, 2, 2, 2])
+    _dset.add_float("numbers_2", val=[3, 3, 3, 3, 3])
     _dset.add_position("sat_pos", val=np.ones((5, 3)), system="trs")
     _dset.add_position("site_pos", val=np.ones((5, 3)) * 2, system="trs", other=_dset.sat_pos)
     _dset.add_position_delta("site_delta", val=np.ones((5, 3)) * 0.5, system="trs", ref_pos=_dset.site_pos)
@@ -446,7 +448,9 @@ def test_filter():
 
     # Normal filter with and without collection
     idx1 = _dset.filter(text_1="a")
-    idx2 = _dset.filter(text_1="h", collection="group")
+    idx2 = _dset.filter(**{"group.text_1": "h"})
+    idx22 = _dset.filter(text_1="h", collection="group")  # Same filer, different syntax
+    assert np.equal(idx2, idx22).all()
     idx3 = _dset.filter(time=datetime(2015, 1, 1, 0))
     idx = np.array([True, False, False, False, False, False, False], dtype=bool)
     assert np.equal(idx1, idx).all()
@@ -455,7 +459,9 @@ def test_filter():
 
     # Underscore filter with and without collection
     idx1 = _dset.filter(text="a")
-    idx2 = _dset.filter(text="h", collection="group")
+    idx2 = _dset.filter(**{"group.text": "h"})
+    idx22 = _dset.filter(text="h", collection="group")  # Same filer, different syntax
+    assert np.equal(idx2, idx22).all()
     idx = np.array([True, False, False, False, False, False, True], dtype=bool)
     assert np.equal(idx1, idx).all()
     assert np.equal(idx2, idx).all()
@@ -490,14 +496,19 @@ def test_unique():
     _dset = dataset.Dataset(10)
     _dset.add_text("text", list("abcabcabca"))
     _dset.add_time("time", [58000] * 2 + [58001] * 6 + [58002] * 2, fmt="mjd", scale="utc")
+    _dset.add_float("numbers_1", [1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
+    _dset.add_float("numbers_2", [3, 4, 3, 4, 3, 4, 3, 4, 3, 4])
+    _dset.add_time("group.time_1", [58000] * 10, fmt="mjd", scale="utc")
+    _dset.add_time("group.time_2", [58001] * 10, fmt="mjd", scale="utc")
     _dset.add_text("group.text", list("defdefdefd"))
     _dset.add_float("group.numbers", range(0, 10))
 
     assert np.char.equal(_dset.unique("text"), np.array(list("abc"))).all()
     assert np.equal(_dset.unique("time"), np.array([58000, 58001, 58002])).all()
-    assert np.char.equal(_dset.unique("text", collection="group"), np.array(list("def"))).all()
+    assert np.equal(_dset.unique("numbers"), [1, 2, 3, 4]).all()
+    assert np.equal(_dset.unique("group.time"), np.array([58000, 58001])).all()
+    assert np.char.equal(_dset.unique("group.text"), np.array(list("def"))).all()
     assert np.equal(_dset.unique("group.numbers"), np.arange(0, 10)).all()
-    assert np.equal(_dset.unique("numbers", collection="group"), np.arange(0, 10)).all()
 
 
 def test_difference_1():
@@ -634,6 +645,73 @@ def test_unit():
     assert _dset1.unit_short("group.numbers") == ("W",)
 
 
-def test_convert(dset_full):
+def test_functions(dset_full):
     dset_full.as_dict()
     dset_full.as_dataframe()
+    for field in dset_full.plot_fields:
+        dset_full.plot_values(field)
+
+
+def test_delete(dset_full):
+    # Deletion of dataset "rows" is not allowed
+    with pytest.raises(IndexError):
+        del dset_full[0]
+
+    # Delete a field with __delattr__
+    assert "numbers" in dset_full.fields
+    dset_full.numbers
+
+    del dset_full.numbers
+    assert "numbers" not in dset_full.fields
+    with pytest.raises(AttributeError):
+        dset_full.numbers
+
+    # Delete a field in a collection with __delattr__
+    assert "group.numbers" in dset_full.fields
+    dset_full.group.numbers
+
+    del dset_full.group.numbers
+    assert "group.numbers" not in dset_full.fields
+    with pytest.raises(AttributeError):
+        dset_full.group.numbers
+
+    # Delete a field in a nested collection with __delattr__
+    assert "group.anothergroup.numbers" in dset_full.fields
+    dset_full.group.anothergroup.numbers
+
+    del dset_full.group.anothergroup.numbers
+    assert "group.anothergroup.numbers" not in dset_full.fields
+    with pytest.raises(AttributeError):
+        dset_full.group.anothergroup.numbers
+
+    # Delete a field with __delitem__
+    assert "time" in dset_full.fields
+    dset_full.time
+
+    del dset_full["time"]
+    assert "time" not in dset_full.fields
+    with pytest.raises(AttributeError):
+        dset_full.time
+
+    # Delete a field in a collection with __delitem__
+    assert "group.time" in dset_full.fields
+    dset_full.group.time
+
+    del dset_full["group.time"]
+    assert "group.time" not in dset_full.fields
+    with pytest.raises(AttributeError):
+        dset_full.group.time
+
+    # Delete a field with suffix with __delattr__
+    assert "numbers_1" in dset_full.fields
+    dset_full.numbers_1
+    dset_full.numbers_2
+
+    for _ in dset_full.for_each_suffix("numbers"):
+        del dset_full.numbers
+    assert "numbers_1" not in dset_full.fields
+    assert "numbers_2" not in dset_full.fields
+    with pytest.raises(AttributeError):
+        dset_full.numbers_1
+    with pytest.raises(AttributeError):
+        dset_full.numbers_2

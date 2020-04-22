@@ -181,13 +181,31 @@ def test_pos_unit(pos):
     assert pos.unit("llh.height") == ("meter",)
 
 
+@pytest.mark.parametrize("posdelta", (posdelta_trs_a, posdelta_trs_s), indirect=True)
+def test_posdelta_unit(posdelta):
+    assert posdelta.unit() == ("meter", "meter", "meter")
+    assert posdelta.unit("x") == ("meter",)
+    assert posdelta.unit("enu") == ("meter", "meter", "meter")
+    assert posdelta.unit("enu.north") == ("meter",)
+
+
 @pytest.mark.parametrize("posvel", (posvel_trs_a, posvel_trs_s), indirect=True)
 def test_posvel_unit(posvel):
     assert posvel.unit() == ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
     assert posvel.unit("elevation") == ("radians",)
     assert posvel.pos.unit("llh") == ("radians", "radians", "meter")
+    assert posvel.unit("kepler") == ("meter", "unitless", "radians", "radians", "radians", "radians")
     assert posvel.unit("vx") == ("meter/second",)
     assert posvel.vel.unit() == ("meter/second", "meter/second", "meter/second")
+
+
+@pytest.mark.parametrize("posveldelta", (posveldelta_trs_a, posveldelta_trs_s), indirect=True)
+def test_posveldelta_unit(posveldelta):
+    assert posveldelta.unit() == ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
+    assert posveldelta.unit("acr") == ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
+    assert posveldelta.unit("vx") == ("meter/second",)
+    assert posveldelta.pos.unit() == ("meter", "meter", "meter")
+    assert posveldelta.vel.unit() == ("meter/second", "meter/second", "meter/second")
 
 
 def test_math():
@@ -251,3 +269,23 @@ def test_math():
     new_posveldelta = _posveldelta - _posveldelta2
     np.testing.assert_almost_equal(new_posveldelta.val, [0, 0.1, 0.2, 0, 0.01, 0.02])
     assert new_posveldelta.cls_name == "PosVelDeltaArray"
+
+
+def test_cache():
+    pos1 = position.Position([1, 2, 3], system="trs")
+    pos2 = position.Position([-4, 5, 2], system="trs")
+    pos3 = position.Position([7, -8, 5], system="trs")
+
+    pos1.other = pos2
+    el1 = pos1.elevation
+
+    pos1.other = pos3
+    el2 = pos1.elevation
+
+    # Other position is changed and elevation cache should have been reset
+    assert not np.isclose(el1, el2)
+
+    pos3[0] = 0
+    el3 = pos1.elevation
+    # Value of other position is changed and elevation cache should have been reset
+    assert not np.isclose(el2, el3)

@@ -29,7 +29,7 @@ from midgard.math.unit import Unit
 
 
 def get_statistic(
-    data: "ndarray", funcs: List[str] = ["rms", "mean", "std", "min", "max", "percentile"], unit: str = ""
+    data: np.ndarray, funcs: List[str] = ["rms", "mean", "std", "min", "max", "percentile"], unit: str = ""
 ) -> List[str]:
     """Get text string with statistical information
 
@@ -208,39 +208,40 @@ def plot(
 
     Following **opt_arg** options can be selected:
 
-    | Option         | Value            | Description                                                                |
-    |----------------|------------------|----------------------------------------------------------------------------|
-    | colormap       | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet,    |
-    |                |                  | tab10, rainbow, hsv, plasma)                                               |
-    | dpi            | <num>            | Resolution of file in dots per inch                                        |
-    | figsize        | (num, num)       | Figure size given by (width, height) in inches                             |
-    | fsize_subtitle | <num>            | Fontsize of subplot title (statistical information)                        |
-    | grid           | <True|False>     | Plot grid                                                                  |
-    | histogram      | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both axis   |
-    |                |                  | on scatter plot                                                            |
-    | histogram_size | <num>            | Histogram y-axis size                                                      |
-    | legend         | <True|False>     | Plot legend                                                                |
-    | legend_location| <right, bottom>  | Legend location                                                            |
-    | legend_ncol    | <num>            | The number of legend columns                                               |
-    | marker         | <'.'|'-'>        | Marker type                                                                |
-    |                |                  | if in one scatter subplot several plots should be plotted.                 |
-    | plot_to        | <console|file>   | Plot figure on console or file                                             |
-    | plot_type      | <scatter|plot>   | Choose either "scatter" or "plot" type                                     |
-    | projection     | <type>           | Projection type of plot (e.g. 'polar')                                     |
-    | reg_line       | <True|False>     | Regression line flag                                                       |
-    | statistic      | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max',    |
-    |                |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic for |
-    |                |                  | more information)                                                          |
-    | tick_labelsize | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either    |
-    |                |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.          |
-    | title          | <text>           | Main title of subplots                                                     |
-    | xlim           | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If xlim=  |
-    |                |  auto>]          | auto, then x-axis limit is automatically chosen                            |
-    | xticks         | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                          |
-    | xticklabels    | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels                  |
-    | ylim           | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range            |
-    | yticks         | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                          |
-    | yticklabels    | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels                  |
+    | Option             | Value            | Description                                                             |
+    |--------------------|------------------|-------------------------------------------------------------------------|
+    | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
+    |                    |                  | tab10, rainbow, hsv, plasma)                                            |
+    | dpi                | <num>            | Resolution of file in dots per inch                                     |
+    | figsize            | (num, num)       | Figure size given by (width, height) in inches                          |
+    | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
+    | grid               | <True|False>     | Plot grid                                                               |
+    | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
+    |                    |                  | axis on scatter plot                                                    |
+    | histogram_binwidth | <num>            | Histogram bin width                                                     |
+    | histogram_size     | <num>            | Histogram y-axis size                                                   |
+    | legend             | <True|False>     | Plot legend                                                             |
+    | legend_location    | <right, bottom>  | Legend location                                                         |
+    | legend_ncol        | <num>            | The number of legend columns                                            |
+    | marker             | <'.'|'-'>        | Marker type                                                             |
+    |                    |                  | if in one scatter subplot several plots should be plotted.              |
+    | plot_to            | <console|file>   | Plot figure on console or file                                          |
+    | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
+    | projection         | <type>           | Projection type of plot (e.g. 'polar')                                  |
+    | reg_line           | <True|False>     | Regression line flag                                                    |
+    | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
+    |                    |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic  |
+    |                    |                  | for more information)                                                   |
+    | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
+    |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
+    | title              | <text>           | Main title of subplots                                                  |
+    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+    |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
+    | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
+    | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
+    | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
+    | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                       |
+    | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels               |
 
     Args:
        x_arrays:       List of arrays with x-axis data to plot.
@@ -262,6 +263,8 @@ def plot(
                        'events' can not be chosen together, either 'labels' or 'events' should be defined.
     """
 
+    cmap = None
+
     # Define plotting options
     options = {
         "colormap": "tab20",
@@ -270,6 +273,7 @@ def plot(
         "fsize_subtitle": 8,
         "grid": False,
         "histogram": "",
+        "histogram_binwidth": 0.25,
         "histogram_size": 1.2,
         "marker": ".",
         "legend": False,
@@ -312,7 +316,10 @@ def plot(
         legend_labels, cmap = _get_label_color(len(labels), colors, cmap=options["colormap"])
 
     if colors is None:
-        colors = [cmap(ii) for ii in range(0, len(y_arrays))]
+        if cmap is None:
+            colors = [None for ii in range(0, len(y_arrays))]
+        else:
+            colors = [cmap(ii) for ii in range(0, len(y_arrays))]
 
     # Plot several plots depending on number of y-arrays
     for idx, (x_array, y_array, color) in enumerate(zip(x_arrays, y_arrays, colors)):
@@ -402,39 +409,40 @@ def plot_scatter_subplots(
 
     Following **opt_arg** options can be selected:
 
-    | Option         | Value            | Description                                                                |
-    |----------------|------------------|----------------------------------------------------------------------------|
-    | colormap       | <type>           | Color map type for plotting events (e.g. viridis, jet, tab10, rainbow,     |
-    |                |                  | hsv, plasma)                                                               |
-    | dpi            | <num>            | Resolution of file in dots per inch                                        |
-    | figsize        | (num, num)       | Figure size given by (width, height) in inches                             |
-    | fsize_subtitle | <num>            | Fontsize of subplot title (statistical information)                        |
-    | grid           | <True|False>     | Plot grid                                                                  |
-    | histogram      | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both axis   |
-    |                |                  | on scatter plot                                                            |
-    | histogram_size | <num>            | Histogram y-axis size                                                      |
-    | legend         | <True|False>     | Plot legend                                                                |
-    | legend_location| <right, bottom>  | Legend location                                                            |
-    | legend_ncol    | <num>            | The number of legend columns                                               |
-    | marker         | <'.'|'-'>        | Marker type                                                                |
-    | plot_to        | <console|file>   | Plot figure on console or file                                             |
-    | plot_type      | <scatter|plot>   | Choose either "scatter" or "plot" type                                     |
-    | reg_line       | <True|False>     | Regression line flag                                                       |
-    | sharex         | <True|False>     | Share x-axis                                                               |
-    | sharey         | <True|False>     | Share y-axis                                                               |
-    | statistic      | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max',    |
-    |                |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic for |
-    |                |                  | more information)                                                          |
-    | tick_labelsize | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either    |
-    |                |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.          |
-    | title          | <text>           | Main title of subplots                                                     |
-    | xlim           | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If xlim=  |
-    |                |  auto>]          | auto, then x-axis limit is automatically chosen                            |
-    | xticks         | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                          |
-    | xticklabels    | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels                  |
-    | ylim           | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range            |
-    | yticks         | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                          |
-    | yticklabels    | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels                  |
+    | Option             | Value            | Description                                                             |
+    |--------------------|------------------|-------------------------------------------------------------------------|
+    | colormap           | <type>           | Color map type for plotting events (e.g. viridis, jet, tab10, rainbow,  |
+    |                    |                  | hsv, plasma)                                                            |
+    | dpi                | <num>            | Resolution of file in dots per inch                                     |
+    | figsize            | (num, num)       | Figure size given by (width, height) in inches                          |
+    | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
+    | grid               | <True|False>     | Plot grid                                                               |
+    | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
+    |                    |                  | axis on scatter plot                                                    |
+    | histogram_binwidth | <num>            | Histogram bin width                                                     |
+    | histogram_size     | <num>            | Histogram y-axis size                                                   |
+    | legend             | <True|False>     | Plot legend                                                             |
+    | legend_location    | <right, bottom>  | Legend location                                                         |
+    | legend_ncol        | <num>            | The number of legend columns                                            |
+    | marker             | <'.'|'-'>        | Marker type                                                             |
+    | plot_to            | <console|file>   | Plot figure on console or file                                          |
+    | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
+    | reg_line           | <True|False>     | Regression line flag                                                    |
+    | sharex             | <True|False>     | Share x-axis                                                            |
+    | sharey             | <True|False>     | Share y-axis                                                            |
+    | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
+    |                    |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic  |
+    |                    |                  | for more information)                                                   |
+    | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
+    |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
+    | title              | <text>           | Main title of subplots                                                  |
+    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+    |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
+    | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
+    | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
+    | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
+    | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                       |
+    | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels               |
 
     Args:
        x_array:        Array with x-axis data to plot.
@@ -458,6 +466,7 @@ def plot_scatter_subplots(
         "fsize_subtitle": 8,
         "grid": False,
         "histogram": "",
+        "histogram_binwidth": 0.25,
         "histogram_size": 1.2,
         "marker": ".",
         "legend": False,
@@ -525,7 +534,7 @@ def plot_scatter_subplots(
     # Plot event legend
     if events:
         options["legend_location"] = "bottom" if options["legend_location"] == None else options["legend_location"]
-        _plot_legend(legend_labels, labels, options)
+        _plot_legend(legend_labels, labels=events.keys(), options=options)
 
     # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
     if isinstance(x_array[0], datetime):
@@ -565,28 +574,29 @@ def plot_subplot_row(
 
     Following **options** can be selected:
 
-    | Option         | Value            | Description                                                                |
-    |----------------|------------------|----------------------------------------------------------------------------|
-    | alpha          | <num>            | Blending values of markers (0: transparent, 1: opaque)                     |
-    | fsize_subtitle | <num>            | Fontsize of subplot title (statistical information)                        |
-    | grid           | <True|False>     | Plot grid                                                                  |
-    | histogram      | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both axis   |
-    |                |                  | on scatter plot                                                            |
-    | histogram_size | <num>            | Histogram y-axis size                                                      |
-    | marker         | <'.'|'-'>        | Marker type                                                                |
-    | markersize     | <num>            | Marker size                                                                |
-    | plot_type      | <scatter|plot>   | Choose either "scatter" or "plot" type                                     |
-    | reg_line       | <True|False>     | Regression line flag                                                       |
-    | statistic      | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'rms',    |
-    |                |                  | 'mean', 'min', 'max', 'std', 'percentile' (see function get_statistic for  |
-    |                |                  | more information)                                                          |
-    | xlim           | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If xlim=  |
-    |                |  auto>]          | auto, then x-axis limit is automatically chosen                            |
-    | xticks         | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                          |
-    | xticklabels    | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels                  |
-    | ylim           | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range            |
-    | yticks         | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                          |
-    | yticklabels    | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels                  |
+    | Option             | Value            | Description                                                             |
+    |--------------------|------------------|-------------------------------------------------------------------------|
+    | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)                  |
+    | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
+    | grid               | <True|False>     | Plot grid                                                               |
+    | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
+    |                    |                  | axis on scatter plot                                                    |
+    | histogram_binwidth | <num>            | Histogram bin width                                                     |
+    | histogram_size     | <num>            | Histogram y-axis size                                                   |
+    | marker             | <'.'|'-'>        | Marker type                                                             |
+    | markersize         | <num>            | Marker size                                                             |
+    | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
+    | reg_line           | <True|False>     | Regression line flag                                                    |
+    | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'rms', |
+    |                    |                  | 'mean', 'min', 'max', 'std', 'percentile' (see function get_statistic   |
+    |                    |                  | for more information)                                                   |
+    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+    |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
+    | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
+    | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
+    | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
+    | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                       |
+    | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels               |
 
     Args:
        ax:             Axes object needed for plotting subplot row.
@@ -600,6 +610,10 @@ def plot_subplot_row(
        color:          Marker color.
        opt_args:       Dictionary with options, which overwrite default plot configuration.
     """
+    import matplotlib
+    matplotlib.rcParams["markers.fillstyle"] = 'none'   # markers are not filled
+    matplotlib.rcParams['lines.markeredgewidth'] = 0.0  # no marker edges plotted
+
     subtitle = list()
 
     # Define plotting options
@@ -608,6 +622,7 @@ def plot_subplot_row(
         "fsize_subtitle": 8,
         "grid": False,
         "histogram": "",
+        "histogram_binwidth": 0.25,
         "histogram_size": 1.2,
         "marker": ".",
         "markersize": 9,
@@ -717,11 +732,12 @@ def _add_histogram_to_scatter(
 
     Following **options** can be selected:
 
-    | Option         | Value            | Description                                                                |
-    |----------------|------------------|----------------------------------------------------------------------------|
-    | histogram      | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both axis   |
-    |                |                  | on scatter plot                                                            |
-    | histogram_size | <num>            | Histogram y-axis size                                                      |
+    | Option             | Value            | Description                                                              |
+    |--------------------|------------------|--------------------------------------------------------------------------|
+    | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both axis |
+    |                    |                  | on scatter plot                                                          |
+    | histogram_binwidth | <num>            | Histogram bin width                                                      |
+    | histogram_size     | <num>            | Histogram y-axis size                                                    |
 
     Args:
        ax:             Axes object needed for plotting subplot row.
@@ -731,7 +747,7 @@ def _add_histogram_to_scatter(
     """
 
     # Define plotting options
-    options = {"histogram": "", "histogram_size": 1.2}
+    options = {"histogram": "", "histogram_binwidth": 0.25, "histogram_size": 1.2}
 
     # Overwrite options with argument definition
     if opt_args:
@@ -742,11 +758,11 @@ def _add_histogram_to_scatter(
     # ax.set_aspect(1.)
 
     # Determine histogram axis limits
-    binwidth = 0.1
+    binwidth = options["histogram_binwidth"]
     xymax = (
-        max(np.abs(y_array))
+        np.nanmax(np.abs(y_array))
         if isinstance(x_array[0], datetime)
-        else max(np.max(np.abs(x_array)), np.max(np.abs(y_array)))
+        else np.nanmax([np.nanmax(np.abs(x_array)), np.nanmax(np.abs(y_array))])
     )
     lim = (int(xymax / binwidth) + 1) * binwidth
     bins = np.arange(-lim, lim + binwidth, binwidth)
@@ -767,7 +783,7 @@ def _add_histogram_to_scatter(
 
 
 def _get_label_color(
-    num_labels: Dict[str, List[Any]], colors: Union[List[str], None], cmap: str = "tab20"
+    num_labels: Dict[str, List[Any]], colors: Union[List[str], None] = None, cmap: str = "tab20"
 ) -> Tuple[List["Line2D"], "ListedColormap"]:
     """Define colours for labels
 
@@ -815,7 +831,7 @@ def _plot_legend(legend_labels: List["matplotlib.lines.Line2D"], labels: List[st
     )
 
 
-def _plot_regression_line(ax: "AxesSubplot", x_data: "ndarray", y_data: "ndarray") -> Tuple[float, float]:
+def _plot_regression_line(ax: "AxesSubplot", x_data: np.ndarray, y_data: np.ndarray) -> Tuple[float, float]:
     """Plot linear regression line
 
     Args:

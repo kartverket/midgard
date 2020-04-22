@@ -48,7 +48,8 @@ class CollectionField(FieldType):
 
     def plot_values(self, field=None):
         if not field:
-            return self.data.sum
+            # TODO: how to plot a collection?
+            return np.full(len(self.data), np.nan)
 
         mainfield, _, subfield = field.partition(".")
         return self.data._fields[mainfield].plot_values(subfield)
@@ -118,5 +119,5 @@ class CollectionField(FieldType):
 
     def _extend(self, other_field, memo) -> None:
         """Add observations from another field"""
-        for field_name, field in other_field.data._fields.items():
-            self.data._fields[field_name].extend(field, memo)
+        self.data._extend(other_field.data, memo)
+

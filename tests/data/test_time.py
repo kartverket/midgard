@@ -19,6 +19,10 @@ def t_dt_utc_s():
     """Time, format datetime, scale utc, single entry"""
     return time.Time(datetime(2015, 6, 30) + timedelta(hours=23, minutes=59, seconds=20), scale="utc", fmt="datetime")
 
+@pytest.fixture
+def t_dt_utc_sa():
+    """Time, format datetime, scale utc, array entry with single value"""
+    return time.Time([datetime(2015, 6, 30) + timedelta(hours=23, minutes=59, seconds=20)], scale="utc", fmt="datetime")
 
 @pytest.fixture
 def t_dt_utc_a():
@@ -87,6 +91,7 @@ def t_around_leapsecond():
     "t",
     (
         t_dt_utc_s,
+        t_dt_utc_sa,
         t_dt_utc_a,
         t_jd_utc_s,
         t_jd_utc_a,

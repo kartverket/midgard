@@ -204,7 +204,7 @@ class FileConfiguration(Configuration):
 
         # Try to download the file if it is missing
         if download_missing and not self._path_exists(file_path):
-            self.download_file(file_key, file_vars, file_path, is_zipped=is_zipped)
+            file_path = self.download_file(file_key, file_vars, file_path, is_zipped=is_zipped)
 
         return file_path
 
@@ -366,9 +366,13 @@ class FileConfiguration(Configuration):
 
         # Get file_path from configuration if it's not given explicitly
         file_url = self.url(file_key, file_vars=file_vars, **path_args)
+        is_zipped = self.is_path_zipped(file_url)
+        path_args.update(is_zipped=is_zipped)
+
         if file_path is None:
             file_path = self.path(file_key, file_vars=file_vars, download_missing=False, **path_args)
-            file_path = file_path.with_name(file_url.name)
+        file_path = file_path.with_name(file_url.name)
+
         if create_dirs:
             file_path.parent.mkdir(parents=True, exist_ok=True)
 
