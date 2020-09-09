@@ -20,8 +20,8 @@ from midgard.math.unit import Unit
 from midgard.math.constant import constant
 
 _SCALES: Dict[str, Dict[str, Callable]] = dict()  # Populated by register_scale()
-_CONVERSIONS: Dict[Tuple[str, str], Callable] = dict()  # Populated by register_scale()
-_CONVERSION_HOPS: Dict[Tuple[str, str], List[str]] = dict()  # Cache for to_scale()
+_CONVERSIONS: Dict[str, Dict[Tuple[str, str], Callable]] = dict()  # Populated by register_scale()
+_CONVERSION_HOPS: Dict[str, Dict[Tuple[str, str], List[str]]] = dict()  # Cache for to_scale()
 _FORMATS: Dict[str, Dict[str, Callable]] = dict()  # Populated by register_format()
 _FORMAT_UNITS: Dict[str, Dict[str, str]] = dict()  # Populated by register_format()
 
@@ -65,12 +65,13 @@ def register_scale(
         name = cls.scale
         _SCALES[cls.cls_name][name] = cls
 
+        conversions = _CONVERSIONS.setdefault(cls.cls_name, dict())
         if convert_to:
             for to_scale, converter in convert_to.items():
-                _CONVERSIONS[(name, to_scale)] = converter
+                conversions[(name, to_scale)] = converter
         if convert_from:
             for from_scale, converter in convert_from.items():
-                _CONVERSIONS[(from_scale, name)] = converter
+                conversions[(from_scale, name)] = converter
         return cls
 
     return wrapper
@@ -88,15 +89,18 @@ def register_format(cls: Callable) -> Callable:
     return cls
 
 
-def _find_conversion_hops(hop: Tuple[str, str]) -> List[Tuple[str, str]]:
+def _find_conversion_hops(cls: str, hop: Tuple[str, str]) -> List[Tuple[str, str]]:
     """Calculate the hops needed to convert between scales using breadth first search"""
     start_scale, target_scale = hop
     queue = [(start_scale, [])]
     visited = set()
 
+    if start_scale == target_scale:
+        return [hop]
+
     while queue:
         from_scale, hops = queue.pop(0)
-        for to_scale in [t for f, t in _CONVERSIONS if f == from_scale]:
+        for to_scale in [t for f, t in _CONVERSIONS[cls] if f == from_scale]:
             one_hop = (from_scale, to_scale)
             if to_scale == target_scale:
                 return hops + [one_hop]
@@ -230,19 +234,19 @@ class TimeBase(np.ndarray):
 
         # Convert to new scale
         hop = (self.scale, scale)
-        if hop in _CONVERSIONS:
-            jd1, jd2 = _CONVERSIONS[hop](self)
+        if hop in _CONVERSIONS[self.cls_name]:
+            jd1, jd2 = _CONVERSIONS[self.cls_name][hop](self)
             try:
                 return self._scales()[scale].from_jds(jd1, jd2, self.fmt)
             except ValueError:
                 # Given format does not exist for selected time scale, use default jd
                 return self._scales()[scale].from_jds(jd1, jd2, "jd")
-        if hop not in _CONVERSION_HOPS:
-            _CONVERSION_HOPS[hop] = _find_conversion_hops(hop)
+        if hop not in _CONVERSION_HOPS.setdefault(self.cls_name, {}):
+            _CONVERSION_HOPS[self.cls_name][hop] = _find_conversion_hops(self.cls_name, hop)
 
         converted_time = self
-        for one_hop in _CONVERSION_HOPS[hop]:
-            jd1, jd2 = _CONVERSIONS[one_hop](converted_time)
+        for one_hop in _CONVERSION_HOPS[self.cls_name][hop]:
+            jd1, jd2 = _CONVERSIONS[self.cls_name][one_hop](converted_time)
             try:
                 converted_time = self._scales()[one_hop[-1]].from_jds(jd1, jd2, self.fmt)
             except ValueError:
@@ -327,6 +331,51 @@ class TimeBase(np.ndarray):
         fmt_value = cls._formats()[fmt].from_jds(jd1, jd2, cls.scale)
         return cls(val=fmt_value, fmt=fmt, _jd1=jd1, _jd2=jd2)
 
+
+    def fieldnames(self):
+        """Return list of valid attributes for this object"""
+        # Pick one element to avoid doing calculations on a large array 
+        obj = self if len(self) == 1 else self[0]
+
+        scales_and_formats = []
+        for scale in obj._scales():
+            try:
+                _find_conversion_hops(self.cls_name, (obj.scale, scale))
+                # Add scales
+                scales_and_formats.append(scale)
+                scale_time = getattr(obj, scale)
+                fmt_cls = obj.cls_name.replace("Array", "Format")
+                for fmt in _FORMATS.get(fmt_cls, {}):
+                    # Add system fields
+                    try:
+                        fmt_time = getattr(scale_time, fmt)
+                        if isinstance(fmt_time, tuple) and hasattr(fmt_time, "_fields"):
+                            for f in fmt_time._fields:
+                                scales_and_formats.append(f"{scale}.{fmt}.{f}")
+                        else:
+                            scales_and_formats.append(f"{scale}.{fmt}")
+                    except ValueError:
+                        pass  # Skip formats that are invalid for that scale
+            except exceptions.UnknownConversionError:
+                pass  # Skip systems that cannot be converted to
+
+        return scales_and_formats
+
+    @lru_cache()
+    def plot_fields(self):
+        """Returns list of attributes that can be plotted"""
+        obj = self if len(self) == 1 else self[0]
+        fieldnames = set(self.fieldnames())
+        text_fields = set()
+        for f in fieldnames:
+            attr_value = getattr(obj, f)
+            if isinstance(attr_value, np.ndarray) and attr_value.dtype.type is np.str_:
+                text_fields.add(f)
+            elif isinstance(attr_value, str):
+                text_fields.add(f)
+
+        return list(fieldnames - text_fields)
+
     def unit(self, field: str = "") -> Tuple[str, ...]:
         """Unit of field"""
         # mainfield, _, subfield = field.partition(".")
@@ -379,7 +428,7 @@ class TimeBase(np.ndarray):
 
     def __len__(self):
         fmt_ndim = self._formats()[self.fmt].ndim
-        return int(self.size/fmt_ndim)
+        return int(self.size / fmt_ndim)
 
     def __setattr__(self, name, value):
         raise AttributeError(f"{self.__class__.__name__} object does not support item assignment ")
@@ -471,40 +520,6 @@ class TimeArray(TimeBase):
     @classmethod
     def _formats(cls):
         return _FORMATS["TimeFormat"]
-
-    @lru_cache()
-    def plot_fields(self):
-        """Returns list of attributes that can be plotted"""
-        obj = self if len(self) == 1 else self[0]
-        scales_and_formats = []
-        for scale in obj._scales():
-            try:
-                _find_conversion_hops((obj.scale, scale))
-                # Add scales
-                scales_and_formats.append(scale)
-                scale_time = getattr(obj, scale)
-                fmt_cls = obj.cls_name.replace("Array", "Format")
-                for fmt in _FORMATS.get(fmt_cls, {}):
-                    # Add system fields
-                    try:
-                        fmt_time = getattr(scale_time, fmt)
-                        if isinstance(fmt_time, np.ndarray) and fmt_time.dtype.type is np.str_:
-                            # Skip string formats
-                            continue
-                        if isinstance(fmt_time, str):
-                            # Skip string formats
-                            continue
-                        if isinstance(fmt_time, tuple) and hasattr(fmt_time, "_fields"):
-                            for f in fmt_time._fields:
-                                scales_and_formats.append(f"{scale}.{fmt}.{f}")
-                        else:
-                            scales_and_formats.append(f"{scale}.{fmt}")
-                    except ValueError:
-                        pass  # Skip formats that are invalid for that scale
-            except exceptions.UnknownConversionError:
-                pass  # Skip systems that cannot be converted to
-
-        return scales_and_formats
 
     @property
     @Unit.register(("year",))
@@ -1012,7 +1027,10 @@ class TimeFormat:
     def __init__(self, val, val2=None, scale=None):
         """Convert val and val2 to Julian days"""
         self.scale = scale
-        self.jd1, self.jd2 = self.to_jds(val, val2=val2, scale=scale)
+        self.jd1 = None
+        self.jd2 = None
+        if val is not None and np.asarray(val).size > 0:
+            self.jd1, self.jd2 = self.to_jds(val, val2=val2, scale=scale)
 
     @classmethod
     def to_jds(cls, val, val2, scale):
@@ -1027,6 +1045,8 @@ class TimeFormat:
     @property
     def value(self):
         """Convert Julian days to the right format"""
+        if self.jd1 is None and self.jd1 is None:
+            return None
         return self.from_jds(self.jd1, self.jd2, self.scale)
 
 
@@ -1486,7 +1506,11 @@ class TimeStr(TimeFormat):
     def _str2dt(cls, time_str):
         # fractional parts are optional
         main_str, _, fraction = time_str.partition(".")
-        if fraction and int(fraction) != 0:
+        if fraction and set(fraction) != "0":
+            # Truncate fraction to 6 digits due to limits of datetime
+            frac = float(f"0.{fraction}")
+            fraction = f"{frac:8.6f}"[2:]
+            time_str = f"{main_str}.{fraction}"
             return datetime.strptime(time_str, cls._dt_fmt)
         else:
             fmt_str, _, _ = cls._dt_fmt.partition(".")

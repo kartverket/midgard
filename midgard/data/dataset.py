@@ -298,12 +298,6 @@ class Dataset(collection.Collection):
                 _, indicies = np.unique(concat_field, return_index=True)
             return concat_field[indicies]
 
-    def unit_short(self, field):
-        units = self.unit(field)
-        if units is None:
-            return tuple()
-        return tuple([Unit.symbol(u) for u in units])
-
     def plot_values(self, field: str) -> np.array:
         """Return values of a field in a form that can be plotted"""
 

@@ -31,7 +31,9 @@ import numpy as np
 from midgard.data import dataset
 from midgard.dev import plugins
 from midgard.dev import log
+from midgard.gnss.gnss import obstype_to_freq
 from midgard.parsers import ChainParser, ParserDef
+from midgard.math.constant import constant
 from midgard.math.unit import Unit
 
 
@@ -46,6 +48,8 @@ class Rinex2Parser(ChainParser):
     are sampled after sampling rate definition in configuration file.
 
     Attributes:
+        convert_unit (Boolean):       Convert unit from carrier-phase and Doppler observation to meter. Exception:
+                                      unit conversion for GLONASS observations is not implemented.
         data (Dict):                  The (observation) data read from file.
         data_available (Boolean):     Indicator of whether data are available.
         file_encoding (String):       Encoding of the datafile.
@@ -62,7 +66,13 @@ class Rinex2Parser(ChainParser):
                                       the RINEX file definition.
     """
 
-    def __init__(self, *args: Tuple[Any], sampling_rate: Union[None, float] = None, **kwargs: Dict[Any, Any]) -> None:
+    def __init__(
+        self,
+        *args: Tuple[Any],
+        sampling_rate: Union[None, float] = None,
+        convert_unit: bool = False,
+        **kwargs: Dict[Any, Any],
+    ) -> None:
         """Initialize Rinex2-parser
 
         Args:
@@ -74,6 +84,7 @@ class Rinex2Parser(ChainParser):
         self.obstypes_all = list()
         self.time_scale = "gps"
         self.sampling_rate = sampling_rate
+        self.convert_unit = convert_unit
         log.debug(f"Sampling rate for RINEX observations is {self.sampling_rate} second(s).")
 
     #
@@ -548,8 +559,8 @@ class Rinex2Parser(ChainParser):
             line[field] = line[field].ljust(16)
 
             cache.setdefault("obs_values", list()).append(_float(line[field][0:14]))
-            cache.setdefault("cycle_slip", list()).append(_int(line[field][14:15]))
-            cache.setdefault("signal_strength", list()).append(_int(line[field][15:16]))
+            cache.setdefault("cycle_slip", list()).append(_float(line[field][14:15]))
+            cache.setdefault("signal_strength", list()).append(_float(line[field][15:16]))
 
         # Save all observation type entries for given satellite (all observation for a given epoch and satellite are
         # read)
@@ -588,7 +599,12 @@ class Rinex2Parser(ChainParser):
     def setup_postprocessors(self) -> List[Callable[[], None]]:
         """List steps necessary for postprocessing
         """
-        return [self._remove_empty_obstype_fields, self._get_obstypes_dict, self._time_system_correction]
+        return [
+            self._remove_empty_obstype_fields,
+            self._get_obstypes_dict,
+            self._time_system_correction,
+            self._unit_conversion,
+        ]
 
     def _remove_empty_obstype_fields(self) -> None:
         """Remove empty observation type data fields.
@@ -599,7 +615,7 @@ class Rinex2Parser(ChainParser):
         """
         del_obs_type = []
         for obs_type, obs in self.data["obs"].items():
-            if not obs or np.all(np.array(obs) == 0.0):
+            if not obs or np.all(np.isnan(obs)):
                 del_obs_type.append(obs_type)
 
         for obs_type in del_obs_type:
@@ -677,6 +693,30 @@ class Rinex2Parser(ChainParser):
         # Change time scale to UTC for GLONASS
         elif system == "GLO":
             self.time_scale = "utc"
+
+    def _unit_conversion(self) -> None:
+        """Carrier-phase and Doppler observations are converted to meter
+        
+        Carrier-phase observations are given in cycles and Doppler observation in Hertz in RINEX observation file. 
+        Exception: unit conversion for GLONASS observations is not implemented.
+        """
+        if self.convert_unit:
+
+            for sys in set(self.data["text"]["system"]):
+                if sys == "R":  # Frequency handling for GLONASS satellites is not implemented.
+                    continue
+
+                idx = sys == np.array(self.data["text"]["system"])
+
+                for obstype in self.meta["obstypes"][sys]:
+                    
+                    if not obstype[0] in ["L", "D"]:  # Skip pseudorange and SNR observations
+                        continue
+                    log.debug(f"Conversion from observation type {obstype} (for GNSS: '{sys}') to meter.")
+                    self.data["obs"][obstype] = np.array(self.data["obs"][obstype])
+                    self.data["obs"][obstype][idx] = (
+                        constant.c / obstype_to_freq(sys, obstype) * self.data["obs"][obstype][idx]
+                    )
 
     # def pseudorange_system_correction(self):
     #    """Apply correction to pseudorange observations
@@ -797,7 +837,7 @@ class Rinex2Parser(ChainParser):
 def _float(value: str) -> float:
     """Convert string to float value
 
-    Whitespace or empty value is set to 0.0.
+    Whitespace, empty or zero value is set to NaN.
 
     Args:
         value: String value
@@ -805,24 +845,7 @@ def _float(value: str) -> float:
     Returns:
         Float value
     """
-    if value.isspace() or not value:
-        return 0.0
+    if value.isspace() or not value or value == "0" or value == "0.0":
+        return float("nan")
     else:
         return float(value)
-
-
-def _int(value: str) -> None:
-    """Convert string to int value
-
-    Whitespace or empty value is set to 0.
-
-    Args:
-        value: String value
-
-    Returns:
-        Integer value
-    """
-    if value.isspace() or not value:
-        return 0
-    else:
-        return int(value)

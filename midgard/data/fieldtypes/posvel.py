@@ -15,7 +15,6 @@ from midgard.dev import plugins
 @plugins.register
 class PosVelField(FieldType):
 
-    _subfields = PosVelArray.fieldnames()
     _factory = staticmethod(PosVel)
 
     def _post_init(self, val, **field_args):
@@ -55,6 +54,10 @@ class PosVelField(FieldType):
             return values.val
         else:
             return values
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a posvel field")
 
     def _prepend_empty(self, num_obs, memo):
         empty = PosVel(np.full((num_obs, 6), np.nan), system=self.data.system, ellipsoid=self.data.ellipsoid)

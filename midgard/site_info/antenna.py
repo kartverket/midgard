@@ -37,6 +37,7 @@ from midgard.dev import log
 
 # from midgard.site_info.site_info import SiteInfoHistory, SiteInfoHistoryBase  TODO: Does not work together with registering receiver plugin?
 
+
 class Antenna:
     """Main antenna class for getting antenna object depending on site information source
 
@@ -323,6 +324,6 @@ class AntennaSinex(AntennaBase):
         if self.info["end_time"]:
             return self.info["end_time"]
         else:
-            return datetime.max - timedelta(days=367) # TODO: Minus 367 days is necessary because 
-                                                      #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-                                                      #      does not work. Exceeding of datetime limit 9999 12 31.
+            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
+            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
+            #      does not work. Exceeding of datetime limit 9999 12 31.

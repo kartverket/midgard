@@ -11,6 +11,7 @@ import pytest
 # Midgard imports
 from midgard.data import dataset
 from midgard.data import position
+from midgard.dev import exceptions
 
 
 @pytest.fixture
@@ -634,16 +635,29 @@ def test_unit():
     _dset1.add_float("numbers_2", [1, 2, 3], unit="second")
     _dset1.add_bool("idx", [True, False, True])
     _dset1.add_float("group.numbers", [1, 2, 3], unit="watt")
+    _dset1.add_sigma("sigma", [1, 2, 3], sigma=[0.1, 0.2, 0.3], unit="meter")
 
     assert _dset1.unit("numbers_1") == ("meter",)
     assert _dset1.unit("numbers_2") == ("second",)
     assert _dset1.unit("group.numbers") == ("watt",)
-    assert _dset1.unit("idx") == None
+    with pytest.raises(exceptions.UnitError):
+        _dset1.unit("idx")
     assert _dset1.unit_short("numbers_1") == ("m",)
     assert _dset1.unit_short("numbers_2") == ("s",)
-    assert _dset1.unit_short("idx") == ()
+    with pytest.raises(exceptions.UnitError):
+        _dset1.unit_short("idx")
     assert _dset1.unit_short("group.numbers") == ("W",)
+    assert _dset1.unit("sigma") == ("meter",)
+    assert _dset1.unit("sigma.sigma") == ("meter",)
+    assert _dset1.unit_short("sigma") == ("m",)
+    assert _dset1.unit_short("sigma.sigma") == ("m",)
 
+    _dset1.set_unit("sigma", "seconds")
+
+    assert _dset1.unit("sigma") == ("seconds",)
+    assert _dset1.unit("sigma.sigma") == ("seconds",)
+    assert _dset1.unit_short("sigma") == ("s",)
+    assert _dset1.unit_short("sigma.sigma") == ("s",)
 
 def test_functions(dset_full):
     dset_full.as_dict()

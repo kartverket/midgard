@@ -113,7 +113,7 @@ def test_parser_gipsy_tdp():
     assert "TRPAZSINZIMM" in parser["name"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")    
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_gdcov():
     pass
 
@@ -121,6 +121,15 @@ def test_parser_gipsyx_gdcov():
 @pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_residual():
     pass
+
+
+def test_parser_gipsyx_series():
+    """Test that parsing gipsyx_series gives expected output"""
+    parser = get_parser("gipsyx_series").as_dict()
+
+    assert len(parser) == 17
+    assert "north_sigma" in parser
+    assert parser["east_sigma"][0] == 0.000698
 
 
 @pytest.mark.skip(reason="TODO: Tests not yet implemented")
@@ -146,6 +155,7 @@ def test_parser_android_raw_data():
 @pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_antex():
     pass
+
 
 def test_parser_gnss_bernese_crd():
     """Test that parsing gnss_bernese_crd gives expected output"""
@@ -206,6 +216,7 @@ def test_parser_wip_rinex3_obs():
     assert header["time_of_first_obs"] == data["epoch"][0]
 
 
+@pytest.mark.skip(reason="TODO: Has to be moved from Where to Midgard")
 def test_parser_spring_csv():
     """Test that parsing spring_csv gives expected output"""
     parser = get_parser("spring_csv").as_dict()
@@ -242,6 +253,14 @@ def test_parser_timeseries_env():
     assert "date" in parser
     assert "14AUG31" in parser["date"]
 
+
+def test_parser_timeseries_residuals():
+    """Test that parsing timeseries_residuals gives expected output"""
+    parser = get_parser("timeseries_residuals").as_dict()
+
+    assert len(parser) == 5
+    assert "year" in parser
+    assert 0.66 in parser["residual"]
 
 def test_parser_timeseries_tsview():
     """Test that parsing timeseries_tsview gives expected output"""

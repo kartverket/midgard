@@ -33,7 +33,7 @@ class FloatField(FieldType):
             raise ValueError(f"{self.name!r} initialized with {len(data)} values, expected {self.num_obs}")
 
         # We only support 1- and 2-dimensional arrays
-        #if data.ndim < 1 or data.ndim > 2:
+        # if data.ndim < 1 or data.ndim > 2:
         #    raise ValueError(
         #        f"{self.name!r} initialized with {data.ndim}-dimensional data, "
         #        "only 1- and 2-dimensional values are supported"
@@ -41,14 +41,13 @@ class FloatField(FieldType):
 
         # Handle units
         if self._unit is not None:
-            cols = 1 if data.ndim == 1 else data.shape[1]
-            if isinstance(self._unit, str):
-                self._unit = (self._unit,) * cols
-            elif len(self._unit) != cols:
-                raise ValueError(f"Number of units ({len(self._unit)}) must equal number of columns ({cols})")
+            self._unit = self._validate_unit(data, self._unit)
 
         # Store the data as a regular numpy array
         self.data = data
+
+    def set_unit(self, _, new_unit):
+        self._unit = self._validate_unit(self.data, new_unit)
 
     def _prepend_empty(self, num_obs, memo):
         empty_shape = (num_obs, *self.data.shape[1:])

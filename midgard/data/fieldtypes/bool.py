@@ -57,6 +57,14 @@ class BoolField(FieldType):
         """
         return self.data.astype(np.float_)
 
+    def unit(self, _):
+        """Unit of fields"""
+        raise exceptions.UnitError("Boolean fields do not have units")
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a boolean field")
+
     def _prepend_empty(self, num_obs, memo):
         empty_shape = (num_obs, *self.data.shape[1:])
         empty = np.zeros(empty_shape, dtype=bool)

@@ -82,39 +82,36 @@ class GipsyxSummary(Parser):
     | \__parser_name__     | Parser name                                                                          |
     """
 
-
     def read_data(self) -> None:
         """Read data from the data file
         """
 
         # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----+----8----+----+----9----+----0----+----1---
-	    # ---   Residual Summary:
-	    # ------------------------------------------------------------------
-	    # ---   included residuals  :      6082 (  98.4% )
-	    # ---   deleted residuals   :        96 (   1.6% )
-	    # ---      DataType           Status        RMS (m)         Max (m)         Min (m)         number (%) 
-	    # ---   IonoFreeC_1P_2P   included      5.072441e-01    2.287646e+00   -1.699980e+00      3087 (  99.9% )
-	    # ---   IonoFreeC_1P_2P    deleted      2.334849e+01    3.292118e+01    2.549366e+00         2 (   0.1% )
-	    # ---
-	    # ---   IonoFreeL_1P_2P   included      7.227355e-03    2.717787e-02   -2.721378e-02      2995 (  97.0% )
-	    # ---   IonoFreeL_1P_2P    deleted      1.555886e+01    8.371774e+01   -7.268516e-02        94 (   3.0% )
-	    # ------------------------------------------------------------------
-	    #
-	    #                    PPP Solution: XYZ                                DeltaXYZ(Sol-Nom)               DeltaENV (meters)
-	    # TRO1 2102928.199489438 721619.5988837772 5958196.320616415 -1.819E-01  8.667E-02  1.660E-02  1.410E-01  1.407E-01  -3.445E-02  
-
+        # ---   Residual Summary:
+        # ------------------------------------------------------------------
+        # ---   included residuals  :      6082 (  98.4% )
+        # ---   deleted residuals   :        96 (   1.6% )
+        # ---      DataType           Status        RMS (m)         Max (m)         Min (m)         number (%)
+        # ---   IonoFreeC_1P_2P   included      5.072441e-01    2.287646e+00   -1.699980e+00      3087 (  99.9% )
+        # ---   IonoFreeC_1P_2P    deleted      2.334849e+01    3.292118e+01    2.549366e+00         2 (   0.1% )
+        # ---
+        # ---   IonoFreeL_1P_2P   included      7.227355e-03    2.717787e-02   -2.721378e-02      2995 (  97.0% )
+        # ---   IonoFreeL_1P_2P    deleted      1.555886e+01    8.371774e+01   -7.268516e-02        94 (   3.0% )
+        # ------------------------------------------------------------------
+        #
+        #                    PPP Solution: XYZ                                DeltaXYZ(Sol-Nom)               DeltaENV (meters)
+        # TRO1 2102928.199489438 721619.5988837772 5958196.320616415 -1.819E-01  8.667E-02  1.660E-02  1.410E-01  1.407E-01  -3.445E-02
 
         # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----+----8----+----+----9----+----0----+----1---
-	    # ---   Residual Summary:
-	    # ------------------------------------------------------------------
-	    # ---   No Residuals (or at least FilterResidualTracker has not been informed of any).
-	    # ------------------------------------------------------------------
-	    #
-	    #                    PPP Solution: XYZ                                DeltaXYZ(Sol-Nom)               DeltaENV (meters)
-	    # TRO1 2102928.381357 721619.512215 5958196.304021 0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  
+        # ---   Residual Summary:
+        # ------------------------------------------------------------------
+        # ---   No Residuals (or at least FilterResidualTracker has not been informed of any).
+        # ------------------------------------------------------------------
+        #
+        #                    PPP Solution: XYZ                                DeltaXYZ(Sol-Nom)               DeltaENV (meters)
+        # TRO1 2102928.381357 721619.512215 5958196.304021 0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
         with files.open(self.file_path, mode="rt", encoding=self.file_encoding) as fid:
-            self._parse_file(fid)    
-            
+            self._parse_file(fid)
 
     def _parse_file(self, fid: "_io.TextIOWrapper") -> None:
         """Parse file
@@ -122,18 +119,18 @@ class GipsyxSummary(Parser):
         Args:
             fid: File handle
         """
-        names = [ 
-		        "station",
-                "pos_x",
-                "pos_y",
-                "pos_z",
-                "dpos_vs_ref_x",
-                "dpos_vs_ref_y",
-                "dpos_vs_ref_z",
-                "dpos_vs_ref_e",
-                "dpos_vs_ref_n",
-                "dpos_vs_ref_v",
-	    ]
+        names = [
+            "station",
+            "pos_x",
+            "pos_y",
+            "pos_z",
+            "dpos_vs_ref_x",
+            "dpos_vs_ref_y",
+            "dpos_vs_ref_z",
+            "dpos_vs_ref_e",
+            "dpos_vs_ref_n",
+            "dpos_vs_ref_v",
+        ]
         for line in fid:
 
             # Skip lines
@@ -141,7 +138,7 @@ class GipsyxSummary(Parser):
                 continue
 
             # Parse residual header
-            if line.startswith('---'):
+            if line.startswith("---"):
                 self._parse_header(line)
                 continue
 
@@ -153,7 +150,6 @@ class GipsyxSummary(Parser):
                     self.data["station"] = word
                     continue
                 self.data["position"][name] = float(word)
-       
 
     def _parse_header(self, line: str) -> None:
         """Parse header of file
@@ -163,26 +159,41 @@ class GipsyxSummary(Parser):
         """
 
         # Skip lines
-        if line.startswith('----') or ("Residual Summary" in line):
+        if line.startswith("----") or ("Residual Summary" in line):
             return
 
         self.data.setdefault("residual", dict())
 
         # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----+----8--
-	    # ---   No Residuals (or at least FilterResidualTracker has not been informed of any).
-        # 
+        # ---   No Residuals (or at least FilterResidualTracker has not been informed of any).
+        #
         # Set residual entries to NaN
-        if ("No Residuals" in line):
-            entries = ["code_rms", "code_max", "code_min", "code_num", "code_outlier_rms", "code_outlier_max", 
-                       "code_outlier_min", "code_outlier_num", "phase_rms", "phase_max", "phase_min", "phase_num",
-                       "phase_outlier_rms", "phase_outlier_max", "phase_outlier_min", "phase_outlier_num"]
+        if "No Residuals" in line:
+            entries = [
+                "code_rms",
+                "code_max",
+                "code_min",
+                "code_num",
+                "code_outlier_rms",
+                "code_outlier_max",
+                "code_outlier_min",
+                "code_outlier_num",
+                "phase_rms",
+                "phase_max",
+                "phase_min",
+                "phase_num",
+                "phase_outlier_rms",
+                "phase_outlier_max",
+                "phase_outlier_min",
+                "phase_outlier_num",
+            ]
             for entry in entries:
-                self.data["residual"][entry] = float('nan')
+                self.data["residual"][entry] = float("nan")
 
         # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----+----8----+----+----9----+
         # ---   included residuals  :      5225 (  99.9% )
         # ---   deleted residuals   :         3 (   0.1% )
-        # ---      DataType           Status        RMS (m)         Max (m)         Min (m)         number (%) 
+        # ---      DataType           Status        RMS (m)         Max (m)         Min (m)         number (%)
         # ---   IonoFreeC_1P_2P   included      6.312075e-01    2.495345e+00   -2.457276e+00      2614 ( 100.0% )
         # ---   IonoFreeC_1P_2P    deleted      0.000000e+00    0.000000e+00    0.000000e+00         0 (   0.0% )
         # ---
@@ -194,38 +205,44 @@ class GipsyxSummary(Parser):
 
             if line[1] == "IonoFreeC_1P_2P":
                 if line[2] == "included":
-                    self.data["residual"].update({
-                                "code_rms": float(line[3]),
-                                "code_max": float(line[4]),
-                                "code_min": float(line[5]),   
-                                "code_num": float(line[6]),
-                    })
+                    self.data["residual"].update(
+                        {
+                            "code_rms": float(line[3]),
+                            "code_max": float(line[4]),
+                            "code_min": float(line[5]),
+                            "code_num": float(line[6]),
+                        }
+                    )
                 if line[2] == "deleted":
-                    self.data["residual"].update({
-                                "code_outlier_rms": float(line[3]),
-                                "code_outlier_max": float(line[4]),
-                                "code_outlier_min": float(line[5]),  
-                                "code_outlier_num": float(line[6]),
-                    })
-
+                    self.data["residual"].update(
+                        {
+                            "code_outlier_rms": float(line[3]),
+                            "code_outlier_max": float(line[4]),
+                            "code_outlier_min": float(line[5]),
+                            "code_outlier_num": float(line[6]),
+                        }
+                    )
 
             if line[1] == "IonoFreeL_1P_2P":
                 if line[2] == "included":
-                    self.data["residual"].update({
-                                "phase_rms": float(line[3]),
-                                "phase_max": float(line[4]),
-                                "phase_min": float(line[5]),  
-                                "phase_num": float(line[6]),
-                    })
+                    self.data["residual"].update(
+                        {
+                            "phase_rms": float(line[3]),
+                            "phase_max": float(line[4]),
+                            "phase_min": float(line[5]),
+                            "phase_num": float(line[6]),
+                        }
+                    )
                 if line[2] == "deleted":
-                    self.data["residual"].update({
-                                "phase_outlier_rms": float(line[3]),
-                                "phase_outlier_max": float(line[4]),
-                                "phase_outlier_min": float(line[5]),   
-                                "phase_outlier_num": float(line[6]),
-                    })
-    
-       
+                    self.data["residual"].update(
+                        {
+                            "phase_outlier_rms": float(line[3]),
+                            "phase_outlier_max": float(line[4]),
+                            "phase_outlier_min": float(line[5]),
+                            "phase_outlier_num": float(line[6]),
+                        }
+                    )
+
     def as_dataset(self) -> "Dataset":
         """Return the parsed data as a Dataset
 
@@ -245,5 +262,3 @@ class GipsyxSummary(Parser):
 
         dset.meta["summary"] = self.data
         return dset
-
-        

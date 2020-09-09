@@ -4,6 +4,7 @@
 
 # Standard library imports
 import ast
+import re
 from typing import Any, Dict, List, Tuple, Set
 
 
@@ -20,7 +21,12 @@ def decode_h5attr(attr: Any) -> Any:
     """Convert hdf5 attribute back to its original datatype"""
     try:
         attr_type, _, attr = attr.partition(" ")
-        return globals()[f"_h5attr2{attr_type}"](attr)
+        if "nan" in attr or "inf" in attr:
+            # ast.literal_eval does not understand that nan and inf are floats. convert these to strings
+            attr = re.sub(r"\bnan\b", "'nan'", attr)
+            attr = re.sub(r"\binf\b", "'inf'", attr)
+        result = globals()[f"_h5attr2{attr_type}"](attr)
+        return _recursive_replace(result)
     except (AttributeError, KeyError):
         return attr
 
@@ -84,3 +90,21 @@ def _h5attr2dict(attr: str) -> List[str]:
 def _h5attr2str(attr: str) -> str:
     """Simply return the string"""
     return attr
+
+
+def _recursive_replace(data):
+    """Searches data structure and replaces 'nan' and 'inf' with respective float values"""
+    if isinstance(data, str):
+        if data == "nan":
+            return float("nan")
+        if data == "inf":
+            return float("inf")
+    if isinstance(data, List):
+        return [_recursive_replace(v) for v in data]
+    if isinstance(data, Tuple):
+        return tuple([_recursive_replace(v) for v in data])
+    if isinstance(data, Set):
+        return set([_recursive_replace(v) for v in data])
+    if isinstance(data, Dict):
+        return {k: _recursive_replace(v) for k, v in data.items()}
+    return data

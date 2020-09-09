@@ -34,7 +34,6 @@ from midgard.math.unit import Unit
 from midgard.parsers import ChainParser, ParserDef
 
 
-
 @plugins.register
 class GipsyxGdcovParser(ChainParser):
     """A parser for reading GipsyX `gdcov` format file
@@ -63,7 +62,7 @@ class GipsyxGdcovParser(ChainParser):
     | \__parser_name__     | Parser name                                                                          |
     """
 
-    def setup_parser(self)  -> Iterable[ParserDef]:
+    def setup_parser(self) -> Iterable[ParserDef]:
         """Set up information needed for the parser
 
         Returns:
@@ -75,14 +74,14 @@ class GipsyxGdcovParser(ChainParser):
         # 3 PARAMETERS
         # 1 USN3.STA.X 376018350 1.112162030692846e+06 6.422311946865588e-04
         # 2 USN3.STA.Y 376018350 -4.842853530993107e+06 1.555844558128825e-03
-        # 3 USN3.STA.Z 376018350 3.985496029611300e+06 1.247592374291492e-03   
+        # 3 USN3.STA.Z 376018350 3.985496029611300e+06 1.247592374291492e-03
         # 2 1 -5.741554474985751e-01
         # 3 1 5.007734002791966e-01
         # 3 2 -8.214416655688096e-01
         data_parser = ParserDef(
             end_marker=lambda line, _ln, _n: False,
             end_callback=lambda line: self._parse_correlation,
-            label=lambda line, _ln: not re.match("^\d+ \d+", line),  
+            label=lambda line, _ln: not re.match("^\d+ \d+", line),
             skip_line=lambda line: "PARAMETERS" in line,
             parser_def={
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+--
@@ -92,7 +91,7 @@ class GipsyxGdcovParser(ChainParser):
                     "delimiter": " ",
                     "fields": ["_", "name", "time_past_j2000", "estimate", "sigma"],
                 },
-                # ----+----1----+----2----+---                   
+                # ----+----1----+----2----+---
                 # 2 1 -5.741554474985751e-01
                 False: {
                     "parser": self._parse_correlation,
@@ -101,10 +100,9 @@ class GipsyxGdcovParser(ChainParser):
                 },
             },
         )
-                        
-       
-        return itertools.repeat(data_parser) 
-    
+
+        return itertools.repeat(data_parser)
+
     def _parse_estimate(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse estimate lines
         """
@@ -116,14 +114,13 @@ class GipsyxGdcovParser(ChainParser):
         self.data.setdefault("station", list()).append(station)
         self.data.setdefault("parameter", list()).append(parameter)
 
-        
     def _parse_correlation(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse correlation lines
         """
         self.data.setdefault("row", list()).append(int(line["row"]))
         self.data.setdefault("column", list()).append(int(line["column"]))
         self.data.setdefault("correlation", list()).append(float(line["correlation"]))
-        
+
     #
     # SETUP POSTPROCESSORS
     #
@@ -133,18 +130,16 @@ class GipsyxGdcovParser(ChainParser):
         Returns:
             List with postprocessor function calls
         """
-        return [
-            self._numpy_array,
-        ]
-        
+        return [self._numpy_array]
+
     def _numpy_array(self) -> None:
         """Convert data list to numpy_array
         """
         for name in self.data.keys():
             self.data[name] = np.array(self.data[name])
-            
+
     #
-    # WRITE DATA
+    # GENERATE DATASET
     #
     def as_dataset(self) -> "Dataset":
         """Store Gipsy time dependent parameter data in a dataset
@@ -168,7 +163,7 @@ class GipsyxGdcovParser(ChainParser):
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
         """
-        idx_x = "STA.X"  == self.data["parameter"] 
+        idx_x = "STA.X" == self.data["parameter"]
         idx_y = "STA.Y" == self.data["parameter"]
         idx_z = "STA.Z" == self.data["parameter"]
         dset = dataset.Dataset(num_obs=len(self.data["time_past_j2000"][idx_x]))
@@ -182,32 +177,35 @@ class GipsyxGdcovParser(ChainParser):
         #           1.01.2000 11:59:08.816 GPS (GPS = TAI - 19s)
         #
         #       Therefore Time object initialized with TT time scale has to be corrected about 13 seconds.
-        #      
+        #
         dset.add_time(
-                "time", 
-                val=Time(
-                         (np.array(self.data["time_past_j2000"][idx_x]) + 13.0) * Unit.second2day + 2451545.0,  
-                        scale="tt", 
-                        fmt="jd"
-                ).gps
+            "time",
+            val=Time(
+                (np.array(self.data["time_past_j2000"][idx_x]) + 13.0) * Unit.second2day + 2451545.0,
+                scale="tt",
+                fmt="jd",
+            ).gps,
         )
-                
+
         dset.add_text("station", val=self.data["station"][idx_x])
         dset.add_float("sigma_x", val=self.data["sigma"][idx_x], unit="meter")
         dset.add_float("sigma_y", val=self.data["sigma"][idx_y], unit="meter")
         dset.add_float("sigma_z", val=self.data["sigma"][idx_z], unit="meter")
-        dset.add_position("site_pos", time=dset.time, system="trs", val=np.vstack((
-                                                                        self.data["estimate"][idx_x], 
-                                                                        self.data["estimate"][idx_y], 
-                                                                        self.data["estimate"][idx_z])).T
+        dset.add_position(
+            "site_pos",
+            time=dset.time,
+            system="trs",
+            val=np.vstack(
+                (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
+            ).T,
         )
-        #TODO: how to use dset.add_sigma? how to save correlation?
-        #tmp = dict()
-        #for num_sta, station in enumerate(self.data["station"]):
+        # TODO: how to use dset.add_sigma? how to save correlation?
+        # tmp = dict()
+        # for num_sta, station in enumerate(self.data["station"]):
         #    tmp.setdefault("correlation_x", list()).append()
         #    tmp.setdefault("correlation_y", list()).append()
         #    tmp.setdefault("correlation_z", list()).append()
-        
+
         #   |1
         #   |2  3
         #   ------
@@ -219,6 +217,5 @@ class GipsyxGdcovParser(ChainParser):
         #   22 23 24  25 26 27 |28
         #   29 30 31  32 33 34 |35 36
         #                      -------
-        
-   
+
         return dset

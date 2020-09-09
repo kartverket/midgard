@@ -38,6 +38,9 @@
 #
 # [11] Montenbruck, O., Steigenberger, P., and Hauschild, A. (2018). Multi-GNSS Signal-in-Space Range Error Assessment -
 #      Methodology Results. Advances in Space Research, DOI 10.1016/j.asr.2018.03.041.
+#
+# [12] GLONASS ICD (1998), GLONASS - Interface control document, General Description of Code Division Multiple Access
+#      Signal System, Russian Space Systems, Edition 1.0, 2016
 
 
 ## \f$ a_E \f$: Equatorial radius of the Earth.
@@ -197,7 +200,8 @@ iers_2010    = -6.55e-5
 #      gtrf       - Galileo OS-SIS-ICD [7], table 58
 #      iers_2010  - IERS Conventions [1], table 1.1.; Galileo OS-SIS-ICD [7], table 58
 #      jgs        - QZSS IS-QZSS-PNT-001 [9], section 5.3.3
-#      wgs84      - IS-GPS-200H [4], table 20-IV.
+#      pz_90      - GLONASS ICD [12], Table 4.1
+#      wgs84      - IS-GPS-200H [4], table 20-IV.; IRNSS-ICD-SPS [10], Appendix B
 [GM]
 __unit__     = meter**3 / second **2
 default      = %(iers_2010)s
@@ -208,6 +212,7 @@ egm_2008     = 3.986004415e14
 gtrf         = 3.986004418e14
 iers_2010    = 3.986004418e14
 jgs          = 3.986005e14
+pz_90        = 3.986004418e14
 wgs84        = 3.986005e14
 
 
@@ -396,7 +401,8 @@ iers_2010   = 1.00273781191135448
 #              gtrf       - Galileo OS-SIS-ICD [7], table 58
 #              iers_2010  - IERS Conventions [1], table 1.2
 #              jgs        - QZSS IS-QZSS-PNT-001 [9], section 5.3.3
-#              wgs84      - IS-GPS-200H [4], table 20-IV.
+#              pz_90      - GLONASS ICD [12], Table 4.1
+#              wgs84      - IS-GPS-200H [4], table 20-IV.; IRNSS-ICD-SPS [10], Appendix B
 [omega]
 __unit__     = radians per second
 default      = %(iers_2010)s
@@ -404,6 +410,7 @@ cgcs2000     = 7.292115e-5
 gtrf         = 7.2921151467e-5
 iers_2010    = 7.292115e-5
 jgs          = 7.2921151467e-5
+pz_90        = 7.292115e-5
 wgs84        = 7.2921151467e-5
 
 ## \f$ \J \f$: The Earth's angular momentum per unit mass

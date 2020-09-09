@@ -14,7 +14,6 @@ from midgard.math.unit import Unit
 @plugins.register
 class SigmaField(FieldType):
 
-    _subfields = ["sigma"]
     _factory = staticmethod(SigmaArray)
 
     def _post_init(self, val, **field_args):
@@ -49,14 +48,19 @@ class SigmaField(FieldType):
 
         # Handle units
         if self._unit is not None:
-            cols = 1 if data.ndim == 1 else data.shape[1]
-            if isinstance(self._unit, str):
-                self._unit = (self._unit,) * cols
-            elif len(self._unit) != cols:
-                raise ValueError(f"Number of units ({len(self._unit)}) must equal number of columns ({cols})")
+            self._unit = self._validate_unit(data, self._unit)
+            data.set_unit(self._unit)
 
         # Store the data as a SigmaArray
         self.data = data
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        if not subfield:
+            self._unit = self._validate_unit(self.data, new_unit)
+            self.data.set_unit(self._unit)
+        else:
+            raise exceptions.UnitError(f"Can not change unit of the subfields of a sigma field. Subfields are the same unit as the sigma field")
 
     def _prepend_empty(self, num_obs, memo):
         empty_shape = (num_obs, *self.data.shape[1:])

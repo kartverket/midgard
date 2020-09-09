@@ -57,7 +57,7 @@ class GipsyxResidualParser(Parser):
     | \__data_path__       | File path                                                                            |
     | \__parser_name__     | Parser name                                                                          |
     """
-        
+
     def read_data(self) -> None:
         """Read data from the data file
         """
@@ -69,8 +69,7 @@ class GipsyxResidualParser(Parser):
         # 634737600 {TRO1(1)-GPS44(1)} IonoFreeL_1W_2W -0.00224204588448629 28.7255 325.576 78.0873 41.2581
 
         with files.open(self.file_path, mode="rt", encoding=self.file_encoding) as fid:
-            self._parse_file(fid)    
-            
+            self._parse_file(fid)
 
     def _parse_file(self, fid: "_io.TextIOWrapper") -> None:
         """Parse file
@@ -78,14 +77,22 @@ class GipsyxResidualParser(Parser):
         Args:
             fid: File handle
         """
-        names = ["time_past_j2000", "station_satellite", "data_type", "residual", "elevation", "azimuth", 
-                 "elevation_sat", "azimuth_sat_deleted"]
+        names = [
+            "time_past_j2000",
+            "station_satellite",
+            "data_type",
+            "residual",
+            "elevation",
+            "azimuth",
+            "elevation_sat",
+            "azimuth_sat_deleted",
+        ]
         for line in fid:
             words = line.split(maxsplit=7)
             for name, word in zip(names, words):
                 word = word if name in ["station_satellite", "data_type", "azimuth_sat_deleted"] else float(word)
                 self.data.setdefault(name, list()).append(word)
-            
+
     #
     # SETUP POSTPROCESSORS
     #
@@ -95,38 +102,32 @@ class GipsyxResidualParser(Parser):
         Returns:
             List with postprocessor function calls
         """
-        return [
-            self._separate_station_from_satellite,
-            self._separate_azimuth_sat_from_deleted,
-        ]
+        return [self._separate_station_from_satellite, self._separate_azimuth_sat_from_deleted]
 
-        
     def _separate_station_from_satellite(self) -> None:
         """Separate station from satellite names in variable 'station_satellite'
-        """ 
-      
+        """
+
         # Read entries such {TRO1(1)-GPS63(1)} and extract station and satellite name of it
         for entry in self.data["station_satellite"]:
-            station, satellite = entry.split('-', 1)
+            station, satellite = entry.split("-", 1)
             self.data.setdefault("station", list()).append(station[1:5].lower())
             self.data.setdefault("satellite", list()).append(satellite[0:5])
-           
+
         del self.data["station_satellite"]
 
-        
     def _separate_azimuth_sat_from_deleted(self) -> None:
         """Separate satellite azimuth from deleted entry
-        """  
-    
+        """
+
         # Read entries such '21.9746 DELETED' and separate this two entries from each other
         for entry in self.data["azimuth_sat_deleted"]:
             words = entry.split(maxsplit=1)
             azimuth_sat, deleted = (words[0], True) if len(words) > 1 else (words[0], False)
             self.data.setdefault("azimuth_sat", list()).append(azimuth_sat)
             self.data.setdefault("deleted", list()).append(deleted)
-            
+
         del self.data["azimuth_sat_deleted"]
-        
 
     #
     # WRITE DATA
@@ -152,8 +153,8 @@ class GipsyxResidualParser(Parser):
        | time                | Time              | Parameter time given as TimeTable object                           |
         
         """
-        #TODO: Handling of unit. Should be added to dataset fields.
-        
+        # TODO: Handling of unit. Should be added to dataset fields.
+
         dset = dataset.Dataset(num_obs=len(self.data["time_past_j2000"]))
         dset.meta.update(self.meta)
 
@@ -166,37 +167,35 @@ class GipsyxResidualParser(Parser):
         #
         #       Therefore Time object initialized with TT time scale has to be corrected about 13 seconds.
         #
-        # TODO: Introduce j2000 = 2451545.0 as constant or unit?       
+        # TODO: Introduce j2000 = 2451545.0 as constant or unit?
         dset.add_time(
-                "time", 
-                val=Time(
-                        (np.array(self.data["time_past_j2000"]) + 13.0) * Unit.second2day + 2451545.0,  
-                        scale="tt", 
-                        fmt="jd"
-                ).gps
+            "time",
+            val=Time(
+                (np.array(self.data["time_past_j2000"]) + 13.0) * Unit.second2day + 2451545.0, scale="tt", fmt="jd"
+            ).gps,
         )
-             
+
         # Loop over Dataset fields
         for field in self.data.keys():
             if field == "time_past_j2000":
                 continue
-            
+
             if field in ["data_type", "satellite", "station"]:
-                
+
                 if field == "satellite":
                     dset.add_text("satellite", val=np.repeat(None, dset.num_obs))
-                    dset.add_text("system", val=np.repeat(None, dset.num_obs))                   
-                    for sat in set(self.data["satellite"]):                        
+                    dset.add_text("system", val=np.repeat(None, dset.num_obs))
+                    for sat in set(self.data["satellite"]):
                         idx = sat == np.array(self.data["satellite"])
                         sys = enums.get_value("gnss_3digit_id_to_id", sat[0:3])
                         dset.system[idx] = sys
-                        dset.satellite[idx] = sys+sat[3:5]                  
-                else:    
+                        dset.satellite[idx] = sys + sat[3:5]
+                else:
                     dset.add_text(field, val=self.data[field])
-                    
+
             elif field == "deleted":
                 dset.add_bool(field, val=self.data[field])
-                    
+
             else:
                 dset.add_float(field, val=self.data[field])
 

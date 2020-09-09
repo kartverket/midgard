@@ -19,10 +19,14 @@ def t_dt_utc_s():
     """Time, format datetime, scale utc, single entry"""
     return time.Time(datetime(2015, 6, 30) + timedelta(hours=23, minutes=59, seconds=20), scale="utc", fmt="datetime")
 
+
 @pytest.fixture
 def t_dt_utc_sa():
     """Time, format datetime, scale utc, array entry with single value"""
-    return time.Time([datetime(2015, 6, 30) + timedelta(hours=23, minutes=59, seconds=20)], scale="utc", fmt="datetime")
+    return time.Time(
+        [datetime(2015, 6, 30) + timedelta(hours=23, minutes=59, seconds=20)], scale="utc", fmt="datetime"
+    )
+
 
 @pytest.fixture
 def t_dt_utc_a():
@@ -171,3 +175,7 @@ def test_is_tests():
     assert time.Time.is_timedelta(t) == False
     assert time.Time.is_timedelta(dt) == True
     assert time.Time.is_timedelta(9) == False
+
+
+def test_empty_object():
+    time.Time([], scale="utc", fmt="datetime")

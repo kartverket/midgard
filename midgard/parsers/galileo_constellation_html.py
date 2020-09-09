@@ -18,6 +18,7 @@ from midgard.parsers import Parser
 # Midgard imports
 from midgard.dev import log
 
+
 @plugins.register
 class GalileoConstellationHTMLParser(Parser):
     """A parser for reading Galileo constellation info from a web page
@@ -28,10 +29,7 @@ class GalileoConstellationHTMLParser(Parser):
     URL = "https://www.gsc-europa.eu/system-status/Constellation-Information"
 
     def __init__(
-        self,
-        file_path: Union[str, pathlib.Path],
-        encoding: Optional[str] = None,
-        url: Optional[str] = None,
+        self, file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, url: Optional[str] = None
     ) -> None:
         """Set up the basic information needed by the parser
 

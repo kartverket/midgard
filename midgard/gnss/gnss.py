@@ -19,8 +19,27 @@ from typing import Tuple
 import numpy as np
 
 # Midgard imports
+from midgard.collections import enums
 from midgard.dev import log
 from midgard.files import files
+
+
+def obstype_to_freq(sys: str, obstype: str) -> float:
+    """Get GNSS frequency based on given GNSS observation type
+
+    Args:
+        sys:     GNSS identifier (e.g. 'E', 'G', ...)
+        obstype: Observation type (e.g. 'L1', 'P1', 'C1X', ...)
+
+    Return:
+        GNSS frequency in [Hz]
+    """
+    try:
+        freq = getattr(enums, "gnss_freq_" + sys)[getattr(enums, "gnss_num2freq_" + sys)["f" + obstype[1]]]
+    except KeyError:
+        log.fatal(f"Frequency for GNSS '{sys}' and observation type '{obstype}' is not defined.")
+
+    return freq
 
 
 def get_number_of_satellites(systems: np.ndarray, satellites: np.ndarray, epochs: np.ndarray) -> np.ndarray:
@@ -29,7 +48,7 @@ def get_number_of_satellites(systems: np.ndarray, satellites: np.ndarray, epochs
     Args:
         satellites:     Array with satellite PRN number together with GNSS identifier (e.g. G07)
         systems:        Array with GNSS identifiers (e.g. G, E, R, ...)
-        epochs:         Array with observation epochs
+        epochs:         Array with observation epochs (e.g. as datetime objects)
 
     Returns:
         Number of satellites per epoch

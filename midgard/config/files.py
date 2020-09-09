@@ -27,7 +27,7 @@ import gzip
 import itertools
 import pathlib
 import re
-from typing import Any, Callable, Dict, Iterator, List, Optional, TypeVar
+from typing import Any, Dict, Iterator, List, Optional, Set, TypeVar
 
 # Third party imports
 import pycurl
@@ -204,8 +204,9 @@ class FileConfiguration(Configuration):
 
         # Try to download the file if it is missing
         if download_missing and not self._path_exists(file_path):
-            file_path = self.download_file(file_key, file_vars, file_path, is_zipped=is_zipped)
-
+            downloaded_file_path = self.download_file(file_key, file_vars, file_path, is_zipped=is_zipped)
+            if downloaded_file_path is not None:
+                file_path = downloaded_file_path
         return file_path
 
     def url(self, file_key, file_vars=None, default=None, is_zipped=None, use_aliases=False):
@@ -415,9 +416,21 @@ class FileConfiguration(Configuration):
         glob_pattern = str(pathlib.Path(*glob_path.parts[idx:]))
         return list(glob_base.glob(glob_pattern))
 
-    def glob_variable(self, file_key, variable, pattern, file_vars=None):
+    def glob_variable(
+        self, file_key: str, variable: str, pattern: str, file_vars: Optional[Dict[str, str]] = None
+    ) -> Set[str]:
         """Find all possible values of variable
+
+        Args:
+            file_key:     File key that should be downloaded.
+            variable:     Variable used in searching pattern.
+            pattern:      Search pattern.
+            file_vars:    File variables used to find path from file_key.
+
+        Returns:
+            Possible values of given variable
         """
+
         # Find available paths
         file_vars = dict() if file_vars is None else dict(file_vars)
         file_vars[variable] = "*"
@@ -459,9 +472,9 @@ def _log_file_open(file_path, description="", mode="r"):
     # Pick a log message based on the mode being used to open the file
     log_text = f"Read {description}from {file_path}"
     if "w" in mode:
-        log_text = "Write {description}to {file_path}"
+        log_text = f"Write {description}to {file_path}"
         if file_path.is_file():
-            log_text = "Overwrite {description}on {file_path}"
+            log_text = f"Overwrite {description}on {file_path}"
     if "a" in mode:
-        log_text = "Append {description}to {file_path}"
+        log_text = f"Append {description}to {file_path}"
     log.debug(log_text)

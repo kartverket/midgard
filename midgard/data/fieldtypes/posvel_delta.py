@@ -15,7 +15,6 @@ from midgard.dev import plugins
 @plugins.register
 class PosVelDeltaField(FieldType):
 
-    _subfields = PosVelDeltaArray.fieldnames()
     _factory = staticmethod(PosVelDelta)
 
     def _post_init(self, val, **field_args):
@@ -55,6 +54,10 @@ class PosVelDeltaField(FieldType):
             return values.val
         else:
             return values
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a posvel delta field")
 
     def _prepend_empty(self, num_obs, memo):
         empty_ref_pos = PosVel(

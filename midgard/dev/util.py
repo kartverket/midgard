@@ -18,6 +18,7 @@ from importlib import import_module
 import os
 import pathlib
 import platform
+import re
 import sys
 from typing import Any, Dict, List, Tuple, Union
 
@@ -29,8 +30,7 @@ from midgard.files import files
 _CACHE_SRC = dict()
 
 
-
-def check_help_and_version(module: str, doc_module: str=None) -> None:
+def check_help_and_version(module: str, doc_module: str = None, replace_vars: Dict[str, str]=dict()) -> None:
     """Show help or version if asked for
 
     Show the help message parsed from the script's docstring if -h or --help option is given. Show the script's version
@@ -39,10 +39,11 @@ def check_help_and_version(module: str, doc_module: str=None) -> None:
     Args:
         module:       Module name.
         doc_module:   Module containing help text.
-    """ 
+        replace_vars: Dictionary with variable for replacement in docstring
+    """
     # Help message
     if check_options("-h", "--help"):
-        print(_get_doc(doc_module))
+        print(_get_doc(doc_module).format(**replace_vars))
         raise SystemExit
 
     # Version information
@@ -183,7 +184,7 @@ def no_traceback(func):
 
 
 @no_traceback
-def parse_args(*param_types: Tuple[str], doc_module: str=None) -> Union[Any, List[Any]]:
+def parse_args(*param_types: Tuple[str], doc_module: str = None) -> Union[Any, List[Any]]:
     """Parse command line arguments and general options
 
     Parse arguments from the given parameter types.
@@ -233,7 +234,7 @@ def options2args(options: List[str]) -> Union[List[str], Dict[str, str]]:
     return args, kwargs
 
 
-def read_option_value(option: str, default: str="") -> str:
+def read_option_value(option: str, default: str = "") -> str:
     """Read the value of one command line option
 
     The option should be specified as a string with the necessary - or -- in front. If that option is not one of the
@@ -253,8 +254,8 @@ def read_option_value(option: str, default: str="") -> str:
             return arg.split("=", maxsplit=1)[-1]
 
     return default
-  
-    
+
+
 def write_requirements(file_path: Union[str, pathlib.Path]) -> None:
     """Write requirements (python modules) to file for reproducibility.
 
@@ -271,10 +272,10 @@ def write_requirements(file_path: Union[str, pathlib.Path]) -> None:
 
     # Write to requirements-file
     with files.open(file_path, mode="w") as fid:
-        fid.write(reqs_str + "\n")    
+        fid.write(reqs_str + "\n")
 
 
-def _get_doc(doc_module: str=None) -> str:
+def _get_doc(doc_module: str = None) -> str:
     """Get the docstring of the running program
 
     Args:
@@ -384,6 +385,23 @@ def _print_version(module: str) -> str:
         module:    Module Name.
     """
     print(_get_program_version(module))
+
+
+def _print_help_from_doc(doc_module: Union[None, str]=None, replace_vars: Dict[str, str]=dict()) -> str:
+    """Filter the docstring to make it a better help text and print it
+
+    Removes @-directives in the docstring. Furthermore, we replace the Example-heading used by Doxygen with Usage as 
+    that makes more sense in a help text. Finally $-symbols at the beginning and end of lines, as introduced by the SVN
+    keyword substitution, are removed.
+    """
+    doc = _get_doc(doc_module).format(**replace_vars)
+
+    for line in doc.splitlines():
+        if line.startswith("@"):
+            continue
+        line = re.sub(r"::", ":", line)
+        line = re.sub(r"^\$| ?\$$", "", line)
+        print(line)
 
 
 # Parsers for each parameter type

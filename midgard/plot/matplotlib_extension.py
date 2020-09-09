@@ -10,6 +10,7 @@ Wrapper functions around matplotlib subroutines are defined in this library.
 
 # Standard library imports
 from datetime import datetime
+from pathlib import PosixPath
 from typing import Any, Dict, List, Tuple, Union
 
 # External library imports
@@ -76,7 +77,8 @@ def get_statistic(
         if np.abs(stat) >= 1000 or (stat < 0.01 and stat > -0.01):
             stats.append(f"{func_def[func][0]}: {stat:.0e} {Unit(unit).units:~P}")  # with abbreviated SI unit
         else:
-            stats.append(f"{func_def[func][0]}: {stat:.2f} {Unit(unit).units:~P}")  # with abbreviated SI unit
+            width = ".1f" if (unit == "mm" or unit == "millimeter") else ".2f"
+            stats.append(f"{func_def[func][0]}: {stat:{width}} {Unit(unit).units:~P}")  # with abbreviated SI unit
     return stats
 
 
@@ -86,7 +88,7 @@ def get_statistic(
 def plot_bar_dataframe_columns(
     df: "Dataframe",
     column: str,
-    path: "pathlib.PosixPath",
+    path: PosixPath,
     xlabel: str = "",
     ylabel: str = "",
     label: str = "label",
@@ -223,6 +225,7 @@ def plot(
     | legend             | <True|False>     | Plot legend                                                             |
     | legend_location    | <right, bottom>  | Legend location                                                         |
     | legend_ncol        | <num>            | The number of legend columns                                            |
+    | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                       |
     | marker             | <'.'|'-'>        | Marker type                                                             |
     |                    |                  | if in one scatter subplot several plots should be plotted.              |
     | plot_to            | <console|file>   | Plot figure on console or file                                          |
@@ -279,6 +282,7 @@ def plot(
         "legend": False,
         "legend_location": None,
         "legend_ncol": 1,
+        "linestyle": "solid",
         "plot_to": "console",
         "plot_type": "scatter",
         "projection": None,
@@ -583,6 +587,7 @@ def plot_subplot_row(
     |                    |                  | axis on scatter plot                                                    |
     | histogram_binwidth | <num>            | Histogram bin width                                                     |
     | histogram_size     | <num>            | Histogram y-axis size                                                   |
+    | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                       |
     | marker             | <'.'|'-'>        | Marker type                                                             |
     | markersize         | <num>            | Marker size                                                             |
     | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
@@ -610,10 +615,6 @@ def plot_subplot_row(
        color:          Marker color.
        opt_args:       Dictionary with options, which overwrite default plot configuration.
     """
-    import matplotlib
-    matplotlib.rcParams["markers.fillstyle"] = 'none'   # markers are not filled
-    matplotlib.rcParams['lines.markeredgewidth'] = 0.0  # no marker edges plotted
-
     subtitle = list()
 
     # Define plotting options
@@ -624,6 +625,7 @@ def plot_subplot_row(
         "histogram": "",
         "histogram_binwidth": 0.25,
         "histogram_size": 1.2,
+        "linestyle": "solid",
         "marker": ".",
         "markersize": 9,
         "plot_type": "scatter",
@@ -641,6 +643,11 @@ def plot_subplot_row(
     if opt_args:
         options.update(opt_args)
 
+    if options["plot_type"] == "scatter":
+        import matplotlib
+        matplotlib.rcParams["markers.fillstyle"] = "none"  # markers are not filled
+        matplotlib.rcParams["lines.markeredgewidth"] = 0.0  # no marker edges plotted
+
     # Configure labels
     unit = f"[{y_unit}]" if y_unit else ""
     ax.set(ylabel=f"{ylabel} {unit}")
@@ -654,7 +661,7 @@ def plot_subplot_row(
             color=color,
             label=label,
             marker=options["marker"],
-            s=options["markersize"],
+            s=float(options["markersize"]),
         )
 
     elif options["plot_type"] == "plot":
@@ -664,6 +671,7 @@ def plot_subplot_row(
             alpha=options["alpha"],
             color=color,
             label=label,
+            linestyle=options["linestyle"],
             marker=options["marker"],
             markersize=options["markersize"],
         )
@@ -709,7 +717,8 @@ def plot_subplot_row(
     if options["reg_line"]:
         unit = f"{Unit(y_unit).units:~P}/{Unit(x_unit).units:~P}"  # get abbreviated SI units
         rate, _ = _plot_regression_line(ax, x_array, y_array)
-        subtitle.append(f"Rate: {rate:.3f} {unit}")
+        width = ".1f" if (y_unit == "mm" or y_unit == "millimeter") else ".3f"
+        subtitle.append(f"Rate: {rate:{width}} {unit}")
 
     # Plot statistical text line as title over each subplot
     if options["statistic"]:
@@ -817,7 +826,7 @@ def _plot_legend(legend_labels: List["matplotlib.lines.Line2D"], labels: List[st
 
     # General definition of legend location
     legend_loc = {
-        "bottom": {"bbox_to_anchor": (0.5, -0.25), "borderaxespad": 0.0, "loc": "upper center"},
+        "bottom": {"bbox_to_anchor": (0.5, -0.3), "borderaxespad": 0.0, "loc": "upper center"},
         "right": {"bbox_to_anchor": (1.04, 1), "borderaxespad": 0.0, "loc": "upper left"},
     }
 

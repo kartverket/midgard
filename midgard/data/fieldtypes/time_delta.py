@@ -38,7 +38,7 @@ class TimeDeltaField(FieldType):
 
         # Check that unit is not given, overwrite with time scale
         if self._unit is not None:
-            raise exceptions.InitializationError("Parameter 'unit' should not be specified for times")
+            raise exceptions.InitializationError("Parameter 'unit' should not be specified for time deltas")
         self._unit = None
 
         # Check that the correct number of observations are given
@@ -58,6 +58,14 @@ class TimeDeltaField(FieldType):
             return values.timedelta
         else:
             return values
+
+    def unit(self, _):
+        """Unit of fields"""
+        raise exceptions.UnitError("Time delta fields do not have units")
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a time delta field")
 
     def _prepend_empty(self, num_obs, memo):
         empty = TimeDelta([timedelta(seconds=0)] * num_obs, scale="utc", fmt="timedelta")

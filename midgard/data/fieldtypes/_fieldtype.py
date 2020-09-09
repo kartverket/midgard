@@ -20,7 +20,6 @@ from midgard.dev import exceptions
 class FieldType(abc.ABC):
     """Abstract class representing a type of field in the Dataset"""
 
-    _subfields: List[str] = list()
     _plot_fields: List[str] = list()
     _factory = None
     dtype = None
@@ -214,14 +213,30 @@ class FieldType(abc.ABC):
         else:
             return self.data.unit(subfield)
 
+    @abc.abstractmethod
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+
+    def _validate_unit(self, data, unit):
+        cols = 1 if data.ndim == 1 else data.shape[1]
+        if isinstance(unit, str):
+            return (unit,) * cols
+        elif len(unit) != cols:
+            raise ValueError(f"Number of units ({len(unit)}) must equal number of columns ({cols})")
+        return unit
+
     @property
     def subfields(self):
         """Names of field and all subfields"""
-        return [self.name] + [f"{self.name}.{f}" for f in sorted(self._subfields)]
+        try:
+            fields = self.data.fieldnames()
+        except AttributeError:
+            fields = [] 
+        return [self.name] + [f"{self.name}.{f}" for f in sorted(fields)]
 
     @property
     def plot_fields(self):
-        """Name of all plotable subfields"""
+        """Name of all plotable fields"""
         try:
             return [self.name] + [f"{self.name}.{f}" for f in sorted(self.data.plot_fields())]
         except AttributeError:

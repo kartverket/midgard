@@ -13,9 +13,11 @@ import numpy as np
 
 # Midgard imports
 import midgard
+from midgard.dev import exceptions
+from midgard.dev import log
 from midgard.math.unit import Unit
 
-#TODO: This function should be replaced by get_existing_fields_by_attrs!!!
+# TODO: This function should be replaced by get_existing_fields_by_attrs!!!
 def get_existing_fields(dset: "Dataset", writers_in: Tuple["WriterField", ...]) -> Tuple["WriterField", ...]:
     """Get existing writer fields, which are given in Dataset.
 
@@ -69,7 +71,7 @@ def get_existing_fields_by_attrs(dset: "Dataset", writers_in: Tuple["WriterField
     return writers_out
 
 
-#TODO: This function should be replaced by get_field_by_attrs!!!
+# TODO: This function should be replaced by get_field_by_attrs!!!
 def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.ndarray:
     """Get field values of a Dataset specified by the field attributes
 
@@ -87,13 +89,22 @@ def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.n
     f = dset[field]
     for attr in attrs:
         f = getattr(f, attr)
-
-    # Determine output 'unit'
-    # +TODO: Does not work for all fields, because dset.unit() does not except 'time.gps.mjd'.
-    if unit.startswith("deg"):
+        
+    # Convert 'unit' if necessary
+    if unit:
         field_attrs = field if len(attrs) == 0 else f"{field}.{'.'.join(attrs)}"
-        f = f * getattr(Unit, f"{dset.unit(field_attrs)[0]}2{unit}")
-    # -TODO
+        
+        try:
+            field_unit = dset.unit(field_attrs)[0]
+        except (exceptions.UnitError):
+            log.debug(f"Skip unit conversion for text field '{field_attrs}'.")
+            return f # Skip unit conversion for text fields, which do not have a unit.
+        
+        try:
+            log.debug(f"Convert dataset field {field} from unit {field_unit} to {unit}.")
+            f = f * Unit(field_unit).to(unit).m
+        except (exceptions.UnitError):
+            log.warn(f"Cannot convert from '{field_unit}' to '{unit}' for field {field}.")
 
     return f
 
@@ -115,11 +126,16 @@ def get_field_by_attrs(dset: "Dataset", attrs: Tuple[str], unit: str) -> np.ndar
     for attr in attrs:
         f = getattr(f, attr)
 
-    # Determine output 'unit'
-    # +TODO: Does not work for all fields, because dset.unit() does not except 'time.gps.mjd'.
-    if unit.startswith("deg"):
-        f = f * getattr(Unit, f"{dset.unit({'.'.join(attrs)})[0]}2{unit}")
-    # -TODO
+    # Convert 'unit' if necessary
+    if unit:
+        field = f"{'.'.join(attrs)}"
+        if dset.unit(field):
+            field_unit = dset.unit(field)[0]
+            try:
+                log.debug(f"Convert dataset field {field} from unit {field_unit} to {unit}.")
+                f = f * Unit(field_unit).to(unit).m
+            except exceptions.UnitError:
+                log.warn(f"Cannot convert from '{field_unit}' to '{unit}'.")
 
     return f
 
@@ -164,7 +180,7 @@ ________________________________________________________________________________
     # TODO: 'description' should not exceed number of 120 characters. Newline should automatically introduced if
     #      f.description exceeds a certain number of characters.
     for f in fields:
-        description = f"{description}{f.header:12s} {f.unit:22s} {f.description}\n"
+        description = f"{description}{f.header:14s} {f.unit:22s} {f.description}\n"
 
     # Add data header lines to description
     header = [

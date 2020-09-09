@@ -9,7 +9,8 @@
 # However, the list can also be extended. Any units defined in this file will also be available to Midgard. See
 # http://pint.readthedocs.io/en/stable/defining.html for a description of how to define new units.
 
-unit = []
+unit = [] = unitless = dimensionless
 percent = unit / 100
+ppb = 1e-9 * unit = parts per billion
 mas = milliarcsec
 masD = milliarcsec per day

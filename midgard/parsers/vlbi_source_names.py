@@ -42,7 +42,9 @@ class VlbiSourceNamesParser(LineParser):
             src["ivs_name"]: dict(
                 icrf_name_long=src["icrf_name_long"],
                 icrf_name_short=src["icrf_name_short"],
-                iers_name=src["iers_name"] if src["iers_name"] != "-" else src["ivs_name"],
+                iers_name=src["iers_name"]
+                if src["iers_name"] != "-" and src["iers_name"].strip()
+                else src["ivs_name"],
                 jpl_name=src["jpl_name"] if src["jpl_name"] != "-" else src["ivs_name"],
             )
             for src in self._array

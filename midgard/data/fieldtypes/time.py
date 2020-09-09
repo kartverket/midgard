@@ -59,6 +59,14 @@ class TimeField(FieldType):
         else:
             return values
 
+    def unit(self, _):
+        """Unit of fields"""
+        raise exceptions.UnitError("Time fields do not have units")
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a time field")
+
     def _prepend_empty(self, num_obs, memo):
         # Use datetime.min as "empty" value
         empty = Time([datetime.min] * num_obs, scale="utc", fmt="datetime")

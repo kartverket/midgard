@@ -77,13 +77,13 @@ def add(*file_paths: Union[str, pathlib.Path], label: str = "") -> None:
     # Ignore dependency if no dependency file has been set (init() has not been called)
     if not _DEPENDENCY_CACHE:
         return
-
     # Add or update dependency information
     fast_check = _DEPENDENCY_CACHE["fast_check"]
     for file_path in file_paths:
-        file_info = _file_info(file_path, fast_check, label=label)
-        _CURRENT_DEPENDENCIES[str(file_path)] = file_info
-        log.debug(f"Adding dependency: {file_path} ({file_info['checksum']})")
+        if file_path is not None:
+            file_info = _file_info(file_path, fast_check, label=label)
+            _CURRENT_DEPENDENCIES[str(file_path)] = file_info
+            log.debug(f"Adding dependency: {file_path} ({file_info['checksum']})")
 
 
 def _file_info(file_path: Union[str, pathlib.Path], fast_check: bool, **info_args: str) -> Dict[str, str]:

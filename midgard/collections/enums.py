@@ -150,6 +150,16 @@ def has_value(name: str, value: str) -> bool:
 #
 # ENUMS
 #
+@register_enum("exit_status")
+class ExitStatus(int, enum.Enum):
+    """Exit status definition"""
+
+    ok = 0
+    warn = 1
+    error = 2
+    fatal = 3
+
+
 @register_enum("log_level")
 class LogLevel(int, enum.Enum):
     """Levels used when deciding how much log output to show"""
@@ -353,7 +363,8 @@ class GnssNameToId(str, enum.Enum):
     qzss = "J"
     glonass = "R"
     sbas = "S"
-    
+
+
 @register_enum("gnss_3digit_id_to_id")
 class Gnss3DigitIdToId(str, enum.Enum):
     """RINEX GNSS 3-digit identifier to RINEX GNSS identifier"""
@@ -364,17 +375,30 @@ class Gnss3DigitIdToId(str, enum.Enum):
     IRN = "I"
     QZS = "J"
     GLO = "R"
-    
+
+
 @register_enum("gnss_id_to_3digit_id")
 class GnssIdTo3DigitId(str, enum.Enum):
     """RINEX GNSS RINEX identifier to GNSS 3-digit identifier"""
 
-    C = "BDS" 
+    C = "BDS"
     E = "GAL"
     G = "GPS"
     I = "IRN"
     J = "QZS"
     R = "GLO"
+
+
+@register_enum("gnss_id_to_reference_system")
+class GnssIdToReferenceSystem(str, enum.Enum):
+    """RINEX GNSS RINEX identifier to relevant GNSS reference system name"""
+
+    C = "cgcs2000"
+    E = "gtrf"
+    G = "wgs84"
+    I = "wgs84"
+    J = "jgs"
+    R = "pz_90"
 
 
 # Examples

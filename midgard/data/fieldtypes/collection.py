@@ -38,9 +38,19 @@ class CollectionField(FieldType):
         # Store the data as a Collection
         self.data = data
 
-    @property
-    def _subfields(self):
-        return self.data.fields
+    def unit(self, subfield):
+        """Unit(s) of field"""
+        if not subfield:
+            raise exceptions.UnitError(f"Collections do not have units")
+        else:
+            return super().unit(subfield)
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit of field"""
+        if not subfield:
+            raise exceptions.UnitError(f"Collections do not have units")
+        else:
+            super().set_unit(subfield, new_unit)
 
     @property
     def plot_fields(self):
@@ -56,7 +66,7 @@ class CollectionField(FieldType):
 
     @property
     def fields(self):
-        return self._subfields
+        return self.data.fields
 
     @classmethod
     def read(cls, h5_group, memo):
@@ -120,4 +130,3 @@ class CollectionField(FieldType):
     def _extend(self, other_field, memo) -> None:
         """Add observations from another field"""
         self.data._extend(other_field.data, memo)
-

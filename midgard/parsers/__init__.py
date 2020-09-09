@@ -78,7 +78,7 @@ def parse_file(
     parser = plugins.call(
         package_name=__name__, plugin_name=parser_name, file_path=file_path, encoding=encoding, **parser_args
     )
-    if parser.data_available: 
+    if parser.data_available:
         with Timer(f"Finish {parser_name} ({__name__}) - {file_path} in", logger=timer_logger):
             parser.parse()
     return parser

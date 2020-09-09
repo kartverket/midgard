@@ -15,7 +15,6 @@ from midgard.dev import plugins
 @plugins.register
 class PositionDeltaField(FieldType):
 
-    _subfields = PositionDeltaArray.fieldnames()
     _factory = staticmethod(PositionDelta)
 
     def _post_init(self, val, **field_args):
@@ -58,6 +57,10 @@ class PositionDeltaField(FieldType):
             return values.val
         else:
             return values
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a position delta field")
 
     def _prepend_empty(self, num_obs, memo):
         empty_ref_pos = Position(

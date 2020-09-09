@@ -13,13 +13,14 @@ class SigmaArray(np.ndarray):
 
     type = "sigma"
 
-    def __new__(cls, values, sigma=None):
+    def __new__(cls, values, sigma=None, unit=None):
         """Create a new SigmaArray"""
         obj = np.asarray(values, dtype=float).view(cls)
         sigma = np.array(sigma) if sigma is not None else np.full(values.shape, np.nan)
         if sigma.ndim == 0:
             sigma = sigma.item()
         obj._sigma = sigma
+        obj._unit = unit
         return obj
 
     def __array_finalize__(self, obj):
@@ -44,6 +45,16 @@ class SigmaArray(np.ndarray):
         else:
             self._sigma = np.asarray(value) * np.ones(self.shape)
 
+    def unit(self, _):
+        """Unit of SigmaArray
+
+        The subfield sigma share the same unit as the SigmaArray itself"""
+        return self._unit
+
+    def set_unit(self, new_unit):
+        """Update unit of SigmaArray"""
+        self._unit = new_unit
+
     @classmethod
     def insert(cls, a, pos, b, memo):
         """ Insert b into a at position pos"""
@@ -61,6 +72,9 @@ class SigmaArray(np.ndarray):
         memo[id_a] = (a, new_sigma)
         memo[id_b] = (b, new_sigma)
         return new_sigma
+
+    def fieldnames(self):
+        return ["sigma"]
 
     def __add__(self, _):
         """self + other"""

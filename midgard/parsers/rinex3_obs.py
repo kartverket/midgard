@@ -32,7 +32,9 @@ import numpy as np
 from midgard.data import dataset
 from midgard.dev import plugins
 from midgard.dev import log
+from midgard.gnss.gnss import obstype_to_freq
 from midgard.parsers import ChainParser, ParserDef
+from midgard.math.constant import constant
 from midgard.math.unit import Unit
 
 
@@ -47,6 +49,8 @@ class Rinex3Parser(ChainParser):
     are sampled after sampling rate definition in configuration file.
 
     Attributes:
+        convert_unit (Boolean):       Convert unit from carrier-phase and Doppler observation to meter. Exception:
+                                      unit conversion for GLONASS observations is not implemented.
         data (Dict):                  The (observation) data read from file.
         data_available (Boolean):     Indicator of whether data are available.
         file_encoding (String):       Encoding of the datafile.
@@ -63,7 +67,13 @@ class Rinex3Parser(ChainParser):
         system (String):              GNSS identifier.
     """
 
-    def __init__(self, *args: Tuple[Any], sampling_rate: Union[None, float] = None, **kwargs: Dict[Any, Any]) -> None:
+    def __init__(
+        self,
+        *args: Tuple[Any],
+        sampling_rate: Union[None, float] = None,
+        convert_unit: bool = False,
+        **kwargs: Dict[Any, Any],
+    ) -> None:
         """Initialize Rinex3-parser
         
         Args:
@@ -75,6 +85,7 @@ class Rinex3Parser(ChainParser):
         self.obstypes_all = list()
         self.time_scale = "gps"
         self.sampling_rate = sampling_rate
+        self.convert_unit = convert_unit
         log.debug(f"Sampling rate for RINEX observations is {self.sampling_rate} second(s).")
 
     #
@@ -583,7 +594,6 @@ class Rinex3Parser(ChainParser):
         In addition the RINEX observation are rejected from satellites not given in configuration file.
         """
         # Ignore epochs based on sampling rate
-        # TODO: This should be done in 'edit' step!!!
         sec = cache["obs_sec"]
         if sec is None:
             return
@@ -604,20 +614,20 @@ class Rinex3Parser(ChainParser):
         for idx, obs_type in zip(range(0, line_length, field_length), self.meta["obstypes"][sys]):
             value = line["obs"][idx : idx + field_length]
             self.data["obs"][obs_type].append(_float(value[0:14]))
-            self.data["cycle_slip"][obs_type].append(_int(value[14:15]))
-            self.data["signal_strength"][obs_type].append(_int(value[15:16]))
+            self.data["cycle_slip"][obs_type].append(_float(value[14:15]))
+            self.data["signal_strength"][obs_type].append(_float(value[15:16]))
 
-        # Fill unused observation types with zero values
+        # Fill unused observation types with NaN values
         #
         # NOTE: Each observation type is saved in a Dataset field. The observation type fields have the same length
         #       to be consistent with the time, system or satellite Dataset field. The problem is that some observation
-        #       types are not observed for a certain satellite system, but these observation are included with zero
+        #       types are not observed for a certain satellite system, but these observation are included with NaN
         #       values in the observation type field, which is done in the following.
         unused_obstypes = set(self.obstypes_all) - set(self.meta["obstypes"][sys])
         for obs_type in unused_obstypes:
-            self.data["obs"][obs_type].append(0.0)
-            self.data["cycle_slip"][obs_type].append(0)
-            self.data["signal_strength"][obs_type].append(0)
+            self.data["obs"][obs_type].append(float("nan"))
+            self.data["cycle_slip"][obs_type].append(float("nan"))
+            self.data["signal_strength"][obs_type].append(float("nan"))
 
         self.data.setdefault("time", list()).append(cache["obs_time"])
         self.data.setdefault("epoch_flag", list()).append(cache["epoch_flag"])
@@ -645,6 +655,7 @@ class Rinex3Parser(ChainParser):
             self._remove_empty_systems,
             self._remove_empty_obstype_fields,
             self._time_system_correction,
+            self._unit_conversion,
         ]
 
     def _check_obs_data(self) -> None:
@@ -674,12 +685,12 @@ class Rinex3Parser(ChainParser):
 
         In addition it can be that the observation types are not given for a certain GNSS. In this case the observation
         types in the meta['obstypes'] variable are removed for this GNSS. But it should be kept in mind, that the
-        observations for this observation type are still given in the Dataset, which are set to zero.
+        observations for this observation type are still given in the Dataset, which are set to NaN.
         """
         remove_obstype = []  # List with observation types, which should be removed from Dataset.
         remove_obstype_sys = {}  # Dictionary with obstypes for each GNSS, should be removed from meta['obstypes'].
         for obstype, obs in self.data["obs"].items():
-            if not obs or np.all(np.array(obs) == 0.0):
+            if not obs or np.all(np.isnan(obs)):
                 remove_obstype.append(obstype)
             systems = set(self.data["text"]["system"])
             for sys in systems:
@@ -687,7 +698,7 @@ class Rinex3Parser(ChainParser):
                 # Filter observations depending on GNSS
                 idx = np.array(self.data["text"]["system"]) == sys
 
-                if np.all(np.array(obs)[idx] == 0.0):
+                if np.all(np.isnan(obs)[idx]):
                     remove_obstype_sys.setdefault(sys, list()).append(obstype)
 
         log.debug(
@@ -750,6 +761,31 @@ class Rinex3Parser(ChainParser):
         # Change time scale to UTC for GLONASS
         elif system == "GLO":
             self.time_scale = "utc"
+
+    def _unit_conversion(self) -> None:
+        """Carrier-phase and Doppler observations are converted to meter
+        
+        Carrier-phase observations are given in cycles and Doppler observation in Hertz in RINEX observation file. 
+        Exception: unit conversion for GLONASS observations is not implemented.
+        """
+        if self.convert_unit:
+
+            for sys in set(self.data["text"]["system"]):
+                if sys == "R":  # Frequency handling for GLONASS satellites is not implemented.
+                    continue
+
+                idx = sys == np.array(self.data["text"]["system"])
+
+                for obstype in self.meta["obstypes"][sys]:
+                    
+                    if not obstype[0] in ["L", "D"]:  # Skip pseudorange and SNR observations
+                        continue
+                    log.debug(f"Conversion from observation type {obstype} (for GNSS: '{sys}') to meter.")
+                    self.data["obs"][obstype] = np.array(self.data["obs"][obstype])
+                    self.data["obs"][obstype][idx] = (
+                        constant.c / obstype_to_freq(sys, obstype) * self.data["obs"][obstype][idx]
+                    )
+
 
     # def pseudorange_system_correction(self):
     #    """Apply correction to pseudorange observations
@@ -862,7 +898,7 @@ class Rinex3Parser(ChainParser):
 def _float(value: str) -> float:
     """Convert string to float value
 
-    Whitespace or empty value is set to 0.0.
+    Whitespace, empty or zero value is set to NaN.
 
     Args:
         value: String value
@@ -870,24 +906,7 @@ def _float(value: str) -> float:
     Returns:
         Float value
     """
-    if value.isspace() or not value:
-        return 0.0
+    if value.isspace() or not value or value == "0" or value == "0.0":
+        return float("nan")
     else:
         return float(value)
-
-
-def _int(value: str) -> None:
-    """Convert string to int value
-
-    Whitespace or empty value is set to 0.
-
-    Args:
-        value: String value
-
-    Returns:
-        Integer value
-    """
-    if value.isspace() or not value:
-        return 0
-    else:
-        return int(value)

@@ -77,12 +77,14 @@ def register_system(
         name = cls.system
         _SYSTEMS[cls.cls_name][name] = cls
 
+        conversions = _CONVERSIONS.setdefault(cls.cls_name, dict())
+
         if convert_to:
             for to_system, converter in convert_to.items():
-                _CONVERSIONS.setdefault(cls.cls_name, dict())[(name, to_system)] = converter
+                conversions[(name, to_system)] = converter
         if convert_from:
             for from_system, converter in convert_from.items():
-                _CONVERSIONS.setdefault(cls.cls_name, dict())[(from_system, name)] = converter
+                conversions[(from_system, name)] = converter
         return cls
 
     return wrapper
@@ -94,6 +96,9 @@ def _find_conversion_hops(cls: str, hop: Tuple[str, str]) -> List[Tuple[str, str
     queue = [(start_sys, [])]
     visited = set()
 
+    if start_sys == target_sys:
+        return [hop]
+
     while queue:
         from_sys, hops = queue.pop(0)
         for to_sys in [t for f, t in _CONVERSIONS[cls] if f == from_sys]:
@@ -104,7 +109,7 @@ def _find_conversion_hops(cls: str, hop: Tuple[str, str]) -> List[Tuple[str, str
                 visited.add(one_hop)
                 queue.append((to_sys, hops + [one_hop]))
 
-    raise exceptions.UnknownConversionError(f"Can't convert PositionArray from {start_sys!r} to {target_sys!r}")
+    raise exceptions.UnknownConversionError(f"Can't convert {cls} from {start_sys!r} to {target_sys!r}")
 
 
 class PosBase(np.ndarray):
@@ -246,55 +251,53 @@ class PosBase(np.ndarray):
         else:
             raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
 
-    @classmethod
-    def _fieldnames(cls):
-        return cls._attributes() + cls._fields() + cls._system_columns() + cls._systems()
-
-    def plot_fields(self):
-        """Returns list of attributes that can be plotted"""
+    def fieldnames(self):
+        """Return list of valid attributes for this object"""
+        # Pick one element to avoid doing calculations on a large array 
         obj = self if len(self) == 1 else self[0]
-        try:
-            parent_fields = obj.__class__.__base__.__base__._fields()
-        except AttributeError:
-            parent_fields = list()
 
-        systems_and_attributes = []
+        systems_and_columns = []
         for system in obj._systems():
             try:
                 _find_conversion_hops(obj.cls_name, (obj.system, system))
                 # Add systems
-                systems_and_attributes.append(system)
+                systems_and_columns.append(system)
                 for column in _SYSTEMS[obj.cls_name][system].column_names:
                     # Add system columns
-                    systems_and_attributes.append(f"{system}.{column}")
+                    systems_and_columns.append(f"{system}.{column}")
                 for system_field in _FIELDS.get(_SYSTEMS[obj.cls_name][system].__name__, {}):
                     # Add system fields
-                    systems_and_attributes.append(f"{system}.{system_field}")
+                    try:
+                        getattr(getattr(obj,system), system_field)
+                        systems_and_columns.append(f"{system}.{system_field}")
+                    except exceptions.InitializationError:
+                        pass # This system field cannot be computed. Skipping
             except exceptions.UnknownConversionError:
                 pass  # Skip systems that cannot be converted to
 
-        fields = []
-        # merge self fields and parent fields to one dictionary
-        parent_cls = obj.__class__.__base__.__base__.cls_name
-        fields_dict = {**_FIELDS.get(obj.cls_name, {}), **_FIELDS.get(parent_cls, {})}
-        for field, dependence in fields_dict.items():
+        useable_fields = []
+        for field in self._fields():
             try:
-                # Add fields that depend on some attribute being defined
-                if dependence:
-                    attr_value = getattr(obj, field, None)
-                    if attr_value is not None:
-                        fields.append(field)
-
+                getattr(obj, field)
+                useable_fields.append(field)
             except exceptions.InitializationError:
-                # Skip attributes that cannot be computed
-                if field in parent_fields:
-                    parent_fields.remove(field)
+                # This field cannot be computed. Skipping
+                pass
 
-        return list(set(fields + systems_and_attributes + parent_fields))
+        return self._attributes() + systems_and_columns + useable_fields
+
+    def plot_fields(self):
+        valid_fields = set(self.fieldnames())
+        return sorted(list(valid_fields - set(self._attributes())))
 
     @classmethod
     def _fields(cls):
-        return list(_FIELDS.get(cls.cls_name, {}).keys())
+        _cls = cls
+        fields = []
+        while _cls is not None:
+            fields += list(_FIELDS.get(_cls.__name__, {}).keys())
+            _cls = _cls.__base__
+        return fields
 
     @classmethod
     def _attributes(cls):
@@ -303,10 +306,6 @@ class PosBase(np.ndarray):
     @classmethod
     def _systems(cls):
         return list(_SYSTEMS.get(cls.cls_name, {}).keys())
-
-    @classmethod
-    def _system_columns(cls):
-        return [f"{s}.{c}" for s, sc in _SYSTEMS[cls.cls_name].items() for c in sc.column_names]
 
     def __setitem__(self, key, item):
         self.clear_cache()  # Clear cache when any elements change
@@ -396,6 +395,12 @@ class PosBase(np.ndarray):
     def __dir__(self):
         """List all fields and attributes on the PosDeltaBase array"""
         return super().__dir__() + list(_SYSTEMS[self.cls_name]) + list(self.column_names)
+
+    def __len__(self):
+        """Number of positions in Array"""
+        if self.ndim == 1:
+            return 1;
+        return super().__len__()
 
     def __iadd__(self, other):
         """self += other"""
@@ -567,11 +572,6 @@ class PositionArray(PosBase):
             raise exceptions.UnknownSystemError(f"System {system!r} unknown. Use one of {systems}")
 
         return _SYSTEMS["PositionArray"][system](val, **pos_args)
-
-    @classmethod
-    def fieldnames(cls):
-        fields = PositionArray._fieldnames()
-        return fields
 
     @classmethod
     def from_position(cls, val: np.ndarray, other: "PositionArray") -> "PositionArray":
@@ -1016,10 +1016,11 @@ class PositionDeltaArray(PosBase):
 
         return _SYSTEMS["PositionDeltaArray"][system](val, ref_pos, **delta_args)
 
-    @classmethod
-    def fieldnames(cls):
-        fields = PositionDeltaArray._fieldnames()
-        return fields
+    def plot_fields(self):
+        return list(set(super().plot_fields()) - {"ref_pos"})
+
+    def fieldnames(self):
+        return super().fieldnames() + ["ref_pos"]
 
     @classmethod
     def from_position(cls, val: np.ndarray, other: "PositionArray") -> "PositionDeltaArray":
@@ -1452,11 +1453,6 @@ class PosVelArray(PositionArray):
         return _SYSTEMS["PosVelArray"][system](val, **pos_args)
 
     @classmethod
-    def fieldnames(cls):
-        fields = PosVelArray._fieldnames() + PositionArray._fields()
-        return fields
-
-    @classmethod
     def from_posvel(cls, val: np.ndarray, other: "PosVelArray") -> "PosVelArray":
         """Create a new posvel object with given values and same attributes as other 
 
@@ -1694,11 +1690,6 @@ class PosVelDeltaArray(PositionDeltaArray):
             raise exceptions.UnknownSystemError(f"System {system!r} unknown. Use one of {systems}")
 
         return _SYSTEMS["PosVelDeltaArray"][system](val, ref_pos, **delta_args)
-
-    @classmethod
-    def fieldnames(cls):
-        fields = PosVelDeltaArray._fieldnames() + PositionDeltaArray._fields()
-        return fields
 
     @property
     def pos(self):

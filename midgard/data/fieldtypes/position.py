@@ -15,7 +15,6 @@ from midgard.dev import plugins
 @plugins.register
 class PositionField(FieldType):
 
-    _subfields = PositionArray.fieldnames()
     _factory = staticmethod(Position)
 
     def _post_init(self, val, **field_args):
@@ -49,6 +48,7 @@ class PositionField(FieldType):
         # Store the data as a PositionArray
         self.data = data
 
+
     def plot_values(self, field=None) -> np.array:
         """Return values of the field in a form that can be plotted"""
         if not field:
@@ -59,6 +59,10 @@ class PositionField(FieldType):
             return values.val
         else:
             return values
+
+    def set_unit(self, subfield, new_unit):
+        """Update unit(s) of field"""
+        raise exceptions.UnitError(f"Can not change the unit of a position field")
 
     def _prepend_empty(self, num_obs, memo):
         empty = Position(np.full((num_obs, 3), np.nan), system=self.data.system, ellipsoid=self.data.ellipsoid)

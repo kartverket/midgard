@@ -27,7 +27,19 @@ class Collection:
 
     @property
     def fields(self):
-        """Names of fields in the collection"""
+        """Names of fields and nested fields in the collection"""
+        all_fields = list()
+        for fieldname, field in self._fields.items():
+            all_fields.append(fieldname)
+            try:
+                all_fields.extend([f"{fieldname}.{f}" for f in field.fields])
+            except AttributeError:
+                pass
+
+        return sorted(all_fields)
+
+    def fieldnames(self):
+        """Names of fields, nested fields and field attributes in the collection"""
         all_fields = list()
         for field in self._fields.values():
             all_fields.extend(field.subfields)
@@ -51,6 +63,21 @@ class Collection:
         mainfield, _, subfield = field.partition(".")
         try:
             return self._fields[mainfield].unit(subfield)
+        except KeyError:
+            raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
+
+    def unit_short(self, field):
+        units = self.unit(field)
+        print(f"{units} in unit_short()")
+        if units is None:
+            return tuple()
+        return tuple([Unit.symbol(u) for u in units])
+
+    def set_unit(self, field, new_unit):
+        """Update the unit of a given field"""
+        mainfield, _, subfield = field.partition(".")
+        try:
+            return self._fields[mainfield].set_unit(subfield, new_unit)
         except KeyError:
             raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
 

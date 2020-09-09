@@ -230,7 +230,7 @@ class spvDoppler(object):
         E = self.xyz2enu_transf_mat(rcv_llh, logger)
 
         # sleep for a while
-        time.sleep(.1)
+        time.sleep(0.1)
 
         # ===============================================
         #   Main loop: loop over all valid satellites
@@ -321,7 +321,7 @@ class spvDoppler(object):
             #  One more valid satellite
             nv += 1
 
-        v = v[v != .0]
+        v = v[v != 0.0]
 
         # time.sleep(2)
         self.v = v
@@ -413,7 +413,7 @@ class spvDoppler(object):
                     # ========================================
                     b_debug = False
                     if b_debug:
-                        ogger(f"\n\ncompute_doppler_res():  Design matrix H:")
+                        logger(f"\n\ncompute_doppler_res():  Design matrix H:")
                         print(H)
                         logger(f"\n\ncompute_doppler_res():  Residual vector v:")
                         print(v)
@@ -432,17 +432,16 @@ class spvDoppler(object):
                         )
 
                         # validate the solution
-                        alpha_sig_level = .001
+                        alpha_sig_level = 0.001
                         n_params = 4
                         sol_indicator = self.spv_sol_val(v * 100, alpha_sig_level, n_params, logger)
                         # if(sol_indicator):
 
-                        time.sleep(.1)
+                        time.sleep(0.1)
                         self.sol_val = sol_indicator
                         self.x = x
                         self.dx = dx
                         self.Qx = Qx
-
                         return
 
                 else:
