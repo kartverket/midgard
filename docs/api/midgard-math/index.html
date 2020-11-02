@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.math - Midgard v1.1.1</title>
+        <title>midgard.math - Midgard v1.1.2</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -145,7 +145,9 @@
             <li><a href="#midgardmathconstant">midgard.math.constant</a></li>
             <li><a href="#midgardmathellipsoid">midgard.math.ellipsoid</a></li>
             <li><a href="#midgardmathinterpolation">midgard.math.interpolation</a></li>
+            <li><a href="#midgardmathlinear_regression">midgard.math.linear_regression</a></li>
             <li><a href="#midgardmathnputil">midgard.math.nputil</a></li>
+            <li><a href="#midgardmathplanetary_motion">midgard.math.planetary_motion</a></li>
             <li><a href="#midgardmathrotation">midgard.math.rotation</a></li>
             <li><a href="#midgardmathtransformation">midgard.math.transformation</a></li>
             <li><a href="#midgardmathunit">midgard.math.unit</a></li>
@@ -373,6 +375,13 @@ finding the closest original point and essentially picking the <code>window // 2
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Same function.</p>
+<h2 id="midgardmathlinear_regression">midgard.math.linear_regression</h2>
+<p>Midgard library module for linear regression</p>
+<p><strong>Description:</strong></p>
+<h3 id="linearregression"><strong>LinearRegression</strong></h3>
+<p>Full name: <code>midgard.math.linear_regression.LinearRegression</code></p>
+<p>Signature: <code>(x:numpy.ndarray, y:numpy.ndarray) -&gt; None</code></p>
+<p>LinearRegression(x:numpy.ndarray, y:numpy.ndarray)</p>
 <h2 id="midgardmathnputil">midgard.math.nputil</h2>
 <p>Utility wrapper for numpy functions</p>
 <p>Makes sure numpy functions can be called in a similar fashion for different use cases
@@ -408,6 +417,76 @@ def test_func(a: np.ndarray, b: np.ndarray = None)
 <h3 id="unit_vector"><strong>unit_vector</strong>()</h3>
 <p>Full name: <code>midgard.math.nputil.unit_vector</code></p>
 <p>Signature: <code>(vector)</code></p>
+<h2 id="midgardmathplanetary_motion">midgard.math.planetary_motion</h2>
+<p>Midgard library for planetary motion</p>
+<p><strong>Example:</strong></p>
+<pre><code>from migard.math import planetary_motion
+</code></pre>
+<h3 id="findsun"><strong>findsun</strong>()</h3>
+<p>Full name: <code>midgard.math.planetary_motion.findsun</code></p>
+<p>Signature: <code>(time:'Time') -&gt; numpy.ndarray</code></p>
+<p>Obtains the position vector of the Sun in relation to Earth (in ECEF).</p>
+<p>This routine is a reimplementation of routine findSun() in model.c of gLAB 3.0.0 software. The gLAB 3.0.0 software
+core excecutables are distributed under the Apache License version 2.0 related to following copyright and license:</p>
+<p>COPYRIGHT 2009 - 2016 GAGE/UPC &amp; ESA</p>
+<p>LICENSED UNDER THE APACHE LICENSE, VERSION 2.0 (THE "LICENSE"); YOU MAY NOT USE THIS ROUTINE EXCEPT IN COMPLIANCE 
+WITH THE LICENSE. YOU MAY OBTAIN A COPY OF THE LICENSE AT</p>
+<p>HTTP://WWW.APACHE.ORG/LICENSES/LICENSE-2.0</p>
+<p>UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING, SOFTWARE DISTRIBUTED UNDER THE LICENSE IS DISTRIBUTED ON 
+AN "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED. SEE THE LICENSE FOR THE 
+SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND LIMITATIONS UNDER THE LICENSE.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>time</code>:    Time object</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Sun position vector given in ECEF [m]</p>
+<h3 id="gsdtime_sun"><strong>gsdtime_sun</strong>()</h3>
+<p>Full name: <code>midgard.math.planetary_motion.gsdtime_sun</code></p>
+<p>Signature: <code>(time:'Time') -&gt; Tuple[numpy.ndarray]</code></p>
+<p>Get position of the sun (low-precision)</p>
+<p>This routine is a reimplementation of routine GSDtime_sun() in model.c of gLAB 3.0.0 software. The gLAB 3.0.0 
+software core excecutables are distributed under the Apache License version 2.0 related to following copyright and 
+license:</p>
+<p>COPYRIGHT 2009 - 2016 GAGE/UPC &amp; ESA</p>
+<p>LICENSED UNDER THE APACHE LICENSE, VERSION 2.0 (THE "LICENSE"); YOU MAY NOT USE THIS ROUTINE EXCEPT IN COMPLIANCE 
+WITH THE LICENSE. YOU MAY OBTAIN A COPY OF THE LICENSE AT</p>
+<p>HTTP://WWW.APACHE.ORG/LICENSES/LICENSE-2.0</p>
+<p>UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING, SOFTWARE DISTRIBUTED UNDER THE LICENSE IS DISTRIBUTED ON 
+AN "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED. SEE THE LICENSE FOR THE 
+SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND LIMITATIONS UNDER THE LICENSE.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>time</code>:    Time object</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Tuple with following entries:</p>
+<table>
+<thead>
+<tr>
+<th>Elements</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gstr</td>
+<td>GMST0 (to go from ECEF to inertial) [deg]</td>
+</tr>
+<tr>
+<td>slong</td>
+<td>Sun longitude [deg]</td>
+</tr>
+<tr>
+<td>sra</td>
+<td>Sun right Ascension [deg]</td>
+</tr>
+<tr>
+<td>sdec</td>
+<td>Sun declination in [deg]</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardmathrotation">midgard.math.rotation</h2>
 <p>Library for basic rotation matrices</p>
 <p><strong>Description:</strong></p>

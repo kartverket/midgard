@@ -845,7 +845,7 @@ def _float(value: str) -> float:
     Returns:
         Float value
     """
-    if value.isspace() or not value or value == "0" or value == "0.0":
+    if value.isspace() or not value or float(value) == 0.0:
         return float("nan")
     else:
         return float(value)

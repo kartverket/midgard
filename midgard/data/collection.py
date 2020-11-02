@@ -46,6 +46,24 @@ class Collection:
 
         return sorted(all_fields)
 
+    def field(self, fieldname: str) -> "FieldType":
+        """Return the field matching the given fieldname"""
+        mainfield, _, subfield = fieldname.partition(".")
+        try:
+            field = self._fields[mainfield]
+        except KeyError:
+            raise exceptions.FieldDoesNotExistError(f"Field {mainfield!r} does not exist") from None
+        if subfield:
+            field_data = field.data
+            try:
+                # Recursive call for collections
+                field = field_data.field(subfield)
+            except AttributeError:
+                # field_data does not have a function field
+                # Only collections should have this function
+                pass
+        return field
+
     @property
     def plot_fields(self):
         """Names of fields in the collection"""
@@ -68,7 +86,6 @@ class Collection:
 
     def unit_short(self, field):
         units = self.unit(field)
-        print(f"{units} in unit_short()")
         if units is None:
             return tuple()
         return tuple([Unit.symbol(u) for u in units])
@@ -204,6 +221,12 @@ class Collection:
         """Extend fields in self with data from other"""
         only_in_other = set(other._fields.keys()) - set(self._fields.keys())
         only_in_self = set(self._fields.keys()) - set(other._fields.keys())
+
+        if len(self) == 0:
+            only_in_other = only_in_other | set(self._fields.keys())
+
+        if len(other) == 0:
+            only_in_self = only_in_self | set(other._fields.keys())
 
         for field_name, field in other._fields.items():
 

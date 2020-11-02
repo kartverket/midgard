@@ -580,7 +580,7 @@ class Rinex3Parser(ChainParser):
         if line["epoch_flag"].strip() != "0":
             log.fatal(
                 f"Epoch {cache['obs_time']} is not ok, which is indicated by epoch flag {line['epoch_flag']}.\n"
-                "TODO: How should it be handled in Where?"
+                "TODO: How should it be handled in Midgard?"
             )  # TODO: Handle flagged epochs
 
         # Decimate RINEX observation defined by sampling rate [seconds]
@@ -906,7 +906,7 @@ def _float(value: str) -> float:
     Returns:
         Float value
     """
-    if value.isspace() or not value or value == "0" or value == "0.0":
+    if value.isspace() or not value or float(value) == 0.0:
         return float("nan")
     else:
         return float(value)

@@ -44,7 +44,7 @@ def get_rinex2_or_rinex3(file_path: pathlib.PosixPath) -> "TODO":
     """
     version = gnss.get_rinex_file_version(file_path=file_path)
     if version.startswith("2"):
-        parser_name = "rinex2_nav"
+        parser_name = "rinex212_nav" if version == "2.12" else "rinex2_nav"
     elif version.startswith("3"):
         parser_name = "rinex3_nav"
     else:

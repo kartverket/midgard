@@ -5,7 +5,7 @@ Example:
     from midgard import parsers
 
     # Parse data
-    parser = parsers.parse_file(parser_name="rinex2_nav", file_path=file_path)
+    parser = parsers.parse_file(parser_name="rinex212_nav", file_path=file_path)
 
     # Get Dataset with parsed data
     dset = parser.as_dataset()
@@ -14,11 +14,11 @@ Example:
 Description:
 ------------
 
-Reads GNSS data from files in the RINEX navigation file format 2.11 (see :cite:`rinex2`). An exception is, that this
+Reads GNSS data from files in the RINEX navigation file format 2.12 (see :cite:`rinex2`). An exception is, that this
 parser does not handle GLONASS and SBAS navigation messages. All navigation time epochs (time of clock (toc)) are
 converted to GPS time scale.
 
-The navigation message is not defined for GALILEO, BeiDou, QZSS and IRNSS in RINEX format 2.11. In this case the RINEX
+The navigation message is not defined for GALILEO, BeiDou, QZSS and IRNSS in RINEX format 2.12. In this case the RINEX
 3.03 definition is used (see :cite:`rinex3`).
 
 """
@@ -65,10 +65,10 @@ SYSNAMES = dict(
 
 
 @plugins.register
-class Rinex2NavParser(ChainParser):
+class Rinex212NavParser(ChainParser):
     """A parser for reading RINEX navigation file
 
-    The parser reads GNSS broadcast ephemeris in RINEX format 2.11 (see :cite:`rinex2`).
+    The parser reads GNSS broadcast ephemeris in RINEX format 2.12 (see :cite:`rinex2`).
 
     #TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.
 
@@ -95,13 +95,13 @@ class Rinex2NavParser(ChainParser):
         _check_nav_message()          Check correctness of navigation message
         _get_system_from_file_extension()  Get GNSS by reading RINEX navigation file extension
         _parse_file()                 Read a data file and parse the content
-        _parse_ion_alpha()            Parse entries of RINEX header `ION ALPHA` to instance variable `meta`.
-        _parse_ion_beta()             Parse entries of RINEX header `ION BETA` to instance variable `meta`.
+        _parse_ionospheric_corr()     Parse entries of RINEX header `IONOSPHERIC CORR` to instance variable `meta`.
+        _parse_leap_seconds()         Parse entries of RINEX header `LEAP SECONDS` to instance variable `meta`.
         _parse_obs_float()            Parse float entries of RINEX navigation data block to instance variable 'data'.
         _parse_observation_epoch()    Parse observation epoch information of RINEX navigation data record
         _parse_string()               Parse string entries of SP3 header to instance variable 'meta'
         _parse_string_list()          Parse string entries of RINEX header to instance variable 'meta' in a list
-        _parse_time_system_corr()     Parse entries of RINEX header `DELTA-UTC: A0,A1,T,W` to instance variable `meta`.
+        _parse_time_system_corr()     Parse entries of RINEX header `TIME SYSTEM CORR` to instance variable `meta`.
         _rename_fields_based_on_system()  Rename general GNSS fields to GNSS specific ones
         _time_system_correction()     Apply correction to given time system for getting GPS time scale
     """
@@ -118,20 +118,21 @@ class Rinex2NavParser(ChainParser):
     def _get_system_from_file_extension(self) -> None:
         """Get GNSS by reading RINEX navigation file extension
 
-        For RINEX 2.11 navigation files is only the file extension an indicator, which GNSS is used.
+        For RINEX 2.12 navigation files is only the file extension an indicator, which GNSS is used.
 
         """
-        file_extension = self.file_path.suffixes[0][-1].lower()
         try:
-            return SYSTEM_FILE_EXTENSION[file_extension]
-        except KeyError:
+            file_extension = self.file_path.suffixes[0]
+        except IndexError:
             log.fatal(
-                "RINEX 2.11 navigation file extension '{}' of file {} does not exists or is not handled by "
-                "Midgard. Following RINEX navigation file extensions can be used: {}.",
-                file_extension,
-                self.file_path,
-                ", ".join(SYSTEM_FILE_EXTENSION.keys()),
+                f"RINEX 2.12 navigation file extension '{file_extension}' of file {self.file_path} does not exists or "
+                f"is not handled by Midgard. Following RINEX navigation file extensions should be used: "
+                f"{', '.join(SYSTEM_FILE_EXTENSION.keys())}, rnx."
             )
+
+        file_name = self.file_path.stem if ".gz" in self.file_path.suffixes else self.file_path.name
+        
+        return file_name[-6].upper() if ".rnx" in file_extension else SYSTEM_FILE_EXTENSION[file_extension[-1].lower()]
 
     #
     # PARSERS
@@ -147,7 +148,7 @@ class Rinex2NavParser(ChainParser):
             label=lambda line, _ln: line[60:].strip(),
             parser_def={
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-                #      2              NAVIGATION DATA                         RINEX VERSION / TYPE
+                #      2.12           N: GPS NAV DATA                         RINEX VERSION / TYPE
                 "RINEX VERSION / TYPE": {
                     "parser": self._parse_string,
                     "fields": {"version": (0, 20), "file_type": (20, 21)},
@@ -162,37 +163,38 @@ class Rinex2NavParser(ChainParser):
                 # IGS BROADCAST EPHEMERIS FILE                                COMMENT
                 "COMMENT": {"parser": self._parse_string_list, "fields": {"comment": (0, 60)}},
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-                #     0.1583D-07  0.0000D+00 -0.1192D-06  0.0000D+00          ION ALPHA
-                "ION ALPHA": {
-                    "parser": self._parse_ion_alpha,
-                    "fields": {"ion_a0": (0, 14), "ion_a1": (14, 26), "ion_a2": (26, 38), "ion_a3": (38, 50)},
+                # GPSA   4.6566D-09  1.4901D-08 -5.9605D-08 -1.1921D-07       IONOSPHERIC CORR
+                # GPSB   8.1920D+04  8.1920D+04 -6.5536D+04 -5.2429D+05       IONOSPHERIC CORR
+                "IONOSPHERIC CORR": {
+                    "parser": self._parse_ionospheric_corr,
+                    "fields": {
+                        "gnss_id": (0, 4),
+                        "para_1": (5, 17),
+                        "para_2": (17, 29),
+                        "para_3": (29, 41),
+                        "para_4": (41, 53),
+                        "time_mark": (54, 55),
+                        "sv_id": (56, 58),
+                    },
                 },
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-                #     0.1126D+06 -0.1638D+05 -0.2621D+06  0.6554D+05          ION BETA
-                "ION BETA": {
-                    "parser": self._parse_ion_beta,
-                    "fields": {"ion_b0": (0, 14), "ion_b1": (14, 26), "ion_b2": (26, 38), "ion_b3": (38, 50)},
-                },
-                # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-                #    -0.931322574615D-09-0.444089209850D-14   405504     1886 DELTA-UTC: A0,A1,T,W
-                #
-                "DELTA-UTC: A0,A1,T,W": {
+                # GPUT  4.6566128730D-09 1.065814103D-14 233472 2060          TIME SYSTEM CORR
+                "TIME SYSTEM CORR": {
                     "parser": self._parse_time_system_corr,
-                    "fields": {"a0": (0, 22), "a1": (22, 41), "t": (41, 50), "w": (50, 59)},
+                    "fields": {"corr_type": (0, 4), "a0": (5, 22), "a1": (22, 38), "t": (38, 45), "w": (45, 50)},
                 },
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-                #   1998     2    16    0.379979610443D-06                    CORR TO SYSTEM TIME
-                # TODO: Only used by GLONASS
-                # TODO 'CORR TO SYSTEM TIME':
-                #    {'parser': self.parse_corr_to_system_time,
-                #     'fields': {'year':                (0, 6),
-                #                'month'               (6, 12),
-                #                'day':               (12, 18),
-                #                'corr':              (21, 40),
-                #               }},
-                # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-                #     17                                                      LEAP SECONDS
-                "LEAP SECONDS": {"parser": self._parse_leap_seconds, "fields": {"leap_seconds": (0, 6)}},
+                #     16    17  1851     3                                    LEAP SECONDS
+                "LEAP SECONDS": {
+                    "parser": self._parse_leap_seconds,
+                    "fields": {
+                        "leap_seconds": (0, 6),
+                        "future_past_leap_seconds": (6, 12),
+                        "week": (12, 18),
+                        "week_day": (18, 24),
+                        "time_sys": (24, 27),
+                    },
+                },
             },
         )
 
@@ -274,48 +276,45 @@ class Rinex2NavParser(ChainParser):
 
         return itertools.chain([header_parser], itertools.repeat(data_parser))
 
-    def _parse_ion_alpha(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
-        """Parse entries of RINEX header `ION ALPHA` to instance variable `meta`.
+    def _parse_ionospheric_corr(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
+        """Parse entries of RINEX header `IONOSPHERIC CORR` to instance variable `meta`.
 
-                self.meta['iono_para'] = { <gnss_id>: { 'para': [<parameter list>] }}
+                self.meta['iono_para'] = { <gnss_id>: { 'para': [<parameter list>],
+                                                        'sv_id': <id>,
+                                                        'time_mark': <value> }}
 
-           Note: The ionospheric correction parameters are GNSS dependent, but we assume that is only used for GPS in
-                 RINEX format version 2.11.
+           The ionospheric correction parameters are GNSS dependent. In the following a list with GNSS idendifiers
+           and belonging ionosphere correction parameters is shown:
 
-            | GNSS ID  | Parameters             | Description                                                        |
-            |----------|------------------------|--------------------------------------------------------------------|
-            | GPSA     | alpha0 - alpha3        | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in |
-            |          |                        | :cite:`is-gps-200h`)                                               |
+            | GNSS ID    | Parameters      | Description                                                            |
+            |------------|-----------------|------------------------------------------------------------------------|
+            | GAL        | ai0 - ai2       | Parameters needed for NeQuick model (see Section 5.1.6 in              |
+            |            |                 | :cite:`galileo-os-sis-icd`)                                            |
+            | GPSA       | alpha0 - alpha3 | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in     |
+            |            |                 | :cite:`is-gps-200h`)                                                   |
+            | GPSB       | beta0 - beta3   | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in     |
+            |            |                 | :cite:`is-gps-200h`)                                                   |
+            | QZSA       | alpha0 - alpha3 | Parameters needed for Klobuchar model (see Section 5.2.4.7 in          |
+            |            |                 | :cite:`bds-sis-icd-20`)                                                |
+            | QZSB       | beta0 - beta3   | Parameters needed for Klobuchar model (see :cite:`is-qzss`)            |
+            | BDSA       | alpha0 - alpha3 | Parameters needed for Klobuchar model (see :cite:`is-qzss`)            |
+            | BDSB       | beta0 - beta3   | Parameters needed for Klobuchar model (see Section 5.2.4.7 in          |
+            |            |                 | :cite:`bds-sis-icd-20`)                                                |
+            | IRNA       | alpha0 - alpha3 | Parameters needed for Klobuchar model (see Appendix H in               |
+            |            |                 | :cite:`irnss-icd-sps`)                                                 |
+            | IRNB       | beta0 - beta3   | Parameters needed for Klobuchar model (see Appendix H in               |
+            |            |                 | :cite:`irnss-icd-sps`)                                                 |
+
         """
         para = list()
 
         # Save ionospheric correction parameters in a list
-        for field in sorted([f for f in line if f.startswith("ion_a")]):
+        for field in sorted([f for f in line if f.startswith("para_")]):
             para.append(_float(line[field]))
 
-        self.meta.setdefault("iono_para", dict()).update({"GPSA": {"para": para}})
-
-    def _parse_ion_beta(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
-        """Parse entries of RINEX header `ION BETA` to instance variable `meta`.
-
-                self.meta['iono_para'] = { <gnss_id>: { 'para': [<parameter list>] }}
-
-           Note: The ionospheric correction parameters are GNSS dependent, but we assume that is only used for GPS in
-                 RINEX format version 2.11.
-
-            | GNSS ID  | Parameters             | Description                                                        |
-            |----------|------------------------|--------------------------------------------------------------------|
-            | GPSB     | beta0 - beta3          | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in |
-            |          |                        | :cite:`is-gps-200h`)                                               |
-        
-        """
-        para = list()
-
-        # Save ionospheric correction parameters in a list
-        for field in sorted([f for f in line if f.startswith("ion_b")]):
-            para.append(_float(line[field]))
-
-        self.meta.setdefault("iono_para", dict()).update({"GPSB": {"para": para}})
+        self.meta.setdefault("iono_para", dict()).update(
+            {line["gnss_id"]: {"para": para, "sv_id": line["sv_id"], "time_mark": line["time_mark"]}}
+        )
 
     def _parse_leap_seconds(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse entries of RINEX header `LEAP SECONDS` to instance variable `meta`.
@@ -326,10 +325,6 @@ class Rinex2NavParser(ChainParser):
                                           'week_day': <value>,
                                           'time_sys': <system> }
         """
-        # NOTE: Adding of following fields are done to be consistent with data structure of RINEX 3.xx navigation format
-        #      parser.
-        line.update({"future_past_leap_seconds": "", "week": "", "week_day": "", "time_sys": ""})
-
         for field in line:
             self.meta.setdefault("leap_seconds", dict()).update({field: line[field]})
 
@@ -395,24 +390,41 @@ class Rinex2NavParser(ChainParser):
         self.data.setdefault("sat_clock_drift", list()).append(_float(line["sat_clock_drift"]))
         self.data.setdefault("sat_clock_drift_rate", list()).append(_float(line["sat_clock_drift_rate"]))
 
+
     def _parse_time_system_corr(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
-        """Parse entries of RINEX header `DELTA-UTC: A0,A1,T,W` to instance variable `meta`.
+        """Parse entries of RINEX header `TIME SYSTEM CORR` to instance variable `meta`.
 
                 self.meta['time_sys_corr'] = { <corr_type>: { 'a0': <value>,
                                                               'a1': <value>,
                                                               't':  <value>,
                                                               'w':  <value> }}
 
-           The 'DELTA-UTC: A0,A1,T,W' header entry seems to be only defined for GPS in RINEX navigation file format
-           2.11 (see :cite:`rinex2`) with following correction type:
+           The time system correction parameters are dependent on the given correction type, which is shown below:
 
-            | Type       | Parameters           | Description |
-            |------------|----------------------|-------------|
-            | GPUT       | a0, a1               | GPS to UTC  |
+            | Type       | Parameters           | Description     |
+            |------------|----------------------|-----------------|
+            | BDUT       | a0=A_0UTC, a1=A_1UTC | BDS to UTC      |
+            | GAUT       | a0, a1               | GAL to UTC      |
+            | GLGP       | a0=-TauC, a1=0       | GLO to GPS      |
+            | GLUT       | a0=-TauC, a1=0       | GLO to UTC      |
+            | GPGA       | a0=A0G, a1=A1G       | GPS to GAL      |
+            | GPUT       | a0, a1               | GPS to UTC      |
+            | IRGP       | a0=A_0UTC, a1=A_1UTC | IRN to GPS      |
+            | IRUT       | a0=A_0UTC, a1=A_1UTC | IRN to UTC      |
+            | QZGP       | a0, a1               | QZS to GPS      |
+            | QZUT       | a0, a1               | QZS to UTC      |
+            | SBUT       | a0, a1               | SBAS to UTC     |
 
         """
         self.meta.setdefault("time_sys_corr", dict()).update(
-            {"GPUT": {"a0": _float(line["a0"]), "a1": _float(line["a1"]), "t": int(line["t"]), "w": int(line["w"])}}
+            {
+                line["corr_type"]: {
+                    "a0": _float(line["a0"]),
+                    "a1": _float(line["a1"]),
+                    "t": int(line["t"]),
+                    "w": int(line["w"]),
+                }
+            }
         )
 
     #
@@ -649,7 +661,7 @@ class Rinex2NavParser(ChainParser):
                 (", ").join(valid_systems),
             )
 
-        # Time conversion is only necessary for C-BeiDou navigation files (Note: M-Mixed are not defined for RINEX 2.11
+        # Time conversion is only necessary for C-BeiDou navigation files (Note: M-Mixed are not defined for RINEX 2.12
         # format)
         if system == "C":
 
@@ -844,7 +856,7 @@ class Rinex2NavParser(ChainParser):
       | file_created        | str   | Date of file creation                                                      |
       | file_type           | str   | File type                                                                  |
       | iono_para           | dict  | Dictionary with GNSS dependent ionospheric correction parameters (assumed  |
-      |                     |       | that is defined only for GPS by using RINEX 2.11 format)                   |
+      |                     |       | that is defined only for GPS by using RINEX 2.12 format)                   |
       | leap_seconds        | dict  | Dictionary with information related to leap seconds (compatible with RINEX |
       |                     |       | 3.xx navigation file data struture)                                        |
       | program             | str   | Name of program creating current file                                      |

@@ -86,8 +86,21 @@ class TimeseriesEnvParser(LineParser):
         Returns:
             List with postprocessor function calls
         """
-        return [self._get_yy_doy]
-    
+        return [
+                self._expand_dimension,
+                self._get_yy_doy,
+        ]
+
+
+    def _expand_dimension(self) -> None:
+        """Expand numpy array dimension, if array is 0-dimensional array
+
+        np.genfromtxt return a 0-dimensional array, if input file has only one line.
+        """
+        if self.data["yy_doy"].ndim == 0:
+            for key, value in self.data.items():
+                self.data[key] = np.expand_dims(value, axis=0)
+   
     
     def _get_yy_doy(self) -> None:
         """Get yy and doy by splitting yy/doy
@@ -172,7 +185,7 @@ class TimeseriesEnvParser(LineParser):
         # Add relative position
         dset.add_position_delta(
             name="pos",
-            val=(ref_pos.trs-pos_abs.trs).val,
+            val=(pos_abs.trs - ref_pos.trs).val,
             system="trs",
             ref_pos=ref_pos,
         )

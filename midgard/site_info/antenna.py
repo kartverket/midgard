@@ -272,13 +272,12 @@ class AntennaHistorySinex(AntennaHistoryBase):
         # Find site_id and read antenna history
         p = parsers.parse_file("gnss_sinex_igs", file_path=self.source_path)
         data = p.as_dict()
-        try:
-            if self.station in data:
-                raw_info = data[self.station]["site_antenna"]
-            elif self.station.upper() in data:
-                raw_info = data[self.station.upper()]["site_antenna"]
-        except KeyError:
-            raise ValueError(f"Station {self.station!r} unknown in source {self.source!r}.")
+        if self.station in data:
+            raw_info = data[self.station]["site_antenna"]
+        elif self.station.upper() in data:
+            raw_info = data[self.station.upper()]["site_antenna"]
+        else:
+            raise ValueError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
 
         # Create list of antenna history
         history = dict()

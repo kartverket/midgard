@@ -209,6 +209,9 @@ class Dataset(collection.Collection):
             common, self_idx, other_idx = np.intersect1d(A, B, return_indices=True)
             num_obs = len(common)
 
+        if num_obs == 0:
+            raise ValueError(f"Nothing to differentiate. No common data found for chosen option index_by '{index_by}'.")
+
         result = self._difference(
             other,
             num_obs,
@@ -236,8 +239,8 @@ class Dataset(collection.Collection):
                     num_obs=num_obs,
                     name=index_field,
                     val=index_data,
-                    unit=self._fields[index_field]._unit,
-                    write_level=self._fields[index_field]._write_level.name,
+                    unit = self.field(index_field)._unit,
+                    write_level = self.field(index_field)._write_level.name,
                 )
                 result._fields[index_field] = field
 

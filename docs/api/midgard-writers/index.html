@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.writers - Midgard v1.1.1</title>
+        <title>midgard.writers - Midgard v1.1.2</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -190,6 +190,17 @@ def write_as_fancy_format(arg_1, arg_2):
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Existing writer fields</p>
+<h3 id="get_existing_fields_by_attrs"><strong>get_existing_fields_by_attrs</strong>()</h3>
+<p>Full name: <code>midgard.writers._writers.get_existing_fields_by_attrs</code></p>
+<p>Signature: <code>(dset:'Dataset', writers_in:Tuple[_ForwardRef('WriterField'), ...]) -&gt; Tuple[_ForwardRef('WriterField'), ...]</code></p>
+<p>Get existing writer fields, which are given in Dataset.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>dset</code>:         Dataset, a dataset containing the data.</li>
+<li><code>writers_in</code>:   Fields to write/plot.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Existing writer fields</p>
 <h3 id="get_field"><strong>get_field</strong>()</h3>
 <p>Full name: <code>midgard.writers._writers.get_field</code></p>
 <p>Signature: <code>(dset:'Dataset', field:str, attrs:Tuple[str], unit:str) -&gt; numpy.ndarray</code></p>
@@ -204,9 +215,22 @@ def write_as_fancy_format(arg_1, arg_2):
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Array with Dataset field values</p>
+<h3 id="get_field_by_attrs"><strong>get_field_by_attrs</strong>()</h3>
+<p>Full name: <code>midgard.writers._writers.get_field_by_attrs</code></p>
+<p>Signature: <code>(dset:'Dataset', attrs:Tuple[str], unit:str) -&gt; numpy.ndarray</code></p>
+<p>Get field values of a Dataset specified by the field attributes</p>
+<p>If necessary the unit of the data fields are corrected to the defined 'output' unit.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>dset</code>:     Dataset, a dataset containing the data.</li>
+<li><code>attrs</code>:    Field attributes (e.g. for Time object: (<scale>, <time format>)).</li>
+<li><code>unit</code>:     Unit used for output.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Array with Dataset field values</p>
 <h3 id="get_header"><strong>get_header</strong>()</h3>
 <p>Full name: <code>midgard.writers._writers.get_header</code></p>
-<p>Signature: <code>(fields:List[str], pgm_version:Union[NoneType, str]=None, run_by:str='', summary:Union[NoneType, str]=None, add_description:Union[NoneType, str]=None) -&gt; List[str]</code></p>
+<p>Signature: <code>(fields:List[str], pgm_version:Union[NoneType, str]=None, run_by:str='', summary:Union[NoneType, str]=None, add_description:Union[NoneType, str]=None, lsign:str='') -&gt; List[str]</code></p>
 <p>Get header</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -215,6 +239,7 @@ def write_as_fancy_format(arg_1, arg_2):
 <li><code>run_by</code>:             Information about who has created this file (e.g. NMA).</li>
 <li><code>summary</code>:            Short description of output file</li>
 <li><code>add_description</code>:    Additional description lines</li>
+<li><code>lsign</code>:              Leading comment sign</li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Header lines</p></div>

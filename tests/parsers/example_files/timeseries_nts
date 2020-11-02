@@ -1,0 +1,53 @@
+\BEGIN HEADER 
+\FILE_TYPE   NMA time series 1.6
+\FILE_VERSION 
+\CREATION  May 2005
+\COMPUTER  
+\COMPUTED_BY  
+\CONTACT_PERSON  
+\META_INFORMATION  No additional meta information
+\END HEADER 
+
+\BEGIN PROGRAM 
+\ID  gamit/glred
+\PROGRAM_NAME  
+\PROGRAM_VERSION 
+\PROVIDER  
+\DESCRIPTION   
+\SCRIPT_SYSTEM   
+\SCRIPT_VERSION  
+\END PROGRAM 
+
+\BEGIN TS_FORMAT
+\ID  eseas_env
+\NUMBER_OF_COLUMNS 14
+\NAMES_OF_COLUMNS date year x y z sigma_x sigma_y sigma_z east north height sigma_east sigma_north sigma_height 
+\UNITS_OF_COLUMNS yyyy-mm-dd yr mm mm mm mm mm mm mm mm mm mm mm mm
+\MISSING_VALUES ????-??-?? 9999.99999 100000.0 10000.0 100000.0 10000.0 100000.0 10000.0  100000.0 10000.0 100000.0 10000.0 100000.0 10000.0 
+\FORMAT
+\SAMPLING 
+\END TS_FORMAT
+
+\BEGIN REF_FRAME 
+\ID ITRF2005
+\REF_SYSTEM ITRS 
+\REF_FRAME ITRF2005 
+\DESCRIPTION  
+\END REF_FRAME 
+
+\BEGIN RECORD 
+\ID day values
+\NUMBER_OF_COLUMNS 14
+\NAMES_OF_COLUMNS date year x y z sigma_x sigma_y sigma_z east north height sigma_east sigma_north sigma_height 
+\UNITS_OF_COLUMNS yyyy-mm-dd yr mm mm mm mm mm mm mm mm mm mm mm mm
+\REF_COORDINATE.ID  svalbard_ref
+\REF_FRAME.ID ITRF20005
+\DATA 
+2000-05-01  2000.3299   157.26  -155.12   -85.49   2.60   1.10   3.60     0.00     0.00     0.00   1.05   1.38   4.26
+2000-05-02  2000.3326   156.72  -154.76   -88.18   2.20   0.90   3.10     0.44    -1.00    -2.54   0.88   1.17   3.58
+2000-05-03  2000.3354   157.13  -154.31   -85.98   2.10   0.90   2.90     0.83    -0.24    -0.43   0.86   1.14   3.40
+2000-05-04  2000.3381   156.47  -153.98   -86.76   2.00   0.90   2.80     1.24    -0.14    -1.41   0.84   1.10   3.29
+2000-05-05  2000.3409   155.59  -154.77   -89.20   2.10   0.90   3.00     0.59    -0.59    -4.00   0.90   1.15   3.50
+2000-05-06  2000.3436   157.56  -154.04   -85.27   1.80   0.80   2.60     1.04    -0.26     0.42   0.76   0.99   3.01
+2000-05-08  2000.3491   157.21  -153.82   -85.66   1.80   0.80   2.60     1.30    -0.19    -0.08   0.76   1.00   3.00
+2000-05-09  2000.3518   156.63  -153.74   -86.70   2.00   0.90   2.80     1.45    -0.26    -1.26   0.84   1.09   3.34

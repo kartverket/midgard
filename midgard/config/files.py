@@ -209,6 +209,35 @@ class FileConfiguration(Configuration):
                 file_path = downloaded_file_path
         return file_path
 
+    def aliased_path(
+        self,
+        file_key: str,
+        file_vars: Optional[Dict[str, str]] = None,
+        default: Optional[str] = None,
+        is_zipped: Optional[bool] = None,
+    ) -> pathlib.Path:
+        """Construct a list of aliased file paths for a given file key with variables
+
+        If `is_zipped` is None, and the file_path contains `<filename>{gz}`,
+        the file will be assumed to be a gzip-file if there exists a file named
+        `<filename>.gz`.
+
+        Args:
+            file_key (String):        Key that is looked up in the configuration.
+            file_vars (Dict):         Values used to replace variables in file name and path.
+            default (String):         Value to use for variables that are not in file_vars.
+            is_zipped (Bool/None):    True, False or None. If None automatically decide.
+        Return:
+            List of full paths with replaced variables in file name and path.
+        """
+        file_vars = dict() if file_vars is None else file_vars
+        directory = self[file_key].directory.replace(default=default, **file_vars).path
+        file_name = self[file_key].filename.replace(default=default, **file_vars).path
+        file_path = self._replace_gz(directory / file_name, is_zipped)
+
+        aliases = self.get("aliases", section=file_key, default="").replace(default=default, **file_vars).list
+        return [self._replace_gz(file_path.with_name(a), is_zipped) for a in aliases]
+
     def url(self, file_key, file_vars=None, default=None, is_zipped=None, use_aliases=False):
         """Construct a URL for a given file with variables
 
@@ -402,14 +431,22 @@ class FileConfiguration(Configuration):
     def glob_paths(
         self, file_key: str, file_vars: Optional[Dict[str, str]] = None, is_zipped: Optional[bool] = None
     ) -> List[pathlib.Path]:
-        """Find all filepaths matching a filename pattern
+        """Find all file paths for the given file_key matching a filename pattern"""
+        path_string = str(self.path(file_key, file_vars, default="*", is_zipped=is_zipped))
+        path_aliases = self.aliased_path(file_key, file_vars, default="*", is_zipped=is_zipped)
+        paths = self._glob_paths(path_string)
+        for alias in path_aliases:
+            paths += self._glob_paths(str(alias))
+        return paths
+
+    def _glob_paths(self, path_string):
+        """Find all file paths matching the path string
 
         Using pathlib.Path.glob() here is not trivial because we need to split
         into a base directory to start searching from and a pattern which may
         include directories. With glob.glob() this is trivial. The downside is
         that it only returns strings and not pathlib.Paths.
         """
-        path_string = str(self.path(file_key, file_vars, default="*", is_zipped=is_zipped))
         glob_path = pathlib.Path(re.sub(r"\*+", "*", path_string))
         idx = min((i for i, p in enumerate(glob_path.parts) if "*" in p), default=len(glob_path.parts) - 1)
         glob_base = pathlib.Path(*glob_path.parts[:idx])
@@ -438,7 +475,18 @@ class FileConfiguration(Configuration):
 
         # Set up the regular expression
         re_vars = {**file_vars, variable: f"(?P<{variable}>__pattern__)"}
-        path_pattern = str(self.path(file_key, file_vars=re_vars, default=".*")).replace("\\", "\\\\")
+        file_path_pattern = self.path(file_key, file_vars=re_vars, default=".*")
+        aliased_path_patterns = self.aliased_path(file_key, file_vars=re_vars, default=".*")
+
+        for path_pattern in [file_path_pattern] + aliased_path_patterns:
+            path_pattern = str(path_pattern).replace("\\", "\\\\")
+            values = self._match_pattern(search_paths, path_pattern, variable, pattern)
+            if values:
+                break
+        return values
+
+    def _match_pattern(self, search_paths, path_pattern, variable, pattern):
+        """Look for variable matching pattern in the given search paths."""
         for i in itertools.count():
             # Give unique names to each occurance of variable
             path_pattern = path_pattern.replace(f"<{variable}>", f"<{variable}__{i}>", 1)

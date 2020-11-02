@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v1.1.1</title>
+        <title>midgard.dev - Midgard v1.1.2</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -151,6 +151,7 @@
             <li><a href="#midgarddevplugins">midgard.dev.plugins</a></li>
             <li><a href="#midgarddevprofiler">midgard.dev.profiler</a></li>
             <li><a href="#midgarddevtimer">midgard.dev.timer</a></li>
+            <li><a href="#midgarddevutil">midgard.dev.util</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -916,11 +917,144 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7fade17fa0d0&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f4f48d5e0d0&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7fade17fa0d0&gt;, level='info')) -&gt; None</code></p>
-<p>Class for timing running time of functions and code blocks.</p></div>
+<p>Signature: <code>(text:str='Elapsed time:', fmt:str='.4f', logger:Union[Callable[[str], NoneType], NoneType]=functools.partial(&lt;function log at 0x7f4f48d5e0d0&gt;, level='info')) -&gt; None</code></p>
+<p>Class for timing running time of functions and code blocks.</p>
+<h2 id="midgarddevutil">midgard.dev.util</h2>
+<p>Midgard library module with utility functions for easier script development</p>
+<p>Example:
+from midgard.dev import util
+directory, date = util.parse_args('string', 'date')</p>
+<p>Description:</p>
+<p>This module provides the boilerplate code necessary for starting a script. In particular handling of command line 
+arguments and default options including --help are done.</p>
+<h3 id="command-str">COMMAND (str)</h3>
+<p><code>COMMAND = 'generate_api '</code></p>
+<h3 id="check_help_and_version"><strong>check_help_and_version</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.check_help_and_version</code></p>
+<p>Signature: <code>(module:str, doc_module:str=None, replace_vars:Dict[str, str]={}) -&gt; None</code></p>
+<p>Show help or version if asked for</p>
+<p>Show the help message parsed from the script's docstring if -h or --help option is given. Show the script's version
+if --version is given.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>module</code>:       Module name.</li>
+<li><code>doc_module</code>:   Module containing help text.</li>
+<li><code>replace_vars</code>: Dictionary with variable for replacement in docstring</li>
+</ul>
+<h3 id="check_options"><strong>check_options</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.check_options</code></p>
+<p>Signature: <code>(*options:Tuple[str]) -&gt; str</code></p>
+<p>Check if any of a list of options is specified on the command line</p>
+<p>Returns the actual option that is specified. The first option specified on the command line is returned if there
+are several matches. Returns the empty string if no option is specified. This means that this method works fine
+also in a boolean context, for example</p>
+<pre><code>if check_options('-F', '--force'):
+    do_something()
+</code></pre>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>options</code>:   Strings specifying which options to check for, including '-'-prefix.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li><code>String</code>: Option that is specified, blank string if no option is specified</li>
+</ul>
+<h3 id="get_callers"><strong>get_callers</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.get_callers</code></p>
+<p>Signature: <code>() -&gt; str</code></p>
+<p>Get a list of methods calling this function</p>
+<p><strong>Returns:</strong></p>
+<p>Lists all methods calling the function</p>
+<h3 id="get_pid_and_server"><strong>get_pid_and_server</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.get_pid_and_server</code></p>
+<p>Signature: <code>() -&gt; str</code></p>
+<p>Find process id and name of server the analysis is running on</p>
+<p>Use the platform.uname to find servername instead of os.uname because the latter is not supported on Windows.</p>
+<p><strong>Returns:</strong></p>
+<p>Process id and name of server</p>
+<h3 id="get_program_info"><strong>get_program_info</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.get_program_info</code></p>
+<p>Signature: <code>(module:str) -&gt; str</code></p>
+<p>Get the name and the version of the running program</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>module</code>: Module name.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Program name and version</p>
+<h3 id="get_program_name"><strong>get_program_name</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.get_program_name</code></p>
+<p>Signature: <code>() -&gt; str</code></p>
+<p>Get the name of the running program</p>
+<p><strong>Returns:</strong></p>
+<p>String trying to be similar to how the user called the program.</p>
+<h3 id="get_python_version"><strong>get_python_version</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.get_python_version</code></p>
+<p>Signature: <code>() -&gt; str</code></p>
+<p>Find python version used</p>
+<p><strong>Returns:</strong></p>
+<p>Name of executable and version number</p>
+<h3 id="no_traceback"><strong>no_traceback</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.no_traceback</code></p>
+<p>Signature: <code>(func)</code></p>
+<p>Decorator for turning off traceback, instead printing a simple error message</p>
+<p>Use the option --show_tb to show the traceback anyway.</p>
+<h3 id="not_implemented"><strong>not_implemented</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.not_implemented</code></p>
+<p>Signature: <code>() -&gt; None</code></p>
+<p>A placeholder for functions that are not implemented yet</p>
+<p>A note about the missing implementation is written to the log.</p>
+<h3 id="options2args"><strong>options2args</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.options2args</code></p>
+<p>Signature: <code>(options:List[str]) -&gt; Union[List[str], Dict[str, str]]</code></p>
+<p>Convert a list of command line options to a args and kwargs </p>
+<p>The options should be specified as a string with the necessary - or -- in front and options with a value should
+by separated by = (e.g. --station=stas).</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>options</code>: List with options</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Tuple with non-keyword arguments and with keyword arguments</p>
+<h3 id="parse_args"><strong>parse_args</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.parse_args</code></p>
+<p>Signature: <code>(*param_types:Tuple[str], doc_module:str=None) -&gt; Union[Any, List[Any]]</code></p>
+<p>Parse command line arguments and general options</p>
+<p>Parse arguments from the given parameter types.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>param_types</code>: Strings describing the expected parameter types. Each string must be one of the keys in #_PARSERS.</li>
+<li><code>doc_module</code>:  Module containing help text.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>List of command line arguments parsed according to param_types.</p>
+<h3 id="read_option_value"><strong>read_option_value</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.read_option_value</code></p>
+<p>Signature: <code>(option:str, default:str='') -&gt; str</code></p>
+<p>Read the value of one command line option</p>
+<p>The option should be specified as a string with the necessary - or -- in front. If that option is not one of the
+command line arguments, default is returned. If there is a value following the option that value is returned as a
+string (separated by =). If there are several occurences of the option, the first one is returned.</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>option</code>:    Option specified with the leading - or --.</li>
+<li><code>default</code>:   Optional default value that is returned if the option is not specified.</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>The option or the value of the option. The default value if the option is not specified.</p>
+<h3 id="write_requirements"><strong>write_requirements</strong>()</h3>
+<p>Full name: <code>midgard.dev.util.write_requirements</code></p>
+<p>Signature: <code>(file_path:Union[str, pathlib.Path]) -&gt; None</code></p>
+<p>Write requirements (python modules) to file for reproducibility.</p>
+<p>Note that this only stores the modules that have been imported, and that have a <code>__version__</code>-attribute (see PEP
+396 - https://www.python.org/dev/peps/pep-0396/)</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>: File path.</li>
+</ul></div>
         </div>
 
         <footer class="col-md-12">

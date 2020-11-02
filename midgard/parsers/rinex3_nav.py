@@ -35,7 +35,6 @@ from midgard.data import dataset
 from midgard.data.time import Time
 from midgard.dev import log
 from midgard.dev import plugins
-from midgard.gnss import gnss
 
 
 # TODO: SYSTEM_TIME_OFFSET_TO_GPS_SECOND & SYSTEM_TIME_OFFSET_TO_GPS_WEEK should be placed in constant.conf
@@ -723,14 +722,18 @@ class Rinex3NavParser(ChainParser):
             self.data["time"] = Time(val=date, val2=millisec, scale="gps", fmt="datetime")
             # TODO: Better solution: self.data["time"] = Time(self.data["time"], scale="gps", fmt="isot")
 
-        # TODO hjegei: Workaround -> better would if Time object can handle gpsweek as input format!!!!
-        # self.data['toe'] = Time(self.data['gnss_week'], format='gpsweek') + TimeDelta(self.data['toe'], format='sec')
-        # self.data['transmission_time'] = Time(self.data['gnss_week'], format='gpsweek') + TimeDelta(self.data['transmission_time'], format='sec')
-        jd_day, jd_frac = gnss.gpssec2jd(np.array(self.data["gnss_week"]), np.array(self.data["toe"]))
-        self.data["toe"] = Time(val=jd_day, val2=jd_frac, fmt="jd", scale="gps")
-
-        jd_day, jd_frac = gnss.gpssec2jd(np.array(self.data["gnss_week"]), np.array(self.data["transmission_time"]))
-        self.data["transmission_time"] = Time(val=jd_day, val2=jd_frac, fmt="jd", scale="gps")
+        self.data["toe"] = Time(
+                            val=self.data["gnss_week"], 
+                            val2=self.data["toe"], 
+                            scale="gps", 
+                            fmt="gps_ws",
+        ) 
+        self.data["transmission_time"] = Time(
+                                            val=self.data["gnss_week"], 
+                                            val2=self.data["transmission_time"], 
+                                            scale="gps", 
+                                            fmt="gps_ws",
+        )
 
         # Handling of week crossovers - refer time of ephemeris (toe) and transmission time to same GPS week as
         # navigation epoch (time of clock (toc))
@@ -747,8 +750,7 @@ class Rinex3NavParser(ChainParser):
             elif np.any(time_diff < -302_400):
                 idx = time_diff < -302_400
                 gpssec[idx] -= 604_800
-            jd_day, jd_frac = gnss.gpssec2jd(np.array(self.data["gnss_week"]), gpssec)
-            self.data[field] = Time(val=jd_day, val2=jd_frac, fmt="jd", scale="gps")
+            self.data[field] = Time(val=self.data["gnss_week"], val2=gpssec, scale="gps", fmt="gps_ws")
 
     #
     # WRITE DATA

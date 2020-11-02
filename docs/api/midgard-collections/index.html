@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.collections - Midgard v1.1.1</title>
+        <title>midgard.collections - Midgard v1.1.2</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -186,6 +186,10 @@ enums.gnss_freq_G.L1 * 2
 <p>Full name: <code>midgard.collections.enums.BeidouFrequency</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
 <p>BeiDou frequencies in Hz</p>
+<h3 id="exitstatus"><strong>ExitStatus</strong></h3>
+<p>Full name: <code>midgard.collections.enums.ExitStatus</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Exit status definition</p>
 <h3 id="gpsfrequency"><strong>GPSFrequency</strong></h3>
 <p>Full name: <code>midgard.collections.enums.GPSFrequency</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
@@ -202,10 +206,22 @@ enums.gnss_freq_G.L1 * 2
 <p>Full name: <code>midgard.collections.enums.GlonassFreqNum2Freq</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
 <p>An enumeration.</p>
+<h3 id="gnss3digitidtoid"><strong>Gnss3DigitIdToId</strong></h3>
+<p>Full name: <code>midgard.collections.enums.Gnss3DigitIdToId</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>RINEX GNSS 3-digit identifier to RINEX GNSS identifier</p>
+<h3 id="gnssidto3digitid"><strong>GnssIdTo3DigitId</strong></h3>
+<p>Full name: <code>midgard.collections.enums.GnssIdTo3DigitId</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>RINEX GNSS RINEX identifier to GNSS 3-digit identifier</p>
 <h3 id="gnssidtoname"><strong>GnssIdToName</strong></h3>
 <p>Full name: <code>midgard.collections.enums.GnssIdToName</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
 <p>RINEX GNSS identifier to GNSS name</p>
+<h3 id="gnssidtoreferencesystem"><strong>GnssIdToReferenceSystem</strong></h3>
+<p>Full name: <code>midgard.collections.enums.GnssIdToReferenceSystem</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>RINEX GNSS RINEX identifier to relevant GNSS reference system name</p>
 <h3 id="gnssnametoid"><strong>GnssNameToId</strong></h3>
 <p>Full name: <code>midgard.collections.enums.GnssNameToId</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
@@ -260,6 +276,10 @@ enums.gnss_freq_G.L1 * 2
 <p>Return a list of available enums</p>
 <p><strong>Returns:</strong></p>
 <p>Names of available enums.</p>
+<h3 id="exit_status"><strong>exit_status</strong></h3>
+<p>Full name: <code>midgard.collections.enums.exit_status</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>Exit status definition</p>
 <h3 id="get_enum"><strong>get_enum</strong>()</h3>
 <p>Full name: <code>midgard.collections.enums.get_enum</code></p>
 <p>Signature: <code>(name:str) -&gt; enum.EnumMeta</code></p>
@@ -285,6 +305,10 @@ raise an UnknownEnumError and list the available enumerations.</p>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Value of enumeration with the given name.</p>
+<h3 id="gnss_3digit_id_to_id"><strong>gnss_3digit_id_to_id</strong></h3>
+<p>Full name: <code>midgard.collections.enums.gnss_3digit_id_to_id</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>RINEX GNSS 3-digit identifier to RINEX GNSS identifier</p>
 <h3 id="gnss_freq_c"><strong>gnss_freq_C</strong></h3>
 <p>Full name: <code>midgard.collections.enums.gnss_freq_C</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
@@ -309,10 +333,18 @@ raise an UnknownEnumError and list the available enumerations.</p>
 <p>Full name: <code>midgard.collections.enums.gnss_freq_S</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
 <p>SBAS frequencies in Hz</p>
+<h3 id="gnss_id_to_3digit_id"><strong>gnss_id_to_3digit_id</strong></h3>
+<p>Full name: <code>midgard.collections.enums.gnss_id_to_3digit_id</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>RINEX GNSS RINEX identifier to GNSS 3-digit identifier</p>
 <h3 id="gnss_id_to_name"><strong>gnss_id_to_name</strong></h3>
 <p>Full name: <code>midgard.collections.enums.gnss_id_to_name</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
 <p>RINEX GNSS identifier to GNSS name</p>
+<h3 id="gnss_id_to_reference_system"><strong>gnss_id_to_reference_system</strong></h3>
+<p>Full name: <code>midgard.collections.enums.gnss_id_to_reference_system</code></p>
+<p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>
+<p>RINEX GNSS RINEX identifier to relevant GNSS reference system name</p>
 <h3 id="gnss_name_to_id"><strong>gnss_name_to_id</strong></h3>
 <p>Full name: <code>midgard.collections.enums.gnss_name_to_id</code></p>
 <p>Signature: <code>(value, names=None, *, module=None, qualname=None, type=None, start=1)</code></p>

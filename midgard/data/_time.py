@@ -232,6 +232,10 @@ class TimeBase(np.ndarray):
             scales = ", ".join(self._scales())
             raise exceptions.UnknownSystemError(f"Scale {scale!r} unknown. Use one of {scales}")
 
+        # Simplified conversion if time is None
+        if self.shape == () and self.item() == None: # time is None
+            return _SCALES[self.cls_name][scale](val=None, fmt=self.fmt, _jd1=None, _jd2=None)
+
         # Convert to new scale
         hop = (self.scale, scale)
         if hop in _CONVERSIONS[self.cls_name]:
@@ -1027,18 +1031,36 @@ class TimeFormat:
     def __init__(self, val, val2=None, scale=None):
         """Convert val and val2 to Julian days"""
         self.scale = scale
-        self.jd1 = None
-        self.jd2 = None
-        if val is not None and np.asarray(val).size > 0:
+        if val is None:
+            self.jd1 = None
+            self.jd2 = None
+        elif np.asarray(val).size == 0 and np.asarray(val).ndim == 1: # Empty array
+            self.jd1 = np.array([])
+            self.jd2 = np.array([])
+        else:
             self.jd1, self.jd2 = self.to_jds(val, val2=val2, scale=scale)
 
     @classmethod
-    def to_jds(cls, val, val2, scale):
+    def to_jds(cls, val, val2=None, scale=None):
+        """Convert val and val2 to Julian days and set the .jd1 and .jd2 attributes"""
+        if val is None and val2 is None:
+            return None, None
+        return cls._to_jds(val, val2, scale)
+
+    @classmethod
+    def _to_jds(cls, val, val2, scale):
         """Convert val and val2 to Julian days and set the .jd1 and .jd2 attributes"""
         raise NotImplementedError
 
     @classmethod
     def from_jds(cls, jd1, jd2, scale):
+        """Convert Julian days to the right format"""
+        if jd1 is None and jd2 is None:
+            return None
+        return cls._from_jds(jd1, jd2, scale)
+
+    @classmethod
+    def _from_jds(cls, jd1, jd2, scale):
         """Convert Julian days to the right format"""
         raise NotImplementedError
 
@@ -1065,7 +1087,7 @@ class TimeJD(TimeFormat):
     unit = ("day",)
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1078,7 +1100,7 @@ class TimeJD(TimeFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         return jd1 + jd2
 
 
@@ -1095,7 +1117,7 @@ class TimeMJD(TimeFormat):
     _mjd0 = 2_400_000.5
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1108,7 +1130,7 @@ class TimeMJD(TimeFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         return jd1 - cls._mjd0 + jd2
 
 
@@ -1121,7 +1143,7 @@ class TimeDateTime(TimeFormat):
     _dt2000 = datetime(2000, 1, 1)
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         try:
             if val2 is not None:
                 val = np.asarray(val) + np.asarray(val2)
@@ -1144,7 +1166,7 @@ class TimeDateTime(TimeFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         try:
             return np.array([cls._jd2dt(j1, j2) for j1, j2 in zip(jd1, jd2)])
         except TypeError:
@@ -1171,7 +1193,7 @@ class TimePlotDate(TimeFormat):
     _jd0001 = 1721424.5  # julian day 2001-01-01 minus 1
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1184,7 +1206,7 @@ class TimePlotDate(TimeFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         return jd1 - cls._jd0001 + jd2
 
 
@@ -1199,7 +1221,7 @@ class TimeGPSWeekSec(TimeFormat):
     ndim = len(WeekSec._fields)
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if scale != "gps":
             raise ValueError(f"Format {cls.fmt} is only available for time scale gps")
 
@@ -1225,7 +1247,7 @@ class TimeGPSWeekSec(TimeFormat):
         return jd_day, jd_frac
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         if scale != "gps":
             raise ValueError(f"Format {cls.fmt} is only available for time scale gps")
 
@@ -1254,7 +1276,7 @@ class TimeGPSSec(TimeFormat):
     _jd19800106 = 2_444_244.5
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if scale != "gps":
             raise ValueError(f"Format {cls.fmt} is only available for time scale gps")
 
@@ -1268,7 +1290,7 @@ class TimeGPSSec(TimeFormat):
         return cls._jd19800106 + days_int, days_frac
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         if scale != "gps":
             raise ValueError(f"Format {cls.fmt} is only available for time scale gps")
 
@@ -1293,7 +1315,7 @@ class TimeJulianYear(TimeFormat):
     _j2000 = 2000
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         """Based on epj2jd.for from SOFA library"""
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
@@ -1302,7 +1324,7 @@ class TimeJulianYear(TimeFormat):
         return cls._jd2000 + int_part, fraction
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         """Based on epj.for from SOFA library"""
         return cls._j2000 + ((jd1 - cls._jd2000) + jd2) * Unit.day2julian_year
 
@@ -1315,7 +1337,7 @@ class TimeDecimalYear(TimeFormat):
     unit = None  # Year length is variable so this does not make sense to apply one value
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
@@ -1342,7 +1364,7 @@ class TimeDecimalYear(TimeFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         try:
             return np.array([cls._jd2dy(j1, j2, scale) for j1, j2 in zip(jd1, jd2)]).T
         except TypeError:
@@ -1392,7 +1414,7 @@ class TimeYyDddSssss(TimeFormat):
     unit = None
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
@@ -1407,7 +1429,7 @@ class TimeYyDddSssss(TimeFormat):
         return datetime.strptime(val[:7], "%y:%j:") + timedelta(sec=float(val[7:]))
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         try:
             return np.array([cls._jd2yds(j1, j2) for j1, j2 in zip(jd1, jd2)])
         except TypeError:
@@ -1441,7 +1463,7 @@ class TimeYyyyDddSssss(TimeFormat):
     unit = None
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
@@ -1456,7 +1478,7 @@ class TimeYyyyDddSssss(TimeFormat):
         return datetime.strptime(val[:9], "%Y:%j:") + timedelta(sec=float(val[9:]))
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         try:
             return np.array([cls._jd2yds(j1, j2) for j1, j2 in zip(jd1, jd2)])
         except TypeError:
@@ -1480,7 +1502,7 @@ class TimeStr(TimeFormat):
     _dt_fmt = None
 
     @classmethod
-    def to_jds(cls, val, val2=None, scale=None):
+    def _to_jds(cls, val, val2=None, scale=None):
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
@@ -1490,7 +1512,7 @@ class TimeStr(TimeFormat):
             return np.array([TimeDateTime._dt2jd(cls._str2dt(isot)) for isot in val]).T
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         try:
             return np.array([cls._dt2str(TimeDateTime._jd2dt(j1, j2)) for j1, j2 in zip(jd1, jd2)])
         except TypeError:
@@ -1558,7 +1580,7 @@ class TimeDeltaJD(TimeDeltaFormat):
     unit = ("day",)
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1571,7 +1593,7 @@ class TimeDeltaJD(TimeDeltaFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         return jd1 + jd2
 
 
@@ -1583,7 +1605,7 @@ class TimeDeltaSec(TimeDeltaFormat):
     unit = ("second",)
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1598,7 +1620,7 @@ class TimeDeltaSec(TimeDeltaFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         return (jd1 + jd2) * Unit.day2second
 
 
@@ -1610,7 +1632,7 @@ class TimeDeltaDay(TimeDeltaFormat):
     unit = ("day",)
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1623,7 +1645,7 @@ class TimeDeltaDay(TimeDeltaFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         return jd1 + jd2
 
 
@@ -1635,7 +1657,7 @@ class TimeDeltaDateTime(TimeDeltaFormat):
     unit = None
 
     @classmethod
-    def to_jds(cls, val, val2, scale=None):
+    def _to_jds(cls, val, val2, scale=None):
         if val2 is None:
             try:
                 val2 = [timedelta(seconds=0)] * len(val)
@@ -1653,7 +1675,7 @@ class TimeDeltaDateTime(TimeDeltaFormat):
         return jd1, jd2
 
     @classmethod
-    def from_jds(cls, jd1, jd2, scale=None):
+    def _from_jds(cls, jd1, jd2, scale=None):
         try:
             return timedelta(days=jd1 + jd2)
         except TypeError:

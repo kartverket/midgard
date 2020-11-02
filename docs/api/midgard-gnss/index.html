@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.gnss - Midgard v1.1.1</title>
+        <title>midgard.gnss - Midgard v1.1.2</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -186,47 +186,39 @@ be an identity matrix. The cofactor matrix Q is related to a topocentric coordin
 </code></pre>
 <p><strong>Description:</strong></p>
 <p>This module will provide functions for GNSS modeling.</p>
+<h3 id="get_number_of_satellites"><strong>get_number_of_satellites</strong>()</h3>
+<p>Full name: <code>midgard.gnss.gnss.get_number_of_satellites</code></p>
+<p>Signature: <code>(systems:numpy.ndarray, satellites:numpy.ndarray, epochs:numpy.ndarray) -&gt; numpy.ndarray</code></p>
+<p>Get number of satellites per epoch</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>satellites</code>:     Array with satellite PRN number together with GNSS identifier (e.g. G07)</li>
+<li><code>systems</code>:        Array with GNSS identifiers (e.g. G, E, R, ...)</li>
+<li><code>epochs</code>:         Array with observation epochs (e.g. as datetime objects)</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Number of satellites per epoch</p>
 <h3 id="get_rinex_file_version"><strong>get_rinex_file_version</strong>()</h3>
 <p>Full name: <code>midgard.gnss.gnss.get_rinex_file_version</code></p>
 <p>Signature: <code>(file_path:pathlib.PosixPath) -&gt; str</code></p>
-<p>Get RINEX file version for a given file key</p>
+<p>Get RINEX file version for a given file path</p>
 <p><strong>Args:</strong></p>
 <ul>
-<li><code>file_path</code>:  File path to broadcast orbit file.</li>
+<li><code>file_path</code>:  File path.</li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>RINEX file version</p>
-<h3 id="gpssec2jd"><strong>gpssec2jd</strong>()</h3>
-<p>Full name: <code>midgard.gnss.gnss.gpssec2jd</code></p>
-<p>Signature: <code>(wwww:float, sec:float) -&gt; Tuple[float, ...]</code></p>
-<p>Conversion from GPS week and second to Julian Date (JD)</p>
+<h3 id="obstype_to_freq"><strong>obstype_to_freq</strong>()</h3>
+<p>Full name: <code>midgard.gnss.gnss.obstype_to_freq</code></p>
+<p>Signature: <code>(sys:str, obstype:str) -&gt; float</code></p>
+<p>Get GNSS frequency based on given GNSS observation type</p>
 <p><strong>Args:</strong></p>
 <ul>
-<li><code>wwww</code>: GPS week</li>
-<li><code>sec</code>:  GPS second</li>
+<li><code>sys</code>:     GNSS identifier (e.g. 'E', 'G', ...)</li>
+<li><code>obstype</code>: Observation type (e.g. 'L1', 'P1', 'C1X', ...)</li>
 </ul>
-<p><strong>Returns:</strong></p>
-<ul>
-<li><code>tuple</code>:         with following elements</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jd_day</td>
-<td>Julian day</td>
-</tr>
-<tr>
-<td>jd_frac</td>
-<td>Fractional part of Julian day</td>
-</tr>
-</tbody>
-</table>
+<p>Return:
+    GNSS frequency in [Hz]</p>
 <h2 id="midgardgnssrec_velocity_est">midgard.gnss.rec_velocity_est</h2>
 <h3 id="e_omga-float">E_OMGA (float)</h3>
 <p><code>E_OMGA = 7.2921151467e-05</code></p>

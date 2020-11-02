@@ -96,8 +96,8 @@ def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.n
         
         try:
             field_unit = dset.unit(field_attrs)[0]
-        except (exceptions.UnitError):
-            log.debug(f"Skip unit conversion for text field '{field_attrs}'.")
+        except (exceptions.UnitError, TypeError) as e:
+            log.debug(f"Skip unit conversion for field '{field_attrs}'.")
             return f # Skip unit conversion for text fields, which do not have a unit.
         
         try:
@@ -146,6 +146,7 @@ def get_header(
     run_by: str = "",
     summary: Union[None, str] = None,
     add_description: Union[None, str] = None,
+    lsign: str = "",
 ) -> List[str]:
     """Get header
 
@@ -155,6 +156,7 @@ def get_header(
         run_by:             Information about who has created this file (e.g. NMA).
         summary:            Short description of output file
         add_description:    Additional description lines
+        lsign:              Leading comment sign
 
     Returns:
         Header lines
@@ -164,30 +166,27 @@ def get_header(
     midgard_version = f"midgard {midgard.__version__}"
     pgm = f"{pgm_version}/{midgard_version}" if pgm_version else midgard_version
     file_created = datetime.utcnow().strftime("%Y%m%d %H%M%S") + " UTC"
-    description = f"PGM: {pgm:s}  RUN_BY: {run_by:s}  DATE: {file_created:s}\n"
+    description = f"{lsign}PGM: {pgm:s}  RUN_BY: {run_by:s}  DATE: {file_created:s}\n"
     if summary:
-        description += f"DESCRIPTION: {summary}\n\n"
+        description += f"{lsign}DESCRIPTION: {summary}\n{lsign}\n"
     if add_description:
-        description += add_description
+        description += f"{lsign}" + add_description
     description = (
         description
-        + """
-
-HEADER       UNIT                  DESCRIPTION
-______________________________________________________________________________________________________________________
-"""
+        + f"\n{lsign}\n{lsign}HEADER         UNIT                   DESCRIPTION\n"
+        f"{lsign}" + "_" * 117 + "\n"
     )
     # TODO: 'description' should not exceed number of 120 characters. Newline should automatically introduced if
     #      f.description exceeds a certain number of characters.
     for f in fields:
-        description = f"{description}{f.header:14s} {f.unit:22s} {f.description}\n"
+        description += f"{lsign}{f.header:14s} {f.unit:22s} {f.description}\n"
 
     # Add data header lines to description
     header = [
-        description,
-        "".join(f"{f.header:>{f.width}s}" for f in fields),
-        "".join(f"{f.unit:>{f.width}s}" for f in fields),
-        "_" * sum([f.width for f in fields]),
+        description + f"{lsign}\n",
+        f"{lsign}" + "".join(f"{f.header:>{f.width}s}" for f in fields) + "\n",
+        f"{lsign}" + "".join(f"{f.unit:>{f.width}s}" for f in fields) + "\n",
+        f"{lsign}" + "_" * sum([f.width for f in fields]) + "\n",
     ]
 
-    return header
+    return "".join(header)

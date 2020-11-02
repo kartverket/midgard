@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.1.1</title>
+        <title>midgard.plot - Midgard v1.1.2</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../..">Midgard v1.1.1</a>
+                    <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -154,7 +154,7 @@
 <p>Wrapper functions around matplotlib subroutines are defined in this library.</p>
 <h3 id="get_statistic"><strong>get_statistic</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.get_statistic</code></p>
-<p>Signature: <code>(data:'ndarray', funcs:List[str]=['rms', 'mean', 'std', 'min', 'max', 'percentile'], unit:str='') -&gt; List[str]</code></p>
+<p>Signature: <code>(data:numpy.ndarray, funcs:List[str]=['rms', 'mean', 'std', 'min', 'max', 'percentile'], unit:str='') -&gt; List[str]</code></p>
 <p>Get text string with statistical information</p>
 <p>List of statistical functions (<strong>funcs</strong>), which can be chosen:</p>
 <table>
@@ -245,12 +245,17 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
 <tr>
 <td>histogram</td>
 <td><x, y></td>
-<td>Plot x-axis histogram on top, y-axis histogram on right or for both axis</td>
+<td>Plot x-axis histogram on top, y-axis histogram on right or for both</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>on scatter plot</td>
+<td>axis on scatter plot</td>
+</tr>
+<tr>
+<td>histogram_binwidth</td>
+<td><num></td>
+<td>Histogram bin width</td>
 </tr>
 <tr>
 <td>histogram_size</td>
@@ -271,6 +276,11 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
 <td>legend_ncol</td>
 <td><num></td>
 <td>The number of legend columns</td>
+</tr>
+<tr>
+<td>linestyle</td>
+<td><style></td>
+<td>Line style for plot type (e.g. 'solid', 'dashed')</td>
 </tr>
 <tr>
 <td>marker</td>
@@ -310,12 +320,12 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
 <tr>
 <td></td>
 <td></td>
-<td>'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic for</td>
+<td>'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>more information)</td>
+<td>for more information)</td>
 </tr>
 <tr>
 <td>tick_labelsize</td>
@@ -340,7 +350,7 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
 <tr>
 <td></td>
 <td>auto&gt;]</td>
-<td>auto, then x-axis limit is automatically chosen</td>
+<td>xlim=auto, then x-axis limit is automatically chosen</td>
 </tr>
 <tr>
 <td>xticks</td>
@@ -389,7 +399,7 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
                    'events' can not be chosen together, either 'labels' or 'events' should be defined.</p>
 <h3 id="plot_bar_dataframe_columns"><strong>plot_bar_dataframe_columns</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_bar_dataframe_columns</code></p>
-<p>Signature: <code>(df:'Dataframe', column:str, path:'pathlib.PosixPath', xlabel:str='', ylabel:str='', label:str='label', colors:Union[List[str], NoneType]=None, opt_args:Union[Dict[str, Any], NoneType]=None) -&gt; None</code></p>
+<p>Signature: <code>(df:'Dataframe', column:str, path:pathlib.PosixPath, xlabel:str='', ylabel:str='', label:str='label', colors:Union[List[str], NoneType]=None, opt_args:Union[Dict[str, Any], NoneType]=None) -&gt; None</code></p>
 <p>Generate bar plot of given dataframe columns</p>
 <p>If 'label' column is given in Dataframe (as 'df.label'), then the bars are color coded based on the defined labels.
 In addition a legend is added with information about the labels.</p>
@@ -508,12 +518,17 @@ In addition a legend is added with information about the labels.</p>
 <tr>
 <td>histogram</td>
 <td><x, y></td>
-<td>Plot x-axis histogram on top, y-axis histogram on right or for both axis</td>
+<td>Plot x-axis histogram on top, y-axis histogram on right or for both</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>on scatter plot</td>
+<td>axis on scatter plot</td>
+</tr>
+<tr>
+<td>histogram_binwidth</td>
+<td><num></td>
+<td>Histogram bin width</td>
 </tr>
 <tr>
 <td>histogram_size</td>
@@ -573,12 +588,12 @@ In addition a legend is added with information about the labels.</p>
 <tr>
 <td></td>
 <td></td>
-<td>'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic for</td>
+<td>'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>more information)</td>
+<td>for more information)</td>
 </tr>
 <tr>
 <td>tick_labelsize</td>
@@ -603,7 +618,7 @@ In addition a legend is added with information about the labels.</p>
 <tr>
 <td></td>
 <td>auto&gt;]</td>
-<td>auto, then x-axis limit is automatically chosen</td>
+<td>xlim=auto, then x-axis limit is automatically chosen</td>
 </tr>
 <tr>
 <td>xticks</td>
@@ -676,17 +691,27 @@ In addition a legend is added with information about the labels.</p>
 <tr>
 <td>histogram</td>
 <td><x, y></td>
-<td>Plot x-axis histogram on top, y-axis histogram on right or for both axis</td>
+<td>Plot x-axis histogram on top, y-axis histogram on right or for both</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>on scatter plot</td>
+<td>axis on scatter plot</td>
+</tr>
+<tr>
+<td>histogram_binwidth</td>
+<td><num></td>
+<td>Histogram bin width</td>
 </tr>
 <tr>
 <td>histogram_size</td>
 <td><num></td>
 <td>Histogram y-axis size</td>
+</tr>
+<tr>
+<td>linestyle</td>
+<td><style></td>
+<td>Line style for plot type (e.g. 'solid', 'dashed')</td>
 </tr>
 <tr>
 <td>marker</td>
@@ -716,12 +741,12 @@ In addition a legend is added with information about the labels.</p>
 <tr>
 <td></td>
 <td></td>
-<td>'mean', 'min', 'max', 'std', 'percentile' (see function get_statistic for</td>
+<td>'mean', 'min', 'max', 'std', 'percentile' (see function get_statistic</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>more information)</td>
+<td>for more information)</td>
 </tr>
 <tr>
 <td>xlim</td>
@@ -731,7 +756,7 @@ In addition a legend is added with information about the labels.</p>
 <tr>
 <td></td>
 <td>auto&gt;]</td>
-<td>auto, then x-axis limit is automatically chosen</td>
+<td>xlim=auto, then x-axis limit is automatically chosen</td>
 </tr>
 <tr>
 <td>xticks</td>

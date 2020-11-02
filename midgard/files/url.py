@@ -20,6 +20,11 @@ class URL(str):
         """Part of URL after the last /"""
         return self.split("/")[-1]
 
+    @property
+    def base(self) -> str:
+        """Part of URL before the last /"""
+        return self.rsplit("/", maxsplit=1)[0]
+
     def with_name(self, name: str) -> "URL":
         """Replace part of URL after the last / with a new name
 

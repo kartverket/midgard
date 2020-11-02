@@ -23,6 +23,7 @@ import numpy as np
 
 # Midgard imports
 from midgard.dev import log
+from midgard.math.linear_regression import LinearRegression
 from midgard.math.unit import Unit
 
 
@@ -77,7 +78,7 @@ def get_statistic(
         if np.abs(stat) >= 1000 or (stat < 0.01 and stat > -0.01):
             stats.append(f"{func_def[func][0]}: {stat:.0e} {Unit(unit).units:~P}")  # with abbreviated SI unit
         else:
-            width = ".1f" if (unit == "mm" or unit == "millimeter") else ".2f"
+            width = ".1f" if ("mm" == unit or "millimeter" == unit) else ".2f"
             stats.append(f"{func_def[func][0]}: {stat:{width}} {Unit(unit).units:~P}")  # with abbreviated SI unit
     return stats
 
@@ -652,6 +653,28 @@ def plot_subplot_row(
     unit = f"[{y_unit}]" if y_unit else ""
     ax.set(ylabel=f"{ylabel} {unit}")
 
+    # Plot linear regression line
+    if options["reg_line"]:       
+        lr = LinearRegression(x_array, y_array)
+
+        # Update subtitle of plots
+        rate_unit = f"{Unit(y_unit).units:~P}/{Unit(x_unit).units:~P}"  # get abbreviated SI units
+        rms_unit = f"{Unit(y_unit).units:~P}"  # get abbreviated SI units
+        width = ".1f" if ("mm" == y_unit or "millimeter" == y_unit) else ".3f"
+        subtitle.append(f"Rate: {lr.slope:{width}} {rate_unit}, RMS: {lr.rms:{width}} {rms_unit}, R^2: {lr.r_square:.2f}")
+        if "rms" in options["statistic"]:
+            options["statistic"].remove("rms")
+
+        # Plot regression line
+        ax.plot(
+            x_array,
+            lr.y_modeled,
+            alpha=options["alpha"],
+            color="black",
+            label="Regression line",
+            linestyle="dashed",
+        )
+
     # Generate scatter plot
     if options["plot_type"] == "scatter":
         ax.scatter(
@@ -712,13 +735,6 @@ def plot_subplot_row(
     # Plot grid
     if options["grid"]:
         ax.grid(True)
-
-    # Plot linear regression line
-    if options["reg_line"]:
-        unit = f"{Unit(y_unit).units:~P}/{Unit(x_unit).units:~P}"  # get abbreviated SI units
-        rate, _ = _plot_regression_line(ax, x_array, y_array)
-        width = ".1f" if (y_unit == "mm" or y_unit == "millimeter") else ".3f"
-        subtitle.append(f"Rate: {rate:{width}} {unit}")
 
     # Plot statistical text line as title over each subplot
     if options["statistic"]:
@@ -838,30 +854,6 @@ def _plot_legend(legend_labels: List["matplotlib.lines.Line2D"], labels: List[st
         borderaxespad=legend_loc[options["legend_location"]]["borderaxespad"],
         ncol=options["legend_ncol"],
     )
-
-
-def _plot_regression_line(ax: "AxesSubplot", x_data: np.ndarray, y_data: np.ndarray) -> Tuple[float, float]:
-    """Plot linear regression line
-
-    Args:
-        ax:      Axes object needed for plotting regression line.
-        x_data:  Array with x-axis data
-        y_data:  Array with y-axis data
-
-    Returns:
-        Tuple with rate and y-axis offset
-    """
-    fit = np.polyfit(x_data, y_data, 1)
-    fit_fn = np.poly1d(fit)  # fit_fn is a function which takes in x_data and returns an estimate for y_data
-    ax.plot(x_data, y_data, "yo", x_data, fit_fn(x_data), "--k")
-
-    # Other solution
-    # from sklearn.linear_model import LinearRegression
-    # linear_regressor = LinearRegression()  # create object for the class
-    # linear_regressor.fit(x_array, y_arrays[0])  # perform linear regression
-    # reg_line = linear_regressor.predict(x_array) # make predictions
-
-    return fit[0], fit[1]
 
 
 def _ordered_set(array: List[str]) -> List[str]:
