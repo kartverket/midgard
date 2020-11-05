@@ -1103,7 +1103,7 @@ logger is used to report the timing. See `Timer.__init__` for more details.
 
 Full name: `midgard.dev.timer.AccumulatedTimer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(<function log at 0x7f095baa6af0>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(<function log at 0x7fddb8133af0>, level='info')) -> None`
 
 
 
@@ -1111,7 +1111,7 @@ Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callab
 
 Full name: `midgard.dev.timer.Timer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(<function log at 0x7f095baa6af0>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(<function log at 0x7fddb8133af0>, level='info')) -> None`
 
 Class for timing running time of functions and code blocks.
 

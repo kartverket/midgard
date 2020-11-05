@@ -1,6 +1,6 @@
 site_name: Midgard v1.1.2
 theme: flatly
-
+site_dir: ../docs
 nav:
     - Home: index.md
     - How-to:
