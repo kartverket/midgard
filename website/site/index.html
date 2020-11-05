@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>Midgard v1.1.2</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">Midgard v1.1.2</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="." class="nav-link">Home</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="howto/testing/" class="dropdown-item">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="api/midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-collections/" class="dropdown-item">midgard.collections</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-config/" class="dropdown-item">midgard.config</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-data/" class="dropdown-item">midgard.data</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-dev/" class="dropdown-item">midgard.dev</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-files/" class="dropdown-item">midgard.files</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-gnss/" class="dropdown-item">midgard.gnss</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-ionosphere/" class="dropdown-item">midgard.ionosphere</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-math/" class="dropdown-item">midgard.math</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-parsers/" class="dropdown-item">midgard.parsers</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-plot/" class="dropdown-item">midgard.plot</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-site_info/" class="dropdown-item">midgard.site_info</a>
+</li>
+                                    
+<li>
+    <a href="api/midgard-writers/" class="dropdown-item">midgard.writers</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="howto/testing/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#midgard-the-python-geodesy-library" class="nav-link">Midgard, the Python Geodesy library</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#installing-midgard" class="nav-link">Installing Midgard</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#installing-midgard-from-source" class="nav-link">Installing Midgard from source</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#using-midgard" class="nav-link">Using Midgard</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="midgard-the-python-geodesy-library">Midgard, the Python Geodesy library</h1>
+<p>Midgard is a collection of useful Python utilities used by the Geodetic
+institute at the Norwegian Mapping Authority (Kartverket). Although some of
+these are geodesy-specific, many are also useful in more general settings.</p>
+<p><strong>Note:</strong> Midgard is still in pre-alpha status. Its functionality will change,
+  and it should not be depended on in any production-like setting.</p>
+<p><a href="https://pypi.org/project/midgard/"><img alt="Latest version" src="https://img.shields.io/pypi/v/midgard.svg" /></a>
+<a href="https://pypi.org/project/midgard/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/midgard.svg" /></a>
+<a href="https://github.com/ambv/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<h2 id="installing-midgard">Installing Midgard</h2>
+<p>Midgard is available at <a href="https://pypi.org/project/midgard/">PyPI</a>. You can
+install it by simply running</p>
+<pre><code>python -m pip install midgard
+</code></pre>
+<h2 id="installing-midgard-from-source">Installing Midgard from source</h2>
+<p>Midgard depends on several other brilliant Python packages, like for instance
+numpy, scipy, etc. We recommend using the Anaconda distribution to ease
+the installation of these dependencies.</p>
+<h3 id="install-anaconda">Install Anaconda</h3>
+<p>Go to <a href="https://www.anaconda.com/download">www.anaconda.com/download</a>, and
+download Anaconda for Python 3.</p>
+<h3 id="download-the-midgard-source-code">Download the Midgard source code</h3>
+<p>If you have not already done so, download the Midgard source code from Github:
+<a href="https://github.com/kartverket/midgard">github.com/kartverket/midgard</a>. Then
+enter the main <code>midgard</code> directory before running the install command below.</p>
+<pre><code>cd midgard
+</code></pre>
+<h3 id="install-dependencies">Install dependencies</h3>
+<p>You should now install the necessary dependencies using the
+<code>environment.yml</code>-file. You can do this either in your current conda
+environment, or choose to create a new <code>midgard</code>-environment. In order to use
+<code>midgard</code> in other projects you need to install <code>midgard</code> in the same
+environment as those projects.</p>
+<p>To install <code>midgard</code> in your current environment, do</p>
+<pre><code>conda env update -f environment.yml
+</code></pre>
+<p>To install <code>midgard</code> in a new environment named <code>midgard</code> and activate it, do</p>
+<pre><code>conda env create -n midgard -f environment.yml
+conda activate midgard
+</code></pre>
+<h3 id="install-the-midgard-package">Install the Midgard package</h3>
+<p>To do the actual installation of Midgard, use the <code>flit</code> packaging tool:</p>
+<pre><code>python -m flit install --dep production
+</code></pre>
+<p>If you want to develop the Midgard package, install it in editable mode using</p>
+<pre><code>python -m flit install -s
+</code></pre>
+<p>On Windows, you can install in editable mode using</p>
+<pre><code>python -m flit install --pth-file
+</code></pre>
+<h2 id="using-midgard">Using Midgard</h2>
+<p>Midgard comes organized into different subpackages. To see info about the
+different subpackages, use the Python help system:</p>
+<pre><code>&gt;&gt;&gt; import midgard
+&gt;&gt;&gt; help(midgard)
+</code></pre>
+<p>Information about individual subpackages is also available on the
+<a href="https://kartverket.github.io/midgard/">Midgard website</a>.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js" defer></script>
+        <script src="search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.1.2
+Build Date UTC : 2020-11-05 12:40:19.928136+00:00
+-->

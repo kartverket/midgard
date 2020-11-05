@@ -1,0 +1,21 @@
+site_name: Midgard v1.1.2
+theme: flatly
+
+nav:
+    - Home: index.md
+    - How-to:
+        - howto/testing.md 
+    - API:
+        - midgard: api/midgard.md
+        - midgard.collections: api/midgard-collections.md
+        - midgard.config: api/midgard-config.md
+        - midgard.data: api/midgard-data.md
+        - midgard.dev: api/midgard-dev.md
+        - midgard.files: api/midgard-files.md
+        - midgard.gnss: api/midgard-gnss.md
+        - midgard.ionosphere: api/midgard-ionosphere.md
+        - midgard.math: api/midgard-math.md
+        - midgard.parsers: api/midgard-parsers.md
+        - midgard.plot: api/midgard-plot.md
+        - midgard.site_info: api/midgard-site_info.md
+        - midgard.writers: api/midgard-writers.md        
