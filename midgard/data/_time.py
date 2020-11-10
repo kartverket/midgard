@@ -1186,14 +1186,22 @@ class TimePlotDate(TimeFormat):
     Matplotlib represents dates using floating point numbers specifying the number
     of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
     not 0.25. Values < 1, i.e. dates before 0001-01-01 UTC are not supported.
+
+    Warning: This requires matplotlib version 3.2.2 or lower
     """
 
     fmt = "plot_date"
     unit = None
     _jd0001 = 1721424.5  # julian day 2001-01-01 minus 1
 
+    def __init__(self, val, val2=None, scale=None):
+        """Convert val and val2 to Julian days"""
+        print(f"Warning: TimeFormat {self.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
+        super().__init__(val, val2, scale)
+
     @classmethod
     def _to_jds(cls, val, val2=None, scale=None):
+        print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
         if val2 is None:
             try:
                 val2 = np.zeros(val.shape)
@@ -1207,6 +1215,7 @@ class TimePlotDate(TimeFormat):
 
     @classmethod
     def _from_jds(cls, jd1, jd2, scale=None):
+        print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
         return jd1 - cls._jd0001 + jd2
 
 
