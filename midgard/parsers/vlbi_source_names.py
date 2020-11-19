@@ -1,6 +1,7 @@
 """A parser for reading IVS source names translation table
 """
 # Standard library imports
+import copy
 from typing import Any, Dict
 
 # Midgard imports
@@ -38,6 +39,7 @@ class VlbiSourceNamesParser(LineParser):
 
         Using the IVS name as key.
         """
+        # Store source names hashed on IVS name
         self.data = {
             src["ivs_name"]: dict(
                 icrf_name_long=src["icrf_name_long"],
@@ -46,6 +48,11 @@ class VlbiSourceNamesParser(LineParser):
                 if src["iers_name"] != "-" and src["iers_name"].strip()
                 else src["ivs_name"],
                 jpl_name=src["jpl_name"] if src["jpl_name"] != "-" else src["ivs_name"],
+                ivs_name=src["ivs_name"],
             )
             for src in self._array
         }
+        # Store source names again hashed on IERS name
+        data_copy = copy.deepcopy(self.data)
+        self.data.update({v["iers_name"]: v for k, v in data_copy.items() if v["iers_name"] != v["ivs_name"]})
+
