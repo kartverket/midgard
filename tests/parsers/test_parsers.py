@@ -245,32 +245,6 @@ def test_parser_terrapos_residual():
     assert "G" in parser["system"]
 
 
-def test_parser_timeseries_env():
-    """Test that parsing timeseries_env gives expected output"""
-    parser = get_parser("timeseries_env").as_dict()
-
-    assert len(parser) == 8
-    assert "date" in parser
-    assert "14AUG31" in parser["date"]
-
-
-def test_parser_timeseries_residuals():
-    """Test that parsing timeseries_residuals gives expected output"""
-    parser = get_parser("timeseries_residuals").as_dict()
-
-    assert len(parser) == 5
-    assert "year" in parser
-    assert 0.66 in parser["residual"]
-
-def test_parser_timeseries_tsview():
-    """Test that parsing timeseries_tsview gives expected output"""
-    parser = get_parser("timeseries_tsview").as_dict()
-
-    assert len(parser) == 4
-    assert "mjd" in parser
-    assert 51058.5 in parser["mjd"]
-
-
 def test_parser_vlbi_source_names():
     """Test that parsing vlbi_source_names gives expected output"""
     parser = get_parser("vlbi_source_names").as_dict()
