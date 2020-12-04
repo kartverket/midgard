@@ -123,15 +123,6 @@ def test_parser_gipsyx_residual():
     pass
 
 
-def test_parser_gipsyx_series():
-    """Test that parsing gipsyx_series gives expected output"""
-    parser = get_parser("gipsyx_series").as_dict()
-
-    assert len(parser) == 17
-    assert "north_sigma" in parser
-    assert parser["east_sigma"][0] == 0.000698
-
-
 @pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_summary():
     pass
