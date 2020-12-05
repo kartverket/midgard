@@ -3,7 +3,7 @@
 Example:
 --------
 
-    from midgard import parsers
+    from analyx import parsers
     p = parsers.parse_file(parser_name='gipsyx_series', file_path='NYA1.series')
     data = p.as_dict()
 
@@ -135,10 +135,10 @@ class GipsyxSeriesParser(LineParser):
     
            | Field               | Type              | Description                                                    |
            |---------------------|-------------------|----------------------------------------------------------------|
-           | pos                 | PositionDelta     | Position delta object referred to a reference position         |
-           | pos_sigma_east      | numpy.array       | Standard deviation of east position                            |
-           | pos_sigma_north     | numpy.array       | Standard deviation of north position                           |
-           | pos_sigma_up        | numpy.array       | Standard deviation of up position                              |
+           | obs.pos             | PositionDelta     | Position delta object referred to a reference position         |
+           | obs.pos_sigma_east  | numpy.array       | Standard deviation of east position                            |
+           | obs.pos_sigma_north | numpy.array       | Standard deviation of north position                           |
+           | obs.pos_sigma_up    | numpy.array       | Standard deviation of up position                              |
            | time                | Time              | Parameter time given as TimeTable object                       |
         """
 
@@ -153,7 +153,7 @@ class GipsyxSeriesParser(LineParser):
         # Add position
         ref_pos = position.Position(np.repeat(np.array([ref_pos]), dset.num_obs, axis=0), system="trs")
         dset.add_position_delta(
-            name="pos",
+            name="obs.pos",
             val=np.stack((self.data["east"], self.data["north"], self.data["vertical"]), axis=1),
             system="enu",
             ref_pos=ref_pos,
@@ -163,9 +163,9 @@ class GipsyxSeriesParser(LineParser):
         ## Add position sigma
         # sigma = np.stack((self.data["east_sigma"], self.data["north_sigma"], self.data["vertical_sigma"]), axis=1)
         # dset.add_sigma(name="pos_sigma", val=dset.pos.val, sigma=sigma, unit="meter")
-        dset.add_float(name="pos_sigma_east", val=self.data["east_sigma"], unit="meter")
-        dset.add_float(name="pos_sigma_north", val=self.data["north_sigma"], unit="meter")
-        dset.add_float(name="pos_sigma_up", val=self.data["vertical_sigma"], unit="meter")
+        dset.add_float(name="obs.pos_sigma_east", val=self.data["east_sigma"], unit="meter")
+        dset.add_float(name="obs.pos_sigma_north", val=self.data["north_sigma"], unit="meter")
+        dset.add_float(name="obs.pos_sigma_up", val=self.data["vertical_sigma"], unit="meter")
 
         # Add time
         dset.add_time(

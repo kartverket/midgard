@@ -142,7 +142,7 @@ class GipsyxGdcovParser(ChainParser):
     # GENERATE DATASET
     #
     def as_dataset(self) -> "Dataset":
-        """Store Gipsy time dependent parameter data in a dataset
+        """Store GipsyX estimates and covariance information in a dataset
 
         Returns:
             Midgard Dataset where time dependent parameter data are stored with following fields:
