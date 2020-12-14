@@ -469,13 +469,23 @@ class MatPlotExt:
         y_units: Union[List[str], None] = None,
         colors: Union[List[str], None] = None,
         figure_path: str = "plot_subplot.png",
-        options: Dict[str, Any] = {},
+        subtitles: Union[List[List[str]], None] = None,
+        options: Dict[str, Any] = None,
         events: Union[Dict[str, List[Any]], None] = None,
     ) -> None:
-        """Generate scatter subplot
+        """Generate subplots with one column
     
-        The subplot has only one column. The number of rows is defined via the chosen number of y-axis data.
-    
+        The subplot has only one column. The number of rows is defined via the chosen number of y-axis data. Depending
+        on the dimension of the y-axis several plots can be plotted in one subplot. For example:
+            y_arrays = [np.array([1,2,3,4,5]), ...]     # ndim=1, only one plot plotted
+            y_arrays = [ np.array(                      # ndim=2, 2 plots plotted in one subplot
+                            [1,2,3,4,5],
+                            [6,7,8,9,10]), ...]              
+            y_arrays = [ np.array(                      # ndim=2, 3 plots plotted in one subplot
+                            [1,2,3,4,5],
+                            [6,7,8,9,10],
+                            [11,12,13,14,15]), ...]   
+                                                                                  
         Following **options** options can be overwritten:
     
         | Option             | Value            | Description                                                             |
@@ -515,7 +525,7 @@ class MatPlotExt:
     
         Args:
            x_array:        Array with x-axis data to plot.
-           y_arrays:       List of arrays with y-axis data to plot.
+           y_arrays:       List of arrays with y-axis data to plot. 
            xlabel:         X-axis label.
            ylabels:        List with y-axis labels. It should corresponds to given number of y-axis arrays.
            x_unit:         X-axis unit.
@@ -523,6 +533,7 @@ class MatPlotExt:
            colors:         List with colors for each plot. It should corresponds to given number of y-axis arrays. 
            figure_path:    Figure path.
            options:        Dictionary with options, which overwrite default plot configuration.
+           subtitles:      List with title for each subplot. It should corresponds to given number of y-axis arrays.
            events:         Dictionary with event labels as key and lists of events as value. The events has to be related to
                            x-axis data. Event colors are automatically chosen based on 'colormap'. 
         """
@@ -546,21 +557,52 @@ class MatPlotExt:
             legend_labels, cmap = self._get_label_color(len(events), cmap=self.options["colormap"])
     
         if colors is None:
-            colors = [None for ii in range(0, len(y_arrays))]
-    
+            if y_arrays[0].ndim == 2:
+                colors = np.full((len(y_arrays), y_arrays[0].shape[0]), None)
+            else:
+                colors =  np.full((1, len(y_arrays)), None)
+      
         if y_units is None:
             y_units = [None for ii in range(0, len(y_arrays))]
+
+        if subtitles is None:
+            subtitles = [list() for ii in range(0, len(y_arrays))]
     
         # Make 'axes' iterable (needed for 'zip')
         if not isinstance(axes, np.ndarray):
             axes = np.array([axes])
     
         # Plot each subplot row
-        for ax, y_array, ylabel, color, y_unit in zip(axes, y_arrays, ylabels, colors, y_units):
-    
-            self.plot_subplot_row(
-                ax, x_array, y_array, xlabel, ylabel, x_unit=x_unit, y_unit=y_unit, opt_args=self.options, color=color
-            )
+        for ax, y_array, ylabel, color, y_unit, subtitle in zip(axes, y_arrays, ylabels, colors, y_units, subtitles):
+
+            if y_array.ndim == 2:
+                for row in range(0, y_array.shape[0]):
+                    self.plot_subplot_row(
+                            ax, 
+                            x_array, 
+                            y_array[row,:], 
+                            xlabel, 
+                            ylabel, 
+                            x_unit=x_unit, 
+                            y_unit=y_unit, 
+                            color=color[row],
+                            subtitle=subtitle,
+                            options=self.options, 
+                    )                                     
+
+            else:
+                self.plot_subplot_row(
+                        ax, 
+                        x_array, 
+                        y_array, 
+                        xlabel, 
+                        ylabel, 
+                        x_unit=x_unit, 
+                        y_unit=y_unit, 
+                        color=color,
+                        subtitle=subtitle,
+                        options=self.options, 
+                ) 
     
             # Plot vertical line for events in each subplot
             if events:
@@ -612,7 +654,8 @@ class MatPlotExt:
         y_unit: str = "",
         label: str = "",
         color: Union[None, np.ndarray] = None,
-        options: Dict[str, Any] = {},
+        subtitle: List[str] = [],
+        options: Dict[str, Any] = None,
     ) -> None:
         """Generate single row of plot subplot
     
@@ -653,9 +696,9 @@ class MatPlotExt:
            y_unit:         Y-axis unit.
            label:          Legend label.
            color:          Marker color.
+           subtitle:       List with element of subplot title.
            options:        Dictionary with options, which overwrite default plot configuration.
         """
-        subtitle = list()
     
         # Overwrite options with argument definition
         if options:
