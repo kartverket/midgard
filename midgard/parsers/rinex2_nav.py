@@ -535,10 +535,15 @@ class Rinex2NavParser(ChainParser):
         """Determine navigation message type and save it in 'data' dictionary under 'nav_type' key
 
         The navigation message type is dependent on the GNSS:
-            GPS:      GPS provides LNAV and the newer CNAV and MNAV messages. LNAV and CNAV messages are civil
-                      navigation messages, whereas MNAV is a military message.
+            BeiDou:   BeiDou provides navigation messages in format D1 and D2. D1 NAV message contains basic NAV
+                      information, whereas D2 NAV in addition includes augmentation service information.
+            IRNSS:    IRNSS provides navigation data as primary and secondary navigation parameters.
             Galileo:  Galileo provides the Freely accessible (F/NAV), the Integriy (I/NAV), Commercial (C/NAV) and
                       Governmental (G/NAV) Navigation Message.
+            GPS:      GPS provides LNAV (legacy) and the newer CNAV and MNAV messages. LNAV and CNAV messages are civil
+                      navigation messages, whereas MNAV is a military message.
+            QZSS:     QZSS provides the civil messages LNAV, CNAV and CNAV2 and are designed with maximum consistency
+                      with GPS.
 
         Midgard can handle at the moment LNAV, F/NAV and I/NAV navigation messages. For further information see also
         in Section 8.3 in :cite:`rinex3` and section 5.1.3 in :cite:`galileo-os-sis-icd` (for Galileo F/NAV and I/NAV
@@ -590,7 +595,7 @@ class Rinex2NavParser(ChainParser):
         for sys in set(self.data["system"]):
             idx = np.array(self.data["system"]) == sys
 
-            if sys == "G":
+            if sys == "G" or sys == "J":
                 # NOTE: In Steigenberger et al. (2015): 'Performance Evaluation of the Early CNAV Navigation Message' do
                 #      they use for CNAV navigation messages the RINEX 'IODE' record for the change rate of the semi-
                 #      major axis 'aDot'. 'IODE' is an integer and 'aDot' a float value.
@@ -600,6 +605,12 @@ class Rinex2NavParser(ChainParser):
                         "CNAV message so far."
                     )
                 self.data["nav_type"][idx] = "LNAV"
+                
+            elif sys == "C":
+                self.data["nav_type"][idx] = "D1/D2"
+
+            elif sys == "I":
+                self.data["nav_type"][idx] = "NAV"
 
             elif sys == "E":
                 # NOTE: The RINEX data source record provides information about the Galileo navigation message.
