@@ -147,7 +147,7 @@ def get_header(
     summary: Union[None, str] = None,
     add_description: Union[None, str] = None,
     lsign: str = "",
-) -> List[str]:
+) -> str:
     """Get header
 
     Args:
