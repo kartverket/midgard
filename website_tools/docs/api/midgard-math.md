@@ -43,7 +43,7 @@ Signature: `() -> None`
 
 
 ### constant (Constant)
-`constant = Constant('/home/kirann/anaconda3/lib/python3.8/site-packages/midgard/math/constant.txt')`
+`constant = Constant('/home/kirann/miniconda3/lib/python3.8/site-packages/midgard/math/constant.txt')`
 
 
 ## midgard.math.ellipsoid
@@ -899,7 +899,7 @@ The implementation of the unit conversion is done in the `_convert_units`-metacl
 
 
 ### fid (TextIOWrapper)
-`fid = <_io.TextIOWrapper name='/home/kirann/anaconda3/lib/python3.8/site-packages/midgard/math/unit.txt' encoding='utf-8'>`
+`fid = <_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.8/site-packages/midgard/math/unit.txt' encoding='utf-8'>`
 
 
 ### np_float (TypeVar)

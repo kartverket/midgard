@@ -668,7 +668,7 @@ A parser for reading NASA JPL GipsyX timeseries file
 
 **Example:**
 
-    from midgard import parsers
+    from analyx import parsers
     p = parsers.parse_file(parser_name='gipsyx_series', file_path='NYA1.series')
     data = p.as_dict()
 
@@ -1584,6 +1584,24 @@ used.
 file_path (pathlib.PosixPath):  File path to broadcast orbit file.
 
 
+## midgard.parsers.slr_prediction
+A parser for reading SLR prediction files
+
+**Description:**
+
+Reads data from files in the CPF file format as defined in http://ilrs.gsfc.nasa.gov/docs/2006/cpf_1.01.pdf
+
+
+
+### **SlrPredictionParser**
+
+Full name: `midgard.parsers.slr_prediction.SlrPredictionParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
+
+A parser for reading SLR prediction files (CPF format)
+
+
 ## midgard.parsers.spring_csv
 A parser for reading Spring CSV output files
 
@@ -1722,235 +1740,6 @@ and **meta**-data:
 | \__data_path__       | File path                                                                            |
 | \__parser_name__     | Parser name                                                                          |
 
-
-
-## midgard.parsers.timeseries_env
-A parser for reading timeseries files in ENV format
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='timeseries_env', file_path='stas.env')
-    data = p.as_dict()
-
-**Description:**
-
-Reads data from files timeseries files in ENV (east, north, vertical) format
-
-
-
-### **TimeseriesEnvParser**
-
-Full name: `midgard.parsers.timeseries_env.TimeseriesEnvParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
-
-A parser for reading timeseries files in ENV format
-
-Following **data** are available after reading timeseries ENV file:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| date                 | Date in format yyMMMdd (e.g. 18MAY10).                                               |
-| year                 | Date in unit year.                                                                   |
-| east                 | East coordinate in [mm].                                                             |
-| east_sigma           | Standard devication of east coordinate in [mm].                                      |
-| north                | North coordinate in [mm].                                                            |
-| north_sigma          | Standard devication of north coordinate in [mm].                                     |
-| vertical             | Vertical coordinate in [mm].                                                         |
-| vertical_sigma       | Standard devication of vertical coordinate in [mm].                                  |
-
-and **meta**-data:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
-
-
-## midgard.parsers.timeseries_nts
-A parser for reading timeseries files in NTS format
-
-TODO: Header is not read completely and also not several data records.
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='timeseries_nts', file_path='stas.nts')
-    data = p.as_dict()
-
-**Description:**
-
-Reads data from files timeseries files in NTS format
-
-
-
-### **TimeseriesNtsPaser**
-
-Full name: `midgard.parsers.timeseries_nts.TimeseriesNtsPaser`
-
-Signature: `(*args: Tuple[Any], **kwargs: Dict[Any, Any]) -> None`
-
-A parser for reading timeseries files in NTS format
-
-Following **data** can be available after reading timeseries NTS file:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| date                 | Date in format yyyy-mm-dd (e.g. 2018-05-10).                                         |
-| year                 | Date in unit year.                                                                   |
-| x                    | X-coordinate.                                                                        |
-| y                    | Y-coordinate.                                                                        |
-| z                    | Z-coordinate.                                                                        |
-| east                 | East coordinate.                                                                     |
-| north                | North coordinate.                                                                    |
-| vertical             | Vertical coordinate.                                                                 |
-| sigma_east           | Standard deviation of east coordinate.                                               |
-| sigma_north          | Standard deviation of north coordinate.                                              |
-| sigma_height         | Standard deviation of height coordinate.                                             |
-| sigma_x              | Standard deviation of X-coordinate.                                                  |
-| sigma_y              | Standard deviation of Y-coordinate.                                                  |
-| sigma_z              | Standard deviation of Z-coordinate.                                                  |
-
-and **meta**-data:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| names_of_columns     | List with column names                                                               |
-| units_of_columns     | List with unit given for each column                                                 |
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
-
-
-## midgard.parsers.timeseries_residuals
-A parser for reading timeseries files in RESIDUALS format
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='timeseries_residuals', file_path='stas.residuals')
-    data = p.as_dict()
-
-**Description:**
-
-Reads data from files timeseries files in RESIDUALS format
-
-
-
-### **TimeseriesEnvParser**
-
-Full name: `midgard.parsers.timeseries_residuals.TimeseriesEnvParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
-
-A parser for reading timeseries files in RESIDUALS format
-
-Following **data** are available after reading timeseries RESIDUALS file:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| year                 | Date in unit year.                                                                   |
-| observed             | Observations in [mm].                                                                |
-| residual             | Residuals in [mm].                                                                   |
-| modeled              | Modeled values in  [mm].                                                             |
-| modeled_sigma        | Standard devication of modeled values in [mm].                                       |
-
-and **meta**-data:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
-
-
-## midgard.parsers.timeseries_samle
-A parser for reading timeseries files in SAMLE format
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='timeseries_samle', file_path='aasc.dat')
-    data = p.as_dict()
-
-**Description:**
-
-Reads data from files timeseries files in SAMLE (latitude, longitude, height) format
-
-
-
-### **TimeseriesEnvParser**
-
-Full name: `midgard.parsers.timeseries_samle.TimeseriesEnvParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
-
-A parser for reading timeseries files in TSVIEW format
-
-Following **data** are available after reading timeseries TSVIEW file:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| yy                   | Last 2 digits of year                                                                |
-| doy                  | Day of year                                                                          |
-| lat_deg              | Degree part of latitude                                                              |
-| lat_min              | Minute part of latitude                                                              |
-| lat_sec              | Second part of latitude                                                              |
-| lon_deg              | Degree part of longitude                                                             |
-| lon_min              | Minute part of longitude                                                             |
-| lon_sec              | Second part of longitude                                                             |
-| height               | Height in [m]                                                                        |
-
-and **meta**-data:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
-
-
-## midgard.parsers.timeseries_tsview
-A parser for reading timeseries files in TSVIEW format
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='timeseries_tsview', file_path='stas.enu')
-    data = p.as_dict()
-
-**Description:**
-
-Reads data from files timeseries files in TSVIEW (east, north, up) format
-
-
-
-### **TimeseriesEnvParser**
-
-Full name: `midgard.parsers.timeseries_tsview.TimeseriesEnvParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
-
-A parser for reading timeseries files in TSVIEW format
-
-Following **data** are available after reading timeseries TSVIEW file:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| mjd                  | Modified Julian Date.                                                                |
-| east                 | East coordinate in [mm].                                                             |
-| north                | North coordinate in [mm].                                                            |
-| up                   | Up coordinate in [mm].                                                               |
-
-and **meta**-data:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
 
 
 ## midgard.parsers.ure_control_tool_csv

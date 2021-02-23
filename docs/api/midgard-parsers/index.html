@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v1.1.2</title>
+        <title>midgard.parsers - Midgard v1.1.3</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
+                <a class="navbar-brand" href="../..">Midgard v1.1.3</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -267,6 +267,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersslr_prediction" class="nav-link">midgard.parsers.slr_prediction</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersspring_csv" class="nav-link">midgard.parsers.spring_csv</a>
               <ul class="nav flex-column">
               </ul>
@@ -276,26 +280,6 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersterrapos_residual" class="nav-link">midgard.parsers.terrapos_residual</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserstimeseries_env" class="nav-link">midgard.parsers.timeseries_env</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserstimeseries_nts" class="nav-link">midgard.parsers.timeseries_nts</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserstimeseries_residuals" class="nav-link">midgard.parsers.timeseries_residuals</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserstimeseries_samle" class="nav-link">midgard.parsers.timeseries_samle</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserstimeseries_tsview" class="nav-link">midgard.parsers.timeseries_tsview</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -1042,7 +1026,7 @@ data = p.as_dict()
 <h2 id="midgardparsersgipsyx_series">midgard.parsers.gipsyx_series</h2>
 <p>A parser for reading NASA JPL GipsyX timeseries file</p>
 <p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
+<pre><code>from analyx import parsers
 p = parsers.parse_file(parser_name='gipsyx_series', file_path='NYA1.series')
 data = p.as_dict()
 </code></pre>
@@ -2189,6 +2173,14 @@ parser.write_to_dataset(dset)
 used.</p>
 <p><strong>Args:</strong></p>
 <p>file_path (pathlib.PosixPath):  File path to broadcast orbit file.</p>
+<h2 id="midgardparsersslr_prediction">midgard.parsers.slr_prediction</h2>
+<p>A parser for reading SLR prediction files</p>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in the CPF file format as defined in http://ilrs.gsfc.nasa.gov/docs/2006/cpf_1.01.pdf</p>
+<h3 id="slrpredictionparser"><strong>SlrPredictionParser</strong></h3>
+<p>Full name: <code>midgard.parsers.slr_prediction.SlrPredictionParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
+<p>A parser for reading SLR prediction files (CPF format)</p>
 <h2 id="midgardparsersspring_csv">midgard.parsers.spring_csv</h2>
 <p>A parser for reading Spring CSV output files</p>
 <p><strong>Example:</strong></p>
@@ -2438,410 +2430,6 @@ data = p.as_dict()
 <tr>
 <td>__data_path__</td>
 <td>File path</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
-<h2 id="midgardparserstimeseries_env">midgard.parsers.timeseries_env</h2>
-<p>A parser for reading timeseries files in ENV format</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='timeseries_env', file_path='stas.env')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads data from files timeseries files in ENV (east, north, vertical) format</p>
-<h3 id="timeseriesenvparser"><strong>TimeseriesEnvParser</strong></h3>
-<p>Full name: <code>midgard.parsers.timeseries_env.TimeseriesEnvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
-<p>A parser for reading timeseries files in ENV format</p>
-<p>Following <strong>data</strong> are available after reading timeseries ENV file:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>date</td>
-<td>Date in format yyMMMdd (e.g. 18MAY10).</td>
-</tr>
-<tr>
-<td>year</td>
-<td>Date in unit year.</td>
-</tr>
-<tr>
-<td>east</td>
-<td>East coordinate in [mm].</td>
-</tr>
-<tr>
-<td>east_sigma</td>
-<td>Standard devication of east coordinate in [mm].</td>
-</tr>
-<tr>
-<td>north</td>
-<td>North coordinate in [mm].</td>
-</tr>
-<tr>
-<td>north_sigma</td>
-<td>Standard devication of north coordinate in [mm].</td>
-</tr>
-<tr>
-<td>vertical</td>
-<td>Vertical coordinate in [mm].</td>
-</tr>
-<tr>
-<td>vertical_sigma</td>
-<td>Standard devication of vertical coordinate in [mm].</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
-<h2 id="midgardparserstimeseries_nts">midgard.parsers.timeseries_nts</h2>
-<p>A parser for reading timeseries files in NTS format</p>
-<p>TODO: Header is not read completely and also not several data records.</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='timeseries_nts', file_path='stas.nts')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads data from files timeseries files in NTS format</p>
-<h3 id="timeseriesntspaser"><strong>TimeseriesNtsPaser</strong></h3>
-<p>Full name: <code>midgard.parsers.timeseries_nts.TimeseriesNtsPaser</code></p>
-<p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any]) -&gt; None</code></p>
-<p>A parser for reading timeseries files in NTS format</p>
-<p>Following <strong>data</strong> can be available after reading timeseries NTS file:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>date</td>
-<td>Date in format yyyy-mm-dd (e.g. 2018-05-10).</td>
-</tr>
-<tr>
-<td>year</td>
-<td>Date in unit year.</td>
-</tr>
-<tr>
-<td>x</td>
-<td>X-coordinate.</td>
-</tr>
-<tr>
-<td>y</td>
-<td>Y-coordinate.</td>
-</tr>
-<tr>
-<td>z</td>
-<td>Z-coordinate.</td>
-</tr>
-<tr>
-<td>east</td>
-<td>East coordinate.</td>
-</tr>
-<tr>
-<td>north</td>
-<td>North coordinate.</td>
-</tr>
-<tr>
-<td>vertical</td>
-<td>Vertical coordinate.</td>
-</tr>
-<tr>
-<td>sigma_east</td>
-<td>Standard deviation of east coordinate.</td>
-</tr>
-<tr>
-<td>sigma_north</td>
-<td>Standard deviation of north coordinate.</td>
-</tr>
-<tr>
-<td>sigma_height</td>
-<td>Standard deviation of height coordinate.</td>
-</tr>
-<tr>
-<td>sigma_x</td>
-<td>Standard deviation of X-coordinate.</td>
-</tr>
-<tr>
-<td>sigma_y</td>
-<td>Standard deviation of Y-coordinate.</td>
-</tr>
-<tr>
-<td>sigma_z</td>
-<td>Standard deviation of Z-coordinate.</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>names_of_columns</td>
-<td>List with column names</td>
-</tr>
-<tr>
-<td>units_of_columns</td>
-<td>List with unit given for each column</td>
-</tr>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
-<h2 id="midgardparserstimeseries_residuals">midgard.parsers.timeseries_residuals</h2>
-<p>A parser for reading timeseries files in RESIDUALS format</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='timeseries_residuals', file_path='stas.residuals')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads data from files timeseries files in RESIDUALS format</p>
-<h3 id="timeseriesenvparser_1"><strong>TimeseriesEnvParser</strong></h3>
-<p>Full name: <code>midgard.parsers.timeseries_residuals.TimeseriesEnvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
-<p>A parser for reading timeseries files in RESIDUALS format</p>
-<p>Following <strong>data</strong> are available after reading timeseries RESIDUALS file:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>year</td>
-<td>Date in unit year.</td>
-</tr>
-<tr>
-<td>observed</td>
-<td>Observations in [mm].</td>
-</tr>
-<tr>
-<td>residual</td>
-<td>Residuals in [mm].</td>
-</tr>
-<tr>
-<td>modeled</td>
-<td>Modeled values in  [mm].</td>
-</tr>
-<tr>
-<td>modeled_sigma</td>
-<td>Standard devication of modeled values in [mm].</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
-<h2 id="midgardparserstimeseries_samle">midgard.parsers.timeseries_samle</h2>
-<p>A parser for reading timeseries files in SAMLE format</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='timeseries_samle', file_path='aasc.dat')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads data from files timeseries files in SAMLE (latitude, longitude, height) format</p>
-<h3 id="timeseriesenvparser_2"><strong>TimeseriesEnvParser</strong></h3>
-<p>Full name: <code>midgard.parsers.timeseries_samle.TimeseriesEnvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
-<p>A parser for reading timeseries files in TSVIEW format</p>
-<p>Following <strong>data</strong> are available after reading timeseries TSVIEW file:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>yy</td>
-<td>Last 2 digits of year</td>
-</tr>
-<tr>
-<td>doy</td>
-<td>Day of year</td>
-</tr>
-<tr>
-<td>lat_deg</td>
-<td>Degree part of latitude</td>
-</tr>
-<tr>
-<td>lat_min</td>
-<td>Minute part of latitude</td>
-</tr>
-<tr>
-<td>lat_sec</td>
-<td>Second part of latitude</td>
-</tr>
-<tr>
-<td>lon_deg</td>
-<td>Degree part of longitude</td>
-</tr>
-<tr>
-<td>lon_min</td>
-<td>Minute part of longitude</td>
-</tr>
-<tr>
-<td>lon_sec</td>
-<td>Second part of longitude</td>
-</tr>
-<tr>
-<td>height</td>
-<td>Height in [m]</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
-<h2 id="midgardparserstimeseries_tsview">midgard.parsers.timeseries_tsview</h2>
-<p>A parser for reading timeseries files in TSVIEW format</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='timeseries_tsview', file_path='stas.enu')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads data from files timeseries files in TSVIEW (east, north, up) format</p>
-<h3 id="timeseriesenvparser_3"><strong>TimeseriesEnvParser</strong></h3>
-<p>Full name: <code>midgard.parsers.timeseries_tsview.TimeseriesEnvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
-<p>A parser for reading timeseries files in TSVIEW format</p>
-<p>Following <strong>data</strong> are available after reading timeseries TSVIEW file:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>mjd</td>
-<td>Modified Julian Date.</td>
-</tr>
-<tr>
-<td>east</td>
-<td>East coordinate in [mm].</td>
-</tr>
-<tr>
-<td>north</td>
-<td>North coordinate in [mm].</td>
-</tr>
-<tr>
-<td>up</td>
-<td>Up coordinate in [mm].</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
 </tr>
 <tr>
 <td>__parser_name__</td>

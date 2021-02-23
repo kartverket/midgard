@@ -10,18 +10,18 @@ Note: Midgard is still in pre-alpha status. Its functionality will change,
 
 Midgard comes organized into different subpackages:
 
++ collections
++ config
 + data
 + dev
-+ site_info
 + files
-+ config
-+ ionosphere
-+ parsers
-+ math
 + gnss
-+ writers
++ ionosphere
++ math
++ parsers
 + plot
-+ collections
++ site_info
++ writers
 
 Look for help inside each subpackage:
 

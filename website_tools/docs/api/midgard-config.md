@@ -69,7 +69,7 @@ individual entry, or for all entries in a configuration.
 
 Full name: `midgard.config.config.CasedConfigParser`
 
-Signature: `(defaults=None, dict_type=<class 'dict'>, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=<object object at 0x7fddb80e9950>, converters=<object object at 0x7fddb80e9950>)`
+Signature: `(defaults=None, dict_type=<class 'dict'>, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=<object object at 0x7fa99576b930>, converters=<object object at 0x7fa99576b930>)`
 
 ConfigParser with case-sensitive keys
 
