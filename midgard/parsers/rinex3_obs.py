@@ -865,14 +865,13 @@ class Rinex3Parser(ChainParser):
         # TODO workaround: "isot" does not work for initialization of time field (only 5 decimals for seconds are
         #                  allowed). Therefore self.data["time"] is converted to datetime object.
         from datetime import datetime, timedelta
+        rinexsecfrac_to_millisecond = 10000  #e.g. fractional seconds part 1000001 = 100.0001 ms
 
         date = []
-        millisec = []
         for v in self.data["time"]:
-            val, val2 = v.split(".")
-            date.append(datetime.strptime(val, "%Y-%m-%dT%H:%M:%S"))
-            millisec.append(timedelta(milliseconds=int(val2)))
-        dset.add_time("time", val=date, val2=millisec, scale=self.time_scale, fmt="datetime")
+            val, secfrac = v.split(".")
+            date.append(datetime.strptime(val, "%Y-%m-%dT%H:%M:%S") + timedelta(milliseconds=int(secfrac)/rinexsecfrac_to_millisecond))
+        dset.add_time("time", val=date, scale=self.time_scale, fmt="datetime")
         dset.add_float("epoch_flag", val=np.array(self.data["epoch_flag"]))
         dset.add_float("rcv_clk_offset", val=np.array(self.data["rcv_clk_offset"]))
 
