@@ -385,6 +385,8 @@ Matplotlib represents dates using floating point numbers specifying the number
 of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
 not 0.25. Values < 1, i.e. dates before 0001-01-01 UTC are not supported.
 
+Warning: This requires matplotlib version 3.2.2 or lower
+
 
 ### **TimeStr**
 

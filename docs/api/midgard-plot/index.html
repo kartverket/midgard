@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.1.2</title>
+        <title>midgard.plot - Midgard v1.1.3</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.2</a>
+                <a class="navbar-brand" href="../..">Midgard v1.1.3</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -140,6 +140,10 @@
             
             <li class="nav-item" data-level="1"><a href="#midgardplot" class="nav-link">midgard.plot</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#midgardplotmatplotext" class="nav-link">midgard.plot.matplotext</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#midgardplotmatplotlib_extension" class="nav-link">midgard.plot.matplotlib_extension</a>
               <ul class="nav flex-column">
               </ul>
@@ -152,6 +156,191 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="midgardplot">midgard.plot</h1>
+<h2 id="midgardplotmatplotext">midgard.plot.matplotext</h2>
+<p>Matplotlib extension class</p>
+<p><strong>Description:</strong></p>
+<p>Wrapper functions around matplotlib subroutines are defined in this class.</p>
+<h3 id="matplotext"><strong>MatPlotExt</strong></h3>
+<p>Full name: <code>midgard.plot.matplotext.MatPlotExt</code></p>
+<p>Signature: <code>(options: Dict[str, Any] = None) -&gt; None</code></p>
+<p>Class for plotting - Extension of matplotlib</p>
+<p>Following <em>options</em>* can be selected:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>colormap</td>
+<td><type></td>
+<td>Color map type for plotting either events or labels (e.g. viridis, jet,</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>tab10, rainbow, hsv, plasma)</td>
+</tr>
+<tr>
+<td>dpi</td>
+<td><num></td>
+<td>Resolution of file in dots per inch</td>
+</tr>
+<tr>
+<td>figsize</td>
+<td>(num, num)</td>
+<td>Figure size given by (width, height) in inches</td>
+</tr>
+<tr>
+<td>fsize_subtitle</td>
+<td><num></td>
+<td>Fontsize of subplot title (statistical information)</td>
+</tr>
+<tr>
+<td>grid</td>
+<td>&lt;True</td>
+<td>False&gt;</td>
+</tr>
+<tr>
+<td>histogram</td>
+<td><x, y></td>
+<td>Plot x-axis histogram on top, y-axis histogram on right or for both</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>axis on scatter plot</td>
+</tr>
+<tr>
+<td>histogram_binwidth</td>
+<td><num></td>
+<td>Histogram bin width</td>
+</tr>
+<tr>
+<td>histogram_size</td>
+<td><num></td>
+<td>Histogram y-axis size</td>
+</tr>
+<tr>
+<td>legend</td>
+<td>&lt;True</td>
+<td>False&gt;</td>
+</tr>
+<tr>
+<td>legend_location</td>
+<td><right, bottom></td>
+<td>Legend location</td>
+</tr>
+<tr>
+<td>legend_ncol</td>
+<td><num></td>
+<td>The number of legend columns</td>
+</tr>
+<tr>
+<td>linestyle</td>
+<td><style></td>
+<td>Line style for plot type (e.g. 'solid', 'dashed')</td>
+</tr>
+<tr>
+<td>marker</td>
+<td>&lt;'.'</td>
+<td>'-'&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>if in one scatter subplot several plots should be plotted.</td>
+</tr>
+<tr>
+<td>plot_to</td>
+<td>&lt;console</td>
+<td>file&gt;</td>
+</tr>
+<tr>
+<td>plot_type</td>
+<td>&lt;scatter</td>
+<td>plot&gt;</td>
+</tr>
+<tr>
+<td>projection</td>
+<td><type></td>
+<td>Projection type of plot (e.g. 'polar')</td>
+</tr>
+<tr>
+<td>reg_line</td>
+<td>&lt;True</td>
+<td>False&gt;</td>
+</tr>
+<tr>
+<td>statistic</td>
+<td><rms, mean, ...></td>
+<td>Plot statistical information. Following function can be defined: 'max',</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>for more information)</td>
+</tr>
+<tr>
+<td>tick_labelsize</td>
+<td>&lt;(axis, size)&gt;</td>
+<td>Change label size of x- and y-axis tick labels. This can be done either</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.</td>
+</tr>
+<tr>
+<td>title</td>
+<td><text></td>
+<td>Main title of subplots</td>
+</tr>
+<tr>
+<td>xlim</td>
+<td>&lt;[num, num]</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>auto&gt;]</td>
+<td>xlim=auto, then x-axis limit is automatically chosen</td>
+</tr>
+<tr>
+<td>xticks</td>
+<td>&lt;[num, ...]&gt;</td>
+<td>Define x-axis ticks by defining a list with ticks</td>
+</tr>
+<tr>
+<td>xticklabels</td>
+<td>&lt;[text, ...]&gt;</td>
+<td>Define x-axis ticks labels by defining a list with labels</td>
+</tr>
+<tr>
+<td>ylim</td>
+<td>&lt;[num, num]&gt;</td>
+<td>Define y-axis limit by defining a list with [bottom, top] range</td>
+</tr>
+<tr>
+<td>yticks</td>
+<td>&lt;[num, ...]&gt;</td>
+<td>Define y-axis ticks by defining a list with ticks</td>
+</tr>
+<tr>
+<td>yticklabels</td>
+<td>&lt;[text, ...]&gt;</td>
+<td>Define y-axis ticks labels by defining a list with labels</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardplotmatplotlib_extension">midgard.plot.matplotlib_extension</h2>
 <p>Matplotlib extension library</p>
 <p><strong>Description:</strong></p>

@@ -132,7 +132,7 @@ Array with Dataset field values
 
 Full name: `midgard.writers._writers.get_header`
 
-Signature: `(fields: List[str], pgm_version: Union[NoneType, str] = None, run_by: str = '', summary: Union[NoneType, str] = None, add_description: Union[NoneType, str] = None, lsign: str = '') -> List[str]`
+Signature: `(fields: List[str], pgm_version: Union[NoneType, str] = None, run_by: str = '', summary: Union[NoneType, str] = None, add_description: Union[NoneType, str] = None, lsign: str = '') -> str`
 
 Get header
 
