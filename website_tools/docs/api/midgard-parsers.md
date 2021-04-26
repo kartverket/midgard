@@ -423,6 +423,63 @@ and **meta**-data:
 | \__parser_name__      | Parser name                                                                          |
 
 
+## midgard.parsers.cost
+A parser for reading COST format for ground-based GNSS delay and water vapour data
+
+**Example:**
+
+    from midgard import parsers
+    
+    # Parse data
+    parser = parsers.parse_file(parser_name="cost", file_path=file_path)
+    
+    # Get Dataset with parsed data
+    dset = parser.as_dataset()
+
+**Description:**
+
+Reads data from files in the COST file format 2.2a (see :cite:`cost`).
+
+
+
+### **CostParser**
+
+Full name: `midgard.parsers.cost.CostParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
+
+A parser for reading COST datan file
+
+The parser reads ground-based GNSS delay and water vapour data in COST format version 2.2a.
+
+**Attributes:**
+
+data (Dict):                  The (observation) data read from file.
+data_available (Boolean):     Indicator of whether data are available.
+file_encoding (String):       Encoding of the datafile.
+file_path (Path):             Path to the datafile that will be read.
+meta (Dict):                  Metainformation read from file.
+parser_name (String):         Name of the parser (as needed to call parsers.parse_...).
+
+
+### UNIT_DEF (dict)
+`UNIT_DEF = {'gradients_ew': UnitField(from_='millimeter', to_='meter'), 'gradients_ns': UnitField(from_='millimeter', to_='meter'), 'height_geoid': UnitField(from_='meter', to_='meter'), 'humidity': UnitField(from_='', to_=''), 'iwv': UnitField(from_='kilogram/meter**2', to_='kilogram/meter**2'), 'pressure': UnitField(from_='hectopascal', to_='pascal'), 'sigma_gradients_ew': UnitField(from_='millimeter', to_='meter'), 'sigma_gradients_ns': UnitField(from_='millimeter', to_='meter'), 'sigma_ztd': UnitField(from_='millimeter', to_='meter'), 'temperature': UnitField(from_='kelvin', to_='kelvin'), 'ztd': UnitField(from_='millimeter', to_='meter'), 'zwd': UnitField(from_='millimeter', to_='meter')}`
+
+
+### **UnitField**
+
+Full name: `midgard.parsers.cost.UnitField`
+
+Signature: `(from_=None, to_=None)`
+
+A convenience class for defining a COST units of fields
+
+**Args:**
+
+from (str):              Original field unit
+to (str):                Destination field unit
+
+
 ## midgard.parsers.csv_
 A parser for reading CSV output files
 
