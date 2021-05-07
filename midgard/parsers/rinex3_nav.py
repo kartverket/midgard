@@ -785,7 +785,9 @@ class Rinex3NavParser(ChainParser):
        |                     |       |                 |         two days                                                |
        |                     |       |                 |    ...                                                          |
        |                     |       |                 |   See section 5.2.4.9 in :cite:`bds-sis-icd`.                   |
-       | bgd_e1_e5b          |  E    |                 | Galileo: group delay E1-E5b BGD (see section 5.1.5 in           |
+       | bgd_e1_e5a          |  E    | s               | Galileo: group delay E1-E5a BGD (see section 5.1.5 in           |
+       |                     |       |                 |   :cite:`galileo-os-sis-icd`)                                   |
+       | bgd_e1_e5b          |  E    | s               | Galileo: group delay E1-E5b BGD (see section 5.1.5 in           |
        |                     |       |                 |   :cite:`galileo-os-sis-icd`)                                   |
        | dvs_e1              |  E    |                 | Data validity status for E1 signal                              |
        | dvs_e5a             |  E    |                 | Data validity status for E5a signal                             |
@@ -868,11 +870,11 @@ class Rinex3NavParser(ChainParser):
        |                     |       |                 |   - QZSS: see section 4.1.2.3 in :cite:`is-qzss-pnt-001`        |
        |                     |       |                 |   - IRNSS: see section 6.2.1.6 in :cite:`irnss-icd-sps`         |
        | system              | CEGIJ |                 | GNSS identifier                                                 |
-       | tgd                 |   GIJ |                 | Total group delay (TGD) for GPS, IRNSS and QZSS:                |
+       | tgd                 |   GIJ | s               | Total group delay (TGD) for GPS, IRNSS and QZSS:                |
        |                     |       |                 |   - GPS: TGD (:math:`L_1 - L_2` delay correction term. See      |
        |                     |       |                 |     section 20.3.3.3.3.2 in :cite:`is-gps-200h`.)               |
-       | tgd_b1_b3           | C     |                 | BeiDou: total group delay (TGD1) for frequencies B1/B3          |
-       | tgd_b2_b3           | C     |                 | BeiDou: total group delay (TGD2) for frequencies B2/B3          |
+       | tgd_b1_b3           | C     | s               | BeiDou: total group delay (TGD1) for frequencies B1/B3          |
+       | tgd_b2_b3           | C     | s               | BeiDou: total group delay (TGD2) for frequencies B2/B3          |
        | time                |       |                 | Time of clock (Toc), which is related to GPS time scale. That   |
        |                     |       |                 | means all the different GNSS time systems (GPS: GPS time,       |
        |                     |       |                 | Galileo: GAL time, QZSS: QZS time, BeiDou: BDT time, IRNSS:     |
@@ -903,6 +905,34 @@ class Rinex3NavParser(ChainParser):
        | version             |  str  |  Format version                                                    |
 
         """
+        
+        # Unit definition for "float" fields
+        unit_def = {
+            "bgd_e1_e5a": "second",
+            "bgd_e1_e5b": "second",
+            "cic": "radian",
+            "cis": "radian",
+            "crc": "meter",
+            "crs": "meter",
+            "cuc": "radian",
+            "cus": "radian",
+            "delta_n": "radian/second",
+            "i0": "rad",
+            "idot": "radian/second",
+            "m0": "radian",
+            "omega": "radian",
+            "Omega": "radian",
+            "Omega_dot": "radian/second",
+            "sat_clock_bias": "second",
+            "sat_clock_drift": "second/second",
+            "sat_clock_drift_rate": "second/second**2",
+            "sqrt_a": "meter ** 0.5",  # sqrt(meter)
+            "sv_accuracy": "meter",
+            "tgd": "second",
+            "tgd_b1_b3": "second",
+            "tgd_b2_b3": "second",
+        }
+        
         dset = dataset.Dataset(num_obs=len(self.data["time"]))
         dset.meta.update(self.meta)
 
@@ -913,11 +943,11 @@ class Rinex3NavParser(ChainParser):
             elif k in ["nav_type", "satellite", "system"]:
                 dset.add_text(k, val=v)
             else:
+                unit = unit_def[k] if k in unit_def.keys() else None
                 if isinstance(v, list):
-                    dset.add_float(k, val=np.array(v))
+                    dset.add_float(k, val=np.array(v), unit=unit)
                 elif isinstance(v, np.ndarray):
-                    dset.add_float(k, val=v)
-
+                    dset.add_float(k, val=v, unit=unit)
         return dset
 
 
