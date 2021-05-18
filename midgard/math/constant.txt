@@ -190,6 +190,17 @@ default      = %(iers_2010)s
 iers_2010    = -6.55e-5 
 
 
+## \f$a_E$\f: Equatorial radius of the Earth
+#
+# Unit: meter
+#
+# References: IERS Conventions [1]. Table 1.1
+[a_E]
+__unit__     = meter
+default      = %(iers_2010)s
+iers_2010    = 6378136.6
+
+
 ## \f$ GM_\oplus \f$: Gravitational constant times the mass of Earth.
 #
 #  Unit:       \f$ m^3 / s^2 \f$.
