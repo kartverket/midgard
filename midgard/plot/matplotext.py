@@ -400,7 +400,7 @@ class MatPlotExt:
                     self.options["histogram"] = ""
     
             # Plot figure
-            self.subplot_row(
+            self.plot_subplot_row(
                 ax, x_array, y_array, xlabel, ylabel, x_unit=x_unit, y_unit=y_unit, color=color
             )
     
