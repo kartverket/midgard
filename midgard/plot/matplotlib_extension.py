@@ -239,7 +239,8 @@ def plot(
     | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
     |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
     | title              | <text>           | Main title of subplots                                                  |
-    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+    | xlabelrotation     | <num>            | Define x-axis label rotation                                            |    
+    | xlim               | <[num, num]>     | Define x-axis limit by defining a list with [left, right] range. If     |
     |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
     | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
     | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
@@ -292,6 +293,7 @@ def plot(
         "tick_labelsize": [],
         "title": "",
         "xlim": [],
+        "xlabelrotation": 0, # degree
         "xticks": [],
         "xticklabels": [],
         "ylim": [],
@@ -349,6 +351,9 @@ def plot(
     # Change tick labelsize
     if options["tick_labelsize"]:
         ax.tick_params(axis=options["tick_labelsize"][0], labelsize=options["tick_labelsize"][1])
+        
+    if options["xlabelrotation"] > 0:
+        ax.tick_params(axis="x", labelrotation= options["xlabelrotation"])
 
     # Plot x-axis label
     ax.set(xlabel=xlabel)
@@ -720,6 +725,8 @@ def plot_subplot_row(
 
     if options["xticklabels"]:
         ax.set_xticklabels(options["xticklabels"])
+        
+    
 
     if options["yticklabels"]:
         ax.set_yticklabels(options["yticklabels"])
