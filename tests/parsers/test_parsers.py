@@ -56,6 +56,17 @@ def test_non_caching_parser():
     assert False
 
 
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_android_raw_data():
+    pass
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_antex():
+    pass
+
+
 def test_parser_bcecmp_sisre():
     """Test that parsing bcecmp_sisre gives expected output"""
     parser = get_parser("bcecmp_sisre").as_dict()
@@ -63,6 +74,20 @@ def test_parser_bcecmp_sisre():
     assert len(parser) == 12
     assert "age_min" in parser
     assert "E26" in parser["satellite"]
+
+
+def test_parser_bernese_crd():
+    """Test that parsing bernese_crd gives expected output"""
+    parser = get_parser("bernese_crd").as_dict()
+
+    assert len(parser) == 5
+    assert "aasc" in parser
+    assert "num" in parser["aasc"]
+
+
+@pytest.mark.skip(reason="TODO: Tests not yet implemented")
+def test_parser_bernese_trp():
+    pass
 
 
 def test_parser_csv_():
@@ -136,25 +161,6 @@ def test_parser_gipsyx_tdp():
 @pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_glab_output():
     pass
-
-
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
-def test_parser_android_raw_data():
-    pass
-
-
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
-def test_parser_antex():
-    pass
-
-
-def test_parser_gnss_bernese_crd():
-    """Test that parsing gnss_bernese_crd gives expected output"""
-    parser = get_parser("gnss_bernese_crd").as_dict()
-
-    assert len(parser) == 5
-    assert "aasc" in parser
-    assert "num" in parser["aasc"]
 
 
 def test_gnss_sinex_igs():
