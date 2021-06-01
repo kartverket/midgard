@@ -6,7 +6,7 @@ This module contains functions for writing files.
 """
 # Standard library imports
 from datetime import datetime
-from typing import List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 # External library imports
 import numpy as np
@@ -161,7 +161,6 @@ def get_header(
     Returns:
         Header lines
     """
-
     # Generate header description
     midgard_version = f"midgard {midgard.__version__}"
     pgm = f"{pgm_version}/{midgard_version}" if pgm_version else midgard_version
@@ -190,3 +189,37 @@ def get_header(
     ]
 
     return "".join(header)
+
+
+def get_value_by_keys(dict_: Dict[str, Any], keys: Tuple[str], format_=None, unit=None) -> Union[Any, List[Any]]:
+    """Get value of a dictionary specified by keys
+    
+    If option `format_` is defined, then formatted string is returned instead of original value.
+    
+    Args:
+        dict_:   Dictionary with data
+        keys:    Dictionary keys
+        format_: Format definition
+        unit:    Unit definition in format <from_unit>2<to_unit> (e.g. meter2millimeter)
+        
+    Returns:
+        Original dictionary value or string formatted value
+    """
+    def _get_value(field, unit):
+        if unit:
+            field = field * getattr(Unit, unit)
+        
+        return f"{field:>{format_}}" if format_ else field
+    
+    field = dict_.copy()
+    for key in keys:
+        field = field[key]
+    
+    if type(field) is list:
+        value = list()
+        for f in field:
+            value.append(_get_value(f, unit))
+    else:
+        value = _get_value(field, unit)
+        
+    return value
