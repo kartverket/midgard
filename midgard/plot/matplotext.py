@@ -33,41 +33,49 @@ class MatPlotExt:
     
     Following *options** can be selected:
 
-    | Option             | Value            | Description                                                             |
-    |--------------------|------------------|-------------------------------------------------------------------------|
-    | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
-    |                    |                  | tab10, rainbow, hsv, plasma)                                            |
-    | dpi                | <num>            | Resolution of file in dots per inch                                     |
-    | figsize            | (num, num)       | Figure size given by (width, height) in inches                          |
-    | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
-    | grid               | <True|False>     | Plot grid                                                               |
-    | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
-    |                    |                  | axis on scatter plot                                                    |
-    | histogram_binwidth | <num>            | Histogram bin width                                                     |
-    | histogram_size     | <num>            | Histogram y-axis size                                                   |
-    | legend             | <True|False>     | Plot legend                                                             |
-    | legend_location    | <right, bottom>  | Legend location                                                         |
-    | legend_ncol        | <num>            | The number of legend columns                                            |
-    | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                       |
-    | marker             | <'.'|'-'>        | Marker type                                                             |
-    |                    |                  | if in one scatter subplot several plots should be plotted.              |
-    | plot_to            | <console|file>   | Plot figure on console or file                                          |
-    | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
-    | projection         | <type>           | Projection type of plot (e.g. 'polar')                                  |
-    | reg_line           | <True|False>     | Regression line flag                                                    |
-    | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
-    |                    |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic  |
-    |                    |                  | for more information)                                                   |
-    | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
-    |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
-    | title              | <text>           | Main title of subplots                                                  |
-    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
-    |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
-    | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
-    | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
-    | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
-    | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                       |
-    | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels               |
+    | Option             | Value            | Description                                                           |
+    |--------------------|------------------|-----------------------------------------------------------------------|
+    | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis,    |
+    |                    |                  | jet, tab10, rainbow, hsv, plasma)                                     |
+    | dpi                | <num>            | Resolution of file in dots per inch                                   |
+    | ecapsize           | <num>            | Cap size of error bar                                                 |
+    | ecapthick          | <num>            | Cap thick of error bar                                                |
+    | ecolor             | <name>           | Color of error bar                                                    |
+    | elinewidth         | <num>            | Line width of error bar                                               |
+    | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
+    | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
+    | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                   |
+    | grid               | <True|False>     | Plot grid                                                             |
+    | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both   |
+    |                    |                  | axis on scatter plot                                                  |
+    | histogram_binwidth | <num>            | Histogram bin width                                                   |
+    | histogram_size     | <num>            | Histogram y-axis size                                                 |
+    | legend             | <True|False>     | Plot legend                                                           |
+    | legend_location    | <right, bottom>  | Legend location                                                       |
+    | legend_ncol        | <num>            | The number of legend columns                                          |
+    | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                     |
+    | marker             | <'.'|'-'>        | Marker type                                                           |
+    |                    |                  | if in one scatter subplot several plots should be plotted.            |
+    | plot_to            | <console|file>   | Plot figure on console or file                                        |
+    | plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                         |
+    |                    | bar>             |                                                                       |
+    | projection         | <type>           | Projection type of plot (e.g. 'polar')                                |
+    | reg_line           | <True|False>     | Regression line flag                                                  |
+    | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
+    |                    |                  | 'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function        |
+    |                    |                  | _get_statistic for more information)                                  |
+    | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done      |
+    |                    |                  | either for x-axis, y-axis or both axis via specifying 'x', 'y' or     |
+    |                    |                  | both'.                                                                |
+    | title              | <text>           | Main title of subplots                                                |
+    | xlabelrotation     | <num>            | Define x-axis label rotation                                          |
+    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If   |
+    |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                  |
+    | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                     |
+    | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels             |
+    | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range       |
+    | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                     |
+    | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels             |
     """
 
     def __init__(
@@ -83,6 +91,11 @@ class MatPlotExt:
             "alpha": 1,
             "colormap": "tab20",
             "dpi": 200,
+            "ecapsize": 4,
+            "ecapthick": 1,
+            "ecolor": "grey",
+            "elinewidth": 1,
+            "errorbar": False,
             "figsize": (6, 8),
             "fontsize": 12,
             "fsize_subtitle": 8,
@@ -105,6 +118,7 @@ class MatPlotExt:
             "statistic": [],
             "tick_labelsize": [],
             "title": "",
+            "xlabelrotation": 0, # degree
             "xlim": [],
             "xticks": [],
             "xticklabels": [],
@@ -115,8 +129,8 @@ class MatPlotExt:
                              
         # Update options
         if options:
-            set_options(options)
-            
+            self.set_options(options)
+        
             
     def get_statistic(
         self,
@@ -172,7 +186,7 @@ class MatPlotExt:
                 width = ".1f" if ("mm" == unit or "millimeter" == unit) else ".2f"
                 stats.append(f"{func_def[func][0]}: {stat:{width}} {Unit(unit).units:~P}")  # with abbreviated SI unit
         return stats
-    
+
 
     def set_options(self, options: Dict[str, Any]) -> None:
         """Overwrite default plotting options
@@ -261,7 +275,7 @@ class MatPlotExt:
         # Make legend
         if label in df.columns and self.options["legend"]:
             self.options["legend_location"] = "right" if self.options["legend_location"] == None else self.options["legend_location"]
-            self._plot_legend(legend_labels, self._ordered_set(df[label]), self.options)
+            self._plot_legend(legend_labels, self._ordered_set(df[label]))
     
         # Automatically adjusts
         plt.tight_layout()
@@ -285,6 +299,8 @@ class MatPlotExt:
         self,
         x_arrays: List[np.ndarray],
         y_arrays: List[np.ndarray],
+        xerr_arrays: Union[List[np.ndarray], None] = None,
+        yerr_arrays: Union[List[np.ndarray], None] = None,
         xlabel: str = "",
         ylabel: str = "",
         x_unit: str = "",
@@ -330,6 +346,7 @@ class MatPlotExt:
         | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
         |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
         | title              | <text>           | Main title of subplots                                                  |
+        | xlabelrotation     | <num>            | Define x-axis label rotation                                            |
         | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
         |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
         | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
@@ -341,6 +358,8 @@ class MatPlotExt:
         Args:
            x_arrays:       List of arrays with x-axis data to plot.
            y_arrays:       List of arrays with y-axis data to plot.
+           xerr_arrays:    List of arrays with x-axis error data to plot as error bar.
+           yerr_arrays:    List of arrays with y-axis error data to plot as error bar.
            xlabel:         X-axis label.
            ylabel:         Y-axis label. 
            x_unit:         X-axis unit.
@@ -369,6 +388,13 @@ class MatPlotExt:
         # Convert x_arrays, y_arrays to list
         x_arrays = [x_arrays] if not isinstance(x_arrays, list) else x_arrays
         y_arrays = [y_arrays] if not isinstance(y_arrays, list) else y_arrays
+        
+        # Initialize error arrays if not defined
+        if xerr_arrays is None:
+            xerr_arrays = [None for ii in range(0, len(y_arrays))]
+            
+        if yerr_arrays is None:
+            yerr_arrays = [None for ii in range(0, len(y_arrays))]
     
         # Generate scatter plot by using subplot function
         fig, ax = plt.subplots(
@@ -388,9 +414,10 @@ class MatPlotExt:
                 colors = [None for ii in range(0, len(y_arrays))]
             else:
                 colors = [cmap(ii) for ii in range(0, len(y_arrays))]
+                
     
         # Plot several plots depending on number of y-arrays
-        for idx, (x_array, y_array, color) in enumerate(zip(x_arrays, y_arrays, colors)):
+        for idx, (x_array, y_array, xerr_array, yerr_array, color) in enumerate(zip(x_arrays, y_arrays, xerr_arrays, yerr_arrays, colors)):
     
             # Plot histogram only for the last scatter plot
             if self.options["histogram"]:
@@ -401,17 +428,20 @@ class MatPlotExt:
     
             # Plot figure
             self.plot_subplot_row(
-                ax, x_array, y_array, xlabel, ylabel, x_unit=x_unit, y_unit=y_unit, color=color
+                ax, x_array, y_array, xerr_array, yerr_array, xlabel, ylabel, x_unit=x_unit, y_unit=y_unit, color=color
             )
     
             # Plot vertical line for events in plot
             if events:
                 for idx, (label, entries) in enumerate(sorted(events.items())):
                     [ax.axvline(x=e, label=label, color=cmap(idx)) for e in entries]
-    
+              
         # Change tick labelsize
         if self.options["tick_labelsize"]:
             ax.tick_params(axis=self.options["tick_labelsize"][0], labelsize=self.options["tick_labelsize"][1])
+                
+        if self.options["xlabelrotation"] > 0:
+            ax.tick_params(axis="x", labelrotation= options["xlabelrotation"])
     
         # Plot x-axis label
         ax.set(xlabel=xlabel)
@@ -424,7 +454,7 @@ class MatPlotExt:
         # Plot legend
         if events:
             self.options["legend_location"] = "bottom" if self.options["legend_location"] == None else self.options["legend_location"]
-            self._plot_legend(legend_labels, labels, self.options)
+            self._plot_legend(legend_labels, labels)
     
         if labels:
             if self.options["projection"] == "polar":
@@ -432,7 +462,7 @@ class MatPlotExt:
             else:
                 self.options["legend_location"] = "right" if self.options["legend_location"] == None else self.options["legend_location"]
     
-            self._plot_legend(legend_labels, labels, self.options)
+            self._plot_legend(legend_labels, labels)
     
         # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
         if isinstance(x_arrays[0][0], datetime):
@@ -505,7 +535,8 @@ class MatPlotExt:
         | legend_ncol        | <num>            | The number of legend columns                                            |
         | marker             | <'.'|'-'>        | Marker type                                                             |
         | plot_to            | <console|file>   | Plot figure on console or file                                          |
-        | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
+        | plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                           |
+        |                    | bar>             |                                                                         |
         | reg_line           | <True|False>     | Regression line flag                                                    |
         | sharex             | <True|False>     | Share x-axis                                                            |
         | sharey             | <True|False>     | Share y-axis                                                            |
@@ -580,7 +611,9 @@ class MatPlotExt:
                     self.plot_subplot_row(
                             ax, 
                             x_array, 
-                            y_array[row,:], 
+                            y_array[row,:],
+                            None,
+                            None,
                             xlabel, 
                             ylabel, 
                             x_unit=x_unit, 
@@ -594,7 +627,9 @@ class MatPlotExt:
                 self.plot_subplot_row(
                         ax, 
                         x_array, 
-                        y_array, 
+                        y_array,
+                        None,
+                        None,
                         xlabel, 
                         ylabel, 
                         x_unit=x_unit, 
@@ -648,6 +683,8 @@ class MatPlotExt:
         ax: "AxesSubplot",
         x_array: np.ndarray,
         y_array: np.ndarray,
+        xerr_array: Union[np.ndarray, None] = None,
+        yerr_array: Union[np.ndarray, None] = None,
         xlabel: str = "",
         ylabel: str = "",
         x_unit: str = "",
@@ -659,37 +696,45 @@ class MatPlotExt:
     ) -> None:
         """Generate single row of plot subplot
     
-        Following **options** options can be overwritten:
+        Following **options** options can be overwritten:           
     
-        | Option             | Value            | Description                                                             |
-        |--------------------|------------------|-------------------------------------------------------------------------|
-        | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)                  |
-        | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
-        | grid               | <True|False>     | Plot grid                                                               |
-        | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
-        |                    |                  | axis on scatter plot                                                    |
-        | histogram_binwidth | <num>            | Histogram bin width                                                     |
-        | histogram_size     | <num>            | Histogram y-axis size                                                   |
-        | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                       |
-        | marker             | <'.'|'-'>        | Marker type                                                             |
-        | markersize         | <num>            | Marker size                                                             |
-        | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
-        | reg_line           | <True|False>     | Regression line flag                                                    |
-        | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'rms', |
-        |                    |                  | 'mean', 'min', 'max', 'std', 'percentile' (see function get_statistic   |
-        |                    |                  | for more information)                                                   |
-        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
-        |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
-        | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
-        | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
-        | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
-        | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                       |
-        | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels               |
+        | Option             | Value            | Description                                                       |
+        |--------------------|------------------|-------------------------------------------------------------------|
+        | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)            |
+        | ecapsize           | <num>            | Cap size of error bar                                             |
+        | ecapthick          | <num>            | Cap thick of error bar                                            |
+        | ecolor             | <name>           | Color of error bar                                                |
+        | elinewidth         | <num>            | Line width of error bar                                           |
+        | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined|
+        | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)               |
+        | grid               | <True|False>     | Plot grid                                                         |
+        | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for    |
+        |                    |                  | both axis on scatter plot                                         |
+        | histogram_binwidth | <num>            | Histogram bin width                                               |
+        | histogram_size     | <num>            | Histogram y-axis size                                             |
+        | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                 |
+        | marker             | <'.'|'-'>        | Marker type                                                       |
+        | markersize         | <num>            | Marker size                                                       |
+        | plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                     |
+        |                    | bar>             |                                                                   |
+        | reg_line           | <True|False>     | Regression line flag                                              |
+        | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:  |
+        |                    |                  | 'rms', 'mean', 'min', 'max', 'std', 'percentile' (see function    |
+        |                    |                  | get_statistic for more information)                               |
+        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range.  |
+        |                    |  auto>]          | If xlim=auto, then x-axis limit is automatically chosen           |
+        | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                 |
+        | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels         |
+        | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range   |
+        | yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                 |
+        | yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels         |
     
         Args:
            ax:             Axes object needed for plotting subplot row.
            x_array:        Array with x-axis data to plot.
            y_array:        Array with y-axis data to plot.
+           xerr_array:     Array with x-axis error data to plot as error bar.
+           yerr_array:     Array with y-axis error data to plot as error bar.
            xlabel:         X-axis label.
            ylabels:        X-axis label.
            x_unit:         X-axis unit.
@@ -699,7 +744,8 @@ class MatPlotExt:
            subtitle:       List with element of subplot title.
            options:        Dictionary with options, which overwrite default plot configuration.
         """
-    
+        subtitle = subtitle.copy()
+        
         # Overwrite options with argument definition
         if options:
             self.set_options(options)  
@@ -758,9 +804,38 @@ class MatPlotExt:
                 marker=self.options["marker"],
                 markersize=self.options["markersize"],
             )
-    
+            
+        elif self.options["plot_type"] == "bar":
+            xtick_location = np.arange(len(x_array))
+            ax.bar(
+                xtick_location,
+                y_array,
+                alpha=self.options["alpha"],
+                align="center",
+                color=color,
+                label=label,
+            )
+            ax.set_xticks(xtick_location)
+            ax.set_xticklabels(x_array)
+            
+        # Generate errorbar
+        if self.options["errorbar"]:
+            if not yerr_array and not xerr_array:
+                log.fatal("Error bars can not be plotted, because error x-array and y-array are empty.")
+            ax.errorbar(
+                x=x_array,
+                y=y_array,
+                xerr=xerr_array,
+                yerr=yerr_array,
+                fmt="none",
+                ecolor=self.options["ecolor"],
+                capsize=self.options["ecapsize"],
+                capthick=self.options["ecapthick"],
+                linewidth=self.options["elinewidth"],
+            )
+        
         # Set x-axis and y-axis limits, ticks and tick labels
-        if not self.options["xlim"] == "auto":
+        if not self.options["xlim"] == "auto" and not self.options["plot_type"] == "bar":
             if self.options["xlim"]:
                 ax.set_xlim(self.options["xlim"][0], self.options["xlim"][1])
             else:
@@ -768,7 +843,7 @@ class MatPlotExt:
                     if x_array.ndim == 0:
                         x_array = np.expand_dims(x_array, axis=0)
                 ax.set_xlim([min(x_array), max(x_array)])
-    
+                   
         if self.options["ylim"]:
             ax.set_ylim(self.options["ylim"][0], self.options["ylim"][1])
     
