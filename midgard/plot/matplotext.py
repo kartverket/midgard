@@ -69,8 +69,9 @@ class MatPlotExt:
     |                    |                  | both'.                                                                |
     | title              | <text>           | Main title of subplots                                                |
     | xlabelrotation     | <num>            | Define x-axis label rotation                                          |
-    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If   |
-    |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                  |
+    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
+    |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
+    |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
     | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                     |
     | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels             |
     | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range       |
@@ -119,7 +120,7 @@ class MatPlotExt:
             "tick_labelsize": [],
             "title": "",
             "xlabelrotation": 0, # degree
-            "xlim": [],
+            "xlim": "auto",
             "xticks": [],
             "xticklabels": [],
             "ylim": [],
@@ -347,8 +348,9 @@ class MatPlotExt:
         |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
         | title              | <text>           | Main title of subplots                                                  |
         | xlabelrotation     | <num>            | Define x-axis label rotation                                            |
-        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
-        |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
+        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
+        |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
+        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
         | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
         | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
         | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
@@ -546,8 +548,9 @@ class MatPlotExt:
         | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
         |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
         | title              | <text>           | Main title of subplots                                                  |
-        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
-        |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
+        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
+        |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
+        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       |        
         | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
         | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
         | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
@@ -835,10 +838,10 @@ class MatPlotExt:
             )
         
         # Set x-axis and y-axis limits, ticks and tick labels
-        if not self.options["xlim"] == "auto" and not self.options["plot_type"] == "bar":
-            if self.options["xlim"]:
+        if not self.options["xlim"] == "auto":
+            if isinstance(self.options["xlim"], list):
                 ax.set_xlim(self.options["xlim"][0], self.options["xlim"][1])
-            else:
+            elif self.options["xlim"] == "fit_to_data":
                 if isinstance(x_array, np.ndarray):
                     if x_array.ndim == 0:
                         x_array = np.expand_dims(x_array, axis=0)
