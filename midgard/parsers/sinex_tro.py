@@ -1,16 +1,17 @@
-"""A parser for reading troposphere results from Bernese in SNX format
+"""A parser for reading troposphere results in SNX format
 
 Description:
 ------------
 
-The file is based on the SINEX format, but mostly uses custom blocks. The following blocks are found in the file:
+The implementation is based on example output files from Bernese. The SINEX_TRO format is an extension of the regular
+SINEX format, but mostly uses custom blocks. The following blocks are found in the example file:
 +FILE/REFERENCE           (defined in SINEX 2.02)                                                      
 +TROP/DESCRIPTION         (custom block)
 +TROP/STA_COORDINATES     (custom block)
 +TROP/SOLUTION            (custom block)
 
 The format of the custom blocks are derived by reading example files and blocks defined in the format that is not 
-present in the example files are not implemented.
+present in the example files are not implemented yet.
 
 Format description: https://files.igs.org/pub/data/format/sinex_tropo.txt
 
