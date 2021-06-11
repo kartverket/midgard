@@ -166,17 +166,23 @@ class FileConfiguration(Configuration):
     ) -> pathlib.Path:
         """Construct a filepath for a given file with variables
 
-        If `is_zipped` is None, and the file_path contains `<filename>{gz}`,
-        the file will be assumed to be a gzip-file if there exists a file named
-        `<filename>.gz`.
+        If `is_zipped` is None, and the file_path contains `<filename>{gz}`, the file will be assumed to be a 
+        gzip-file if there exists a file named `<filename>.gz`.
 
-        When setting `use_aliases` to True, the aliases as specified in the
-        files configuration file represent alternative filenames. In
-        particular:
+        When setting `use_aliases` to True, the aliases as specified in the files configuration file represent 
+        alternative filenames and directories. In particular:
 
             - if directory / file_name exists it is returned
-            - otherwise the first directory / alias that exists is returned
+            - if 'directory_aliases' exists: the first directory alias / alias that exists is returned
+            - if not 'directory_aliases' exists: the first directory / alias that exists is returned
             - if none of these exist, directory / file_name is returned
+            
+        Aliases can be specified in the configuration file as list as follows:
+            
+            aliases = <filename1>, <filename2>, ...
+            directory_aliases = <directory1>, <directory2>, ...
+        
+        Note, aliases are checked as ordered in the configuration file.
 
         Args:
             file_key (String):        Key that is looked up in the configuration.
@@ -197,10 +203,18 @@ class FileConfiguration(Configuration):
         # Check for aliases
         if use_aliases and not self._path_exists(file_path):
             aliases = self.get("aliases", section=file_key, default="").replace(default=default, **file_vars).list
-            for alias in aliases:
-                aliased_path = self._replace_gz(file_path.with_name(alias), is_zipped)
-                if self._path_exists(aliased_path):
-                    return aliased_path
+            aliases_dirs = self.get("directory_aliases", section=file_key, default="").replace(default=default, **file_vars).list
+            if aliases_dirs:
+                for alias_dir in aliases_dirs:
+                    for alias in aliases:
+                        aliased_path = self._replace_gz(pathlib.Path(alias_dir) / pathlib.Path(alias), is_zipped)
+                        if self._path_exists(aliased_path):
+                            return aliased_path     
+            else:
+                for alias in aliases:
+                    aliased_path = self._replace_gz(file_path.with_name(alias), is_zipped)
+                    if self._path_exists(aliased_path):
+                        return aliased_path
 
         # Try to download the file if it is missing
         if download_missing and not self._path_exists(file_path):
