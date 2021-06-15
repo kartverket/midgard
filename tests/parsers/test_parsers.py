@@ -76,13 +76,22 @@ def test_parser_bcecmp_sisre():
     assert "E26" in parser["satellite"]
 
 
+def test_parser_bernese_clu():
+    """Test that parsing bernese_clu gives expected output"""
+    parser = get_parser("bernese_clu").as_dict()
+
+    assert len(parser) == 16
+    assert "aasc" in parser
+    assert "num" in parser["aasc"]
+
+
 def test_parser_bernese_crd():
     """Test that parsing bernese_crd gives expected output"""
     parser = get_parser("bernese_crd").as_dict()
 
     assert len(parser) == 5
-    assert "aasc" in parser
-    assert "num" in parser["aasc"]
+    assert "ales" in parser
+    assert "domes" in parser["ales"]
 
 
 @pytest.mark.skip(reason="TODO: Tests not yet implemented")
