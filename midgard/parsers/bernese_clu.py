@@ -65,6 +65,7 @@ class BerneseCluParser(LineParser):
         return dict(
             autostrip=True,
             names=("station", "domes", "cluster"), # white space are used as delimiter by default
+            delimiter=(4, 10, 7),
             dtype=("U4", "U9", "f8"),
             skip_header=5,
         )
