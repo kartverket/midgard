@@ -50,6 +50,7 @@ class BerneseCrdParser(LineParser):
     | Key                  | Description                                                                          |
     |----------------------|--------------------------------------------------------------------------------------|
     | \__data_path__       | File path                                                                            |
+    | \__params__          | np.genfromtxt parameters                                                             |
     | \__parser_name__     | Parser name                                                                          |
 
     """
@@ -149,14 +150,20 @@ class BerneseCrdParser(LineParser):
        |                          |                | version 5.2, November 2015)                                      |
        | station                  | numpy.ndarray  | Station name                                                     |
        | site_pos                 | PositionTable  | Station coordinates given as PositionTable object                |
+
+            and following Dataset `meta` data:
+
+       |  Entry              | Type  | Description                                                                    |
+       |---------------------|-------|--------------------------------------------------------------------------------|
+       | \__data_path__      | str   | File path                                                                      |
         """
              
         # Generate dataset
         dset = dataset.Dataset(num_obs=len(self.data["station"]))
-        dset.meta = self.meta
+        dset.meta = self.meta.copy()
 
         # Remove unnecessary fields in meta
-        for key in ["__data_path__", "__params__", "__parser_name__"]:
+        for key in ["__params__", "__parser_name__"]:
             del dset.meta[key]
 
 
@@ -174,7 +181,5 @@ class BerneseCrdParser(LineParser):
             system="trs", 
             val=np.stack((np.array(self.data["pos_x"]), np.array(self.data["pos_y"]), np.array(self.data["pos_z"])), axis=1),
         )
-
-        import IPython; IPython.embed()
                 
         return dset
