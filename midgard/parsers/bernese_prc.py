@@ -35,36 +35,43 @@ class BernesePrcPaser(ChainParser):
     The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key. The station
     related data are saved in a dictionary with following keys:
 
-    | Key                        | Type        |Description                                                           |
-    |----------------------------|-------------|----------------------------------------------------------------------|
-    | coord_comp_daily_val_east  | List[float] | List with daily station coordinate comparison results for East       |
-    |                            |             | component in                                                         |
-    | coord_comp_daily_val_north | List[float] | List with daily station coordinate comparison results for North      |
-    |                            |             | component in                                                         |
-    | coord_comp_daily_val_up    | List[float] | List with daily station coordinate comparison results for Up         |
-    |                            |             | component in                                                         |
-    | num_of_days                | float       | Number of days used for analysis                                     |
-    | pos_mean_x                 | float       | X-coordinate of mean station coordinate position in [m]              |
-    | pos_mean_x_rms1            | float       | RMS1 of X-coordinate of mean station coordinate position in [m]      |
-    | pos_mean_x_rms2            | float       | RMS2 of X-coordinate of mean station coordinate position in [m]      |
-    | pos_mean_y                 | float       | Y-coordinate of mean station coordinate position in [m]              |
-    | pos_mean_y_rms1            | float       | RMS1 of Y-coordinate of mean station coordinate position in [m]      |
-    | pos_mean_y_rms2            | float       | RMS2 of Y-coordinate of mean station coordinate position in [m]      |
-    | pos_mean_z                 | float       | Z-coordinate of mean station coordinate position in [m]              |
-    | pos_mean_z_rms1            | float       | RMS1 of Z-coordinate of mean station coordinate position in [m]      |
-    | pos_mean_z_rms2            | float       | RMS2 of Z-coordinate of mean station coordinate position in [m]      |
-    | repeatability_east         | float       | Station coordinate repeatability for East component in [m]           |
-    | repeatability_north        | float       | Station coordinate repeatability for North component in [m]          |
-    | repeatability_up           | float       | Station coordinate repeatability for Up component in [m]             |
-    | residual_east              | float       | Station residuals for East component in [m]                          |
-    | residual_north             | float       | Station residuals for North component in [m]                         |
-    | residual_up                | float       | Station residuals for Up component in [m]                            |
+    | Key                   | Type        |Description                                                           |
+    |-----------------------|-------------|----------------------------------------------------------------------|
+    | coord_comp_east       | List[float] | List with daily station coordinate comparison results for East       |
+    |                       |             | component in [m]                                                     |
+    | coord_comp_north      | List[float] | List with daily station coordinate comparison results for North      |
+    |                       |             | component in [m]                                                     |
+    | coord_comp_up         | List[float] | List with daily station coordinate comparison results for Up         |
+    |                       |             | component in [m]                                                     |
+    | coord_comp_rms_east   | float       | List with daily station coordinate comparison results for East       |
+    |                       |             | component in [m]                                                     |
+    | coord_comp_rms_north  | float       | List with daily station coordinate comparison results for North      |
+    |                       |             | component in [m]                                                     |
+    | coord_comp_rms_up     | float       | List with daily station coordinate comparison results for Up         |
+    |                       |             | component in [m]                                                     |
+    | num_of_days           | float       | Number of days used for analysis                                     |
+    | pos_mean_x            | float       | X-coordinate of mean station coordinate position in [m]              |
+    | pos_mean_x_rms1       | float       | RMS1 of X-coordinate of mean station coordinate position in [m]      |
+    | pos_mean_x_rms2       | float       | RMS2 of X-coordinate of mean station coordinate position in [m]      |
+    | pos_mean_y            | float       | Y-coordinate of mean station coordinate position in [m]              |
+    | pos_mean_y_rms1       | float       | RMS1 of Y-coordinate of mean station coordinate position in [m]      |
+    | pos_mean_y_rms2       | float       | RMS2 of Y-coordinate of mean station coordinate position in [m]      |
+    | pos_mean_z            | float       | Z-coordinate of mean station coordinate position in [m]              |
+    | pos_mean_z_rms1       | float       | RMS1 of Z-coordinate of mean station coordinate position in [m]      |
+    | pos_mean_z_rms2       | float       | RMS2 of Z-coordinate of mean station coordinate position in [m]      |
+    | repeatability_east    | float       | Station coordinate repeatability for East component in [m]           |
+    | repeatability_north   | float       | Station coordinate repeatability for North component in [m]          |
+    | repeatability_up      | float       | Station coordinate repeatability for Up component in [m]             |
+    | residual_east         | float       | Station residuals for East component in [m]                          |
+    | residual_north        | float       | Station residuals for North component in [m]                         |
+    | residual_up           | float       | Station residuals for Up component in [m]                            |
 
     and **meta**-data:
 
     | Key                  | Description                                                                          |
     |----------------------|--------------------------------------------------------------------------------------|
     | num_coord_files      | Number of coordinate files used for analysis                                         |
+    | time                 | Date of analysis session                                                             |
     | \__data_path__       | File path                                                                            |
     | \__parser_name__     | Parser name                                                                          |
     """
@@ -111,14 +118,14 @@ class BernesePrcPaser(ChainParser):
         #
         #
         # Summary file generated at 16-Jun-2021 13:12:50 by R2S_SUM
-        date_parser = ParserDef(
+        time_parser = ParserDef(
             end_marker=lambda line, _ln, _n: line.startswith("Summary file generated"),
             label=lambda line, _ln: "SUMMARY FOR YEAR-SESSION" in line,
             parser_def={
                 True: {   
-                    "parser": self._parse_date,
+                    "parser": self._parse_time,
                     "fields": {
-                        "date":   (0, None),
+                        "time":   (0, None),
                     },
                 },
             },
@@ -333,7 +340,7 @@ class BernesePrcPaser(ChainParser):
 
 
         return itertools.chain([
-            date_parser,
+            time_parser,
             skip_lines_parser, 
             residuals_parser, 
             skip_lines_parser, 
@@ -390,21 +397,21 @@ class BernesePrcPaser(ChainParser):
             else:
                 values[idx] = float('nan')
 
-        self.data[station][f"coord_comp_daily_val_{coord_key}"] = values
+        self.data[station][f"coord_comp_{coord_key}"] = values
 
-        if not f"coord_comp_daily_val_{coord_key}" in self.fields:
-            self.fields.append(f"coord_comp_daily_val_{coord_key}")
+        if not f"coord_comp_{coord_key}" in self.fields:
+            self.fields.append(f"coord_comp_{coord_key}")
 
 
-    def _parse_date(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
-        """Parse date
+    def _parse_time(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
+        """Parse date of analysis session
         """
         # Example to parse for getting date:
         #
         # RNX2SNX BPE PROCESSING SUMMARY FOR YEAR-SESSION 21-1660
         #
-        date = line["date"].split("YEAR-SESSION")[1].strip()
-        self.meta["date"] = datetime.strptime(date[:-1], "%y-%j")
+        time = line["time"].split("YEAR-SESSION")[1].strip()
+        self.meta["time"] = datetime.strptime(time[:-1], "%y-%j")
 
 
     def _parse_line(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
@@ -456,9 +463,38 @@ class BernesePrcPaser(ChainParser):
         Returns:
             Midgard Dataset where station coordinates and belonging information are stored with following fields:
 
-       |  Field                   | Type           | Description                                                      |
-       |--------------------------|----------------|------------------------------------------------------------------|
-       | TODO                     |                |                                                                  |
+       |  Field                  | Type          | Description                                                       |
+       |-------------------------|---------------|-------------------------------------------------------------------|
+       | coord_comp_east_day<x>  | numpy.ndarray | Station coordinate comparison results for East component in [m]   |
+       |                         |               | for day X (X=[1|2|...|7])                                         |
+       | coord_comp_north_day<x> | numpy.ndarray | Station coordinate comparison results for North component in [m]  |
+       |                         |               | for day X (X=[1|2|...|7])                                         |
+       | coord_comp_up_day<x>    | numpy.ndarray | Station coordinate comparison results for Up component in [m]     |
+       |                         |               | for day X (X=[1|2|...|7])                                         |
+       | coord_comp_rms_east     | numpy.ndarray | List with daily station coordinate comparison results for East    |
+       |                         |               | component in [m]                                                  |
+       | coord_comp_rms_north    | numpy.ndarray | List with daily station coordinate comparison results for North   |
+       |                         |               | component in [m]                                                  |
+       | coord_comp_rms_up       | numpy.ndarray | List with daily station coordinate comparison results for Up      |
+       |                         |               | component in [m]                                                  |
+       | num_of_days             | numpy.ndarray | Number of days used for analysis                                  |
+       | pos_mean_x              | numpy.ndarray | X-coordinate of mean station coordinate position in [m]           |
+       | pos_mean_x_rms1         | numpy.ndarray | RMS1 of X-coordinate of mean station coordinate position in [m]   |
+       | pos_mean_x_rms2         | numpy.ndarray | RMS2 of X-coordinate of mean station coordinate position in [m]   |
+       | pos_mean_y              | numpy.ndarray | Y-coordinate of mean station coordinate position in [m]           |
+       | pos_mean_y_rms1         | numpy.ndarray | RMS1 of Y-coordinate of mean station coordinate position in [m]   |
+       | pos_mean_y_rms2         | numpy.ndarray | RMS2 of Y-coordinate of mean station coordinate position in [m]   |
+       | pos_mean_z              | numpy.ndarray | Z-coordinate of mean station coordinate position in [m]           |
+       | pos_mean_z_rms1         | numpy.ndarray | RMS1 of Z-coordinate of mean station coordinate position in [m]   |
+       | pos_mean_z_rms2         | numpy.ndarray | RMS2 of Z-coordinate of mean station coordinate position in [m]   |
+       | repeatability_east      | numpy.ndarray | Station coordinate repeatability for East component in [m]        |
+       | repeatability_north     | numpy.ndarray | Station coordinate repeatability for North component in [m]       |
+       | repeatability_up        | numpy.ndarray | Station coordinate repeatability for Up component in [m]          |
+       | residual_east           | numpy.ndarray | Station residuals for East component in [m]                       |
+       | residual_north          | numpy.ndarray | Station residuals for North component in [m]                      |
+       | residual_up             | numpy.ndarray | Station residuals for Up component in [m]                         |
+       | station                 | numpy.ndarray | Station names                                                     |
+       | time                    | TimeTable     | Date of analysis session                                          |
 
             and following Dataset `meta` data:
 
@@ -480,7 +516,13 @@ class BernesePrcPaser(ChainParser):
         # Prepare data for adding to dataset
         for sta in sorted(self.data.keys()):
             for field in self.fields:
-                if field.startswith("coord_comp_daily_val"): #TODO
+
+                if field.startswith("coord_comp_daily_val"):
+                    for idx in range(0, self.meta["num_coord_files"]):
+                        if field in self.data[sta]: 
+                            data.setdefault(f"{field}_day{idx+1}", list()).append(self.data[sta][field][idx])
+                        else:
+                            data.setdefault(f"{field}_day{idx+1}", list()).append(float('nan'))
                     continue
 
                 if field in self.data[sta]:
@@ -499,7 +541,7 @@ class BernesePrcPaser(ChainParser):
 
         dset.add_time(
                 "time",
-                val=[dset.meta["date"] for ii in range(0, dset.num_obs)], 
+                val=[dset.meta["time"] for ii in range(0, dset.num_obs)], 
                 scale="utc", 
                 fmt="datetime",
         )
