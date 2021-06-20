@@ -28,7 +28,7 @@ from midgard.parsers import ChainParser, ParserDef
 
 
 @plugins.register
-class BernesePrcPaser(ChainParser):
+class BernesePrcParser(ChainParser):
     """A parser for reading protocol file in Bernese PRC format
 
 
@@ -259,7 +259,6 @@ class BernesePrcPaser(ChainParser):
         #
         # NUM  STATION         #FIL C   RMS     1     2     3     4     5     6     7
         # ---------------------------------------------------------------------------------
-        #----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8-
         #   2  AASC              7  N   1.21  -1.85 -0.41  0.90 -1.27  0.67  1.39  0.56
         #                           E   0.98   1.50 -1.02  0.47  0.51 -0.78 -1.11  0.42
         #                           U   3.09   0.54  5.33 -0.23 -3.92  0.64 -3.41  1.04
@@ -517,7 +516,7 @@ class BernesePrcPaser(ChainParser):
         for sta in sorted(self.data.keys()):
             for field in self.fields:
 
-                if field.startswith("coord_comp_daily_val"):
+                if field in ["coord_comp_east", "coord_comp_north", "coord_comp_up"]:
                     for idx in range(0, self.meta["num_coord_files"]):
                         if field in self.data[sta]: 
                             data.setdefault(f"{field}_day{idx+1}", list()).append(self.data[sta][field][idx])
@@ -534,7 +533,6 @@ class BernesePrcPaser(ChainParser):
         # Add fields to dataset
         dset.add_text("station", val=sorted(self.data.keys()))
 
-        #TODO: If station is not avaiblable in all parameters set to 'nan'.
         for field in data:
             unit = "" if field == "num_of_days" else "meter"
             dset.add_float(field, val=data[field], unit=unit)
