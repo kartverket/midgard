@@ -78,6 +78,8 @@ class BerneseCluParser(LineParser):
         """
         dict_ = dict()
         for idx, sta in enumerate(self.data["station"]):
+            if not sta: # Skip empty station name -> TODO: How should this be done with genfromtxt?
+                continue
             dict_.update(
                 {
                     sta.lower(): {
