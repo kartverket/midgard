@@ -205,6 +205,8 @@ class FileConfiguration(Configuration):
             aliases = self.get("aliases", section=file_key, default="").replace(default=default, **file_vars).list
             aliases_dirs = self.get("directory_aliases", section=file_key, default="").replace(default=default, **file_vars).list
             if aliases_dirs:
+                aliases.insert(0, str(file_name))
+                aliases_dirs.insert(0,str(directory))
                 for alias_dir in aliases_dirs:
                     for alias in aliases:
                         aliased_path = self._replace_gz(pathlib.Path(alias_dir) / pathlib.Path(alias), is_zipped)
