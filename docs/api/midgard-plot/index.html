@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.1.4</title>
+        <title>midgard.plot - Midgard v1.1.5</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.4</a>
+                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -177,17 +177,42 @@
 <tr>
 <td>colormap</td>
 <td><type></td>
-<td>Color map type for plotting either events or labels (e.g. viridis, jet,</td>
+<td>Color map type for plotting either events or labels (e.g. viridis,</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>tab10, rainbow, hsv, plasma)</td>
+<td>jet, tab10, rainbow, hsv, plasma)</td>
 </tr>
 <tr>
 <td>dpi</td>
 <td><num></td>
 <td>Resolution of file in dots per inch</td>
+</tr>
+<tr>
+<td>ecapsize</td>
+<td><num></td>
+<td>Cap size of error bar</td>
+</tr>
+<tr>
+<td>ecapthick</td>
+<td><num></td>
+<td>Cap thick of error bar</td>
+</tr>
+<tr>
+<td>ecolor</td>
+<td><name></td>
+<td>Color of error bar</td>
+</tr>
+<tr>
+<td>elinewidth</td>
+<td><num></td>
+<td>Line width of error bar</td>
+</tr>
+<tr>
+<td>errorbar</td>
+<td>&lt;True</td>
+<td>False&gt;</td>
 </tr>
 <tr>
 <td>figsize</td>
@@ -262,7 +287,12 @@
 <tr>
 <td>plot_type</td>
 <td>&lt;scatter</td>
-<td>plot&gt;</td>
+<td>plot</td>
+</tr>
+<tr>
+<td></td>
+<td>bar&gt;</td>
+<td></td>
 </tr>
 <tr>
 <td>projection</td>
@@ -277,32 +307,42 @@
 <tr>
 <td>statistic</td>
 <td><rms, mean, ...></td>
-<td>Plot statistical information. Following function can be defined: 'max',</td>
+<td>Plot statistical information. Following function can be defined:</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic</td>
+<td>'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>for more information)</td>
+<td>_get_statistic for more information)</td>
 </tr>
 <tr>
 <td>tick_labelsize</td>
 <td>&lt;(axis, size)&gt;</td>
-<td>Change label size of x- and y-axis tick labels. This can be done either</td>
+<td>Change label size of x- and y-axis tick labels. This can be done</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td>for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.</td>
+<td>either for x-axis, y-axis or both axis via specifying 'x', 'y' or</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>both'.</td>
 </tr>
 <tr>
 <td>title</td>
 <td><text></td>
 <td>Main title of subplots</td>
+</tr>
+<tr>
+<td>xlabelrotation</td>
+<td><num></td>
+<td>Define x-axis label rotation</td>
 </tr>
 <tr>
 <td>xlim</td>
@@ -311,8 +351,13 @@
 </tr>
 <tr>
 <td></td>
-<td>auto&gt;]</td>
-<td>xlim=auto, then x-axis limit is automatically chosen</td>
+<td>auto</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>fit_to_data&gt;</td>
+<td>fit_to_data, then x-axis limit is defined related to x-axis data.</td>
 </tr>
 <tr>
 <td>xticks</td>
@@ -536,9 +581,14 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
 <td>Main title of subplots</td>
 </tr>
 <tr>
+<td>xlabelrotation</td>
+<td><num></td>
+<td>Define x-axis label rotation</td>
+</tr>
+<tr>
 <td>xlim</td>
-<td>&lt;[num, num]</td>
-<td></td>
+<td>&lt;[num, num]&gt;</td>
+<td>Define x-axis limit by defining a list with [left, right] range. If</td>
 </tr>
 <tr>
 <td></td>
