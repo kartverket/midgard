@@ -21,41 +21,50 @@ Class for plotting - Extension of matplotlib
 
 Following *options** can be selected:
 
-| Option             | Value            | Description                                                             |
-|--------------------|------------------|-------------------------------------------------------------------------|
-| colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
-|                    |                  | tab10, rainbow, hsv, plasma)                                            |
-| dpi                | <num>            | Resolution of file in dots per inch                                     |
-| figsize            | (num, num)       | Figure size given by (width, height) in inches                          |
-| fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
-| grid               | <True|False>     | Plot grid                                                               |
-| histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
-|                    |                  | axis on scatter plot                                                    |
-| histogram_binwidth | <num>            | Histogram bin width                                                     |
-| histogram_size     | <num>            | Histogram y-axis size                                                   |
-| legend             | <True|False>     | Plot legend                                                             |
-| legend_location    | <right, bottom>  | Legend location                                                         |
-| legend_ncol        | <num>            | The number of legend columns                                            |
-| linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                       |
-| marker             | <'.'|'-'>        | Marker type                                                             |
-|                    |                  | if in one scatter subplot several plots should be plotted.              |
-| plot_to            | <console|file>   | Plot figure on console or file                                          |
-| plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
-| projection         | <type>           | Projection type of plot (e.g. 'polar')                                  |
-| reg_line           | <True|False>     | Regression line flag                                                    |
-| statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
-|                    |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic  |
-|                    |                  | for more information)                                                   |
-| tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
-|                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
-| title              | <text>           | Main title of subplots                                                  |
-| xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
-|                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
-| xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
-| xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
-| ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
-| yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                       |
-| yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels               |
+| Option             | Value            | Description                                                           |
+|--------------------|------------------|-----------------------------------------------------------------------|
+| colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis,    |
+|                    |                  | jet, tab10, rainbow, hsv, plasma)                                     |
+| dpi                | <num>            | Resolution of file in dots per inch                                   |
+| ecapsize           | <num>            | Cap size of error bar                                                 |
+| ecapthick          | <num>            | Cap thick of error bar                                                |
+| ecolor             | <name>           | Color of error bar                                                    |
+| elinewidth         | <num>            | Line width of error bar                                               |
+| errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
+| figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
+| fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                   |
+| grid               | <True|False>     | Plot grid                                                             |
+| histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both   |
+|                    |                  | axis on scatter plot                                                  |
+| histogram_binwidth | <num>            | Histogram bin width                                                   |
+| histogram_size     | <num>            | Histogram y-axis size                                                 |
+| legend             | <True|False>     | Plot legend                                                           |
+| legend_location    | <right, bottom>  | Legend location                                                       |
+| legend_ncol        | <num>            | The number of legend columns                                          |
+| linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                     |
+| marker             | <'.'|'-'>        | Marker type                                                           |
+|                    |                  | if in one scatter subplot several plots should be plotted.            |
+| plot_to            | <console|file>   | Plot figure on console or file                                        |
+| plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                         |
+|                    | bar>             |                                                                       |
+| projection         | <type>           | Projection type of plot (e.g. 'polar')                                |
+| reg_line           | <True|False>     | Regression line flag                                                  |
+| statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
+|                    |                  | 'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function        |
+|                    |                  | _get_statistic for more information)                                  |
+| tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done      |
+|                    |                  | either for x-axis, y-axis or both axis via specifying 'x', 'y' or     |
+|                    |                  | both'.                                                                |
+| title              | <text>           | Main title of subplots                                                |
+| xlabelrotation     | <num>            | Define x-axis label rotation                                          |
+| xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
+|                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
+|                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
+| xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                     |
+| xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels             |
+| ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range       |
+| yticks             | <[num, ...]>     | Define y-axis ticks by defining a list with ticks                     |
+| yticklabels        | <[text, ...]>    | Define y-axis ticks labels by defining a list with labels             |
 
 
 ## midgard.plot.matplotlib_extension
@@ -137,7 +146,8 @@ Following **opt_arg** options can be selected:
 | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
 |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
 | title              | <text>           | Main title of subplots                                                  |
-| xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+| xlabelrotation     | <num>            | Define x-axis label rotation                                            |    
+| xlim               | <[num, num]>     | Define x-axis limit by defining a list with [left, right] range. If     |
 |                    |  auto>]          | xlim=auto, then x-axis limit is automatically chosen                    |
 | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
 | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |

@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v1.1.4</title>
+        <title>midgard.parsers - Midgard v1.1.5</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.4</a>
+                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -168,6 +168,26 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_clu" class="nav-link">midgard.parsers.bernese_clu</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_compar_out" class="nav-link">midgard.parsers.bernese_compar_out</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_crd" class="nav-link">midgard.parsers.bernese_crd</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_prc" class="nav-link">midgard.parsers.bernese_prc</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_trp" class="nav-link">midgard.parsers.bernese_trp</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#midgardparserscost" class="nav-link">midgard.parsers.cost</a>
               <ul class="nav flex-column">
               </ul>
@@ -220,10 +240,6 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgnss_bernese_crd" class="nav-link">midgard.parsers.gnss_bernese_crd</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersgnss_galat_results" class="nav-link">midgard.parsers.gnss_galat_results</a>
               <ul class="nav flex-column">
               </ul>
@@ -268,6 +284,10 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersrinex_nav" class="nav-link">midgard.parsers.rinex_nav</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_tro" class="nav-link">midgard.parsers.sinex_tro</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -699,6 +719,546 @@ data = p.as_dict()
 <tr>
 <td>__data_path__</td>
 <td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersbernese_clu">midgard.parsers.bernese_clu</h2>
+<p>A parser for reading Bernese CLU file</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_clu', file_path='NOR_NKG.CLU')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Bernese CLU format.</p>
+<h3 id="bernesecluparser"><strong>BerneseCluParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_clu.BerneseCluParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
+<p>A parser for reading Bernese CLU file</p>
+<p>Following <strong>data</strong> are available after reading Bernese CLU file:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>station</td>
+<td>4-digit station identifier</td>
+</tr>
+<tr>
+<td>domes</td>
+<td>Domes number</td>
+</tr>
+<tr>
+<td>cluster</td>
+<td>Cluster number</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersbernese_compar_out">midgard.parsers.bernese_compar_out</h2>
+<p>A parser for reading coordinate comparison in Bernese OUT format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_compar_out', file_path='COMP211670.OUT')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads coordinate comparison data from files in OUT format</p>
+<h3 id="bernesecomparoutparser"><strong>BerneseComparOutParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_compar_out.BerneseComparOutParser</code></p>
+<p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any])</code></p>
+<p>A parser for reading coordinate comparison in Bernese OUT format</p>
+<p>The parsed data are saved in variable <strong>data</strong> as a dictionay with 4-digit station name as key. The station
+related data are saved in a dictionary with following keys:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>coord_comp_east</td>
+<td>List[float]</td>
+<td>List with daily station coordinate comparison results for East</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_north</td>
+<td>List[float]</td>
+<td>List with daily station coordinate comparison results for North</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_up</td>
+<td>List[float]</td>
+<td>List with daily station coordinate comparison results for Up</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_rms_east</td>
+<td>float</td>
+<td>List with daily station coordinate comparison results for East</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_rms_north</td>
+<td>float</td>
+<td>List with daily station coordinate comparison results for North</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_rms_up</td>
+<td>float</td>
+<td>List with daily station coordinate comparison results for Up</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_x</td>
+<td>float</td>
+<td>X-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_x_rms1</td>
+<td>float</td>
+<td>RMS1 of X-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_x_rms2</td>
+<td>float</td>
+<td>RMS2 of X-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_y</td>
+<td>float</td>
+<td>Y-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_y_rms1</td>
+<td>float</td>
+<td>RMS1 of Y-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_y_rms2</td>
+<td>float</td>
+<td>RMS2 of Y-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_z</td>
+<td>float</td>
+<td>Z-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_z_rms1</td>
+<td>float</td>
+<td>RMS1 of Z-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_z_rms2</td>
+<td>float</td>
+<td>RMS2 of Z-coordinate of mean station coordinate position in [m]</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_coord_files</td>
+<td>Number of coordinate files used for analysis</td>
+</tr>
+<tr>
+<td>time</td>
+<td>Date of analysis session</td>
+</tr>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersbernese_crd">midgard.parsers.bernese_crd</h2>
+<p>A parser for reading Bernese CRD file</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_crd', file_path='W20216.CRD')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Bernese CRD format.</p>
+<h3 id="bernesecrdparser"><strong>BerneseCrdParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_crd.BerneseCrdParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
+<p>A parser for reading Bernese CRD file</p>
+<p>Following <strong>data</strong> are available after reading Bernese CRD file:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num</td>
+<td>Number of station coordinate solution</td>
+</tr>
+<tr>
+<td>station</td>
+<td>4-digit station identifier</td>
+</tr>
+<tr>
+<td>domes</td>
+<td>Domes number</td>
+</tr>
+<tr>
+<td>gpssec</td>
+<td>Seconds of GPS week</td>
+</tr>
+<tr>
+<td>pos_x</td>
+<td>X-coordinate of station position</td>
+</tr>
+<tr>
+<td>pos_y</td>
+<td>Y-coordinate of station position</td>
+</tr>
+<tr>
+<td>pos_z</td>
+<td>Z-coordinate of station position</td>
+</tr>
+<tr>
+<td>flag</td>
+<td>Flag</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__params__</td>
+<td>np.genfromtxt parameters</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersbernese_prc">midgard.parsers.bernese_prc</h2>
+<p>A parser for reading protocol file in Bernese PRC format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_prc', file_path='RES211670.PRC')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in PRC format</p>
+<h3 id="berneseprcparser"><strong>BernesePrcParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_prc.BernesePrcParser</code></p>
+<p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any])</code></p>
+<p>A parser for reading protocol file in Bernese PRC format</p>
+<p>The parsed data are saved in variable <strong>data</strong> as a dictionay with 4-digit station name as key. The station
+related data are saved in a dictionary with following keys:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>coord_comp_east</td>
+<td>List[float]</td>
+<td>List with daily station coordinate comparison results for East</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_north</td>
+<td>List[float]</td>
+<td>List with daily station coordinate comparison results for North</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_up</td>
+<td>List[float]</td>
+<td>List with daily station coordinate comparison results for Up</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_rms_east</td>
+<td>float</td>
+<td>List with daily station coordinate comparison results for East</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_rms_north</td>
+<td>float</td>
+<td>List with daily station coordinate comparison results for North</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>coord_comp_rms_up</td>
+<td>float</td>
+<td>List with daily station coordinate comparison results for Up</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>component in [m]</td>
+</tr>
+<tr>
+<td>num_of_days</td>
+<td>float</td>
+<td>Number of days used for analysis</td>
+</tr>
+<tr>
+<td>pos_mean_x</td>
+<td>float</td>
+<td>X-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_x_rms1</td>
+<td>float</td>
+<td>RMS1 of X-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_x_rms2</td>
+<td>float</td>
+<td>RMS2 of X-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_y</td>
+<td>float</td>
+<td>Y-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_y_rms1</td>
+<td>float</td>
+<td>RMS1 of Y-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_y_rms2</td>
+<td>float</td>
+<td>RMS2 of Y-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_z</td>
+<td>float</td>
+<td>Z-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_z_rms1</td>
+<td>float</td>
+<td>RMS1 of Z-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>pos_mean_z_rms2</td>
+<td>float</td>
+<td>RMS2 of Z-coordinate of mean station coordinate position in [m]</td>
+</tr>
+<tr>
+<td>repeatability_east</td>
+<td>float</td>
+<td>Station coordinate repeatability for East component in [m]</td>
+</tr>
+<tr>
+<td>repeatability_north</td>
+<td>float</td>
+<td>Station coordinate repeatability for North component in [m]</td>
+</tr>
+<tr>
+<td>repeatability_up</td>
+<td>float</td>
+<td>Station coordinate repeatability for Up component in [m]</td>
+</tr>
+<tr>
+<td>residual_east</td>
+<td>float</td>
+<td>Station residuals for East component in [m]</td>
+</tr>
+<tr>
+<td>residual_north</td>
+<td>float</td>
+<td>Station residuals for North component in [m]</td>
+</tr>
+<tr>
+<td>residual_up</td>
+<td>float</td>
+<td>Station residuals for Up component in [m]</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num_coord_files</td>
+<td>Number of coordinate files used for analysis</td>
+</tr>
+<tr>
+<td>time</td>
+<td>Date of analysis session</td>
+</tr>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersbernese_trp">midgard.parsers.bernese_trp</h2>
+<p>A parser for reading troposphere files in Bernese TRP format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from analyx import parsers
+p = parsers.parse_file(parser_name='bernese_trp', file_path='F1_210300.TRP')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files troposphere files in TRP format</p>
+<h3 id="bernesetrppaser"><strong>BerneseTrpPaser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_trp.BerneseTrpPaser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
+<p>A parser for reading troposphere files in Bernese TRP format</p>
+<p>Following <strong>data</strong> can be available after reading troposphere files in Bernese TRP file:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TODO</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TODO</td>
+<td></td>
+</tr>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__params__</td>
+<td>np.genfromtxt parameters</td>
 </tr>
 <tr>
 <td>__parser_name__</td>
@@ -1690,81 +2250,6 @@ like:</p>
 <li><code>parser_name</code>:     (str), Parser name.</li>
 <li><code>meta</code>:            (dict), Contains metainformation read from file.</li>
 </ul>
-<h2 id="midgardparsersgnss_bernese_crd">midgard.parsers.gnss_bernese_crd</h2>
-<p>A parser for reading Bernese CRD file</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='gnss_bernese_crd', file_path='W20216.CRD')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads data from files in Bernese CRD format.</p>
-<h3 id="gnsscrdparser"><strong>GnssCrdParser</strong></h3>
-<p>Full name: <code>midgard.parsers.gnss_bernese_crd.GnssCrdParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -&gt; None</code></p>
-<p>A parser for reading Bernese CRD file</p>
-<p>Following <strong>data</strong> are available after reading Bernese CRD file:</p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>num</td>
-<td>Number of station coordinate solution</td>
-</tr>
-<tr>
-<td>station</td>
-<td>4-digit station identifier</td>
-</tr>
-<tr>
-<td>domes</td>
-<td>Domes number</td>
-</tr>
-<tr>
-<td>gpssec</td>
-<td>Seconds of GPS week</td>
-</tr>
-<tr>
-<td>pos_x</td>
-<td>X-coordinate of station position</td>
-</tr>
-<tr>
-<td>pos_y</td>
-<td>Y-coordinate of station position</td>
-</tr>
-<tr>
-<td>pos_z</td>
-<td>Z-coordinate of station position</td>
-</tr>
-<tr>
-<td>flag</td>
-<td>Flag</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
 <h2 id="midgardparsersgnss_galat_results">midgard.parsers.gnss_galat_results</h2>
 <p>A parser for GALAT single point positioning result files</p>
 <p><strong>Example:</strong></p>
@@ -2211,6 +2696,22 @@ parser.write_to_dataset(dset)
 used.</p>
 <p><strong>Args:</strong></p>
 <p>file_path (pathlib.PosixPath):  File path to broadcast orbit file.</p>
+<h2 id="midgardparserssinex_tro">midgard.parsers.sinex_tro</h2>
+<p>A parser for reading troposphere results in SNX format</p>
+<p><strong>Description:</strong></p>
+<p>The implementation is based on example output files from Bernese. The SINEX_TRO format is an extension of the regular
+SINEX format, but mostly uses custom blocks. The following blocks are found in the example file:
++FILE/REFERENCE           (defined in SINEX 2.02)                                                    <br />
++TROP/DESCRIPTION         (custom block)
++TROP/STA_COORDINATES     (custom block)
++TROP/SOLUTION            (custom block)</p>
+<p>The format of the custom blocks are derived by reading example files and blocks defined in the format that is not 
+present in the example files are not implemented yet.</p>
+<p>Format description: https://files.igs.org/pub/data/format/sinex_tropo.txt</p>
+<h3 id="berntropsnxparser"><strong>BernTropSnxParser</strong></h3>
+<p>Full name: <code>midgard.parsers.sinex_tro.BernTropSnxParser</code></p>
+<p>Signature: <code>(file_path, encoding=None)</code></p>
+<p>A parser for reading data from Bernese troposphere files in SNX format</p>
 <h2 id="midgardparsersslr_prediction">midgard.parsers.slr_prediction</h2>
 <p>A parser for reading SLR prediction files</p>
 <p><strong>Description:</strong></p>
