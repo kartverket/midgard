@@ -594,7 +594,7 @@ class MatPlotExt:
             if y_arrays[0].ndim == 2:
                 colors = np.full((len(y_arrays), y_arrays[0].shape[0]), None)
             else:
-                colors =  np.full((1, len(y_arrays)), None)
+                colors =  [None for ii in range(0, len(y_arrays))]
       
         if y_units is None:
             y_units = [None for ii in range(0, len(y_arrays))]
