@@ -49,7 +49,7 @@ class LineParser(Parser):
         """
         self.meta["__params__"] = self.setup_parser()
         self.meta["__params__"].setdefault("encoding", self.file_encoding or "bytes")  # TODO: Default to None instead?
-        self._array = np.genfromtxt(self.file_path, **self.meta["__params__"])
+        self._array = np.atleast_1d(np.genfromtxt(self.file_path, **self.meta["__params__"]))
         self.structure_data()
 
     def structure_data(self) -> None:

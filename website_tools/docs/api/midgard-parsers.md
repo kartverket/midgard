@@ -423,6 +423,264 @@ and **meta**-data:
 | \__parser_name__      | Parser name                                                                          |
 
 
+## midgard.parsers.bernese_clu
+A parser for reading Bernese CLU file
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_clu', file_path='NOR_NKG.CLU')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in Bernese CLU format.
+
+
+
+### **BerneseCluParser**
+
+Full name: `midgard.parsers.bernese_clu.BerneseCluParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
+
+A parser for reading Bernese CLU file
+
+Following **data** are available after reading Bernese CLU file:
+
+| Parameter           | Description                                                                           |
+|---------------------|---------------------------------------------------------------------------------------|
+| station             | 4-digit station identifier                                                            |
+| domes               | Domes number                                                                          |
+| cluster             | Cluster number                                                                        |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
+
+
+
+## midgard.parsers.bernese_compar_out
+A parser for reading coordinate comparison in Bernese OUT format
+
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_compar_out', file_path='COMP211670.OUT')
+    data = p.as_dict()
+
+**Description:**
+
+Reads coordinate comparison data from files in OUT format
+
+
+
+### **BerneseComparOutParser**
+
+Full name: `midgard.parsers.bernese_compar_out.BerneseComparOutParser`
+
+Signature: `(*args: Tuple[Any], **kwargs: Dict[Any, Any])`
+
+A parser for reading coordinate comparison in Bernese OUT format
+
+
+The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key. The station
+related data are saved in a dictionary with following keys:
+
+| Key                   | Type        |Description                                                           |
+|-----------------------|-------------|----------------------------------------------------------------------|
+| coord_comp_east       | List[float] | List with daily station coordinate comparison results for East       |
+|                       |             | component in [m]                                                     |
+| coord_comp_north      | List[float] | List with daily station coordinate comparison results for North      |
+|                       |             | component in [m]                                                     |
+| coord_comp_up         | List[float] | List with daily station coordinate comparison results for Up         |
+|                       |             | component in [m]                                                     |
+| coord_comp_rms_east   | float       | List with daily station coordinate comparison results for East       |
+|                       |             | component in [m]                                                     |
+| coord_comp_rms_north  | float       | List with daily station coordinate comparison results for North      |
+|                       |             | component in [m]                                                     |
+| coord_comp_rms_up     | float       | List with daily station coordinate comparison results for Up         |
+|                       |             | component in [m]                                                     |
+| pos_mean_x            | float       | X-coordinate of mean station coordinate position in [m]              |
+| pos_mean_x_rms1       | float       | RMS1 of X-coordinate of mean station coordinate position in [m]      |
+| pos_mean_x_rms2       | float       | RMS2 of X-coordinate of mean station coordinate position in [m]      |
+| pos_mean_y            | float       | Y-coordinate of mean station coordinate position in [m]              |
+| pos_mean_y_rms1       | float       | RMS1 of Y-coordinate of mean station coordinate position in [m]      |
+| pos_mean_y_rms2       | float       | RMS2 of Y-coordinate of mean station coordinate position in [m]      |
+| pos_mean_z            | float       | Z-coordinate of mean station coordinate position in [m]              |
+| pos_mean_z_rms1       | float       | RMS1 of Z-coordinate of mean station coordinate position in [m]      |
+| pos_mean_z_rms2       | float       | RMS2 of Z-coordinate of mean station coordinate position in [m]      |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| num_coord_files      | Number of coordinate files used for analysis                                         |
+| time                 | Date of analysis session                                                             |
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
+
+
+## midgard.parsers.bernese_crd
+A parser for reading Bernese CRD file
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_crd', file_path='W20216.CRD')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in Bernese CRD format.
+
+
+
+### **BerneseCrdParser**
+
+Full name: `midgard.parsers.bernese_crd.BerneseCrdParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
+
+A parser for reading Bernese CRD file
+
+Following **data** are available after reading Bernese CRD file:
+
+| Parameter           | Description                                                                           |
+|---------------------|---------------------------------------------------------------------------------------|
+| num                 | Number of station coordinate solution                                                 |
+| station             | 4-digit station identifier                                                            |
+| domes               | Domes number                                                                          |
+| gpssec              | Seconds of GPS week                                                                   |
+| pos_x               | X-coordinate of station position                                                      |
+| pos_y               | Y-coordinate of station position                                                      |
+| pos_z               | Z-coordinate of station position                                                      |
+| flag                | Flag                                                                                  |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| \__data_path__       | File path                                                                            |
+| \__params__          | np.genfromtxt parameters                                                             |
+| \__parser_name__     | Parser name                                                                          |
+
+
+
+## midgard.parsers.bernese_prc
+A parser for reading protocol file in Bernese PRC format
+
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_prc', file_path='RES211670.PRC')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in PRC format
+
+
+
+### **BernesePrcParser**
+
+Full name: `midgard.parsers.bernese_prc.BernesePrcParser`
+
+Signature: `(*args: Tuple[Any], **kwargs: Dict[Any, Any])`
+
+A parser for reading protocol file in Bernese PRC format
+
+
+The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key. The station
+related data are saved in a dictionary with following keys:
+
+| Key                   | Type        |Description                                                           |
+|-----------------------|-------------|----------------------------------------------------------------------|
+| coord_comp_east       | List[float] | List with daily station coordinate comparison results for East       |
+|                       |             | component in [m]                                                     |
+| coord_comp_north      | List[float] | List with daily station coordinate comparison results for North      |
+|                       |             | component in [m]                                                     |
+| coord_comp_up         | List[float] | List with daily station coordinate comparison results for Up         |
+|                       |             | component in [m]                                                     |
+| coord_comp_rms_east   | float       | List with daily station coordinate comparison results for East       |
+|                       |             | component in [m]                                                     |
+| coord_comp_rms_north  | float       | List with daily station coordinate comparison results for North      |
+|                       |             | component in [m]                                                     |
+| coord_comp_rms_up     | float       | List with daily station coordinate comparison results for Up         |
+|                       |             | component in [m]                                                     |
+| num_of_days           | float       | Number of days used for analysis                                     |
+| pos_mean_x            | float       | X-coordinate of mean station coordinate position in [m]              |
+| pos_mean_x_rms1       | float       | RMS1 of X-coordinate of mean station coordinate position in [m]      |
+| pos_mean_x_rms2       | float       | RMS2 of X-coordinate of mean station coordinate position in [m]      |
+| pos_mean_y            | float       | Y-coordinate of mean station coordinate position in [m]              |
+| pos_mean_y_rms1       | float       | RMS1 of Y-coordinate of mean station coordinate position in [m]      |
+| pos_mean_y_rms2       | float       | RMS2 of Y-coordinate of mean station coordinate position in [m]      |
+| pos_mean_z            | float       | Z-coordinate of mean station coordinate position in [m]              |
+| pos_mean_z_rms1       | float       | RMS1 of Z-coordinate of mean station coordinate position in [m]      |
+| pos_mean_z_rms2       | float       | RMS2 of Z-coordinate of mean station coordinate position in [m]      |
+| repeatability_east    | float       | Station coordinate repeatability for East component in [m]           |
+| repeatability_north   | float       | Station coordinate repeatability for North component in [m]          |
+| repeatability_up      | float       | Station coordinate repeatability for Up component in [m]             |
+| residual_east         | float       | Station residuals for East component in [m]                          |
+| residual_north        | float       | Station residuals for North component in [m]                         |
+| residual_up           | float       | Station residuals for Up component in [m]                            |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| num_coord_files      | Number of coordinate files used for analysis                                         |
+| time                 | Date of analysis session                                                             |
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
+
+
+## midgard.parsers.bernese_trp
+A parser for reading troposphere files in Bernese TRP format
+
+
+**Example:**
+
+    from analyx import parsers
+    p = parsers.parse_file(parser_name='bernese_trp', file_path='F1_210300.TRP')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files troposphere files in TRP format
+
+
+
+### **BerneseTrpPaser**
+
+Full name: `midgard.parsers.bernese_trp.BerneseTrpPaser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
+
+A parser for reading troposphere files in Bernese TRP format
+
+
+Following **data** can be available after reading troposphere files in Bernese TRP file:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| TODO                 |                                                                                      |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| TODO                 |                                                                                      |
+| \__data_path__       | File path                                                                            |
+| \__params__          | np.genfromtxt parameters                                                             |
+| \__parser_name__     | Parser name                                                                          |
+
+
 ## midgard.parsers.cost
 A parser for reading COST format for ground-based GNSS delay and water vapour data
 
@@ -1062,51 +1320,6 @@ The 'meta' attribute is a dictionary with following entries:
 - `meta`:            (dict), Contains metainformation read from file.
 
 
-## midgard.parsers.gnss_bernese_crd
-A parser for reading Bernese CRD file
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='gnss_bernese_crd', file_path='W20216.CRD')
-    data = p.as_dict()
-
-**Description:**
-
-Reads data from files in Bernese CRD format.
-
-
-
-### **GnssCrdParser**
-
-Full name: `midgard.parsers.gnss_bernese_crd.GnssCrdParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Union[str, NoneType] = None) -> None`
-
-A parser for reading Bernese CRD file
-
-Following **data** are available after reading Bernese CRD file:
-
-| Parameter           | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
-| num                 | Number of station coordinate solution                                                 |
-| station             | 4-digit station identifier                                                            |
-| domes               | Domes number                                                                          |
-| gpssec              | Seconds of GPS week                                                                   |
-| pos_x               | X-coordinate of station position                                                      |
-| pos_y               | Y-coordinate of station position                                                      |
-| pos_z               | Z-coordinate of station position                                                      |
-| flag                | Flag                                                                                  |
-
-and **meta**-data:
-
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
-
-
-
 ## midgard.parsers.gnss_galat_results
 A parser for GALAT single point positioning result files
 
@@ -1639,6 +1852,34 @@ used.
 **Args:**
 
 file_path (pathlib.PosixPath):  File path to broadcast orbit file.
+
+
+## midgard.parsers.sinex_tro
+A parser for reading troposphere results in SNX format
+
+**Description:**
+
+The implementation is based on example output files from Bernese. The SINEX_TRO format is an extension of the regular
+SINEX format, but mostly uses custom blocks. The following blocks are found in the example file:
++FILE/REFERENCE           (defined in SINEX 2.02)                                                      
++TROP/DESCRIPTION         (custom block)
++TROP/STA_COORDINATES     (custom block)
++TROP/SOLUTION            (custom block)
+
+The format of the custom blocks are derived by reading example files and blocks defined in the format that is not 
+present in the example files are not implemented yet.
+
+Format description: https://files.igs.org/pub/data/format/sinex_tropo.txt
+
+
+
+### **BernTropSnxParser**
+
+Full name: `midgard.parsers.sinex_tro.BernTropSnxParser`
+
+Signature: `(file_path, encoding=None)`
+
+A parser for reading data from Bernese troposphere files in SNX format
 
 
 ## midgard.parsers.slr_prediction

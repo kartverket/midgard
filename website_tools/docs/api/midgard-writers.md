@@ -148,3 +148,25 @@ Get header
 **Returns:**
 
 Header lines
+
+
+### **get_value_by_keys**()
+
+Full name: `midgard.writers._writers.get_value_by_keys`
+
+Signature: `(dict_: Dict[str, Any], keys: Tuple[str], format_=None, unit=None) -> Union[Any, List[Any]]`
+
+Get value of a dictionary specified by keys
+
+If option `format_` is defined, then formatted string is returned instead of original value.
+
+**Args:**
+
+- `dict_`:   Dictionary with data
+- `keys`:    Dictionary keys
+- `format_`: Format definition
+- `unit`:    Unit definition in format <from_unit>2<to_unit> (e.g. meter2millimeter)
+
+**Returns:**
+
+Original dictionary value or string formatted value
