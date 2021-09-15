@@ -248,6 +248,7 @@ class ReceiverHistoryBase:
             # Check if receiver was changed
             if type_prev != self.history[(date_from, date_to)].type:
                 date_installed.append(date_from)
+                log.debug(f"Installed {date_from}: {self.history[(date_from, date_to)].type}")
             type_prev = self.history[(date_from, date_to)].type
 
         return date_installed
@@ -266,29 +267,29 @@ class ReceiverHistoryBase:
             # Check if receiver was changed
             if type_prev != self.history[(date_from, date_to)].type:
                 date_removed.append(date_to)
-                print(date_to, self.history[(date_from, date_to)].type)
+                log.debug(f"Installed {date_to}: {self.history[(date_from, date_to)].type}")
             type_prev = self.history[(date_from, date_to)].type
 
         return date_removed
 
     @property
-    def firmware_changed(self) -> List[datetime]:
-        """Get all dates for an given station, when firmware was changed
+    def firmware_installed(self) -> List[datetime]:
+        """Get all dates for an given station, when firmware was installed
 
         Returns:
-            List with removing site dates from a specific site information (e.g. antenna, receiver)
+            List with firmware installation dates
         """
-        dates = list()
+        date_installed = list()
         firmware_prev = None
         for (date_from, date_to) in self.history.keys():
 
             # Check if firmware was changed
             if firmware_prev != self.history[(date_from, date_to)].firmware:
-                dates.append(date_to)
-                print(date_to, self.history[(date_from, date_to)].firmware)
+                date_installed.append(date_from)
+                log.debug(f"Firmware installed {date_from}: {self.history[(date_from, date_to)].firmware}")
             firmware_prev = self.history[(date_from, date_to)].firmware
 
-        return dates
+        return date_installed
 
 
 @ReceiverHistory.register_source
