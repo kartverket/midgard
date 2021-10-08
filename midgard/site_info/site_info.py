@@ -211,7 +211,7 @@ class SiteInfoHistoryBase:
                 return site_info
 
     @property
-    def date_installed(self) -> List[datetime]:
+    def date_from(self) -> List[datetime]:
         """Get all installation dates for an given station from a specific site information (e.g. antenna, receiver)
 
         Returns:
@@ -220,7 +220,7 @@ class SiteInfoHistoryBase:
         return [date_from for (date_from, date_to) in self.history.keys()]
 
     @property
-    def date_removed(self) -> List[datetime]:
+    def date_to(self) -> List[datetime]:
         """Get all removing dates for an given station from a specific site information (e.g. antenna, receiver)
 
         Returns:

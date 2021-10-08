@@ -108,7 +108,7 @@ class ReceiverHistorySinex(SiteInfoHistoryBase):
         history = dict()
         for receiver_info in raw_info:
             receiver = ReceiverSinex(self.station, receiver_info)
-            interval = (receiver.date_installed, receiver.date_removed)
+            interval = (receiver.date_from, receiver.date_to)
             history[interval] = receiver
 
         return history
@@ -122,7 +122,7 @@ class ReceiverSinex(SiteInfoBase):
     fields = dict(type="receiver_type", serial_number="serial_number", firmware="firmware")
 
     @property
-    def date_installed(self) -> datetime:
+    def date_from(self) -> datetime:
         """ Get receiver installation date from site information attribute
 
         Returns:
@@ -134,7 +134,7 @@ class ReceiverSinex(SiteInfoBase):
             return datetime.min
 
     @property
-    def date_removed(self) -> datetime:
+    def date_to(self) -> datetime:
         """ Get receiver removing date from site information attribute
 
         Returns:

@@ -109,7 +109,7 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
         history = dict()
         for antenna_info in raw_info:
             antenna = AntennaSinex(self.station, antenna_info)
-            interval = (antenna.date_installed, antenna.date_removed)
+            interval = (antenna.date_from, antenna.date_to)
             history[interval] = antenna
 
         return history
@@ -128,7 +128,7 @@ class AntennaSinex(SiteInfoBase):
     )
 
     @property
-    def date_installed(self) -> datetime:
+    def date_from(self) -> datetime:
         """ Get antenna installation date from site information attribute
 
         Returns:
@@ -140,7 +140,7 @@ class AntennaSinex(SiteInfoBase):
             return datetime.min
 
     @property
-    def date_removed(self) -> datetime:
+    def date_to(self) -> datetime:
         """ Get antenna removing date from site information attribute
 
         Returns:
