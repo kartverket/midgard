@@ -18,14 +18,27 @@ from typing import Any, Dict, List, Tuple, Union
 class SiteInfo:
     """Main site information class for getting site information object depending on site information source
 
-    The site information source can be e.g. a SINEX file.
+    The site information source can be e.g. a SINEX file. The source data has to be read for each station from a file,
+    whereby the file path is defined via 'source_path' argument. If site information for several stations should be 
+    provided, then it is recommended to provide the data via 'source_data' argument. The data can be read e.g. for a 
+    SINEX file like:
+
+        from midgard import parsers
+        p = parsers.parse_file(parser_name='gnss_sinex_igs', file_path='./data/site_info/igs.snx')
+        source_data = p.as_dict()
+
     """
 
     sources = dict()
 
     @classmethod
     def get(
-        cls, source: str, station: str, date: datetime, source_path: Union[None, str] = None
+        cls,
+        source: str, 
+        station: str, 
+        date: datetime, 
+        source_path: Union[None, str] = None,
+        source_data: Union[None, Any] = None,
     ) -> Union[Any, Any]:
         """Get site information object depending on given source
 
@@ -34,16 +47,23 @@ class SiteInfo:
             station:      Station name.
             date:         Date for getting site information
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored. 
 
         Returns:
             Site information object 
         """
-        history = SiteInfoHistory.get(source, station, source_path)
+        history = SiteInfoHistory.get(source, station, source_path, source_data)
         return history.get(date)
 
     @classmethod
     def get_history(
-        cls, source: str, station: str, source_path: Union[None, str] = None
+            cls, 
+            source: str, 
+            station: str, 
+            source_path: Union[None, str] = None,
+            source_data: Union[None, Any] = None,
+            
     ) -> Union[Any, Any]:
         """Get site information history object depending on given source
 
@@ -51,11 +71,13 @@ class SiteInfo:
             source:       Site information source e.g. 'sinex' (SINEX file)
             station:      Station name.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored. 
 
         Returns:
             Site information object 
         """
-        history = SiteInfoHistory.get(source, station, source_path)
+        history = SiteInfoHistory.get(source, station, source_path, source_data)
         return history
 
 
@@ -126,7 +148,14 @@ class SiteInfoHistory:
     sources = dict()
 
     @classmethod
-    def get(cls, module: str, source: str, station: str, source_path: Union[None, str] = None) -> Union[Any, Any]:
+    def get(
+            cls, 
+            module: str, 
+            source: str, 
+            station: str, 
+            source_path: Union[None, str] = None,
+            source_data: Union[None, Any] = None,
+    ) -> Union[Any, Any]:
         """Get history class depending on given source  from a specific site information (e.g. antenna, receiver)
 
         The module name is used to distinguish between different site information classes calling this function.
@@ -136,13 +165,15 @@ class SiteInfoHistory:
             source:       Site information source e.g. 'sinex' (SINEX file)
             station:      Station name.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
 
         Returns:
             History class depending on given source
         """
         type_ = module.split(".")[-1]
         try:
-            return cls.sources[f"{source}_{type_}"](station, source_path)
+            return cls.sources[f"{source}_{type_}"](station, source_path, source_data)
         except KeyError:
             sources = set([v.split("_")[0] for v in cls.sources.keys()])
             raise ValueError(f"Source {source!r} unknown. Use one of: {', '.join(sources)}.")
@@ -171,15 +202,18 @@ class SiteInfoHistoryBase:
 
     source = None
 
-    def __init__(self, station: str, source_path: str) -> None:
+    def __init__(self, station: str, source_path: str, source_data: Any) -> None:
         """Initialize history information object from a specific site information (e.g. antenna, receiver)
 
         Args:
             station:      Station name.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
         """
         self.station = station.lower()
         self.source_path = source_path
+        self.source_data = source_data
         self.history = self._read_history()
 
     def _read_history(self):
