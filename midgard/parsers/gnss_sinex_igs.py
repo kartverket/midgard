@@ -28,7 +28,7 @@ class IgsSnxParser(SinexParser):
 
             site - Site dictionary, whereby keys are the site identifiers and values are a site entry
                    dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id' and 'site_receiver'. The
-                   site dictionary has following strucuture:
+                   site dictionary has following structure:
 
                       self.site[site] = { 'site_antenna':          [],  # SITE/ANTENNA SINEX block information
                                           'site_eccentricity':     [],  # SITE/ECCENTRICITY block information
