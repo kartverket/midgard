@@ -46,7 +46,11 @@ class Receiver:
 
     @classmethod
     def get(
-        cls, source: str, station: str, date: datetime, source_path: Union[None, str] = None
+            cls, 
+            source: str, station: str, 
+            date: datetime, 
+            source_path: Union[None, str] = None,
+            source_data: Union[None, Any] = None,
     ) -> Union["ReceiverSinex", Any]:
         """Get receiver object depending on given source
 
@@ -55,16 +59,22 @@ class Receiver:
             station:      Station name.
             date:         Date for getting site information
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
 
         Returns:
             Receiver object 
         """
-        history = SiteInfoHistory.get(__name__, source, station, source_path)
+        history = SiteInfoHistory.get(__name__, source, station, source_path, source_data)
         return history.get(date)
 
     @classmethod
     def get_history(
-        cls, source: str, station: str, source_path: Union[None, str] = None
+            cls, 
+            source: str, 
+            station: str, 
+            source_path: Union[None, str] = None,
+            source_data: Union[None, Any] = None,
     ) -> Union["ReceiverSinex", Any]:
         """Get antenna history object depending on given source
 
@@ -72,11 +82,13 @@ class Receiver:
             source:       Site information source e.g. 'sinex' (SINEX file)
             station:      Station name.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
 
         Returns:
             Antenna object 
         """
-        history = SiteInfoHistory.get(__name__, source, station, source_path)
+        history = SiteInfoHistory.get(__name__, source, station, source_path, source_data)
         return history
 
 
@@ -91,16 +103,20 @@ class ReceiverHistorySinex(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are ReceiverSinex objects.
         """
-        if self.source_path is None:
-            log.fatal("No SINEX file path is defined.")
 
-        # Find site_id and read antenna history
-        p = parsers.parse_file("gnss_sinex_igs", file_path=self.source_path)
-        data = p.as_dict()
-        if self.station in data:
-            raw_info = data[self.station]["site_receiver"]
-        elif self.station.upper() in data:
-            raw_info = data[self.station.upper()]["site_receiver"]
+        # Get SINEX file data by reading from file 'source_path'
+        if not self.source_data:
+            if self.source_path is None:
+                log.fatal("No SINEX file path is defined.")
+
+            # Find site_id and read antenna history
+            p = parsers.parse_file("gnss_sinex_igs", file_path=self.source_path)
+            self.source_data = p.as_dict()
+
+        if self.station in self.source_data:
+            raw_info = self.source_data[self.station]["site_receiver"]
+        elif self.station.upper() in self.source_data:
+            raw_info = self.source_data[self.station.upper()]["site_receiver"]
         else:
             raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
