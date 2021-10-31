@@ -100,25 +100,32 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
 
     source = "sinex"
 
-    def _read_history(self) -> Dict[Tuple[datetime, datetime], "AntennaSinex"]:
+    def _read_history(
+                self, 
+                source_data: Union[None, Any] = None,
+    ) -> Dict[Tuple[datetime, datetime], "AntennaSinex"]:
         """Read antenna site history from SINEX file
+
+        Args:
+            source_data:  Source data with site information. If source data are defined, then data are not read
+                          from 'source_path'. 
 
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are AntennaSinex objects.
         """
         # Get SINEX file data by reading from file 'source_path'
-        if not self.source_data:
+        if not source_data:
             if self.source_path is None:
                 log.fatal("No SINEX file path is defined.")
 
             # Find site_id and read antenna history
-            p = parsers.parse_file("gnss_sinex_igs", file_path=self.source_path)
-            self.source_data = p.as_dict()
+            p = parsers.parse_file("sinex_site", file_path=self.source_path)
+            source_data = p.as_dict()
 
-        if self.station in self.source_data:
-            raw_info = self.source_data[self.station]["site_antenna"]
-        elif self.station.upper() in self.source_data:
-            raw_info = self.source_data[self.station.upper()]["site_antenna"]
+        if self.station in source_data:
+            raw_info = source_data[self.station]["site_antenna"]
+        elif self.station.upper() in source_data:
+            raw_info = source_data[self.station.upper()]["site_antenna"]
         else:
             raise ValueError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
 

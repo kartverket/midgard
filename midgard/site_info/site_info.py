@@ -213,10 +213,13 @@ class SiteInfoHistoryBase:
         """
         self.station = station.lower()
         self.source_path = source_path
-        self.source_data = source_data
-        self.history = self._read_history()
+        self.history = self._read_history(source_data)
 
-    def _read_history(self):
+    def _read_history(self, **kwargs):
+        """Read site information history 
+
+        Routine has to be implemented in site_info module classes.
+        """
         raise NotImplementedError
 
     def __repr__(self):
