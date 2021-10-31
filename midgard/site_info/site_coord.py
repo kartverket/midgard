@@ -39,7 +39,7 @@ from midgard import parsers
 from midgard.data.position import Position
 from midgard.data.time import Time
 from midgard.dev import log
-from midgard.site_info.site_info import SiteInfoBase, SiteInfoHistory, SiteInfoHistoryBase 
+from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistory, SiteInfoHistoryBase 
 
 
 class SiteCoord():

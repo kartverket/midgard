@@ -24,7 +24,7 @@ class SiteInfo:
     SINEX file like:
 
         from midgard import parsers
-        p = parsers.parse_file(parser_name='gnss_sinex_igs', file_path='./data/site_info/igs.snx')
+        p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
         source_data = p.as_dict()
 
     """

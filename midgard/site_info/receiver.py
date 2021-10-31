@@ -33,7 +33,7 @@ from typing import Any, Dict, List, Tuple, Union
 # Midgard imports
 from midgard import parsers
 from midgard.dev import log
-from midgard.site_info.site_info import SiteInfoBase, SiteInfoHistory, SiteInfoHistoryBase 
+from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistory, SiteInfoHistoryBase 
 
 
 class Receiver:
