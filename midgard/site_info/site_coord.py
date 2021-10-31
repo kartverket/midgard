@@ -31,9 +31,13 @@ Example:
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple, Union
 
+# External library imports
+import numpy as np
+
 # Midgard imports
 from midgard import parsers
 from midgard.data.position import Position
+from midgard.data.time import Time
 from midgard.dev import log
 from midgard.site_info.site_info import SiteInfoBase, SiteInfoHistory, SiteInfoHistoryBase 
 
@@ -48,7 +52,12 @@ class SiteCoord():
 
     @classmethod
     def get(
-        cls, source: str, station: str, date: datetime, source_path: Union[None, str] = None
+            cls, 
+            source: str, 
+            station: str, 
+            date: datetime, 
+            source_path: Union[None, str] = None,
+            source_data: Union[None, Any] = None,
     ) -> Union["SiteCoordSinex", Any]:
         """Get site coordinate object depending on given source
 
@@ -57,16 +66,22 @@ class SiteCoord():
             station:      Station name.
             date:         Date for getting site information
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
 
         Returns:
             Site coordinate object 
         """
-        history = SiteInfoHistory.get(__name__, source, station, source_path)
+        history = SiteInfoHistory.get(__name__, source, station, source_path, source_data)
         return history.get(date)
 
     @classmethod
     def get_history(
-        cls, source: str, station: str, source_path: Union[None, str] = None
+            cls, 
+            source: str, 
+            station: str, 
+            source_path: Union[None, str] = None,
+            source_data: Union[None, Any] = None,
     ) -> Union["SiteCoordSinex", Any]:
         """Get site coordinate history object depending on given source
 
@@ -74,11 +89,13 @@ class SiteCoord():
             source:       Site information source e.g. 'sinex' (SINEX file)
             station:      Station name.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
 
         Returns:
             Site coordinate object 
         """
-        history = SiteInfoHistory.get(__name__, source, station, source_path)
+        history = SiteInfoHistory.get(__name__, source, station, source_path, source_data)
         return history
 
 
@@ -87,51 +104,101 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
 
     source = "sinex"
 
-    def _read_history(self) -> Dict[Tuple[datetime, datetime], "SiteCoordSinex"]:
+    def _read_history(
+                self, 
+                source_data: Union[None, Any] = None,
+    ) -> Dict[Tuple[datetime, datetime], "SiteCoordSinex"]:
         """Read site coordinate history from SINEX file
+
+        Args:
+            source_data:  Source data with site information. If source data are defined, then data are not read
+                          from 'source_path'.            
 
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordSinex objects.
         """
-        if self.source_path is None:
-            log.fatal("No SINEX file path is defined.")
 
-        # Find site_id and read site coordinate history
-        p = parsers.parse_file("gnss_sinex_igs", file_path=self.source_path)
-        data = p.as_dict()
-        if self.station in data:
-            raw_info = data[self.station]["site_antenna"]
-        elif self.station.upper() in data:
-            raw_info = data[self.station.upper()]["site_antenna"]
+        # Get SINEX file data by reading from file 'source_path'
+        if not source_data:
+            if self.source_path is None:
+                log.fatal("No SINEX file path is defined.")
+
+            # Find site_id and read antenna history
+            p = parsers.parse_file("sinex_site", file_path=self.source_path)
+            source_data = p.as_dict()
+
+        if self.station in source_data:
+            raw_info = self._combine_sinex_block_data(source_data[self.station])
+        elif self.station.upper() in source_data:
+            raw_info = self._combine_sinex_block_data(source_data[self.station.upper()])
         else:
             raise ValueError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
 
         # Create list of site coordinate history
         history = dict()
         for site_coord_info in raw_info:
-            site_coord = SiteCoordSinex(self.station, antenna_info)
+            site_coord = SiteCoordSinex(self.station, site_coord_info)
             interval = (site_coord.date_from, site_coord.date_to)
             history[interval] = site_coord
 
         return history
 
 
+    @staticmethod
+    def _combine_sinex_block_data(data: Dict[str, Dict[str, Dict[str, Any]]]) -> Dict[str, Dict[str, Any]]:
+        """Combine SOLUTION/EPOCHS and SOLUTION/ESTIMATE SINEX block data to a common dictionary
+
+        Args:
+            data: SINEX file data for a station
+
+        Return:
+            Dictionary with station as keys and values with information from SOLUTION/EPOCHS and SOLUTION/ESTIMATE SINEX 
+            block
+        """
+        raw_info = list()
+
+        for idx, epoch in enumerate(data["solution_epochs"]):
+            raw_info.append(epoch.copy())
+
+            for estimate in data["solution_estimate"]:
+                if epoch["soln"] == estimate["soln"]:
+                    raw_info[idx].update({estimate["param_name"]: estimate})
+
+        return raw_info
+
+
 class SiteCoordSinex(SiteInfoBase):
-    """ Site coordinate class handling SINEX file antenna station information
+    """ Site coordinate class handling SINEX file station coordinate information
     """
 
     source = "sinex"
     fields = dict()
 
     @property
-    def pos(self) -> "TrsPosition":
-        """ Get site coordinate from seSite API site information attribute
+    def date_from(self) -> datetime:
+        """ Get site coordinate starting date from site information attribute
 
         Returns:
-            Site coordinate 
+            Site coordinate starting date
         """
-        #TODO
-        return 
+        if self.info["start_epoch"]:
+            return self.info["start_epoch"]
+        else:
+            return datetime.min
+
+    @property
+    def date_to(self) -> datetime:
+        """ Get site coordinate ending date from site information attribute
+
+        Returns:
+            Site coordinate ending date
+        """
+        if self.info["end_epoch"]:
+            return self.info["end_epoch"]
+        else:
+            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
+            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
+            #      does not work. Exceeding of datetime limit 9999 12 31.
 
     @property
     def frame(self) -> str:
@@ -141,30 +208,84 @@ class SiteCoordSinex(SiteInfoBase):
             Reference frame
         """
         #TODO
-        return 
+        return None
 
     @property
-    def date_from(self) -> datetime:
-        """ Get site coordinate starting date from site information attribute
+    def pos(self) -> "TrsPosition":
+        """ Get site coordinate from SINEX file
 
         Returns:
-            Site coordinate starting date
+            Site coordinate
         """
-        if self.info["start_time"]:
-            return self.info["start_time"]
-        else:
-            return datetime.min
+        return Position(
+                        val=[
+                            self.info["STAX"]["estimate"],
+                            self.info["STAY"]["estimate"],
+                            self.info["STAZ"]["estimate"],
+                        ],
+                        system='trs',
+        )
 
     @property
-    def date_end(self) -> datetime:
-        """ Get site coordinate ending date from site information attribute
+    def pos_sigma(self) -> np.ndarray:
+        """ Get standard deviation of site coordinate from SINEX file
 
         Returns:
-            Site coordinate ending date
+            Standard deviation of site coordinate for X, Y and Z in [m]
         """
-        if self.info["end_time"]:
-            return self.info["end_time"]
+        return np.array([
+                        self.info["STAX"]["estimate_std"],
+                        self.info["STAY"]["estimate_std"],
+                        self.info["STAZ"]["estimate_std"],                
+        ])
+
+    @property
+    def ref_epoch(self) -> "Time":
+        """ Get reference epoch of site coordinate from SINEX file
+
+        Returns:
+            Reference epoch of site coordinate
+        """
+        return Time(
+                    val=self.info["STAX"]["ref_epoch"],
+                    scale="utc",
+                    fmt="datetime",
+        )
+
+    @property
+    def vel(self) -> np.ndarray:
+        """ Get site velocity from SINEX file
+
+        Returns:
+            Site velocity for X, Y and Z component in [m]
+        """
+        if "VELX" in self.info:
+            data = np.array([
+                            self.info["VELX"]["estimate"],
+                            self.info["VELY"]["estimate"],
+                            self.info["VELZ"]["estimate"],                
+            ])
         else:
-            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-            #      does not work. Exceeding of datetime limit 9999 12 31.
+            data = np.array([None, None, None])
+
+        return data
+
+    @property
+    def vel_sigma(self) -> np.ndarray:
+        """ Get standard deviation of site velocity from SINEX file
+
+        Returns:
+            Standard deviation of site velocity for X, Y and Z component in [m]
+        """
+        if "VELX" in self.info:
+            data = np.array([
+                            self.info["VELX"]["estimate"],
+                            self.info["VELY"]["estimate"],
+                            self.info["VELZ"]["estimate"],                
+            ])
+        else:
+            data = np.array([None, None, None])
+
+        return data
+
+
