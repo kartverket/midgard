@@ -181,8 +181,8 @@ class SiteCoordSinex(SiteInfoBase):
         Returns:
             Site coordinate starting date
         """
-        if self.info["start_epoch"]:
-            return self.info["start_epoch"]
+        if self._info["start_epoch"]:
+            return self._info["start_epoch"]
         else:
             return datetime.min
 
@@ -193,8 +193,8 @@ class SiteCoordSinex(SiteInfoBase):
         Returns:
             Site coordinate ending date
         """
-        if self.info["end_epoch"]:
-            return self.info["end_epoch"]
+        if self._info["end_epoch"]:
+            return self._info["end_epoch"]
         else:
             return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
             #       _year2days(cls, year, scale) in ./midgard/data/_time.py
@@ -202,13 +202,12 @@ class SiteCoordSinex(SiteInfoBase):
 
     @property
     def frame(self) -> str:
-        """ Get reference frame from seSite API site information attribute
+        """ Get reference frame from site information attribute
 
         Returns:
             Reference frame
         """
-        #TODO
-        return None
+        return self._info["STAX"]["ref_frame"] if "ref_frame" in self._info["STAX"] else None
 
     @property
     def pos(self) -> "TrsPosition":
@@ -219,9 +218,9 @@ class SiteCoordSinex(SiteInfoBase):
         """
         return Position(
                         val=[
-                            self.info["STAX"]["estimate"],
-                            self.info["STAY"]["estimate"],
-                            self.info["STAZ"]["estimate"],
+                            self._info["STAX"]["estimate"],
+                            self._info["STAY"]["estimate"],
+                            self._info["STAZ"]["estimate"],
                         ],
                         system='trs',
         )
@@ -234,9 +233,9 @@ class SiteCoordSinex(SiteInfoBase):
             Standard deviation of site coordinate for X, Y and Z in [m]
         """
         return np.array([
-                        self.info["STAX"]["estimate_std"],
-                        self.info["STAY"]["estimate_std"],
-                        self.info["STAZ"]["estimate_std"],                
+                        self._info["STAX"]["estimate_std"],
+                        self._info["STAY"]["estimate_std"],
+                        self._info["STAZ"]["estimate_std"],                
         ])
 
     @property
@@ -247,7 +246,7 @@ class SiteCoordSinex(SiteInfoBase):
             Reference epoch of site coordinate
         """
         return Time(
-                    val=self.info["STAX"]["ref_epoch"],
+                    val=self._info["STAX"]["ref_epoch"],
                     scale="utc",
                     fmt="datetime",
         )
@@ -259,11 +258,11 @@ class SiteCoordSinex(SiteInfoBase):
         Returns:
             Site velocity for X, Y and Z component in [m]
         """
-        if "VELX" in self.info:
+        if "VELX" in self._info:
             data = np.array([
-                            self.info["VELX"]["estimate"],
-                            self.info["VELY"]["estimate"],
-                            self.info["VELZ"]["estimate"],                
+                            self._info["VELX"]["estimate"],
+                            self._info["VELY"]["estimate"],
+                            self._info["VELZ"]["estimate"],                
             ])
         else:
             data = np.array([None, None, None])
@@ -277,11 +276,11 @@ class SiteCoordSinex(SiteInfoBase):
         Returns:
             Standard deviation of site velocity for X, Y and Z component in [m]
         """
-        if "VELX" in self.info:
+        if "VELX" in self._info:
             data = np.array([
-                            self.info["VELX"]["estimate"],
-                            self.info["VELY"]["estimate"],
-                            self.info["VELZ"]["estimate"],                
+                            self._info["VELX"]["estimate"],
+                            self._info["VELY"]["estimate"],
+                            self._info["VELZ"]["estimate"],                
             ])
         else:
             data = np.array([None, None, None])

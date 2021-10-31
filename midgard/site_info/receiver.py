@@ -151,8 +151,8 @@ class ReceiverSinex(SiteInfoBase):
         Returns:
             Receiver installation date
         """
-        if self.info["start_time"]:
-            return self.info["start_time"]
+        if self._info["start_time"]:
+            return self._info["start_time"]
         else:
             return datetime.min
 
@@ -163,8 +163,8 @@ class ReceiverSinex(SiteInfoBase):
         Returns:
             Receiver removing date
         """
-        if self.info["end_time"]:
-            return self.info["end_time"]
+        if self._info["end_time"]:
+            return self._info["end_time"]
         else:
             return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
             #       _year2days(cls, year, scale) in ./midgard/data/_time.py

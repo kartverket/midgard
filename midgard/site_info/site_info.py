@@ -96,7 +96,7 @@ class SiteInfoBase:
             site_info:  Dictionary with site information.
         """
         self.station = station.lower()
-        self.info = site_info
+        self._info = site_info
 
     def __repr__(self) -> str:
         """A string describing the site information object
@@ -123,7 +123,7 @@ class SiteInfoBase:
             Attribute data. The datatype depends on the attribute type.
         """
         if key in self.fields:
-            return self.info[self.fields[key]]
+            return self._info[self.fields[key]]
         raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
 
     def __setattr__(self, key: str, value: Any) -> None:
@@ -134,7 +134,7 @@ class SiteInfoBase:
             value:   Attribute value.
         """
         if key in self.fields:
-            self.info[self.fields[key]] = value
+            self._info[self.fields[key]] = value
         else:
             super().__setattr__(key, value)
 
