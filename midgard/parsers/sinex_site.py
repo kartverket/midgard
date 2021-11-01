@@ -223,7 +223,7 @@ class SinexSiteParser(SinexParser):
                         for idx in range(0, len(self.data[key]["solution_estimate"])):
                             self.data[key]["solution_estimate"][idx]["ref_frame"] = self.data["ref_frame"]
 
-        del self.data["ref_frame"]
+            del self.data["ref_frame"]
 
 
     #
