@@ -157,12 +157,13 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
         """
         raw_info = list()
 
-        for idx, epoch in enumerate(data["solution_epochs"]):
-            raw_info.append(epoch.copy())
+        if "solution_epochs" in data.keys():
+            for idx, epoch in enumerate(data["solution_epochs"]):
+                raw_info.append(epoch.copy())
 
-            for estimate in data["solution_estimate"]:
-                if epoch["soln"] == estimate["soln"]:
-                    raw_info[idx].update({estimate["param_name"]: estimate})
+                for estimate in data["solution_estimate"]:
+                    if epoch["soln"] == estimate["soln"]:
+                        raw_info[idx].update({estimate["param_name"]: estimate})
 
         return raw_info
 
