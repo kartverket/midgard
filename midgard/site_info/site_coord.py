@@ -207,13 +207,13 @@ class SiteCoordSinex(SiteInfoBase):
             #      does not work. Exceeding of datetime limit 9999 12 31.
 
     @property
-    def frame(self) -> str:
-        """ Get reference frame from site information attribute
+    def system(self) -> str:
+        """ Get reference system from site information attribute
 
         Returns:
-            Reference frame
+            Reference system
         """
-        return self._info["STAX"]["ref_frame"] if "ref_frame" in self._info["STAX"] else None
+        return self._info["STAX"]["ref_system"] if "ref_system" in self._info["STAX"] else None
 
     @property
     def pos(self) -> "TrsPosition":
@@ -315,15 +315,15 @@ class SiteCoordSinex(SiteInfoBase):
         self._info["end_epoch"] = date_to
 
 
-    def set_frame(self, frame: str) -> None:
-        """ Set reference frame in site information attribute
+    def set_system(self, system: str) -> None:
+        """ Set reference system in site information attribute
 
         Args:
-            frame: Reference frame
+            system: Reference system
         """
-        self._info["STAX"]["ref_frame"] = frame
-        self._info["STAY"]["ref_frame"] = frame
-        self._info["STAZ"]["ref_frame"] = frame
+        self._info["STAX"]["ref_system"] = system
+        self._info["STAY"]["ref_system"] = system
+        self._info["STAZ"]["ref_system"] = system
 
 
     def set_pos(self, pos: Union[List[float], np.ndarray]) -> None:
