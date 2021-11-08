@@ -175,6 +175,11 @@ class SiteCoordSinex(SiteInfoBase):
     source = "sinex"
     fields = dict()
 
+
+    #
+    # GET METHODS
+    #
+
     @property
     def date_from(self) -> datetime:
         """ Get site coordinate starting date from site information attribute
@@ -287,5 +292,93 @@ class SiteCoordSinex(SiteInfoBase):
             data = np.array([None, None, None])
 
         return data
+
+
+    #
+    # SET METHODS
+    #
+    def set_date_from(self, date_from: datetime) -> None:
+        """ Set site coordinate starting date in site information attribute
+
+        Returns:
+            date_from: Site coordinate starting date
+        """
+        self._info["start_epoch"] = date_from
+
+
+    def set_date_to(self, date_to: datetime) -> None:
+        """ Set site coordinate ending date in site information attribute
+
+        Returns:
+            date_to: Site coordinate ending date
+        """
+        self._info["end_epoch"] = date_to
+
+
+    def set_frame(self, frame: str) -> None:
+        """ Set reference frame in site information attribute
+
+        Args:
+            frame: Reference frame
+        """
+        self._info["STAX"]["ref_frame"] = frame
+        self._info["STAY"]["ref_frame"] = frame
+        self._info["STAZ"]["ref_frame"] = frame
+
+
+    def set_pos(self, pos: Union[List[float], np.ndarray]) -> None:
+        """ Set site coordinate in site information attribute
+
+        Args:
+            pos: Site coordinates for X, Y and Z in [m]
+        """
+        self._info["STAX"]["estimate"] = pos[0]
+        self._info["STAY"]["estimate"] = pos[1]
+        self._info["STAZ"]["estimate"] = pos[2]
+
+
+    def set_pos_sigma(self, pos_sigma: Union[List[float], np.ndarray]) -> None:
+        """ Set standard deviation of site coordinate in site information attribute
+
+        Args:
+            pos_sigma: Standard deviation of site coordinate for X, Y and Z in [m]
+        """
+        self._info["STAX"]["estimate_std"] = pos_sigma[0]
+        self._info["STAY"]["estimate_std"] = pos_sigma[1]
+        self._info["STAZ"]["estimate_std"] = pos_sigma[2]                
+
+
+    def set_ref_epoch(self, ref_epoch: datetime) -> None:
+        """ Set reference epoch of site coordinate in site information attribute
+
+        Args:
+            ref_epoch: Reference epoch of site coordinate
+        """
+        val=self._info["STAX"]["ref_epoch"] = ref_epoch
+        val=self._info["STAY"]["ref_epoch"] = ref_epoch
+        val=self._info["STAZ"]["ref_epoch"] = ref_epoch
+
+
+    def set_vel(self, vel: Union[List[float], np.ndarray]) -> None:
+        """ Set site velocity in site information attribute
+
+        Args:
+            vel: Site velocity for X, Y and Z component in [m]
+        """
+        self._info["VELX"]["estimate"] = vel[0]
+        self._info["VELY"]["estimate"] = vel[1]
+        self._info["VELZ"]["estimate"] = vel[2]              
+
+
+    def set_vel_sigma(self, vel_sigma: Union[List[float], np.ndarray]) -> None:
+        """ Set standard deviation of site velocity in site information attribute
+
+        Args:
+            vel_sigma: Standard deviation of site velocity for X, Y and Z component in [m]
+        """
+        self._info["VELX"]["estimate"] = vel_sigma[0]
+        self._info["VELY"]["estimate"] = vel_sigma[1]
+        self._info["VELZ"]["estimate"] = vel_sigma[2]
+
 
 
