@@ -10,6 +10,7 @@ in subclasses.
 """
 
 # Standard library imports
+from copy import deepcopy
 from datetime import datetime
 from typing import Any, Dict, List, Tuple, Union
 
@@ -141,6 +142,14 @@ class SiteInfoBase:
     def __dir__(self) -> List[str]:
         """List all fields and attributes on the class"""
         return super().__dir__() + list(self.fields)
+
+    def copy(self) -> object:
+        """Return a copy of object
+
+        Returns:
+            A copy of object
+        """        
+        return type(self)(self.station, deepcopy(self._info))
 
 
 class SiteInfoHistory:
