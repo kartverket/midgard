@@ -72,7 +72,7 @@ class GnssreflAllRh(LineParser):
             names=(
                 "year",
                 "doy",
-                "reflection_heigt",
+                "reflection_height",
                 "month",
                 "day",
                 "azimuth",
