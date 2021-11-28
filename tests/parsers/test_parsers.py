@@ -66,6 +66,14 @@ def test_parser_android_raw_data():
 def test_parser_antex():
     pass
 
+def test_parser_api_water_level_norway():
+    """Test that parsing api_water_level_norway gives expected output"""
+    parser = get_parser("api_water_level_norway").as_dict()
+
+    assert len(parser) == 3
+    assert "value" in parser
+    assert "weather" in parser["flag"]
+
 
 def test_parser_bcecmp_sisre():
     """Test that parsing bcecmp_sisre gives expected output"""
@@ -81,8 +89,8 @@ def test_parser_bernese_clu():
     parser = get_parser("bernese_clu").as_dict()
 
     assert len(parser) == 16
-    assert "aasc" in parser
-    assert "num" in parser["aasc"]
+    assert "ales" in parser
+    assert "domes" in parser["ales"]
 
 
 def test_parser_bernese_crd():
@@ -90,13 +98,17 @@ def test_parser_bernese_crd():
     parser = get_parser("bernese_crd").as_dict()
 
     assert len(parser) == 5
-    assert "ales" in parser
-    assert "domes" in parser["ales"]
+    assert "aasc" in parser
+    assert "domes" in parser["aasc"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_bernese_trp():
-    pass
+    """Test that parsing bernese_trp gives expected output"""
+    parser = get_parser("bernese_trp").as_dict()
+
+    assert len(parser) == 12
+    assert "station" in parser
+    assert "AASC" in parser["station"]
 
 
 def test_parser_csv_():
