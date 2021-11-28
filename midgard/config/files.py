@@ -274,7 +274,7 @@ class FileConfiguration(Configuration):
         file_vars = dict() if file_vars is None else file_vars
         base_url = self[file_key].url.replace(default=default, **file_vars).str.rstrip("/")
         file_name = self[file_key].filename.replace(default=default, **file_vars).str
-        file_url = self._replace_gz(url.URL(f"{base_url}/{file_name}"), is_zipped=is_zipped)
+        file_url = self._replace_gz(pathlib.Path(f"{base_url}/{file_name}"), is_zipped=is_zipped)
 
         # Check for aliases
         if use_aliases and not file_url.exists():
@@ -282,9 +282,9 @@ class FileConfiguration(Configuration):
             for alias in aliases:
                 aliased_url = self._replace_gz(file_url.with_name(alias), is_zipped=is_zipped)
                 if aliased_url.exists():
-                    return aliased_url
+                    return url.URL(aliased_url)
 
-        return file_url
+        return url.URL(file_url)
 
     @staticmethod
     def _replace_gz(file_path: pathlib.Path, is_zipped: Optional[bool] = None) -> pathlib.Path:
