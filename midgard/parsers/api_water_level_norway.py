@@ -32,13 +32,11 @@ See https://api.sehavniva.no/tideapi_no.html for an example
 from datetime import datetime
 import pathlib
 import pytz
-from typing import Any, Dict, Optional, Union
-import warnings
+from typing import Optional, Union
 from xml.dom.minidom import parse
 
 # Third party imports
 import numpy as np
-import pandas as pd
 import pycurl
 
 # Midgard imports
@@ -59,18 +57,18 @@ class ApiWaterLevelNorwayParser(Parser):
 
     | Parameter           | Description                                                                           |
     |---------------------|---------------------------------------------------------------------------------------|
-    | flag                | Data flag (obs: observation, pre: prediction, weather: weather                        |
-    |                     | effect)                                                                               |
+    | flag                | Data flag (obs: observation, pre: prediction, weather: weather effect, forecast:      |
+    |                     | forecast)                                                                             |
     | time                | Observation                                                                           |
     | water_level         | Water level in [cm]                                                                   |
 
     and **meta**-data:
 
-    | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
-    | \__url__             | URL of water level API                                                               |
+    | Key                 | Description                                                                           |
+    |---------------------|---------------------------------------------------------------------------------------|
+    | __data_path__       | File path                                                                             |
+    | __parser_name__     | Parser name                                                                           |
+    | __url__             | URL of water level API                                                                |
     """
 
     URL = "http://api.sehavniva.no/tideapi.php"
@@ -194,16 +192,16 @@ class ApiWaterLevelNorwayParser(Parser):
        |  Field               | Type              | Description                                                       |
        |----------------------|-------------------|-------------------------------------------------------------------|
        | flag                 | numpy.ndarray     | Data flag (obs: observation, pre: prediction, weather: weather    |
-       |                      |                   | effect)                                                           |
+       |                      |                   | effect, forecast: forecast)                                       |
        | time                 | TimeTable         | Observation time given as TimeTable object                        |
        | water_level          | numpy.ndarray     | Water level in [m]                                                |
 
             and following Dataset `meta` data:
 
-       |  Entry              | Type  | Description                                                                    |
-       |---------------------|-------|--------------------------------------------------------------------------------|
-       | \__data_path__      | str   | File path                                                                      |
-       | \__url__            | str   | URL of water level API                                                         |
+       |  Entry               | Type              | Description                                                       |
+       |----------------------|-------------------|-------------------------------------------------------------------|
+       | __data_path__        | str               | File path                                                         |
+       | __url__              | str               | URL of water level API                                            |
 
         """
         dset = dataset.Dataset(num_obs=len(self.data["time"]))
