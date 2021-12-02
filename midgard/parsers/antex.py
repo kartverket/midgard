@@ -4,7 +4,11 @@ Example:
 --------
 
     from midgard import parsers
+
+    # Parse data
     p = parsers.parse_file(parser_name='antex', file_path='igs14.atx')
+
+    # Get dictionary with parsed data
     data = p.as_dict()
 
 Description:
