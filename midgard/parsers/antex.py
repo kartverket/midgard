@@ -4,7 +4,7 @@ Example:
 --------
 
     from midgard import parsers
-    p = parsers.parse_file(parser_name='gnss_antex', file_path='igs14.atx')
+    p = parsers.parse_file(parser_name='antex', file_path='igs14.atx')
     data = p.as_dict()
 
 Description:
