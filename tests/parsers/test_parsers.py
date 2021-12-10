@@ -4,6 +4,7 @@ Tests for individual parsers are in their own files
 """
 
 # Standard library imports
+from datetime import datetime
 import pathlib
 
 # Third party imports
@@ -14,9 +15,10 @@ import pytest
 from midgard import parsers
 
 
-def get_parser(parser_name):
+def get_parser(parser_name, example_path = None):
     """Get a parser that has parsed an example file"""
-    example_path = pathlib.Path(__file__).parent / "example_files" / parser_name
+    if not example_path:
+        example_path = pathlib.Path(__file__).parent / "example_files" / parser_name
     return parsers.parse_file(parser_name, example_path)
 
 
@@ -56,15 +58,31 @@ def test_non_caching_parser():
     assert False
 
 
+def test_parser_gnss_android_raw_data():
+    """Test that parsing gnss_android_raw_data gives expected output"""
+    parser = get_parser("gnss_android_raw_data").as_dict()
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
-def test_parser_android_raw_data():
-    pass
+    assert len(parser) == 43
+    assert "provider" in parser
+    assert "gps" in parser["provider"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_antex():
-    pass
+    """Test that parsing antex gives expected output"""
+    parser = get_parser("antex").as_dict()
+
+    assert len(parser) == 2
+    assert "G01" in parser
+    assert datetime(1992, 11, 22) in parser["G01"]
+    
+
+def test_parser_api_water_level_norway():
+    """Test that parsing api_water_level_norway gives expected output"""
+    parser = get_parser("api_water_level_norway").as_dict()
+
+    assert len(parser) == 3
+    assert "value" in parser
+    assert "weather" in parser["flag"]
 
 
 def test_parser_bcecmp_sisre():
@@ -81,8 +99,8 @@ def test_parser_bernese_clu():
     parser = get_parser("bernese_clu").as_dict()
 
     assert len(parser) == 16
-    assert "aasc" in parser
-    assert "num" in parser["aasc"]
+    assert "ales" in parser
+    assert "domes" in parser["ales"]
 
 
 def test_parser_bernese_crd():
@@ -90,13 +108,17 @@ def test_parser_bernese_crd():
     parser = get_parser("bernese_crd").as_dict()
 
     assert len(parser) == 5
-    assert "ales" in parser
-    assert "domes" in parser["ales"]
+    assert "aasc" in parser
+    assert "domes" in parser["aasc"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_bernese_trp():
-    pass
+    """Test that parsing bernese_trp gives expected output"""
+    parser = get_parser("bernese_trp").as_dict()
+
+    assert len(parser) == 12
+    assert "station" in parser
+    assert "AASC" in parser["station"]
 
 
 def test_parser_csv_():
@@ -147,29 +169,50 @@ def test_parser_gipsy_tdp():
     assert "TRPAZSINZIMM" in parser["name"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_gdcov():
-    pass
+    """Test that parsing gipsyx_gdcov gives expected output"""
+    parser = get_parser("gipsyx_gdcov").as_dict()
+
+    assert len(parser) == 8
+    assert "time_past_j2000" in parser
+    assert 376018350.0 in parser["time_past_j2000"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_residual():
-    pass
+    """Test that parsing gipsyx_residual gives expected output"""
+    parser = get_parser("gipsyx_residual").as_dict()
+
+    assert len(parser) == 10
+    assert "time_past_j2000" in parser
+    assert 375969900.0 in parser["time_past_j2000"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_summary():
-    pass
+    """Test that parsing gipsyx_summary gives expected output"""
+    parser = get_parser("gipsyx_summary").as_dict()
+
+    assert len(parser) == 3
+    assert "residual" in parser
+    assert "code_rms" in parser["residual"]
+    assert 0.6312075 == parser["residual"]["code_rms"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_gipsyx_tdp():
-    pass
+    """Test that parsing gipsyx_tdp gives expected output"""
+    parser = get_parser("gipsyx_tdp").as_dict()
+
+    assert len(parser) == 5
+    assert "time_past_j2000" in parser
+    assert 375969900.0 in parser["time_past_j2000"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_glab_output():
-    pass
+    """Test that parsing glab_output gives expected output"""
+    parser = get_parser("glab_output").as_dict()
+
+    assert len(parser) == 29
+    assert "satellite" in parser
+    assert 7 in parser["satellite"]
 
 
 def test_gnss_sinex_igs():
@@ -183,19 +226,32 @@ def test_gnss_sinex_igs():
     assert "abmf" in parser["abmf"]["site_id"]["site_code"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_rinex2_nav():
-    pass
+    """Test that parsing rinex2_nav gives expected output"""
+    parser = get_parser("rinex2_nav", "rinex2_nav.19n").as_dict()
+
+    assert len(parser) == 33
+    assert "system" in parser
+    assert "G" in parser["system"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_rinex2_obs():
-    pass
+    """Test that parsing rinex2_obs gives expected output"""
+    parser = get_parser("rinex2_obs").as_dict()
+
+    assert len(parser) == 8
+    assert "obs" in parser
+    assert "C1" in parser["obs"]
+    assert 24236245.742 in parser["obs"]["C1"]
 
 
-@pytest.mark.skip(reason="TODO: Tests not yet implemented")
 def test_parser_rinex3_nav():
-    pass
+    """Test that parsing rinex3_nav gives expected output"""
+    parser = get_parser("rinex3_nav").as_dict()
+
+    assert len(parser) == 45
+    assert "system" in parser
+    assert "G" in parser["system"]
 
 
 @pytest.mark.skip(reason="New Rinex3 parser not yet implemented")
@@ -222,7 +278,6 @@ def test_parser_wip_rinex3_obs():
     assert header["time_of_first_obs"] == data["epoch"][0]
 
 
-@pytest.mark.skip(reason="TODO: Has to be moved from Where to Midgard")
 def test_parser_spring_csv():
     """Test that parsing spring_csv gives expected output"""
     parser = get_parser("spring_csv").as_dict()
