@@ -1513,7 +1513,7 @@ class TimeStr(TimeFormat):
     @classmethod
     def _to_jds(cls, val, val2=None, scale=None):
         if val2 is not None:
-            raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
+            raise ValueError(f"val2 should be None (not {val2}) for format {cls.fmt}")
 
         if isinstance(val, str):
             return TimeDateTime._dt2jd(cls._str2dt(val))
