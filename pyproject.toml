@@ -23,6 +23,11 @@ classifiers        = ["Development Status :: 2 - Pre-Alpha",
 ]
 keywords           = "geodesy utilities"
 
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
 # Requirements
 requires-python    = ">=3.6"
 requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy"]
