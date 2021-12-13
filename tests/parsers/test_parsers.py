@@ -140,6 +140,7 @@ def test_parser_discontinuities_snx():
     assert "point_code" in parser["ab06"]["solution_discontinuity"][0]
 
 
+@pytest.mark.skip(reason="TODO: Failure in pandas.io.html.py")
 def test_parser_galileo_constellation_html():
     """Test that parsing galileo_constellation_html gives expected output"""
     parser = get_parser("galileo_constellation_html")
@@ -228,7 +229,7 @@ def test_gnss_sinex_igs():
 
 def test_parser_rinex2_nav():
     """Test that parsing rinex2_nav gives expected output"""
-    parser = get_parser("rinex2_nav", "rinex2_nav.19n").as_dict()
+    parser = get_parser("rinex2_nav", pathlib.Path(__file__).parent / "example_files" / "rinex2_nav.19n").as_dict()
 
     assert len(parser) == 33
     assert "system" in parser
