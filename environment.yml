@@ -11,6 +11,7 @@ dependencies:
   - idna
   - importlib_resources
   - ipython
+  - matplotlib
   - mkdocs
   - mypy
   - numpy
