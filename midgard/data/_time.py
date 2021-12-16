@@ -335,6 +335,25 @@ class TimeBase(np.ndarray):
         fmt_value = cls._formats()[fmt].from_jds(jd1, jd2, cls.scale)
         return cls(val=fmt_value, fmt=fmt, _jd1=jd1, _jd2=jd2)
 
+    @classmethod
+    def _scales(cls):
+        return _SCALES.get(cls.cls_name, dict())
+
+    @classmethod
+    def _conversions(cls):
+        return _CONVERSIONS.get(cls.cls_name, dict())
+
+    @property
+    def SCALES(self):
+        return list(self._scales().keys())
+    
+    @property
+    def FORMATS(self):
+        return list(self._formats().keys())
+    
+    @property
+    def CONVERSIONS(self):
+        return list(self._conversions().keys())
 
     def fieldnames(self):
         """Return list of valid attributes for this object"""
@@ -516,10 +535,6 @@ class TimeArray(TimeBase):
         """Create a new time of the same type as other but with empty(datetime.min) values
         """
         return _SCALES[other.scale](np.full(other.shape, fill_value=datetime.min), fmt="datetime")
-
-    @classmethod
-    def _scales(cls):
-        return _SCALES.setdefault(cls.cls_name, dict())
 
     @classmethod
     def _formats(cls):
@@ -778,9 +793,6 @@ class TimeDeltaArray(TimeBase):
 
         return scales_and_formats
 
-    @classmethod
-    def _scales(cls):
-        return _SCALES.setdefault(cls.cls_name, dict())
 
     @classmethod
     def _formats(cls):
@@ -1179,44 +1191,44 @@ class TimeDateTime(TimeFormat):
         return cls._dt2000 + timedelta(days=jd1 - cls._jd2000) + timedelta(days=jd2)
 
 
-@register_format
-class TimePlotDate(TimeFormat):
-    """Matplotlib date format
-
-    Matplotlib represents dates using floating point numbers specifying the number
-    of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
-    not 0.25. Values < 1, i.e. dates before 0001-01-01 UTC are not supported.
-
-    Warning: This requires matplotlib version 3.2.2 or lower
-    """
-
-    fmt = "plot_date"
-    unit = None
-    _jd0001 = 1721424.5  # julian day 2001-01-01 minus 1
-
-    def __init__(self, val, val2=None, scale=None):
-        """Convert val and val2 to Julian days"""
-        print(f"Warning: TimeFormat {self.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
-        super().__init__(val, val2, scale)
-
-    @classmethod
-    def _to_jds(cls, val, val2=None, scale=None):
-        print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
-        if val2 is None:
-            try:
-                val2 = np.zeros(val.shape)
-            except AttributeError:
-                val2 = 0
-
-        _delta = val - (np.floor(val + val2 - 0.5) + 0.5)
-        jd1 = cls._jd0001 + val - _delta
-        jd2 = val2 + _delta
-        return jd1, jd2
-
-    @classmethod
-    def _from_jds(cls, jd1, jd2, scale=None):
-        print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
-        return jd1 - cls._jd0001 + jd2
+# @register_format
+# class TimePlotDate(TimeFormat):
+#     """Matplotlib date format
+# 
+#     Matplotlib represents dates using floating point numbers specifying the number
+#     of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
+#     not 0.25. Values < 1, i.e. dates before 0001-01-01 UTC are not supported.
+# 
+#     Warning: This requires matplotlib version 3.2.2 or lower
+#     """
+# 
+#     fmt = "plot_date"
+#     unit = None
+#     _jd0001 = 1721424.5  # julian day 2001-01-01 minus 1
+# 
+#     def __init__(self, val, val2=None, scale=None):
+#         """Convert val and val2 to Julian days"""
+#         print(f"Warning: TimeFormat {self.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
+#         super().__init__(val, val2, scale)
+# 
+#     @classmethod
+#     def _to_jds(cls, val, val2=None, scale=None):
+#         print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
+#         if val2 is None:
+#             try:
+#                 val2 = np.zeros(val.shape)
+#             except AttributeError:
+#                 val2 = 0
+# 
+#         _delta = val - (np.floor(val + val2 - 0.5) + 0.5)
+#         jd1 = cls._jd0001 + val - _delta
+#         jd2 = val2 + _delta
+#         return jd1, jd2
+# 
+#     @classmethod
+#     def _from_jds(cls, jd1, jd2, scale=None):
+#         print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
+#         return jd1 - cls._jd0001 + jd2
 
 
 @register_format

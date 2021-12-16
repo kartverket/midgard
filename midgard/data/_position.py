@@ -184,6 +184,14 @@ class PosBase(np.ndarray):
         """Compute length"""
         return nputil.norm(self)
 
+    @property
+    def SYSTEMS(self):
+        return self._systems()
+    
+    @property
+    def CONVERSIONS(self):
+        return self._conversions()
+
     def to_system(self, system: str) -> "PosDeltaBase":
         """Convert to a different system
 
@@ -306,6 +314,10 @@ class PosBase(np.ndarray):
     @classmethod
     def _systems(cls):
         return list(_SYSTEMS.get(cls.cls_name, {}).keys())
+    
+    @classmethod
+    def _conversions(cls):
+        return list(_CONVERSIONS.get(cls.cls_name, {}).keys())
 
     def __setitem__(self, key, item):
         self.clear_cache()  # Clear cache when any elements change

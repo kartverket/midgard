@@ -268,3 +268,14 @@ class AcrPosVelDelta(PosVelDeltaArray):
     system = "acr"
     column_names = ("along", "cross", "radial", "valong", "vcross", "vradial")
     _units = ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
+
+# Define shorthands for available systems and conversions    
+Position.SYSTEMS = PositionArray._systems()
+PositionDelta.SYSTEMS = PositionDeltaArray._systems()
+PosVel.SYSTEMS = PosVelArray._systems()
+PosVelDelta.SYSTEMS = PosVelDeltaArray._systems()
+Position.CONVERSIONS = PositionArray._conversions()
+PositionDelta.CONVERSIONS = PositionDeltaArray._conversions()
+PosVel.CONVERSIONS = PosVelArray._conversions()
+PosVelDelta.CONVERSIONS = PosVelDeltaArray._conversions()
+

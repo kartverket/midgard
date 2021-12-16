@@ -69,3 +69,10 @@ def is_timedelta(val):
 Time.now = TimeArray.now
 Time.is_time = is_time
 Time.is_timedelta = is_timedelta
+# Define shorthands for available formats, scales and conversions
+Time.FORMATS = list(TimeArray._formats().keys())
+TimeDelta.FORMATS = list(TimeDeltaArray._formats().keys())
+Time.SCALES = list(TimeArray._scales().keys())
+TimeDelta.SCALES = list(TimeDeltaArray._scales().keys())
+Time.CONVERSIONS = list(TimeArray._conversions().keys())
+TimeDelta.CONVERSIONS = list(TimeDeltaArray._conversions().keys())
