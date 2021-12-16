@@ -199,6 +199,7 @@ def kepler2trs(kepler: "KeplerPosVel") -> "TrsPosVel":
     """
 
     num_obs = 1 if kepler.ndim == 1 else len(kepler)
+    zero = 0 if num_obs == 1 else np.zeros(num_obs)
     cosE = np.cos(kepler.E)
     sinE = np.sin(kepler.E)
     fac = np.sqrt((1 - kepler.e) * (1 + kepler.e))
@@ -206,8 +207,8 @@ def kepler2trs(kepler: "KeplerPosVel") -> "TrsPosVel":
     v = np.sqrt(constant.GM * kepler.a) / r  # Velocity
 
     # Transformation from spherical to cartesian orbital coordinate system
-    r_orb = np.array([kepler.a * (cosE - kepler.e), kepler.a * fac * sinE, np.zeros(num_obs)])
-    v_orb = np.array([-v * sinE, v * fac * cosE, np.zeros(num_obs)])
+    r_orb = np.array([kepler.a * (cosE - kepler.e), kepler.a * fac * sinE, zero])
+    v_orb = np.array([-v * sinE, v * fac * cosE, zero])
 
     # Transformation from cartesian orbital to geocentric equatorial coordinate system
     PQW = rotation.R3(-kepler.Omega) @ rotation.R1(-kepler.i) @ rotation.R3(-kepler.omega)
