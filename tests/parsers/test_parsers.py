@@ -215,8 +215,17 @@ def test_parser_glab_output():
     assert "satellite" in parser
     assert 7 in parser["satellite"]
 
+    
+def test_parser_gravsoft_grid():
+    """Test that parsing gravsoft_grid gives expected output"""
+    parser = get_parser("gravsoft_grid").as_dict()
 
-def test_gnss_sinex_igs():
+    assert len(parser) == 3
+    assert "latitude" in parser
+    assert 72.0 in parser["latitude"]
+
+
+def test_parser_gnss_sinex_igs():
     """Test that parsing gnss_sinex_igs gives expected output"""
     parser = get_parser("gnss_sinex_igs").as_dict()
 
