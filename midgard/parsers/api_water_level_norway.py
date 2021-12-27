@@ -43,6 +43,7 @@ import pycurl
 from midgard.data import dataset
 from midgard.dev import log
 from midgard.dev import plugins
+from midgard.files import files
 from midgard.math.unit import Unit
 from midgard.parsers import Parser
 
@@ -143,7 +144,7 @@ class ApiWaterLevelNorwayParser(Parser):
         print(f"Downloading {url} to {self.file_path}")
 
         # Read data from API to file path
-        with open(self.file_path, mode="wb") as fid:
+        with files.open(self.file_path, mode="wb") as fid:
             c = pycurl.Curl()
             c.setopt(c.URL, url)
             c.setopt(c.WRITEDATA, fid)
