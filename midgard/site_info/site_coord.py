@@ -265,11 +265,15 @@ class SiteCoordSinex(SiteInfoBase):
             Site velocity for X, Y and Z component in [m]
         """
         if "VELX" in self._info:
-            data = np.array([
-                            self._info["VELX"]["estimate"],
-                            self._info["VELY"]["estimate"],
-                            self._info["VELZ"]["estimate"],                
-            ])
+            if "estimate" in self._info["VELX"]:
+                data = np.array([
+                                self._info["VELX"]["estimate"],
+                                self._info["VELY"]["estimate"],
+                                self._info["VELZ"]["estimate"],                
+                ])
+            else:
+                data = np.array([None, None, None])
+            
         else:
             data = np.array([None, None, None])
 
@@ -283,11 +287,15 @@ class SiteCoordSinex(SiteInfoBase):
             Standard deviation of site velocity for X, Y and Z component in [m]
         """
         if "VELX" in self._info:
-            data = np.array([
-                            self._info["VELX"]["estimate"],
-                            self._info["VELY"]["estimate"],
-                            self._info["VELZ"]["estimate"],                
-            ])
+            if "estimate_std" in self._info["VELX"]:
+                data = np.array([
+                                self._info["VELX"]["estimate_std"],
+                                self._info["VELY"]["estimate_std"],
+                                self._info["VELZ"]["estimate_std"],                
+                ])
+            else:
+                data = np.array([None, None, None])
+            
         else:
             data = np.array([None, None, None])
 
@@ -365,9 +373,9 @@ class SiteCoordSinex(SiteInfoBase):
         Args:
             vel: Site velocity for X, Y and Z component in [m]
         """
-        self._info["VELX"]["estimate"] = vel[0]
-        self._info["VELY"]["estimate"] = vel[1]
-        self._info["VELZ"]["estimate"] = vel[2]              
+        self._info.setdefault("VELX", dict()).update(estimate=vel[0])
+        self._info.setdefault("VELY", dict()).update(estimate=vel[1])
+        self._info.setdefault("VELZ", dict()).update(estimate=vel[2])
 
 
     def set_vel_sigma(self, vel_sigma: Union[List[float], np.ndarray]) -> None:
@@ -376,9 +384,9 @@ class SiteCoordSinex(SiteInfoBase):
         Args:
             vel_sigma: Standard deviation of site velocity for X, Y and Z component in [m]
         """
-        self._info["VELX"]["estimate"] = vel_sigma[0]
-        self._info["VELY"]["estimate"] = vel_sigma[1]
-        self._info["VELZ"]["estimate"] = vel_sigma[2]
+        self._info.setdefault("VELX", dict()).update(estimate_std=vel_sigma[0])
+        self._info.setdefault("VELY", dict()).update(estimate_std=vel_sigma[1])
+        self._info.setdefault("VELZ", dict()).update(estimate_std=vel_sigma[2])
 
 
 
