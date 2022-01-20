@@ -29,7 +29,7 @@ Example:
 
 # Standard library imports
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, Tuple, Union
 
 # Midgard imports
 from midgard import parsers

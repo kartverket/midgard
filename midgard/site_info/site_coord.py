@@ -207,15 +207,6 @@ class SiteCoordSinex(SiteInfoBase):
             #      does not work. Exceeding of datetime limit 9999 12 31.
 
     @property
-    def system(self) -> str:
-        """ Get reference system from site information attribute
-
-        Returns:
-            Reference system
-        """
-        return self._info["STAX"]["ref_system"] if "ref_system" in self._info["STAX"] else None
-
-    @property
     def pos(self) -> "TrsPosition":
         """ Get site coordinate from SINEX file
 
@@ -256,13 +247,22 @@ class SiteCoordSinex(SiteInfoBase):
                     scale="utc",
                     fmt="datetime",
         )
+        
+    @property
+    def system(self) -> str:
+        """ Get reference system from site information attribute
+
+        Returns:
+            Reference system
+        """
+        return self._info["STAX"]["ref_system"] if "ref_system" in self._info["STAX"] else None
 
     @property
     def vel(self) -> np.ndarray:
         """ Get site velocity from SINEX file
 
         Returns:
-            Site velocity for X, Y and Z component in [m]
+            Site velocity for X, Y and Z component in [m/yr]
         """
         if "VELX" in self._info:
             if "estimate" in self._info["VELX"]:
@@ -272,10 +272,10 @@ class SiteCoordSinex(SiteInfoBase):
                                 self._info["VELZ"]["estimate"],                
                 ])
             else:
-                data = np.array([None, None, None])
+                data = np.array([float('nan'), float('nan'), float('nan')])
             
         else:
-            data = np.array([None, None, None])
+            data = np.array([float('nan'), float('nan'), float('nan')])
 
         return data
 
@@ -284,7 +284,7 @@ class SiteCoordSinex(SiteInfoBase):
         """ Get standard deviation of site velocity from SINEX file
 
         Returns:
-            Standard deviation of site velocity for X, Y and Z component in [m]
+            Standard deviation of site velocity for X, Y and Z component in [m/yr]
         """
         if "VELX" in self._info:
             if "estimate_std" in self._info["VELX"]:
@@ -294,10 +294,10 @@ class SiteCoordSinex(SiteInfoBase):
                                 self._info["VELZ"]["estimate_std"],                
                 ])
             else:
-                data = np.array([None, None, None])
+                data = np.array([float('nan'), float('nan'), float('nan')])
             
         else:
-            data = np.array([None, None, None])
+            data = np.array([float('nan'), float('nan'), float('nan')])
 
         return data
 
@@ -362,16 +362,16 @@ class SiteCoordSinex(SiteInfoBase):
         Args:
             ref_epoch: Reference epoch of site coordinate
         """
-        val=self._info["STAX"]["ref_epoch"] = ref_epoch
-        val=self._info["STAY"]["ref_epoch"] = ref_epoch
-        val=self._info["STAZ"]["ref_epoch"] = ref_epoch
+        self._info["STAX"]["ref_epoch"] = ref_epoch
+        self._info["STAY"]["ref_epoch"] = ref_epoch
+        self._info["STAZ"]["ref_epoch"] = ref_epoch
 
 
     def set_vel(self, vel: Union[List[float], np.ndarray]) -> None:
         """ Set site velocity in site information attribute
 
         Args:
-            vel: Site velocity for X, Y and Z component in [m]
+            vel: Site velocity for X, Y and Z component in [m/yr]
         """
         self._info.setdefault("VELX", dict()).update(estimate=vel[0])
         self._info.setdefault("VELY", dict()).update(estimate=vel[1])
@@ -382,11 +382,10 @@ class SiteCoordSinex(SiteInfoBase):
         """ Set standard deviation of site velocity in site information attribute
 
         Args:
-            vel_sigma: Standard deviation of site velocity for X, Y and Z component in [m]
+            vel_sigma: Standard deviation of site velocity for X, Y and Z component in [m/yr]
         """
         self._info.setdefault("VELX", dict()).update(estimate_std=vel_sigma[0])
         self._info.setdefault("VELY", dict()).update(estimate_std=vel_sigma[1])
         self._info.setdefault("VELZ", dict()).update(estimate_std=vel_sigma[2])
-
 
 

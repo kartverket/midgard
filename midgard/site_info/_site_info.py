@@ -12,8 +12,7 @@ in subclasses.
 # Standard library imports
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Dict, List, Tuple, Union
-
+from typing import Any, Dict, List, Union
 
 
 class SiteInfo:
