@@ -5,7 +5,7 @@ Example:
 --------
 
     from datetime import datetime
-    from analyx import parsers
+    from midgard import parsers
 
     # XML file with water level data exists
     p = parsers.parse_file(parser_name='api_water_level_norway', file_path='api_water_level_norway')
