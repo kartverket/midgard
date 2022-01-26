@@ -3,5 +3,5 @@ documents
 __pycache__/
 .project
 .pydevproject
-
+.coverage
 /.pytest_cache/
