@@ -401,6 +401,21 @@ class GnssIdToReferenceSystem(str, enum.Enum):
     R = "pz_90"
 
 
+## Reference system name to EPSG code
+#
+#  References: http://epsg.io
+#
+@register_enum("ref_sys_name_to_epsg")
+class RefSysNameToEpsg(str, enum.Enum):
+    """Reference system name to EPSG code"""
+
+    igs08 = 5332   # IGS08/EPSG6934 is not implemented in pyproj. ITRF2008 should be used instead.
+    igs14 = 7789   # IGS14/EPSG8227 is not implemented in pyproj. ITRF2014 should be used instead.
+    itrf2008 = 5332
+    itrf2014 = 7789
+    etrs89 = 4936
+    euref89 = 4936  # EUREF89 is the same as ETRS89.
+    
 # Examples
 
 # from midgard.collections import enums
