@@ -500,7 +500,7 @@ class TimeBase(np.ndarray):
         h5_group.attrs["fmt"] = self.fmt
         h5_field = h5_group.create_dataset("jd1", self.jd1.shape, dtype=self.jd1.dtype)
         h5_field[...] = self.jd1
-        h5_field = h5_group.create_dataset("jd2", self.shape, dtype=self.jd2.dtype)
+        h5_field = h5_group.create_dataset("jd2", self.jd2.shape, dtype=self.jd2.dtype)
         h5_field[...] = self.jd2
 
     def __dir__(self):
