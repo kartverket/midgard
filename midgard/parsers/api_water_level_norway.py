@@ -72,7 +72,7 @@ class ApiWaterLevelNorwayParser(Parser):
     | __url__             | URL of water level API                                                                |
     """
 
-    URL = "http://api.sehavniva.no/tideapi.php"
+    URL = "https://api.sehavniva.no/tideapi.php"
 
     def __init__(
             self, 
@@ -83,21 +83,23 @@ class ApiWaterLevelNorwayParser(Parser):
             longitude: Optional[float] = None,
             from_date: Optional[datetime] = None, 
             to_date: Optional[datetime] = None,
+            reference_level: Optional[str] = "chart_datum",
     ) -> None:
         """Set up the basic information needed by the parser
 
         Args:
-            file_path:    Path to file that will be read or downloaded.
-            encoding:     Encoding of file that will be read.
-            url:          Optional URL from where to download water level data.
-            latitude:     Latitude of position in [deg] 
-            longitude:    Longitude of position in [deg] 
-            from_date:    Starting date of data period
-            to_date:      Ending date of data period
+            file_path:       Path to file that will be read or downloaded.
+            encoding:        Encoding of file that will be read.
+            url:             Optional URL from where to download water level data.
+            latitude:        Latitude of position in [deg] 
+            longitude:       Longitude of position in [deg] 
+            from_date:       Starting date of data period
+            to_date:         Ending date of data period
+            reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn1954
         """
         super().__init__(file_path, encoding)
         if not self.file_path.exists() or self.file_path.stat().st_size == 0:
-            self.download_xml(latitude, longitude, from_date, to_date, url)
+            self.download_xml(latitude, longitude, from_date, to_date, url, reference_level)
             self.data_available = self.file_path.exists()
 
     def download_xml(
@@ -107,16 +109,24 @@ class ApiWaterLevelNorwayParser(Parser):
             from_date: datetime, 
             to_date: datetime,
             url: Optional[str] = None,
+            reference_level: Optional[str] = "chart_datum", 
     ) -> None:
         """Download XML file from url
 
         Args:
-            latitude:     Latitude of position in [deg] 
-            longitude:    Longitude of position in [deg] 
-            from_date:    Starting date of data period
-            to_date:      Ending date of data period
-            url:          URL to download from, if None use self.URL instead.
+            latitude:        Latitude of position in [deg] 
+            longitude:       Longitude of position in [deg] 
+            from_date:       Starting date of data period
+            to_date:         Ending date of data period
+            url:             URL to download from, if None use self.URL instead.
+            reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn1954
         """
+        reference_level_def = {
+            "chart_datum": "cd",
+            "mean_sea_level": "msl",
+            "nn1954": "nn1954",
+            
+        }
 
         # Get URL
         url = self.URL if url is None else url
@@ -128,13 +138,13 @@ class ApiWaterLevelNorwayParser(Parser):
                 fromtime=from_date.strftime("%Y-%m-%dT%H:%M"),
                 totime=to_date.strftime("%Y-%m-%dT%H:%M"),
                 datatype="all",
-                refcode="cd",
+                refcode=reference_level_def[reference_level],
                 place="",
                 file="",
                 lang="nn",
                 interval=10,
-                dst=0,
-                tzone="",
+                dst=0,  # summer time is not used
+                tzone=0,  # UTC
                 tide_request="locationdata",
             )
         except AttributeError:
