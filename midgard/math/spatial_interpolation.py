@@ -45,11 +45,15 @@ def interpolate_for_position(
     Returns:
         Interpolated value in data grid for a given position
     """
+    if grid_x.shape != grid_y.shape or grid_x.shape != values.shape:
+        raise ValueError(f"Invalid number of dimensions of array with x-positions {grid_x.shape}, y-positions "
+                         f"{grid_y.shape} and/or values {values.shape}.")
+
     if x < grid_x[0][0] or x > grid_x[0][-1]:
         raise ValueError(f"Given x-position {x:.3f} exceeds grid x-position boundaries [left: {grid_x[0][0]:.3f}, right: {grid_x[0][-1]:.3f}]")
 
     if y < grid_y[-1][0] or y > grid_y[0][0]:
-        raise ValueError(f"Given y-position {y:.3f} exceeds grid y-position boundaries [left: {grid_y[0][0]:.3f}, right: {grid_y[0][-1]:.3f}]")
+        raise ValueError(f"Given y-position {y:.3f} exceeds grid y-position boundaries [top: {grid_y[-1][0]:.3f}, bottom: {grid_y[0][0]:.3f}]")
     
     grid_points = np.array([grid_x.flatten(), grid_y.flatten()]).T
     
