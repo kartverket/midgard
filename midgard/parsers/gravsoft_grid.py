@@ -158,7 +158,12 @@ class GravsoftGrid(Parser):
            | data       | numpy.ndarray     | Grid data of dimension (longitude x latitude)                |
            | latitude   | numpy.ndarray     | Latitude values of grid in degree                            |
            | longitude  | numpy.ndarray     | Longitude values of grid in degree                           |
+           
+           If no data are available an empty dictionary is returned.
         """
+        if not self.data:
+            return dict()
+        
         num_grid_lon = int(round((self.meta["grid_lon_max"] - self.meta["grid_lon_min"]) / self.meta["grid_increment_lon"], 1) + 1)
         num_grid_lat = int(round((self.meta["grid_lat_max"] - self.meta["grid_lat_min"]) / self.meta["grid_increment_lat"], 1) + 1)
 
