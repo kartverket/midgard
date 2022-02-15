@@ -121,8 +121,12 @@ class ReceiverHistorySinex(SiteInfoHistoryBase):
             source_data = p.as_dict()
 
         if self.station in source_data:
+            if "site_receiver" not in source_data[self.station]:
+                raise ValueError(f"Station {self.station!r} is not given in SITE/RECEIVER SINEX block.")
             raw_info = source_data[self.station]["site_receiver"]
         elif self.station.upper() in source_data:
+            if "site_receiver" not in source_data[self.station]:
+                raise ValueError(f"Station {self.station.upper()!r} is not given in SITE/RECEIVER SINEX block.")
             raw_info = source_data[self.station.upper()]["site_receiver"]
         else:
             raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
