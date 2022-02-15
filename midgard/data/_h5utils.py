@@ -11,6 +11,11 @@ from typing import Any, Dict, List, Tuple, Set
 def encode_h5attr(data: Any) -> Any:
     """Convert a basic data type to something that can be saved as a hdf5 attribute"""
     data_type = type(data).__name__
+    if data_type != "str":
+        # Check if the data being written can be read by literal_eval.
+        # Will raise ValueError if the data is too complex
+        ast.literal_eval(str(data))
+
     try:
         return globals()[f"_{data_type}2h5attr"](data)
     except KeyError:
