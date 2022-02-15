@@ -123,8 +123,12 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
             source_data = p.as_dict()
 
         if self.station in source_data:
+            if "site_antenna" not in source_data[self.station]:
+                raise ValueError(f"Station {self.station!r} is not given in SITE/ANTENNA SINEX block.")
             raw_info = source_data[self.station]["site_antenna"]
         elif self.station.upper() in source_data:
+            if "site_antenna" not in source_data[self.station]:
+                raise ValueError(f"Station {self.station.upper()!r} is not given in SITE/ANTENNA SINEX block.")
             raw_info = source_data[self.station.upper()]["site_antenna"]
         else:
             raise ValueError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
