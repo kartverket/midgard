@@ -1,4 +1,4 @@
-"""Handling of GNSS antenna information based on ANTEX file
+"""Handling of GNSS antenna calibration information based on ANTEX file
 
 Description:
 ------------
@@ -16,17 +16,18 @@ Rothacher, M. and Schmid, R. (2010): "ANTEX: The antenna exchange format", versi
 Example:
 --------
 
-# Import Antenna class
-from midgard.gnss.antenna import Antenna
+# Import AntennaCalibration class
+from midgard.gnss.antenna_calibration import AntennaCalibration
 
-# Get instance of Antenna class by defining ANTEX file path 
-ant = Antenna(file_path="igs14.atx")
+# Get instance of AntennaCalibration class by defining ANTEX file path 
+ant = AntennaCalibration(file_path="igs14.atx")
 
 """
 # Standard library imports
 import datetime
 from pathlib import Path, PosixPath
 from typing import List, Dict, Union
+from warnings import warn
 
 # External library imports
 import numpy as np
@@ -39,8 +40,8 @@ from midgard.dev import plugins
 
 
 @plugins.register
-class Antenna():
-    """A class for representing GNSS antenna correction data
+class AntennaCalibration():
+    """A class for representing GNSS antenna calibration data
 
     The attribute "data" is a dictionary with GNSS satellite PRN or receiver antenna as key. The GNSS satellite antenna
     corrections are time dependent and saved with "valid from" datetime object entry. The dictionary looks like:
@@ -101,7 +102,7 @@ class Antenna():
     """
 
     def __init__(self, file_path: Union[str, PosixPath]) -> None:
-        """Set up a new GNSS antenna object by parsing ANTEX file
+        """Set up a new GNSS antenna calibration object by parsing ANTEX file
 
         The parsing is done by `midgard.parsers.antex.py` parser.
         
@@ -144,12 +145,12 @@ class Antenna():
         
         antenna_type = f"{antenna:15s} {radome}"
         if antenna_type not in self.data.keys():
-            log.error(f"Antenna type {antenna_type!r} is not available in ANTEX file {self.file_path}.")
+            raise ValueError(f"Antenna type {antenna_type!r} is not available in ANTEX file {self.file_path}.")
             return None
         
         if antex_freq not in self.data[antenna_type].keys():
             frequencies = set(self.data[antenna_type].keys()) - {"azimuth", "elevation"}
-            log.error(f"Frequency {system}:{frequency} (ANTEX: {antex_freq}) is not available for antenna "
+            raise ValueError(f"Frequency {system}:{frequency} (ANTEX: {antex_freq}) is not available for antenna "
                       f"{antenna_type!r} in ANTEX file {self.file_path}. Following ANTEX frequencies are " 
                       f"available: {', '.join(frequencies)})")
             return None
@@ -228,7 +229,7 @@ class Antenna():
             )
 
         else:
-            log.fatal(
+            raise ValueError(
                 f"Wrong frequency type '{system}:{'_'.join(frequency)}'. Only single or dual frequencies can be handled."
             )
 
@@ -250,7 +251,7 @@ class Antenna():
             Satellite information
         """
         if satellite not in self.data.keys():
-            log.fatal(
+            raise ValueError(
                 f"Satellite '{satellite}' is not given in ANTEX file {self.file_path}."
             )
 
@@ -287,7 +288,7 @@ class Antenna():
 
             # Skip satellites, which are not given in ANTEX file
             if sat not in self.data:
-                log.warn(
+                warn(
                     f"Satellite {sat!r} is not given in ANTEX file {self.file_path}."
                 )
                 continue
@@ -359,12 +360,12 @@ class Antenna():
         } 
         
         if system not in freq_num_to_freq_name.keys():
-            log.fatal(f"GNSS {system!r} is not defined. Following GNSS identifiers are available: "
+            raise ValueError(f"GNSS {system!r} is not defined. Following GNSS identifiers are available: "
                       "{''.join(list(freq_num_to_freq_name.keys()))}")
             return None
         
         if freq_num not in freq_num_to_freq_name[system].keys():
-            log.fatal(f"GNSS frequency band number {system}:{freq_num} is not defined. Following frequency band "
+            raise ValueError(f"GNSS frequency band number {system}:{freq_num} is not defined. Following frequency band "
                       f"numbers are available for GNSS {system!r}: "
                       f"{''.join(list(freq_num_to_freq_name[system].keys()))}")
             return None
@@ -419,12 +420,12 @@ class Antenna():
         }
         
         if system not in gnss_to_antex_freq.keys():
-            log.fatal(f"GNSS {system!r} is not defined. Following GNSS identifiers are available: "
+            raise ValueError(f"GNSS {system!r} is not defined. Following GNSS identifiers are available: "
                       "{''.join(list(gnss_to_antex_freq.keys()))}")
             return None
         
         if frequency not in gnss_to_antex_freq[system].keys():
-            log.fatal(f"GNSS frequency {system}:{frequency} is not defined. Following frequencies are available for GNSS {system!r}: "
+            raise ValueError(f"GNSS frequency {system}:{frequency} is not defined. Following frequencies are available for GNSS {system!r}: "
                       "{''.join(list(gnss_to_antex_freq[system].keys()))}")
             return None
         
@@ -455,6 +456,6 @@ class Antenna():
                 used_date = date
 
         if (used_date is None) or (given_date > self.data[satellite][used_date]["valid_until"]):
-            log.warn(f"No satellite phase center offset is given for satellite {satellite} and date {given_date}.")
+            warn(f"No satellite phase center offset is given for satellite {satellite} and date {given_date}.")
 
         return used_date

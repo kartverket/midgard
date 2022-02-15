@@ -1,8 +1,8 @@
-"""Tests for the gnss.antenna-module
+"""Tests for the gnss.antenna_calibration-module
 
 Example:
 --------
-    python -m pytest test_antenna.py -s
+    python -m pytest test_antenna_calibration.py -s
 
 Note: If '-s' option is used by calling pytest, then also debug messages are printed.
 """
@@ -14,7 +14,7 @@ import pytest
 import numpy as np
 
 # Midgard imports
-from midgard.gnss.antenna import Antenna
+from midgard.gnss.antenna_calibration import AntennaCalibration
 
 
 #
@@ -22,8 +22,8 @@ from midgard.gnss.antenna import Antenna
 #
 @pytest.fixture
 def ant():
-    """Generate Antenna object by reading example ANTEX file"""
-    return Antenna(file_path="../parsers/example_files/antex")
+    """Generate AntennaCalibration object by reading example ANTEX file"""
+    return AntennaCalibration(file_path="../parsers/example_files/antex")
 
     
 #
