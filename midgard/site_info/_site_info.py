@@ -176,15 +176,15 @@ class SiteInfoHistory:
             source_data:  Source data with site information. If source data are defined, then 'source_path' is 
                           ignored.
 
-        Returns:
+        Returns:cls.sources[f"{source}_{type_}"]
             History class depending on given source
         """
         type_ = module.split(".")[-1]
-        try:
-            return cls.sources[f"{source}_{type_}"](station, source_path, source_data)
-        except KeyError:
+        if f"{source}_{type_}" not in cls.sources:
             sources = set([v.split("_")[0] for v in cls.sources.keys()])
             raise ValueError(f"Source {source!r} unknown. Use one of: {', '.join(sources)}.")
+
+        return cls.sources[f"{source}_{type_}"](station, source_path, source_data)
 
 
     @classmethod
