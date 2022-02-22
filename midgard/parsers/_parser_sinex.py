@@ -200,6 +200,7 @@ class SinexParser(Parser):
         self._sinex: Dict[str, Any] = dict()
         self.sinex_blocks = cast(Iterable[SinexBlock], self.setup_parser())
 
+
     def setup_parser(self) -> Any:
         """Set up information needed for the parser
 
@@ -214,6 +215,22 @@ class SinexParser(Parser):
             Iterable of blocks in the Sinex file that should be parsed.
         """
         raise NotImplementedError
+
+    def parse(self) -> "SinexParser":
+        """Parse data
+
+        Override default parse() due to special handling of setup_parser for Sinex files
+        """
+        if self.data_available:
+            self.read_data()
+
+        if not self.data_available:  # May have been set to False by self.read_data()
+            log.warn(f"No data found by {self.__class__.__name__} in {self.file_path}")
+            return self
+
+        self.postprocess_data()
+
+        return self
 
     def read_data(self) -> None:
         """Read data from a Sinex file and parse the contents
