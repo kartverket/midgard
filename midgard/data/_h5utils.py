@@ -4,22 +4,40 @@
 
 # Standard library imports
 import ast
+import copy
 import re
 from typing import Any, Dict, List, Tuple, Set
 
+# Third party imports
+import numpy as np
 
 def encode_h5attr(data: Any) -> Any:
-    """Convert a basic data type to something that can be saved as a hdf5 attribute"""
+    """Convert a basic data type to something that can be saved as a hdf5 attribute
+
+    Will raise a TypeError if the attribute cannot be saved in a way that allows
+    reading and correct interpretation of the attribute.
+    """
     data_type = type(data).__name__
-    if data_type != "str":
-        # Check if the data being written can be read by literal_eval.
-        # Will raise ValueError if the data is too complex
-        ast.literal_eval(str(data))
+    error_msg = f"Cannot save attribute to file. Data too complex: {type(data)} {data}. Data can only consist of strings, lists, dicts, tuples, sets or numbers"
 
     try:
-        return globals()[f"_{data_type}2h5attr"](data)
+        encoded_data = globals()[f"_{data_type}2h5attr"](data)
     except KeyError:
-        return data
+        encoded_data = data
+        # Check if data is considered an dtype('O') by numpy
+        # In which case it is not supported by h5py
+        np_array = np.asarray(data)
+        if np_array.dtype == "O":
+            # Objects is too complex
+            raise TypeError(error_msg)
+
+    try:
+        # Verify that decoding works
+        decode_h5attr(copy.deepcopy(encoded_data))
+    except ValueError:
+        raise TypeError(error_msg)
+
+    return encoded_data
 
 
 def decode_h5attr(attr: Any) -> Any:
@@ -113,3 +131,4 @@ def _recursive_replace(data):
     if isinstance(data, Dict):
         return {k: _recursive_replace(v) for k, v in data.items()}
     return data
+

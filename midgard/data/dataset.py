@@ -412,10 +412,7 @@ class Meta(UserDict):
     def write(self, h5_group):
         """Write meta data to hdf5-file"""
         for k, v in self.items():
-            try:
-                h5_group.attrs[k] = _h5utils.encode_h5attr(v)
-            except ValueError:
-                raise ValueError(f"Cannot save attribute '{k}' in meta. Data too complex: {v}. See ast.literal_eval for supported data types.")
+            h5_group.attrs[k] = _h5utils.encode_h5attr(v)
 
     def add(self, name: Hashable, value: Collection, section: Optional[Hashable] = None) -> None:
         """Add information to the metaset"""

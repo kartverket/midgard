@@ -729,3 +729,26 @@ def test_delete(dset_full):
         dset_full.numbers_1
     with pytest.raises(AttributeError):
         dset_full.numbers_2
+
+def dset_meta_error_msg():
+    # Too complex datatype is being saved to meta and should give error message
+
+    _dset1 = dataset.Dataset()
+    _dset1.meta.add("a", datetime.now())
+    with pytest.raises(TypeError):
+        _dset1.write("test.hdf5")
+
+    _dset2 = dataset.Dataset()
+    _dset2.meta.add("a", tuple(datetime.now()))
+    with pytest.raises(TypeError):
+        _dset2.write("test.hdf5")
+
+    _dset3 = dataset.Dataset()
+    _dset3.meta.add("a", {"b": datetime.now()})
+    with pytest.raises(TypeError):
+        _dset3.write("test.hdf5")
+
+    _dset4 = dataset.Dataset()
+    _dset4.meta.add("a", [[[[datetime.now()]]]])
+    with pytest.raises(TypeError):
+        _dset4.write("test.hdf5")
