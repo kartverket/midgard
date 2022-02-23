@@ -215,6 +215,22 @@ class SinexParser(Parser):
         """
         raise NotImplementedError
 
+    def parse(self) -> "SinexParser":
+        """Parse data
+
+        Override default parse() due to special handling of setup_parser for Sinex files
+        """
+        if self.data_available:
+            self.read_data()
+
+        if not self.data_available:  # May have been set to False by self.read_data()
+            log.warn(f"No data found by {self.__class__.__name__} in {self.file_path}")
+            return self
+
+        self.postprocess_data()
+
+        return self
+
     def read_data(self) -> None:
         """Read data from a Sinex file and parse the contents
 
