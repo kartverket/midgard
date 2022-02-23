@@ -1,87 +1,20 @@
-"""Basic functionality for parsing and saving site information
+"""Base classes for site information with and without history.
 
 Description:
 ------------
 
-This module contains functions and classes for parsing site information.
-
-This file defines the general structure shared by site information types. More specific format details are implemented
-in subclasses. 
+Abstract classes.
 """
 
 # Standard library imports
+import abc
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Dict, List, Union
+from abc import abstractmethod
 
 
-class SiteInfo:
-    """Main site information class for getting site information object depending on site information source
-
-    The site information source can be e.g. a SINEX file. The source data has to be read for each station from a file,
-    whereby the file path is defined via 'source_path' argument. If site information for several stations should be 
-    provided, then it is recommended to provide the data via 'source_data' argument. The data can be read e.g. for a 
-    SINEX file like:
-
-        from midgard import parsers
-        p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
-        source_data = p.as_dict()
-
-    """
-
-    sources = dict()
-
-    @classmethod
-    def get(
-        cls,
-        source: str, 
-        station: str, 
-        date: datetime, 
-        source_path: Union[None, str] = None,
-        source_data: Union[None, Any] = None,
-    ) -> Union[Any, Any]:
-        """Get site information object depending on given source
-
-        Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            date:         Date for getting site information
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored. 
-
-        Returns:
-            Site information object 
-        """
-        history = SiteInfoHistory.get(source, station, source_path, source_data)
-        return history.get(date)
-
-    @classmethod
-    def get_history(
-            cls, 
-            source: str, 
-            station: str, 
-            source_path: Union[None, str] = None,
-            source_data: Union[None, Any] = None,
-            
-    ) -> Union[Any, Any]:
-        """Get site information history object depending on given source
-
-        Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored. 
-
-        Returns:
-            Site information object 
-        """
-        history = SiteInfoHistory.get(source, station, source_path, source_data)
-        return history
-
-
-class SiteInfoBase:
+class SiteInfoBase(abc.ABC):
     """Site information base class defining common attributes and methods
     """
 
@@ -150,67 +83,28 @@ class SiteInfoBase:
         """        
         return type(self)(self.station, deepcopy(self._info))
 
-
-class SiteInfoHistory:
-
-    sources = dict()
-
-    @classmethod
-    def get(
-            cls, 
-            module: str, 
-            source: str, 
-            station: str, 
-            source_path: Union[None, str] = None,
-            source_data: Union[None, Any] = None,
-    ) -> Union[Any, Any]:
-        """Get history class depending on given source  from a specific site information (e.g. antenna, receiver)
-
-        The module name is used to distinguish between different site information classes calling this function.
-
-        Args:
-            module:       Module name.
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
-
-        Returns:
-            History class depending on given source
+    @property
+    @abstractmethod
+    def date_from(self):
         """
-        type_ = module.split(".")[-1]
-        try:
-            return cls.sources[f"{source}_{type_}"](station, source_path, source_data)
-        except KeyError:
-            sources = set([v.split("_")[0] for v in cls.sources.keys()])
-            raise ValueError(f"Source {source!r} unknown. Use one of: {', '.join(sources)}.")
-
-
-    @classmethod
-    def register_source(cls, source_cls: Union[Any, Any]) -> Union[Any, Any]:
-        """Register history class in source attribute
-
-        This routine is called via plugins module, which register existing history classes. 
-
-        Args:
-            source_cls: Site information history class (e.g. antenna, receiver, ...)
-
-        Returns:
-            Site information history class (e.g. antenna, receiver, ...)
         """
-        type_ = source_cls.__module__.split(".")[-1]
-        cls.sources[f"{source_cls.source}_{type_}"] = source_cls
-        return source_cls
+        return NotImplemented
+
+    @property
+    @abstractmethod
+    def date_to(self):
+        """
+        """
+        return NotImplemented
 
 
-class SiteInfoHistoryBase:
+class SiteInfoHistoryBase(abc.ABC):
     """History base class defining common attributes and methods from a specific site information (e.g. antenna, receiver)
     """
 
     source = None
 
-    def __init__(self, station: str, source_path: str, source_data: Any) -> None:
+    def __init__(self, station: str, source_data: Any, source_path: str) -> None:
         """Initialize history information object from a specific site information (e.g. antenna, receiver)
 
         Args:
@@ -221,9 +115,9 @@ class SiteInfoHistoryBase:
         """
         self.station = station.lower()
         self.source_path = source_path
-        self.history = self._read_history(source_data)
+        self.history = self._process_history(source_data)
 
-    def _read_history(self, **kwargs):
+    def _process_history(self, **kwargs):
         """Read site information history 
 
         Routine has to be implemented in site_info module classes.
@@ -251,6 +145,9 @@ class SiteInfoHistoryBase:
         Returns:
             Site information object for given date            
         """
+        if self.history is None:
+            return None
+        
         for (date_from, date_to), site_info in self.history.items():
             if date_from <= date < date_to:
                 return site_info
@@ -262,6 +159,9 @@ class SiteInfoHistoryBase:
         Returns:
             List with installation site dates from a specific site information (e.g. antenna, receiver)
         """
+        if self.history is None:
+            return None
+        
         return [date_from for (date_from, date_to) in self.history.keys()]
 
     @property
@@ -271,4 +171,7 @@ class SiteInfoHistoryBase:
         Returns:
             List with removing site dates from a specific site information (e.g. antenna, receiver)
         """
+        if self.history is None:
+            return None
+        
         return [date_to for (date_from, date_to) in self.history.keys()]
