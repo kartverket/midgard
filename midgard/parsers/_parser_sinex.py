@@ -200,7 +200,6 @@ class SinexParser(Parser):
         self._sinex: Dict[str, Any] = dict()
         self.sinex_blocks = cast(Iterable[SinexBlock], self.setup_parser())
 
-
     def setup_parser(self) -> Any:
         """Set up information needed for the parser
 
