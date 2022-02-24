@@ -8,9 +8,12 @@ Description:
 from datetime import datetime
 from typing import Union, Any
 
-# Third party imports
+from midgard.site_info.antenna import Antenna
+from midgard.site_info.receiver import Receiver
+from midgard.site_info.site_coord import SiteCoord
 
-_MODULES = ["antenna", "receiver", "site_coord"] # replace with plugins?
+
+_MODULES = [Antenna, Receiver, SiteCoord]
 
 class SiteInfo:
     """Main site information class for getting site information object depending on site information source
@@ -36,7 +39,6 @@ class SiteInfo:
         date: datetime, 
         source_data: Union[None, Any],
         source_path: Union[None, str] = None,
-
     ) -> Union[Any, Any]:
         """Get site information object depending on given source
 
@@ -59,8 +61,9 @@ class SiteInfo:
         for sta in stations:
             site_dict = site_info_history.setdefault(sta, {})      
             for module in _MODULES:
-                history = SiteInfoHistory.get(module, source, source_data, sta, source_path)
-                site_dict[module] = history.get(date) if history is not None else None
+                module_name = module.__name__.lower()
+                history = module.get_history(source, sta, source_data, source_path)
+                site_dict[module_name] = history.get(date) if history is not None else None
 
         return {s: site_info_history[s] for s in stations}
 
@@ -93,62 +96,46 @@ class SiteInfo:
         for sta in stations:
             site_dict = site_info_history.setdefault(sta, {})      
             for module in _MODULES:
-                site_dict[module] = SiteInfoHistory.get(module, source, source_data, sta, source_path)
+                module_name = module.__name__.lower()
+                site_dict[module_name] = module.get_history(source, sta, source_data, source_path)
 
         return {s: site_info_history[s] for s in stations}
     
 
 
-class SiteInfoHistory:
-
-    sources = dict()
-
-    @classmethod
-    def get(
-            cls, 
-            module: str, 
-            source: str, 
-            source_data: Union[None, Any],
-            station: str = None, 
-            source_path: Union[None, str] = None,
-
-    ) -> Union[Any, Any]:
-        """Get history class depending on given source  from a specific site information (e.g. antenna, receiver)
-
-        The module name is used to distinguish between different site information classes calling this function.
-
-        Args:
-            module:       Module name.
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
-
-        Returns: cls.sources[f"{source}_{type_}"]
-            History class depending on given source
-        """
-        
-        type_ = module.split(".")[-1]
-        if f"{source}_{type_}" not in cls.sources:
-            sources = set([v.split("_")[0] for v in cls.sources.keys()])
-            raise ValueError(f"Source {source!r} unknown. Use one of: {', '.join(sources)}.")
-
-        return cls.sources[f"{source}_{type_}"](station, source_data, source_path)
-
-
-    @classmethod
-    def register_source(cls, source_cls: Union[Any, Any]) -> Union[Any, Any]:
-        """Register history class in source attribute
-
-        This routine is called via plugins module, which register existing history classes. 
-
-        Args:
-            source_cls: Site information history class (e.g. antenna, receiver, ...)
-
-        Returns:
-            Site information history class (e.g. antenna, receiver, ...)
-        """
-        type_ = source_cls.__module__.split(".")[-1]
-        cls.sources[f"{source_cls.source}_{type_}"] = source_cls
-        return source_cls
+# class SiteInfoHistory:
+#
+#     sources = dict()
+#
+#     @classmethod
+#     def get(
+#             cls, 
+#             module: str, 
+#             source: str, 
+#             source_data: Union[None, Any],
+#             station: str = None, 
+#             source_path: Union[None, str] = None,
+#
+#     ) -> Union[Any, Any]:
+#         """Get history class depending on given source  from a specific site information (e.g. antenna, receiver)
+#
+#         The module name is used to distinguish between different site information classes calling this function.
+#
+#         Args:
+#             module:       Module name.
+#             source:       Site information source e.g. 'sinex' (SINEX file)
+#             station:      Station name.
+#             source_path:  Source path of site information source (e.g. file path of SINEX file)
+#             source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+#                           ignored.
+#
+#         Returns: cls.sources[f"{source}_{type_}"]
+#             History class depending on given source
+#         """
+#
+#         type_ = module.split(".")[-1]
+#         if f"{source}_{type_}" not in cls.sources:
+#             sources = set([v.split("_")[0] for v in cls.sources.keys()])
+#             raise ValueError(f"Source {source!r} unknown. Use one of: {', '.join(sources)}.")
+#
+#         return cls.sources[f"{source}_{type_}"](station, source_data, source_path)

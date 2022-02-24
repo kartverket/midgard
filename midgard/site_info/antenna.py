@@ -32,12 +32,9 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple, Union
 
 # Midgard imports
-from midgard import parsers
-from midgard.dev import log
-from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase 
-from midgard.site_info.site_info import SiteInfoHistory
+from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
-class Antenna():
+class Antenna(ModuleBase):
     """Main antenna class for getting antenna object depending on site information source
 
     The site information source can be e.g. a SINEX file.
@@ -47,13 +44,12 @@ class Antenna():
 
     @classmethod
     def get(
-            cls, 
-            source: str,
-            source_data: Union[None, Any],
-            station: str,
+            cls,
+            source: str, 
+            station: str, 
             date: datetime, 
+            source_data: Union[None, Any],
             source_path: Union[None, str] = None,
-
     ) -> Union["AntennaSinex", Any]:
         """Get antenna object depending on given source
 
@@ -69,15 +65,15 @@ class Antenna():
         Returns:
             Antenna object 
         """
-        history = SiteInfoHistory.get(__name__, source, source_data, station)
+        history = cls.sources[source](station, source_data, source_path)
         return history.get(date)
 
     @classmethod
     def get_history(
             cls, 
-            source: str, 
-            source_data: Union[None, Any],
+            source: str,
             station: str, 
+            source_data: Union[None, Any],
             source_path: Union[None, str] = None,    
     ) -> Union["AntennaSinex", Any]:
         """Get antenna history object depending on given source
@@ -92,11 +88,11 @@ class Antenna():
         Returns:
             Antenna object 
         """
-        history = SiteInfoHistory.get(__name__, source,  source_data, station, source_path)
+        history = cls.sources[source](station, source_data, source_path)
         return history
 
 
-@SiteInfoHistory.register_source
+@Antenna.register_source
 class AntennaHistorySinex(SiteInfoHistoryBase):
 
     source = "snx"
@@ -114,22 +110,6 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are AntennaSinex objects.
         """
-        
-        #if not source_data:
-        #    if self.source_path is None:
-        #        log.fatal("No SINEX file path is defined.")
-
-            # Find site_id and read antenna history
-        #    print(f"Reading file {self.source_path} in AntennaHistorySinex")
-        #    p = parsers.parse_file("sinex_site", file_path=self.source_path)
-        #    source_data = p.as_dict()
-
-        #if self.station is None:
-        #    # Create history for all stations in source
-        #    histories = list()
-        #    for station, station_data in source_data.items():
-        #        histories.append(self._create_history(station, station_data["site_antenna"]))
-        #    return histories
                 
         if self.station in source_data:
             if "site_antenna" not in source_data[self.station]:
@@ -195,7 +175,7 @@ class AntennaSinex(SiteInfoBase):
             #      does not work. Exceeding of datetime limit 9999 12 31.
 
 
-@SiteInfoHistory.register_source
+@Antenna.register_source
 class AntennaHistorySsc(SiteInfoHistoryBase):
 
     source = "ssc"

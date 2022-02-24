@@ -35,14 +35,11 @@ from typing import Any, Dict, List, Tuple, Union
 import numpy as np
 
 # Midgard imports
-from midgard import parsers
 from midgard.data.position import Position
 from midgard.data.time import Time
-from midgard.dev import log
-from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase 
-from midgard.site_info.site_info import SiteInfoHistory
+from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
-class SiteCoord():
+class SiteCoord(ModuleBase):
     """Main site coordinate class for getting site coordinate object depending on site information source
 
     The site information source can be e.g. a SINEX file.
@@ -52,11 +49,11 @@ class SiteCoord():
 
     @classmethod
     def get(
-            cls, 
-            source: str,
-            source_data: Union[None, Any],
+            cls,
+            source: str, 
             station: str, 
             date: datetime, 
+            source_data: Union[None, Any],
             source_path: Union[None, str] = None,
     ) -> Union["SiteCoordSinex", Any]:
         """Get site coordinate object depending on given source
@@ -72,16 +69,16 @@ class SiteCoord():
         Returns:
             Site coordinate object 
         """
-        history = SiteInfoHistory.get(__name__, source, source_data, station, source_path)
+        history = cls.sources[source](station, source_data, source_path)
         return history.get(date)
 
     @classmethod
     def get_history(
             cls, 
             source: str,
-            source_data: Union[None, Any],
             station: str, 
-            source_path: Union[None, str] = None,
+            source_data: Union[None, Any],
+            source_path: Union[None, str] = None, 
     ) -> Union["SiteCoordSinex", Any]:
         """Get site coordinate history object depending on given source
 
@@ -95,11 +92,11 @@ class SiteCoord():
         Returns:
             Site coordinate object 
         """
-        history = SiteInfoHistory.get(__name__, source, source_data, station, source_path)
+        history = cls.sources[source](station, source_data, source_path)
         return history
 
 
-@SiteInfoHistory.register_source
+@SiteCoord.register_source
 class SiteCoordHistorySinex(SiteInfoHistoryBase):
 
     source = "snx"
@@ -117,23 +114,6 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordSinex objects.
         """
-        # Get SINEX file data by reading from file 'source_path'
-        #if not source_data:
-        #    if self.source_path is None:
-        #        log.fatal("No SINEX file path is defined.")
-
-        #    # Find site_id and read antenna history
-        #    print(f"Reading file {self.source_path} in SiteCoordHistorySinex")
-        #    p = parsers.parse_file("sinex_site", file_path=self.source_path)
-        #    source_data = p.as_dict()
-        
-        #if self.station is None:
-        #    # Create history for all stations in source
-        #    histories = list()
-        #    for station, station_data in source_data.items():
-        #        raw_info = self._combine_sinex_block_data(station_data)
-        #        histories.append(self._create_history(station, raw_info))
-        #    return histories
 
         if self.station in source_data:
             raw_info = self._combine_sinex_block_data(source_data[self.station])
@@ -457,7 +437,7 @@ class SiteCoordSinex(SiteInfoBase):
         self._info.setdefault("VELZ", dict()).update(estimate_std=vel_sigma[2])
 
 
-@SiteInfoHistory.register_source
+@SiteCoord.register_source
 class SiteCoordHistorySsc(SiteInfoHistoryBase):
 
     source = "ssc"
@@ -475,24 +455,6 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordSinex objects.
         """
-        # Get SINEX file data by reading from file 'source_path'
-        #if not source_data:
-        #    if self.source_path is None:
-        #        log.fatal("No SINEX file path is defined.")
-
-        #    # Find site_id and read antenna history
-        #    print(f"Reading file {self.source_path} in SiteCoordHistorySinex")
-        #    p = parsers.parse_file("sinex_site", file_path=self.source_path)
-        #    source_data = p.as_dict()
-        
-        #if self.station is None:
-        #    # Create history for all stations in source
-        #    histories = list()
-        #    for station, station_data in source_data.items():
-        #        raw_info = self._combine_sinex_block_data(station_data)
-        #        histories.append(self._create_history(station, raw_info))
-        #    return histories
-
         if self.station in source_data:
             raw_info = source_data[self.station]
         elif self.station.upper() in source_data:
@@ -553,7 +515,6 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
         }
         """
         history = dict()
-        #print(f"{self.source_path}, {__name__}, {raw_info}")
         pos_vel = raw_info.pop("pos_vel")
         for site_coord_info in pos_vel.values():
             site_coord = SiteCoordSsc(self.station, site_coord_info)

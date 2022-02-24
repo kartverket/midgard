@@ -31,12 +31,10 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple, Union
 
 # Midgard imports
-from midgard import parsers
-from midgard.dev import log
-from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase 
-from midgard.site_info.site_info import SiteInfoHistory
+from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
-class Receiver:
+
+class Receiver(ModuleBase):
     """Main receiver class for getting receiver object depending on site information source
 
     The site information source can be e.g. a SINEX file.
@@ -46,11 +44,11 @@ class Receiver:
 
     @classmethod
     def get(
-            cls, 
-            source: str,  
-            source_data: Union[None, Any],
-            station: str,
+            cls,
+            source: str, 
+            station: str, 
             date: datetime, 
+            source_data: Union[None, Any],
             source_path: Union[None, str] = None,
     ) -> Union["ReceiverSinex", Any]:
         """Get receiver object depending on given source
@@ -66,16 +64,16 @@ class Receiver:
         Returns:
             Receiver object 
         """
-        history = SiteInfoHistory.get(__name__, source, source_data, station, source_path)
+        history = cls.sources[source](station, source_data, source_path)
         return history.get(date)
 
     @classmethod
     def get_history(
             cls, 
-            source: str, 
-            source_data: Union[None, Any],
+            source: str,
             station: str, 
-            source_path: Union[None, str] = None,
+            source_data: Union[None, Any],
+            source_path: Union[None, str] = None, 
     ) -> Union["ReceiverSinex", Any]:
         """Get receiver history object depending on given source
 
@@ -89,11 +87,11 @@ class Receiver:
         Returns:
             Receiver object 
         """
-        history = SiteInfoHistory.get(__name__, source, source_data, station, source_path)
+        history = cls.sources[source](station, source_data, source_path)
         return history
 
 
-@SiteInfoHistory.register_source
+@Receiver.register_source
 class ReceiverHistorySinex(SiteInfoHistoryBase):
 
     source = "snx"
@@ -111,22 +109,6 @@ class ReceiverHistorySinex(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are ReceiverSinex objects.
         """
-        # Get SINEX file data by reading from file 'source_path'
-        #if not source_data:
-        #    if self.source_path is None:
-        #        log.fatal("No SINEX file path is defined.")
-
-        #    # Find site_id and read antenna history
-        #    print(f"Reading file {self.source_path} in ReceiverHistorySinex")
-        #    p = parsers.parse_file("sinex_site", file_path=self.source_path)
-        #    source_data = p.as_dict()
-
-        #if self.station is None:
-        #    # Create history for all stations in source
-        #    histories = list()
-        #    for station, station_data in source_data.items():
-        #        histories.append(self._create_history(station, station_data["site_receiver"]))
-        #    return histories
 
         if self.station in source_data:
             if "site_receiver" not in source_data[self.station]:
@@ -187,7 +169,7 @@ class ReceiverSinex(SiteInfoBase):
             #      does not work. Exceeding of datetime limit 9999 12 31.
 
 
-@SiteInfoHistory.register_source
+@Receiver.register_source
 class ReceiverHistorySsc(SiteInfoHistoryBase):
 
     source = "ssc"

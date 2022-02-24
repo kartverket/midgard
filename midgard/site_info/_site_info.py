@@ -175,3 +175,23 @@ class SiteInfoHistoryBase(abc.ABC):
             return None
         
         return [date_to for (date_from, date_to) in self.history.keys()]
+
+
+class ModuleBase(abc.ABC):
+
+    @classmethod
+    def register_source(cls, source_cls: Union[Any, Any]) -> Union[Any, Any]:
+        """Register history class in source attribute
+    
+        This routine is called via plugins module, which register existing history classes. 
+    
+        Args:
+            source_cls: Site information history class (e.g. antenna, receiver, ...)
+    
+        Returns:
+            Site information history class (e.g. antenna, receiver, ...)
+        """
+        #type_ = source_cls.__module__.split(".")[-1]
+        #print(type)
+        cls.sources[f"{source_cls.source}"] = source_cls
+        return source_cls

@@ -1,5 +1,4 @@
-
-from midgard.site_info import site_info
+import datetime
 import pytest
 
 @pytest.fixture
@@ -462,15 +461,4 @@ def sinex_data():
                'vector_2': 0.0,
                'vector_3': 0.0}]}
 
-
-def test_site_info_sinex():
-    site_info.SiteInfo.get_history("snx", "zimm", sinex_data(), "path/to/sinex")
-    site_info.SiteInfo.get_history("snx", "zimm,hrao", sinex_data(), "path/to/sinex")
-    site_info.SiteInfo.get_history("snx", ["zimm","hrao"], sinex_data(), "path/to/sinex")
-    from datetime import datetime
-    SiteInfo.get("snx", sta, datetime.now(), source_data, source_path=p.file_path)
-    
-def test_site_info_sesite()
-    from datetime import datetime
-    data2 = SiteInfo.get("sesite", stations, datetime.now(), api, source_path=sesite_api_url):
-    
+    return data
