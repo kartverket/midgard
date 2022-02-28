@@ -5,3 +5,4 @@ __pycache__/
 .pydevproject
 .coverage
 /.pytest_cache/
+/.mypy_cache/

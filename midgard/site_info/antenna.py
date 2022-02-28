@@ -1,101 +1,56 @@
-""" Antenna site information classes
+"""Antenna information classes
 
 Description:
 ------------
-The antenna module generates a antenna object based on site information from 
-the SINEX file or other sources.
+This module is divided into three different types of classes:
 
-Following steps are carried out for getting a antenna object:
+    1. Main class Antenna that provides basic functionality to the user. See examples
+    2. Antenna source type classes:
+        - There is one class for each source type
+        - A class with all relevant site coordinate information for a point in time.
+    3. Antenna history source type classes:
+        - There is one class for each source type
+        - Converts input from source_data to a object of type AntennaHistorySinex, etc and provides functions
+          for accessing the history and relevant dates. 
+        - The history consist of a time interval for which the entry is valid and an instance of an antenna 
+          source type class for each defined time interval.
 
-    1. Plugins modulen register SiteInfoHistory classes (e.g. 
-       AntennaHistorySinex) and updates the 'sources' attribute of the 
-       SiteInfoHistory class. 
-    2. The Antenna object is initialized by calling the Antenna.get function. 
-    3. The SiteInfoHistory.get function is called via the Antenna.get function.
-       Here the correct SiteInfoHistory class is choosen by accessing the 
-       registered 'sources' attribute of the SiteInfoHistory class.
-    4. The SiteInfoBase.get function reads the antenna information via the
-       _read_history() function of the AntennaHistorySinex or other 
-       calls. The antenna information is selected via a given date. 
-
+    If a source type does not contain information about the antenna the module will return 'None'.
 
 Example:
 --------
     
-    from midgard.site_info import antenna; from datetime import datetime
-    antenna.Antenna.get(source="sinex", station="zimm", date=datetime(2018, 10, 1), source_path="igs.snx") 
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+    source_data = p.as_dict()
+    all_stations = source_data.keys()
+    
+    Antenna.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    Antenna.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    
+    Antenna.get_history("snx", "osls", source_data, source_path=p.file_path)
+    Antenna.get_history("snx", all_stations, source_data, source_path=p.file_path)
+
 """
 
 
 # Standard library imports
 from datetime import datetime, timedelta
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
 class Antenna(ModuleBase):
-    """Main antenna class for getting antenna object depending on site information source
-
-    The site information source can be e.g. a SINEX file.
-    """
-
-    sources = dict()
-
-    @classmethod
-    def get(
-            cls,
-            source: str, 
-            station: str, 
-            date: datetime, 
-            source_data: Union[None, Any],
-            source_path: Union[None, str] = None,
-    ) -> Union["AntennaSinex", Any]:
-        """Get antenna object depending on given source
-
-        Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            date:         Date for getting site information
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
-
-
-        Returns:
-            Antenna object 
-        """
-        history = cls.sources[source](station, source_data, source_path)
-        return history.get(date)
-
-    @classmethod
-    def get_history(
-            cls, 
-            source: str,
-            station: str, 
-            source_data: Union[None, Any],
-            source_path: Union[None, str] = None,    
-    ) -> Union["AntennaSinex", Any]:
-        """Get antenna history object depending on given source
-
-        Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
-
-        Returns:
-            Antenna object 
-        """
-        history = cls.sources[source](station, source_data, source_path)
-        return history
+    """Main class for converting antenna information from various sources into unified classes"""
+    
+    sources: Dict[str, Callable] = dict()
 
 
 @Antenna.register_source
 class AntennaHistorySinex(SiteInfoHistoryBase):
 
-    source = "snx"
+    source: str = "snx"
 
     def _process_history(
                 self, 
@@ -120,11 +75,11 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
                 raise ValueError(f"Station {self.station.upper()!r} is not given in SITE/ANTENNA SINEX block.")
             raw_info = source_data[self.station.upper()]["site_antenna"]
         else:
-            raise ValueError(f"Station '{self.station}' unknown in source '{cls.source}:{self.source_path}'.")
+            raise ValueError(f"Station '{self.station}' unknown in source '{self.source}:{self.source_path}'.")
 
         return self._create_history(self.station, raw_info)
 
-    def _create_history(self, station, raw_info):
+    def _create_history(self, station: str, raw_info: List)-> Dict:
         """Create dictionary of antenna history for station
         """
         history = dict()
@@ -140,8 +95,8 @@ class AntennaSinex(SiteInfoBase):
     """ Antenna class handling SINEX file antenna station information
     """
 
-    source = "snx"
-    fields = dict(
+    source: str = "snx"
+    fields: Dict[str, str] = dict(
         type="antenna_type",
         serial_number="serial_number",
         radome_type="radome_type",
@@ -178,12 +133,12 @@ class AntennaSinex(SiteInfoBase):
 @Antenna.register_source
 class AntennaHistorySsc(SiteInfoHistoryBase):
 
-    source = "ssc"
+    source: str = "ssc"
 
     def _process_history(
                 self, 
-                source_data: Union[None, Any],
-    ) -> Dict[Tuple[datetime, datetime], "AntennaSinex"]:
+                source_data: Any,
+    ) -> Union[None, Dict[Tuple[datetime, datetime], "AntennaSsc"]]:
         """Read antenna site history from SINEX file
 
         Args:
@@ -193,15 +148,19 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are AntennaSinex objects.
         """
-        ## SSC files do not contain antenna information
-        return None
+        print(source_data)
+        if self.station in source_data or self.station.upper() in source_data:
+            # Station is defined but SSC files do not contain receiver information
+            return None
+        else:
+            raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
 class AntennaSsc(SiteInfoBase):
     """ Antenna class handling SINEX file antenna station information
     """
 
-    source = "snx"
-    fields = dict(
+    source: str = "snx"
+    fields: Dict[str, str] = dict(
         type="antenna_type",
         serial_number="serial_number",
         radome_type="radome_type",

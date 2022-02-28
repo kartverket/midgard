@@ -1,25 +1,24 @@
-"""Base classes for site information with and without history.
+"""Base classes for site information.
 
 Description:
 ------------
 
-Abstract classes.
+All the base classes are abstract classes. There are three base classes defined.
+
 """
 
 # Standard library imports
 import abc
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Dict, List, Union
-from abc import abstractmethod
+from typing import Any, Dict, List, Union, Iterable
 
 
 class SiteInfoBase(abc.ABC):
-    """Site information base class defining common attributes and methods
-    """
+    """Site information base class defining common attributes and methods"""
 
-    source = None
-    fields = dict()
+    source: Union[None, str] = None
+    fields: Dict = dict()
 
     def __init__(self, station: str, site_info: Dict[str, Any]) -> None:
         """Initialize site information object
@@ -73,7 +72,7 @@ class SiteInfoBase(abc.ABC):
 
     def __dir__(self) -> List[str]:
         """List all fields and attributes on the class"""
-        return super().__dir__() + list(self.fields)
+        return super().__dir__() + list(self.fields.keys())
 
     def copy(self) -> object:
         """Return a copy of object
@@ -84,47 +83,48 @@ class SiteInfoBase(abc.ABC):
         return type(self)(self.station, deepcopy(self._info))
 
     @property
-    @abstractmethod
-    def date_from(self):
-        """
-        """
-        return NotImplemented
+    @abc.abstractmethod
+    def date_from(self) -> datetime:
+        """First valid epoch for site info entry"""
 
     @property
-    @abstractmethod
-    def date_to(self):
-        """
-        """
-        return NotImplemented
+    @abc.abstractmethod
+    def date_to(self) -> datetime:
+        """Last valid epoch for site info entry"""
 
 
 class SiteInfoHistoryBase(abc.ABC):
-    """History base class defining common attributes and methods from a specific site information (e.g. antenna, receiver)
-    """
+    """Base class defining common attributes and methods for history classes"""
 
-    source = None
+    source: Union[None, str] = None
 
     def __init__(self, station: str, source_data: Any, source_path: str) -> None:
-        """Initialize history information object from a specific site information (e.g. antenna, receiver)
+        """Initialize history information object from input data
 
         Args:
             station:      Station name.
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
+            source_data:  Source data with site information. Structure of data is specific to information type
+                          and source type
+            source_path:  Source path of site information. Only intended for information purposes.
         """
         self.station = station.lower()
         self.source_path = source_path
-        self.history = self._process_history(source_data)
+        self.history = self._process_history(deepcopy(source_data))
 
-    def _process_history(self, **kwargs):
-        """Read site information history 
+    @abc.abstractmethod
+    def _process_history(self, source_data: Any) -> Union[None, Dict]:
+        """Convert site information from source to a history dictionary
 
-        Routine has to be implemented in site_info module classes.
-        """
-        raise NotImplementedError
+        Args:
+            source_data:    Raw data from source
+        
+        Returns:
+            dictionary with history information. Keys should be a tuple of two datetimes and values should be an 
+            instance of relevant the site information class based on the type of source_data
+        """ 
+        
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """A string describing the history information object from a specific site information (e.g. antenna, receiver)
 
         The string describes the history information object and lists station and fields. This string is mainly
@@ -136,7 +136,7 @@ class SiteInfoHistoryBase(abc.ABC):
         """
         return f"{type(self).__name__}(station={self.station!r})"
 
-    def get(self, date: datetime) -> Union[Any, Any]:
+    def get(self, date: datetime) -> Any:
         """Get site information object for given date
 
         Args:
@@ -153,7 +153,7 @@ class SiteInfoHistoryBase(abc.ABC):
                 return site_info
 
     @property
-    def date_from(self) -> List[datetime]:
+    def date_from(self) -> Union[None, List[datetime]]:
         """Get all installation dates for an given station from a specific site information (e.g. antenna, receiver)
 
         Returns:
@@ -165,7 +165,7 @@ class SiteInfoHistoryBase(abc.ABC):
         return [date_from for (date_from, date_to) in self.history.keys()]
 
     @property
-    def date_to(self) -> List[datetime]:
+    def date_to(self) -> Union[None, List[datetime]]:
         """Get all removing dates for an given station from a specific site information (e.g. antenna, receiver)
 
         Returns:
@@ -178,12 +178,15 @@ class SiteInfoHistoryBase(abc.ABC):
 
 
 class ModuleBase(abc.ABC):
-
-    @classmethod
-    def register_source(cls, source_cls: Union[Any, Any]) -> Union[Any, Any]:
-        """Register history class in source attribute
+    """Base class for each module of site information (e.g. Antenna, Receiver, ...).
     
-        This routine is called via plugins module, which register existing history classes. 
+    Allows different sources of site information history to be registered.
+    """
+    sources: Dict = dict() 
+    
+    @classmethod
+    def register_source(cls, source_cls: Any) -> Any:
+        """Register history class in sources attribute
     
         Args:
             source_cls: Site information history class (e.g. antenna, receiver, ...)
@@ -191,7 +194,67 @@ class ModuleBase(abc.ABC):
         Returns:
             Site information history class (e.g. antenna, receiver, ...)
         """
-        #type_ = source_cls.__module__.split(".")[-1]
-        #print(type)
         cls.sources[f"{source_cls.source}"] = source_cls
         return source_cls
+    
+    @classmethod
+    def get(
+            cls,
+            source: str, 
+            stations: Union[str, Iterable], 
+            date: datetime, 
+            source_data: Any,
+            source_path: Union[None, str] = None,
+    ) -> Any:
+        """Get site coordinate object depending on given source
+
+        Args:
+            source:       Site information source e.g. 'sinex' (SINEX file)
+            station:      Station name.
+            date:         Date for getting site information
+            source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
+
+        Returns:
+            Site coordinate object 
+        """
+        site_dict: Dict[str, Any] = dict()
+        if isinstance(stations, str):
+            stations = [s.strip() for s in stations.split(",")]
+
+        for station in stations:
+            history = cls.sources[source](station, source_data, source_path)
+            site_dict[station] = history.get(date) if history is not None else None
+
+        return site_dict
+        
+
+    @classmethod
+    def get_history(
+            cls, 
+            source: str,
+            stations: Union[str, Iterable], 
+            source_data: Any,
+            source_path: Union[None, str] = None, 
+    ) -> Any:
+        """Get site coordinate history object depending on given source
+
+        Args:
+            source:       Site information source e.g. 'sinex' (SINEX file)
+            station:      Station name.
+            source_path:  Source path of site information source (e.g. file path of SINEX file)
+            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
+                          ignored.
+
+        Returns:
+            Site coordinate object 
+        """
+        site_dict: Dict[str, Any] = dict()
+        if isinstance(stations, str):
+            stations = [s.strip() for s in stations.split(",")]
+        
+        for station in stations:
+            site_dict[station] = cls.sources[source](station, source_data, source_path)
+
+        return site_dict

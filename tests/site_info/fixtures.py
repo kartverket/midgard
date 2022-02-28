@@ -3,7 +3,9 @@ import pytest
 
 @pytest.fixture
 def sinex_data():
-    """ A dictionary with data parsed from a sinex file
+    """ Dictionary with the same structure as returned from a sinex_site parser
+    
+    Contains two examples with stations zimm and hrao
     """
     data = dict()
     
@@ -460,5 +462,134 @@ def sinex_data():
                'vector_1': 0.0814,
                'vector_2': 0.0,
                'vector_3': 0.0}]}
+
+    return data
+
+@pytest.fixture
+def ssc_data():
+    """ Dictionary with the same structure as returned from a ssc_site parser
+    
+    Contains two examples with stations GRAS and BORR
+    """
+    data = dict()
+    
+    data["GRAS"] = {'site_num': '10002',
+         'antenna_num': 'M006',
+         'name': 'GRAS',
+         'tech': 'GPS',
+         'antenna_id': 'GRAS',
+         'soln': 4,
+         'pos_vel': {1: {'STAX': 4581690.826,
+           'STAY': 556114.926,
+           'STAZ': 4389360.845,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(1996, 1, 1, 0, 0),
+           'end': datetime.datetime(1996, 5, 6, 23, 59, 30),
+           'VELX': -0.0137,
+           'VELY': 0.0189,
+           'VELZ': 0.0115,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001},
+          2: {'STAX': 4581690.83,
+           'STAY': 556114.924,
+           'STAZ': 4389360.844,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(1996, 10, 4, 0, 0),
+           'end': datetime.datetime(2003, 4, 21, 23, 59, 30),
+           'VELX': -0.0137,
+           'VELY': 0.0189,
+           'VELZ': 0.0115,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001},
+          3: {'STAX': 4581690.835,
+           'STAY': 556114.927,
+           'STAZ': 4389360.849,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(2003, 4, 24, 0, 0),
+           'end': datetime.datetime(2004, 10, 19, 23, 59, 30),
+           'VELX': -0.0137,
+           'VELY': 0.0189,
+           'VELZ': 0.0115,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001},
+          4: {'STAX': 4581690.831,
+           'STAY': 556114.93,
+           'STAZ': 4389360.851,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(2004, 10, 22, 0, 0),
+           'end': datetime.datetime(2021, 2, 20, 23, 59, 30),
+           'VELX': -0.0137,
+           'VELY': 0.0189,
+           'VELZ': 0.0115,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001}}}
+
+    data["BORR"] = {'site_num': '13480',
+         'antenna_num': 'M001',
+         'name': 'BORR',
+         'tech': 'GPS',
+         'antenna_id': 'BORR',
+         'soln': 3,
+         'pos_vel': {1: {'STAX': 4899519.031,
+           'STAY': -7115.451,
+           'STAZ': 4069961.71,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(2007, 9, 26, 0, 0),
+           'end': datetime.datetime(2013, 12, 28, 23, 59, 30),
+           'VELX': -0.0109,
+           'VELY': 0.0203,
+           'VELZ': 0.0121,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001},
+          2: {'STAX': 4899519.033,
+           'STAY': -7115.452,
+           'STAZ': 4069961.711,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(2013, 12, 29, 0, 0),
+           'end': datetime.datetime(2016, 6, 18, 23, 59, 30),
+           'VELX': -0.0109,
+           'VELY': 0.0203,
+           'VELZ': 0.0121,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001},
+          3: {'STAX': 4899519.029,
+           'STAY': -7115.455,
+           'STAZ': 4069961.71,
+           'sigma_X': 0.001,
+           'sigma_Y': 0.001,
+           'sigma_Z': 0.001,
+           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0),
+           'start': datetime.datetime(2016, 6, 26, 0, 0),
+           'end': datetime.datetime(2021, 2, 20, 23, 59, 30),
+           'VELX': -0.0109,
+           'VELY': 0.0203,
+           'VELZ': 0.0121,
+           'sigma_VX': 0.0001,
+           'sigma_VY': 0.0001,
+           'sigma_VZ': 0.0001}}}
 
     return data

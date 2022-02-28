@@ -1,35 +1,42 @@
-""" Site coordinate information classes
+"""Site cooridnate information classes
 
 Description:
 ------------
-The site_coord module generates a SiteCoord object based on site information from 
-the SINEX file or other sources.
+This module is divided into three different types of classes:
 
-Following steps are carried out for getting a SiteCoord object:
+    1. Main class SiteCoord that provides basic functionality to the user. See examples
+    2. Site coordinate source type classes:
+        - There is one class for each source type
+        - A class with all relevant site coordinate information for a point in time.
+    3. Site coordinate history source type classes:
+        - There is one class for each source type
+        - Converts input from source_data to a object of type SiteCoordHistorySinex, etc and provides functions
+          for accessing the history and relevant dates. 
+        - The history consist of a time interval for which the entry is valid and an instance of a site coordinate 
+          source type class for each defined time interval.
 
-    1. Plugins modulen register SiteInfoHistory classes (e.g. 
-       SiteCoordHistorySinex) and updates the 'sources' attribute of the 
-       SiteInfoHistory class. 
-    2. The SiteCoord object is initialized by calling the SiteCoord.get function. 
-    3. The SiteInfoHistory.get function is called via the SiteCoord.get function.
-       Here the correct SiteInfoHistory class is choosen by accessing the 
-       registered 'sources' attribute of the SiteInfoHistory class.
-    4. The SiteInfoBase.get function reads the antenna information via the
-       _read_history() function of the SiteInfoHistorySinex or other 
-       calls. The antenna information is selected via a given date. 
-
+    If a source type does not contain information about the site coordinates the module will return 'None'.
 
 Example:
 --------
     
-    from midgard.site_info import site_coord; from datetime import datetime
-    site_coord.SiteCoord.get(source="sinex", station="zimm", date=datetime(2018, 10, 1), source_path="igs.snx") 
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+    source_data = p.as_dict()
+    all_stations = source_data.keys()
+    
+    SiteCoord.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    SiteCoord.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    
+    SiteCoord.get_history("snx", "osls", source_data, source_path=p.file_path)
+    SiteCoord.get_history("snx", all_stations, source_data, source_path=p.file_path)
+
 """
 
 
 # Standard library imports
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union, Callable
 
 # External library imports
 import numpy as np
@@ -40,70 +47,18 @@ from midgard.data.time import Time
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
 class SiteCoord(ModuleBase):
-    """Main site coordinate class for getting site coordinate object depending on site information source
+    """Main class for converting site coordinates from various sources into unified classes"""
 
-    The site information source can be e.g. a SINEX file.
-    """
-
-    sources = dict()
-
-    @classmethod
-    def get(
-            cls,
-            source: str, 
-            station: str, 
-            date: datetime, 
-            source_data: Union[None, Any],
-            source_path: Union[None, str] = None,
-    ) -> Union["SiteCoordSinex", Any]:
-        """Get site coordinate object depending on given source
-
-        Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            date:         Date for getting site information
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
-
-        Returns:
-            Site coordinate object 
-        """
-        history = cls.sources[source](station, source_data, source_path)
-        return history.get(date)
-
-    @classmethod
-    def get_history(
-            cls, 
-            source: str,
-            station: str, 
-            source_data: Union[None, Any],
-            source_path: Union[None, str] = None, 
-    ) -> Union["SiteCoordSinex", Any]:
-        """Get site coordinate history object depending on given source
-
-        Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
-            station:      Station name.
-            source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
-
-        Returns:
-            Site coordinate object 
-        """
-        history = cls.sources[source](station, source_data, source_path)
-        return history
-
+    sources: Dict[str, Callable] = dict()
 
 @SiteCoord.register_source
 class SiteCoordHistorySinex(SiteInfoHistoryBase):
 
-    source = "snx"
+    source: str = "snx"
 
     def _process_history(
                 self, 
-                source_data: Union[None, Any] = None,
+                source_data: Dict,
     ) -> Dict[Tuple[datetime, datetime], "SiteCoordSinex"]:
         """Read site coordinate history from SINEX file
 
@@ -124,7 +79,7 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
         
         return self._create_history(self.station, raw_info)
 
-    def _create_history(self, station, raw_info):
+    def _create_history(self, station: str, raw_info: List) -> Dict:
         """ Create site coordinate history from input dictionary
         
         Args:
@@ -193,7 +148,7 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
 
 
     @staticmethod
-    def _combine_sinex_block_data(data: Dict[str, Dict[str, Dict[str, Any]]]) -> Dict[str, Dict[str, Any]]:
+    def _combine_sinex_block_data(data: Dict[str, Dict]) -> List[Dict]:
         """Combine SOLUTION/EPOCHS and SOLUTION/ESTIMATE SINEX block data to a common dictionary
 
         Args:
@@ -203,7 +158,7 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
             Dictionary with station as keys and values with information from SOLUTION/EPOCHS and SOLUTION/ESTIMATE SINEX 
             block.
         """
-        raw_info = list()
+        raw_info: List = list()
 
         if "solution_epochs" in data.keys():
             for idx, epoch in enumerate(data["solution_epochs"]):
@@ -217,11 +172,10 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
 
 
 class SiteCoordSinex(SiteInfoBase):
-    """ Site coordinate class handling SINEX file station coordinate information
-    """
+    """ Site coordinate class handling SINEX file station coordinate information"""
 
-    source = "snx"
-    fields = dict()
+    source: str = "snx"
+    fields: Dict = dict()
 
 
     #
@@ -284,7 +238,7 @@ class SiteCoordSinex(SiteInfoBase):
         ])
 
     @property
-    def ref_epoch(self) -> "Time":
+    def ref_epoch(self) -> "UtcTime":
         """ Get reference epoch of site coordinate from SINEX file
 
         Returns:
@@ -440,11 +394,11 @@ class SiteCoordSinex(SiteInfoBase):
 @SiteCoord.register_source
 class SiteCoordHistorySsc(SiteInfoHistoryBase):
 
-    source = "ssc"
+    source: str = "ssc"
 
     def _process_history(
                 self, 
-                source_data: Union[None, Any] = None,
+                source_data: Dict,
     ) -> Dict[Tuple[datetime, datetime], "SiteCoordSinex"]:
         """Read site coordinate history from SINEX file
 
@@ -461,10 +415,10 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
             raw_info = source_data[self.station.upper()]
         else:
             raise ValueError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
-        
+        print(f"Calling self._create_history({self.station}, {raw_info.keys()})")
         return self._create_history(self.station, raw_info)
 
-    def _create_history(self, station, raw_info):
+    def _create_history(self, station: str, raw_info: Dict) -> Dict:
         """ Create site coordinate history from input dictionary
         
         Args:
@@ -528,8 +482,8 @@ class SiteCoordSsc(SiteInfoBase):
     """ Site coordinate class handling SSC file station coordinate information
     """
 
-    source = "ssc"
-    fields = dict()
+    source: str = "ssc"
+    fields: Dict = dict()
 
 
     #
@@ -592,7 +546,7 @@ class SiteCoordSsc(SiteInfoBase):
         ])
 
     @property
-    def ref_epoch(self) -> "Time":
+    def ref_epoch(self) -> "UtcTime":
         """ Get reference epoch of site coordinate from SINEX file
 
         Returns:
