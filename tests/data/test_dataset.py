@@ -730,9 +730,9 @@ def test_delete(dset_full):
     with pytest.raises(AttributeError):
         dset_full.numbers_2
 
-@pytest.mark.parametrize("type_": [
+@pytest.mark.parametrize("type_", [
     (datetime.now()),
-    (tuple(datetime.now())),
+    ((datetime.now(),)),
     ({"b": datetime.now()}),
     ([[[[datetime.now()]]]]),
 ])
