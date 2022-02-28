@@ -148,47 +148,46 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are AntennaSinex objects.
         """
-        print(source_data)
         if self.station in source_data or self.station.upper() in source_data:
             # Station is defined but SSC files do not contain receiver information
             return None
         else:
             raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
-class AntennaSsc(SiteInfoBase):
-    """ Antenna class handling SINEX file antenna station information
-    """
-
-    source: str = "snx"
-    fields: Dict[str, str] = dict(
-        type="antenna_type",
-        serial_number="serial_number",
-        radome_type="radome_type",
-        radome_serial_number="radome_type",
-    )
-
-    @property
-    def date_from(self) -> datetime:
-        """ Get antenna installation date from site information attribute
-
-        Returns:
-            Antenna installation date
-        """
-        if self._info["start_time"]:
-            return self._info["start_time"]
-        else:
-            return datetime.min
-
-    @property
-    def date_to(self) -> datetime:
-        """ Get antenna removing date from site information attribute
-
-        Returns:
-            Antenna removing date
-        """
-        if self._info["end_time"]:
-            return self._info["end_time"]
-        else:
-            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-            #      does not work. Exceeding of datetime limit 9999 12 31.
+# class AntennaSsc(SiteInfoBase):
+#     """ Antenna class handling SINEX file antenna station information
+#     """
+#
+#     source: str = "snx"
+#     fields: Dict[str, str] = dict(
+#         type="antenna_type",
+#         serial_number="serial_number",
+#         radome_type="radome_type",
+#         radome_serial_number="radome_type",
+#     )
+#
+#     @property
+#     def date_from(self) -> datetime:
+#         """ Get antenna installation date from site information attribute
+#
+#         Returns:
+#             Antenna installation date
+#         """
+#         if self._info["start_time"]:
+#             return self._info["start_time"]
+#         else:
+#             return datetime.min
+#
+#     @property
+#     def date_to(self) -> datetime:
+#         """ Get antenna removing date from site information attribute
+#
+#         Returns:
+#             Antenna removing date
+#         """
+#         if self._info["end_time"]:
+#             return self._info["end_time"]
+#         else:
+#             return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
+#             #       _year2days(cls, year, scale) in ./midgard/data/_time.py
+#             #      does not work. Exceeding of datetime limit 9999 12 31.

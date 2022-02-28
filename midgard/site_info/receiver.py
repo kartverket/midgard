@@ -149,36 +149,36 @@ class ReceiverHistorySsc(SiteInfoHistoryBase):
         else:
             raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
-
-class ReceiverSsc(SiteInfoBase):
-    """ Receiver class handling SINEX file receiver station information
-    """
-
-    source: str = "ssc"
-    fields: Dict[str, str] = dict(type="receiver_type", serial_number="serial_number", firmware="firmware")
-
-    @property
-    def date_from(self) -> datetime:
-        """ Get receiver installation date from site information attribute
-
-        Returns:
-            Receiver installation date
-        """
-        if self._info["start_time"]:
-            return self._info["start_time"]
-        else:
-            return datetime.min
-
-    @property
-    def date_to(self) -> datetime:
-        """ Get receiver removing date from site information attribute
-
-        Returns:
-            Receiver removing date
-        """
-        if self._info["end_time"]:
-            return self._info["end_time"]
-        else:
-            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-            #      does not work. Exceeding of datetime limit 9999 12 31.
+#
+# class ReceiverSsc(SiteInfoBase):
+#     """ Receiver class handling SINEX file receiver station information
+#     """
+#
+#     source: str = "ssc"
+#     fields: Dict[str, str] = dict(type="receiver_type", serial_number="serial_number", firmware="firmware")
+#
+#     @property
+#     def date_from(self) -> datetime:
+#         """ Get receiver installation date from site information attribute
+#
+#         Returns:
+#             Receiver installation date
+#         """
+#         if self._info["start_time"]:
+#             return self._info["start_time"]
+#         else:
+#             return datetime.min
+#
+#     @property
+#     def date_to(self) -> datetime:
+#         """ Get receiver removing date from site information attribute
+#
+#         Returns:
+#             Receiver removing date
+#         """
+#         if self._info["end_time"]:
+#             return self._info["end_time"]
+#         else:
+#             return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
+#             #       _year2days(cls, year, scale) in ./midgard/data/_time.py
+#             #      does not work. Exceeding of datetime limit 9999 12 31.
