@@ -404,18 +404,23 @@ class Dataset(collection.Collection):
 
 
 class Meta(UserDict):
-    def read(self, h5_group):
-        """Read meta data from hdf5-file"""
+    def read(self, h5_group: h5py.Group) -> None:
+        """Read meta data from hdf5-file
+        
+        Args:
+            h5_group:    The hdf5 group that contains the meta data
+        """
         for k, v in h5_group.attrs.items():
             self.data[k] = _h5utils.decode_h5attr(v)
 
-    def write(self, h5_group):
-        """Write meta data to hdf5-file"""
+    def write(self, h5_group: h5py.Group) -> None:
+        """Write meta data to hdf5-file
+
+        Args:
+            h5_group:   The hdf5 group to store the meta data in
+        """
         for k, v in self.items():
-            try:
-                h5_group.attrs[k] = _h5utils.encode_h5attr(v)
-            except ValueError:
-                raise ValueError(f"Cannot save attribute '{k}' in meta. Data too complex: {v}. See ast.literal_eval for supported data types.")
+            h5_group.attrs[k] = _h5utils.encode_h5attr(v)
 
     def add(self, name: Hashable, value: Collection, section: Optional[Hashable] = None) -> None:
         """Add information to the metaset"""
