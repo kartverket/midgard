@@ -39,6 +39,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
+from midgard.dev.exceptions import MissingDataError
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
 class Antenna(ModuleBase):
@@ -68,14 +69,14 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
                 
         if self.station in source_data:
             if "site_antenna" not in source_data[self.station]:
-                raise ValueError(f"Station {self.station!r} is not given in SITE/ANTENNA SINEX block.")
+                raise MissingDataError(f"Station {self.station!r} is not given in SITE/ANTENNA SINEX block.")
             raw_info = source_data[self.station]["site_antenna"]
         elif self.station.upper() in source_data:
             if "site_antenna" not in source_data[self.station]:
-                raise ValueError(f"Station {self.station.upper()!r} is not given in SITE/ANTENNA SINEX block.")
+                raise MissingDataError(f"Station {self.station.upper()!r} is not given in SITE/ANTENNA SINEX block.")
             raw_info = source_data[self.station.upper()]["site_antenna"]
         else:
-            raise ValueError(f"Station '{self.station}' unknown in source '{self.source}:{self.source_path}'.")
+            raise MissingDataError(f"Station '{self.station}' unknown in source '{self.source}:{self.source_path}'.")
 
         return self._create_history(self.station, raw_info)
 
@@ -152,7 +153,7 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
             # Station is defined but SSC files do not contain receiver information
             return None
         else:
-            raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
+            raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
 # class AntennaSsc(SiteInfoBase):
 #     """ Antenna class handling SINEX file antenna station information

@@ -44,6 +44,7 @@ import numpy as np
 # Midgard imports
 from midgard.data.position import Position
 from midgard.data.time import Time
+from midgard.dev.exceptions import MissingDataError
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
 class SiteCoord(ModuleBase):
@@ -74,7 +75,7 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
             # Station is defined but SINEX files do not contain good site coordinates
             return None
         else:
-            raise ValueError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
+            raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
 
 # class SiteCoordSinex(SiteInfoBase):
@@ -320,7 +321,7 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
         elif self.station.upper() in source_data:
             raw_info = source_data[self.station.upper()]
         else:
-            raise ValueError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
+            raise MissingDataError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
 
         return self._create_history(self.station, raw_info)
 

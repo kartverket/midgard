@@ -1,6 +1,7 @@
 import datetime
 import pytest
 
+from midgard.dev.exceptions import MissingDataError
 from midgard.site_info.receiver import Receiver
 
 # Tests: Receiver.get("snx",...)
@@ -36,13 +37,13 @@ def test_receiver_sinex_two_stations_list(sinex_data):
 @pytest.mark.usefixtures("sinex_data")
 def test_receiver_sinex_one_station_error(sinex_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get("snx", "xxxx", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
 
 @pytest.mark.usefixtures("sinex_data")
 def test_receiver_sinex_two_stations_error(sinex_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get("snx", "zimm, xxxx", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
 
 # Tests: Receiver.get_history("snx",...)
@@ -75,13 +76,13 @@ def test_receiver_history_sinex_two_stations_list(sinex_data):
 @pytest.mark.usefixtures("sinex_data")
 def test_receiver_history_sinex_one_station_error(sinex_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get_history("snx", "xxxx", sinex_data, source_path="/path/to/sinex")
 
 @pytest.mark.usefixtures("sinex_data")
 def test_receiver_history_sinex_two_stations_error(sinex_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get_history("snx", "zimm, xxxx", sinex_data, source_path="/path/to/sinex")
 
 # Tests: Receiver.get("ssc",...)
@@ -112,13 +113,13 @@ def test_receiver_ssc_two_stations_list(ssc_data):
 @pytest.mark.usefixtures("ssc_data")
 def test_receiver_ssc_one_station_error(ssc_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get("ssc", "xxxx", datetime.datetime(2020, 1, 1), ssc_data, source_path="/path/to/ssc")
 
 @pytest.mark.usefixtures("ssc_data")
 def test_receiver_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get("ssc", "gras,xxxx", datetime.datetime(2020, 1, 1), ssc_data, source_path="/path/to/ssc")
 
 # Tests: Receiver.get_history("ssc",...)
@@ -151,11 +152,11 @@ def test_receiver_history_ssc_two_stations_list(ssc_data):
 @pytest.mark.usefixtures("ssc_data")
 def test_receiver_history_ssc_one_station_error(ssc_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get_history("ssc", "xxxx", ssc_data, source_path="/path/to/ssc")
 
 @pytest.mark.usefixtures("ssc_data")
 def test_receiver_history_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         r = Receiver.get_history("ssc", "gras,xxxx", ssc_data, source_path="/path/to/ssc")

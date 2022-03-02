@@ -1,6 +1,7 @@
 import datetime
 import pytest
 
+from midgard.dev.exceptions import MissingDataError
 from midgard.site_info import site_info
 
 # Tests: SiteInfo.get_history("snx",...)
@@ -29,14 +30,14 @@ def test_site_info_history_sinex_two_station_list(sinex_data):
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_history_sinex_one_station_error(sinex_data):
     # station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("snx", "xxxx", sinex_data, source_path="path/to/sinex")
 
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_history_sinex_two_stations_string_error(sinex_data):
     # station xxxx does not exist
     #TODO: what is the desired behaviour
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("snx", "xxxx, osls", sinex_data, source_path="path/to/sinex")
 
 # Tests: SiteInfo.get("snx",...)
@@ -65,14 +66,14 @@ def test_site_info_sinex_two_station_list(sinex_data):
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_sinex_one_station_error(sinex_data):
     # station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get("snx", "xxxx", datetime.datetime(2020, 1, 1), sinex_data, source_path="path/to/sinex")
 
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_sinex_two_stations_string_error(sinex_data):
     # station xxxx does not exist
     #TODO: what is the desired behaviour
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get("snx", "xxxx, osls", datetime.datetime(2020, 1, 1), sinex_data, source_path="path/to/sinex")
 
 # Tests: SiteInfo.get_history("ssc",...)
@@ -101,14 +102,14 @@ def test_site_info_history_sinex_two_station_list(ssc_data):
 @pytest.mark.usefixtures("ssc_data")
 def test_site_info_history_sinex_one_station_error(ssc_data):
     # station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("ssc", "xxxx", ssc_data, source_path="path/to/ssc")
 
 @pytest.mark.usefixtures("ssc_data")
 def test_site_info_history_sinex_two_stations_string_error(ssc_data):
     # station xxxx does not exist
     #TODO: what is the desired behaviour
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("ssc", "xxxx, borr", ssc_data, source_path="path/to/ssc")
 
 # Tests: SiteInfo.get("ssc",...)
@@ -137,12 +138,12 @@ def test_site_info_ssc_two_station_list(ssc_data):
 @pytest.mark.usefixtures("ssc_data")
 def test_site_info_ssc_one_station_error(ssc_data):
     # station xxxx does not exist
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get("ssc", "xxxx", datetime.datetime(2020, 1, 1), ssc_data, source_path="path/to/ssc")
 
 @pytest.mark.usefixtures("ssc_data")
 def test_site_info_ssc_two_stations_string_error(ssc_data):
     # station xxxx does not exist
     #TODO: what is the desired behaviour
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get("ssc", "xxxx, borr", datetime.datetime(2020, 1, 1), ssc_data, source_path="path/to/ssc")
