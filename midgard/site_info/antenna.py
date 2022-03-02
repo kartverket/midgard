@@ -126,9 +126,7 @@ class AntennaSinex(SiteInfoBase):
         if self._info["end_time"]:
             return self._info["end_time"]
         else:
-            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-            #      does not work. Exceeding of datetime limit 9999 12 31.
+            return datetime.max
 
 
 @Antenna.register_source
@@ -189,6 +187,4 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
 #         if self._info["end_time"]:
 #             return self._info["end_time"]
 #         else:
-#             return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-#             #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-#             #      does not work. Exceeding of datetime limit 9999 12 31.
+#             return datetime.max

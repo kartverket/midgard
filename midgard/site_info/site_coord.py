@@ -111,9 +111,7 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
 #         if self._info["end_epoch"]:
 #             return self._info["end_epoch"]
 #         else:
-#             return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-#             #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-#             #      does not work. Exceeding of datetime limit 9999 12 31.
+#             return datetime.max
 #
 #     @property
 #     def pos(self) -> "TrsPosition":
@@ -419,9 +417,7 @@ class SiteCoordSsc(SiteInfoBase):
         if self._info["end"]:
             return self._info["end"]
         else:
-            return datetime.max - timedelta(days=367)  # TODO: Minus 367 days is necessary because
-            #       _year2days(cls, year, scale) in ./midgard/data/_time.py
-            #      does not work. Exceeding of datetime limit 9999 12 31.
+            return datetime.max
 
     @property
     def pos(self) -> "TrsPosition":

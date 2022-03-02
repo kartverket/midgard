@@ -14,7 +14,7 @@ def test_antenna_sinex_one_station(sinex_data):
     
     # Test antenna information
     assert a["zimm"].date_from == datetime.datetime(1998, 11, 6, 0, 0)
-    assert a["zimm"].date_to == datetime.datetime(9998, 12, 29, 23, 59, 59, 999999)
+    assert a["zimm"].date_to == datetime.datetime(9999, 12, 29, 23, 59, 59, 999999)
     assert a["zimm"].station == 'zimm'
     assert a["zimm"].radome_serial_number == 'NONE'
     assert a["zimm"].radome_type == 'NONE'
