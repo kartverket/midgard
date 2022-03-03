@@ -62,7 +62,9 @@ class SiteInfo:
         site_info: Dict[str, Dict] = {}
         
         if isinstance(stations, str):
-            stations = [s.strip() for s in stations.split(",")]
+            stations = [s.strip().lower() for s in stations.split(",")]
+        else:
+            stations = [s.lower() for s in stations]
         
         for sta in stations:
             site_dict = site_info.setdefault(sta, {})      
@@ -98,7 +100,9 @@ class SiteInfo:
         site_info_history: Dict[str, Dict] = {}
         
         if isinstance(stations, str):
-            stations = [s.strip() for s in stations.split(",")]
+            stations = [s.strip().lower() for s in stations.split(",")]
+        else:
+            stations = [s.lower() for s in stations]
         
         for sta in stations:
             site_dict = site_info_history.setdefault(sta, {})      

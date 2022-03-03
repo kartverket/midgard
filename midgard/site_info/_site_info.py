@@ -221,7 +221,9 @@ class ModuleBase(abc.ABC):
         """
         site_dict: Dict[str, Any] = dict()
         if isinstance(stations, str):
-            stations = [s.strip() for s in stations.split(",")]
+            stations = [s.strip().lower() for s in stations.split(",")]
+        else:
+            stations = [s.lower() for s in stations]
 
         for station in stations:
             history = cls.sources[source](station, source_data, source_path)
@@ -252,7 +254,9 @@ class ModuleBase(abc.ABC):
         """
         site_dict: Dict[str, Any] = dict()
         if isinstance(stations, str):
-            stations = [s.strip() for s in stations.split(",")]
+            stations = [s.strip().lower() for s in stations.split(",")]
+        else:
+            stations = [s.lower() for s in stations]
         
         for station in stations:
             site_dict[station] = cls.sources[source](station, source_data, source_path)

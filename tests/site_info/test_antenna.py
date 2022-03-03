@@ -14,13 +14,18 @@ def test_antenna_sinex_one_station(sinex_data):
     
     # Test antenna information
     assert a["zimm"].date_from == datetime.datetime(1998, 11, 6, 0, 0)
-    assert a["zimm"].date_to == datetime.datetime(9999, 12, 29, 23, 59, 59, 999999)
+    assert a["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
     assert a["zimm"].station == 'zimm'
     assert a["zimm"].radome_serial_number == 'NONE'
     assert a["zimm"].radome_type == 'NONE'
     assert a["zimm"].serial_number == '99390'
     assert a["zimm"].type == 'TRM29659.00'
 
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_one_station_uppercase(sinex_data):
+    a = Antenna.get("snx", "ZIMM", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
+    assert "zimm" in a
+    assert len(a) == 1
 
 @pytest.mark.usefixtures("sinex_data")
 def test_antenna_sinex_two_stations_string(sinex_data):

@@ -19,7 +19,13 @@ def test_receiver_sinex_one_station(sinex_data):
     assert r["zimm"].firmware == '5.37'
     assert r["zimm"].date_from == datetime.datetime(2018, 12, 18, 9, 45)
     assert r["zimm"].date_to == datetime.datetime(2020, 6, 8, 7, 15)
-    
+
+@pytest.mark.usefixtures("sinex_data")
+def test_receiver_sinex_one_station_uppercase(sinex_data):
+    r = Receiver.get("snx", "ZIMM", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
+    assert "zimm" in r
+    assert len(r) == 1
+
 @pytest.mark.usefixtures("sinex_data")
 def test_receiver_sinex_two_stations_string(sinex_data):
     r = Receiver.get("snx", "zimm, hrao", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")

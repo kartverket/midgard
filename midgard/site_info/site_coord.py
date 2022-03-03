@@ -477,16 +477,11 @@ class SiteCoordSsc(SiteInfoBase):
         Returns:
             Site velocity for X, Y and Z component in [m/yr]
         """
-        try:
-            data = np.array([
-                                self._info["VELX"],
-                                self._info["VELY"],
-                                self._info["VELZ"],                
+        return np.array([
+                        self._info["VELX"],
+                        self._info["VELY"],
+                        self._info["VELZ"],                
             ])
-        except KeyError:
-            data = np.array([float('nan'), float('nan'), float('nan')])
-        
-        return data
 
     @property
     def vel_sigma(self) -> np.ndarray:
@@ -495,16 +490,11 @@ class SiteCoordSsc(SiteInfoBase):
         Returns:
             Standard deviation of site velocity for X, Y and Z component in [m/yr]
         """
-        try:
-            data = np.array([
-                                self._info["sigma_VX"],
-                                self._info["sigma_VY"],
-                                self._info["sigma_VZ"],                
-            ])
-        except KeyError:
-            data = np.array([float('nan'), float('nan'), float('nan')])
-
-        return data
+        return np.array([
+                        self._info["sigma_VX"],
+                        self._info["sigma_VY"],
+                        self._info["sigma_VZ"],                
+        ])
 
 
     #

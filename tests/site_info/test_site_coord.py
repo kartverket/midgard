@@ -18,6 +18,12 @@ def test_site_coord_sinex_one_station(sinex_data):
     assert c["zimm"] is None
 
 @pytest.mark.usefixtures("sinex_data")
+def test_site_coord_sinex_one_station_uppercase(sinex_data):
+    c = SiteCoord.get("snx", "ZIMM", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
+    assert "zimm" in c
+    assert len(c) == 1
+
+@pytest.mark.usefixtures("sinex_data")
 def test_site_coord_sinex_two_stations_string(sinex_data):
     c = SiteCoord.get("snx", "zimm, hrao", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
     assert "zimm" in c

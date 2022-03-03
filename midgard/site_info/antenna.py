@@ -138,14 +138,15 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
                 self, 
                 source_data: Any,
     ) -> Union[None, Dict[Tuple[datetime, datetime], "AntennaSsc"]]:
-        """Read antenna site history from SINEX file
+        """Read antenna site history from SSC file
+
+        Note: SSC files does not contain antenna information
 
         Args:
-            source_data:  Source data with site information. If source data are defined, then data are not read
-                          from 'source_path'. 
+            source_data:  Dictionary with site information from SSC file.
 
         Returns:
-            Dictionary with (date_from, date_to) tuple as key. The values are AntennaSinex objects.
+            Dictionary with (date_from, date_to) tuple as key. The values are AntennaSsc objects.
         """
         if self.station in source_data or self.station.upper() in source_data:
             # Station is defined but SSC files do not contain receiver information

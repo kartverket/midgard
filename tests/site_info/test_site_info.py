@@ -11,7 +11,12 @@ def test_site_info_history_sinex_one_station(sinex_data):
     si = site_info.SiteInfo.get_history("snx", "zimm", sinex_data, source_path="path/to/sinex")
     assert "zimm" in si
     assert len(si) == 1
-    #TODO: Check content
+
+@pytest.mark.usefixtures("sinex_data")
+def test_site_info_history_sinex_one_station_uppercase(sinex_data):
+    si = site_info.SiteInfo.get_history("snx", "ZIMM", sinex_data, source_path="path/to/sinex")
+    assert "zimm" in si
+    assert len(si) == 1
 
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_history_sinex_two_station_string(sinex_data):
@@ -36,7 +41,6 @@ def test_site_info_history_sinex_one_station_error(sinex_data):
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_history_sinex_two_stations_string_error(sinex_data):
     # station xxxx does not exist
-    #TODO: what is the desired behaviour
     with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("snx", "xxxx, osls", sinex_data, source_path="path/to/sinex")
 
@@ -47,7 +51,6 @@ def test_site_info_sinex_one_station(sinex_data):
     si = site_info.SiteInfo.get("snx", "zimm", datetime.datetime(2020, 1, 1), sinex_data, source_path="path/to/sinex")
     assert "zimm" in si
     assert len(si) == 1
-    #TODO: Check content
 
 @pytest.mark.usefixtures("sinex_data")
 def test_site_info_sinex_two_station_string(sinex_data):
@@ -83,32 +86,30 @@ def test_site_info_history_scc_one_station(ssc_data):
     si = site_info.SiteInfo.get_history("ssc", "gras", ssc_data, source_path="path/to/ssc")
     assert "gras" in si
     assert len(si) == 1
-    #TODO: Check content
 
 @pytest.mark.usefixtures("ssc_data")
-def test_site_info_history_sinex_two_station_string(ssc_data):
+def test_site_info_history_ssc_two_station_string(ssc_data):
     si = site_info.SiteInfo.get_history("ssc", "gras,borr", ssc_data, source_path="path/to/ssc")
     assert "gras" in si
     assert "borr" in si
     assert len(si) == 2
 
 @pytest.mark.usefixtures("ssc_data")
-def test_site_info_history_sinex_two_station_list(ssc_data):
+def test_site_info_history_ssc_two_station_list(ssc_data):
     si = site_info.SiteInfo.get_history("ssc", ["gras","borr"], ssc_data, source_path="path/to/ssc")
     assert "gras" in si
     assert "borr" in si
     assert len(si) == 2
 
 @pytest.mark.usefixtures("ssc_data")
-def test_site_info_history_sinex_one_station_error(ssc_data):
+def test_site_info_history_ssc_one_station_error(ssc_data):
     # station xxxx does not exist
     with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("ssc", "xxxx", ssc_data, source_path="path/to/ssc")
 
 @pytest.mark.usefixtures("ssc_data")
-def test_site_info_history_sinex_two_stations_string_error(ssc_data):
+def test_site_info_history_ssc_two_stations_string_error(ssc_data):
     # station xxxx does not exist
-    #TODO: what is the desired behaviour
     with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get_history("ssc", "xxxx, borr", ssc_data, source_path="path/to/ssc")
 
@@ -119,7 +120,6 @@ def test_site_info_ssc_one_station(ssc_data):
     si = site_info.SiteInfo.get("ssc", "gras", datetime.datetime(2020, 1, 1), ssc_data, source_path="path/to/ssc")
     assert "gras" in si
     assert len(si) == 1
-    #TODO: Check content
 
 @pytest.mark.usefixtures("ssc_data")
 def test_site_info_ssc_two_station_string(ssc_data):
@@ -144,6 +144,5 @@ def test_site_info_ssc_one_station_error(ssc_data):
 @pytest.mark.usefixtures("ssc_data")
 def test_site_info_ssc_two_stations_string_error(ssc_data):
     # station xxxx does not exist
-    #TODO: what is the desired behaviour
     with pytest.raises(MissingDataError):
         si = site_info.SiteInfo.get("ssc", "xxxx, borr", datetime.datetime(2020, 1, 1), ssc_data, source_path="path/to/ssc")
