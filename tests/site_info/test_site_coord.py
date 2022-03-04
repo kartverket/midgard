@@ -17,6 +17,23 @@ def test_site_coord_sinex_one_station(sinex_data):
     # Test site coord information
     assert c["zimm"] is None
 
+@pytest.mark.usefixtures("sinex_data_site_coord")
+def test_site_coord_sinex_one_station_with_data(sinex_data_site_coord):
+    c = SiteCoord.get("snx", "kiri", datetime.datetime(2020, 1, 1), sinex_data_site_coord, source_path="/path/to/sinex")
+    assert "kiri" in c
+    assert len(c) == 1
+    
+    # Test site coord information
+    assert c["kiri"].station == 'kiri'
+    assert c["kiri"].date_from == datetime.datetime(2015, 4, 28, 0, 0)
+    assert c["kiri"].date_to == datetime.datetime(2020, 4, 12, 12, 0)
+    assert np.allclose(c["kiri"].pos.val, np.array([-6327822.40890791,   785604.50573119,   149769.23973976]))
+    assert np.allclose(c["kiri"].pos_sigma, np.array([0.00042754, 0.00012964, 0.00010695]))
+    assert np.allclose(c["kiri"].vel, np.array([0.00915987, 0.06720133, 0.03124394]))
+    assert np.allclose(c["kiri"].vel_sigma, np.array([5.0865e-05, 1.5316e-05, 1.2724e-05]))
+    assert c["kiri"].ref_epoch.datetime, datetime.datetime(2010, 1, 1, 0, 0)
+    assert c["kiri"].system is None
+
 @pytest.mark.usefixtures("sinex_data")
 def test_site_coord_sinex_one_station_uppercase(sinex_data):
     c = SiteCoord.get("snx", "ZIMM", datetime.datetime(2020, 1, 1), sinex_data, source_path="/path/to/sinex")
@@ -98,10 +115,10 @@ def test_site_coord_ssc_one_station(ssc_data):
     
     # Test site coord information
     assert c["gras"].station == 'gras'
-    assert all(c["gras"].pos == np.array([4581690.831,  556114.93 , 4389360.851]))
-    assert all(c["gras"].pos_sigma == np.array([0.001, 0.001, 0.001]))
-    assert all(c["gras"].vel == np.array([-0.0137,  0.0189,  0.0115]))
-    assert all(c["gras"].vel_sigma == np.array([0.0001, 0.0001, 0.0001]))
+    assert np.allclose(c["gras"].pos.val, np.array([4581690.831,  556114.93 , 4389360.851]))
+    assert np.allclose(c["gras"].pos_sigma, np.array([0.001, 0.001, 0.001]))
+    assert np.allclose(c["gras"].vel, np.array([-0.0137,  0.0189,  0.0115]))
+    assert np.allclose(c["gras"].vel_sigma, np.array([0.0001, 0.0001, 0.0001]))
     assert c["gras"].system is None
     assert c["gras"].ref_epoch.datetime == datetime.datetime(2010, 1, 1, 0, 0)
     assert c["gras"].date_from == datetime.datetime(2004, 10, 22, 0, 0)

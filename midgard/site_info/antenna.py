@@ -57,11 +57,10 @@ class AntennaHistorySinex(SiteInfoHistoryBase):
                 self, 
                 source_data: Dict,
     ) -> Dict[Tuple[datetime, datetime], "AntennaSinex"]:
-        """Read antenna site history from SINEX file
+        """Process antenna site history from SINEX file
 
         Args:
-            source_data:  Source data with site information. If source data are defined, then data are not read
-                          from 'source_path'. 
+            source_data:  Source data with site information.
 
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are AntennaSinex objects.
@@ -138,7 +137,7 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
                 self, 
                 source_data: Any,
     ) -> Union[None, Dict[Tuple[datetime, datetime], "AntennaSsc"]]:
-        """Read antenna site history from SSC file
+        """Process antenna site history from SSC file
 
         Note: SSC files does not contain antenna information
 
@@ -153,39 +152,3 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
             return None
         else:
             raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
-
-# class AntennaSsc(SiteInfoBase):
-#     """ Antenna class handling SINEX file antenna station information
-#     """
-#
-#     source: str = "snx"
-#     fields: Dict[str, str] = dict(
-#         type="antenna_type",
-#         serial_number="serial_number",
-#         radome_type="radome_type",
-#         radome_serial_number="radome_type",
-#     )
-#
-#     @property
-#     def date_from(self) -> datetime:
-#         """ Get antenna installation date from site information attribute
-#
-#         Returns:
-#             Antenna installation date
-#         """
-#         if self._info["start_time"]:
-#             return self._info["start_time"]
-#         else:
-#             return datetime.min
-#
-#     @property
-#     def date_to(self) -> datetime:
-#         """ Get antenna removing date from site information attribute
-#
-#         Returns:
-#             Antenna removing date
-#         """
-#         if self._info["end_time"]:
-#             return self._info["end_time"]
-#         else:
-#             return datetime.max

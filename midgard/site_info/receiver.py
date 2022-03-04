@@ -57,11 +57,10 @@ class ReceiverHistorySinex(SiteInfoHistoryBase):
                 self, 
                 source_data: Dict,
     ) -> Dict[Tuple[datetime, datetime], "ReceiverSinex"]:
-        """Read receiver site history from SINEX file
+        """Process receiver site history from SINEX file
 
         Args:
-            source_data:  Source data with site information. If source data are defined, then data are not read
-                          from 'source_path'.
+            source_data:  Source data with site information.
 
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are ReceiverSinex objects.
@@ -72,7 +71,7 @@ class ReceiverHistorySinex(SiteInfoHistoryBase):
                 raise MissingDataError(f"Station {self.station!r} is not given in SITE/RECEIVER SINEX block.")
             raw_info = source_data[self.station]["site_receiver"]
         elif self.station.upper() in source_data:
-            if "site_receiver" not in source_data[self.station]:
+            if "site_receiver" not in source_data[self.station.upper()]:
                 raise MissingDataError(f"Station {self.station.upper()!r} is not given in SITE/RECEIVER SINEX block.")
             raw_info = source_data[self.station.upper()]["site_receiver"]
         else:
@@ -133,11 +132,10 @@ class ReceiverHistorySsc(SiteInfoHistoryBase):
                 self, 
                 source_data: Any = None,
     ) -> Union[None, Dict[Tuple[datetime, datetime], "ReceiverSinex"]]:
-        """Read receiver site history from SINEX file
+        """Process receiver site history from SINEX file
 
         Args:
-            source_data:  Source data with site information. If source data are defined, then data are not read
-                          from 'source_path'.
+            source_data:  Source data with site information.
 
         Returns:
             Dictionary with (date_from, date_to) tuple as key. The values are ReceiverSinex objects.
@@ -147,35 +145,3 @@ class ReceiverHistorySsc(SiteInfoHistoryBase):
             return None
         else:
             raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
-
-#
-# class ReceiverSsc(SiteInfoBase):
-#     """ Receiver class handling SINEX file receiver station information
-#     """
-#
-#     source: str = "ssc"
-#     fields: Dict[str, str] = dict(type="receiver_type", serial_number="serial_number", firmware="firmware")
-#
-#     @property
-#     def date_from(self) -> datetime:
-#         """ Get receiver installation date from site information attribute
-#
-#         Returns:
-#             Receiver installation date
-#         """
-#         if self._info["start_time"]:
-#             return self._info["start_time"]
-#         else:
-#             return datetime.min
-#
-#     @property
-#     def date_to(self) -> datetime:
-#         """ Get receiver removing date from site information attribute
-#
-#         Returns:
-#             Receiver removing date
-#         """
-#         if self._info["end_time"]:
-#             return self._info["end_time"]
-#         else:
-#             return datetime.max
