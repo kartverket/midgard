@@ -1405,6 +1405,10 @@ class TimeDecimalYear(TimeFormat):
     @lru_cache()
     def _year2days(cls, year, scale):
         """Computes number of days in year, including leap seconds"""
+        if year == datetime.max.year:
+            # Assume there will be 365 days in the year 9999
+            return 365
+
         t_start = TimeArray.create(datetime(year, 1, 1), scale=scale, fmt="datetime")
         t_end = TimeArray.create(datetime(year + 1, 1, 1), scale=scale, fmt="datetime")
 
