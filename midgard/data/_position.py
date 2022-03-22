@@ -1708,9 +1708,9 @@ class PosVelDeltaArray(PositionDeltaArray):
         if "pos" not in self._cache:
             attrs = {a: getattr(self, a, None) for a in self._attributes()}
             if self.ndim == 1:
-                val = self.val[3:6]
+                val = self.val[0:3]
             else:
-                val = self.val[:, 3:6]
+                val = self.val[:, 0:3]
             self._cache["pos"] = _SYSTEMS["PositionDeltaArray"][self.system](val, ref_pos=self.ref_pos, **attrs)
         return self._cache["pos"]
 
