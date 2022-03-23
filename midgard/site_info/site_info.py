@@ -69,7 +69,7 @@ class SiteInfo:
         for sta in stations:
             site_dict = site_info.setdefault(sta, {})      
             for module in _MODULES:
-                module_name = module.__name__.lower()
+                module_name = "site_coord" if module.__name__ == "SiteCoord" else module.__name__.lower()
                 entry = module.get(source, sta, date, source_data, source_path)
                 site_dict[module_name] = entry[sta] if sta in entry else None
 
@@ -107,7 +107,7 @@ class SiteInfo:
         for sta in stations:
             site_dict = site_info_history.setdefault(sta, {})      
             for module in _MODULES:
-                module_name = module.__name__.lower()
+                module_name = "site_coord" if module.__name__ == "SiteCoord" else module.__name__.lower()
                 history = module.get_history(source, sta, source_data, source_path)
                 site_dict[module_name] = history[sta] if sta in history else None
 
