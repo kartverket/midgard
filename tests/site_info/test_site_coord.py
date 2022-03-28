@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 
 from midgard.dev.exceptions import MissingDataError
-from midgard.site_info.site_coord import SiteCoord
+from midgard.site_info.site_coord import SiteCoord, SiteCoordHistorySinex, SiteCoordHistorySsc
 
 # Tests: SiteCoord.get("snx",...)
 
@@ -105,7 +105,23 @@ def test_site_coord_history_sinex_two_stations_error(sinex_data):
     with pytest.raises(MissingDataError):
         c = SiteCoord.get_history("snx", "zimm,xxxx", sinex_data, source_path="/path/to/sinex")
 
+@pytest.mark.usefixtures("sinex_data_site_coord")
+def test_site_coord_history_sinex_set_history(sinex_data_site_coord):
+    
+    # Get history data and set history
+    c = SiteCoordHistorySinex("kiri")   
+    raw_info = c._combine_sinex_block_data(sinex_data_site_coord["kiri"])
+    c.set_history(raw_info)
+    
+    # Check history
+    period = (datetime.datetime(2002, 8, 3, 0, 0), datetime.datetime(2011, 11, 20, 23, 59, 30))
+    assert period in c.history
+    assert "snx" == c.history[period].source
+    assert -6327822.41344055 == c.history[period].pos.x
+
+#
 # Tests: SiteCoord.get("ssc",...)
+#
         
 @pytest.mark.usefixtures("ssc_data")
 def test_site_coord_ssc_one_station(ssc_data):
@@ -189,3 +205,17 @@ def test_site_coord_history_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         c = SiteCoord.get_history("ssc", "gras, xxxx", ssc_data, source_path="/path/to/ssc")
+        
+@pytest.mark.usefixtures("ssc_data")
+def test_site_coord_history_ssc_set_history(ssc_data):
+    
+    # Get history data and set history
+    c = SiteCoordHistorySsc("gras")  
+    c.set_history(ssc_data["GRAS"])
+ 
+    # Check history
+    period = (datetime.datetime(1996, 1, 1, 0, 0), datetime.datetime(1996, 5, 6, 23, 59, 30))
+    assert period in c.history
+    assert "ssc" == c.history[period].source
+    assert 4581690.826 == c.history[period].pos.x
+

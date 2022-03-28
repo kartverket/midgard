@@ -148,7 +148,7 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
         return raw_info
 
 
-    def _create_history(self, raw_info: List[Dict[str, Any]]) -> Dict:
+    def _create_history(self, raw_info: List[Dict[str, Any]]) -> Dict[Tuple[datetime, datetime], "SiteCoordSinex"]:
         """Create dictionary of site coordinate history for station
         
         Args:
@@ -463,13 +463,12 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
         else:
             raise MissingDataError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
 
-        return self._create_history(self.station, raw_info)
+        return self._create_history(raw_info)
 
-    def _create_history(self, station: str, raw_info: Dict) -> Dict:
+    def _create_history(self, raw_info: Dict[str, Any]) -> Dict[Tuple[datetime, datetime], "SiteCoordSsc"]:
         """ Create site coordinate history from input dictionary
         
         Args:
-            station    station name
             raw_info   dictionary with station information from ssc file
             
         Returns:
@@ -523,6 +522,58 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
             history[interval] = site_coord
 
         return history
+
+
+    def set_history(self, raw_info: Dict[str, Any]) -> None:
+        """Set history station information
+        
+        Example 'raw_info':
+
+        {'site_num': '10001', 'antenna_num': 'M007', 'name': 'SMNE', 'tech': 'GPS', 'antenna_id': 'SMNE', 'soln': 5,
+         'pos_vel': {1: {'STAX': 4201791.972, 'STAY': 177945.561, 'STAZ': 4779286.951,
+                         'sigma_X': 0.001, 'sigma_Y': 0.001, 'sigma_Z': 0.001, 
+                         'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 
+                         'start': datetime.datetime(2000, 11, 17, 0, 0), 
+                         'end': datetime.datetime(2008, 4, 27, 23, 59, 30), 
+                         'VELX': -0.013, 'VELY': 0.0175, 'VELZ': 0.0106, 
+                         'sigma_VX': 0.0001, 'sigma_VY': 0.0001, 'sigma_VZ': 0.0001},
+                     2: {'STAX': 4201791.982, 'STAY': 177945.564, 'STAZ': 4779286.96, 
+                         'sigma_X': 0.001, 'sigma_Y': 0.001, 'sigma_Z': 0.001, 
+                         'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 
+                         'start': datetime.datetime(2008, 4, 29, 0, 0), 
+                         'end': datetime.datetime(2009, 3, 10, 23, 59, 30), 
+                         'VELX': -0.013, 'VELY': 0.0175, 'VELZ': 0.0106, 
+                         'sigma_VX': 0.0001, 'sigma_VY': 0.0001, 'sigma_VZ': 0.0001},
+                     3: {'STAX': 4201791.988, 'STAY': 177945.558, 'STAZ': 4779286.96, 
+                         'sigma_X': 0.001, 'sigma_Y': 0.001, 'sigma_Z': 0.001, 
+                         'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 
+                         'start': datetime.datetime(2009, 3, 12, 0, 0), 
+                         'end': datetime.datetime(2011, 4, 30, 23, 59, 30), 
+                         'VELX': -0.013, 'VELY': 0.0175, 'VELZ': 0.0106, 
+                         'sigma_VX': 0.0001, 'sigma_VY': 0.0001, 'sigma_VZ': 0.0001}, 
+                     4: {'STAX': 4201791.977, 'STAY': 177945.564, 'STAZ': 4779286.955, 
+                         'sigma_X': 0.001, 'sigma_Y': 0.001, 'sigma_Z': 0.001, 
+                         'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 
+                         'start': datetime.datetime(2011, 5, 8, 0, 0), 
+                         'end': datetime.datetime(2015, 9, 29, 23, 59, 30), 
+                         'VELX': -0.013, 'VELY': 0.0175, 'VELZ': 0.0106, 
+                         'sigma_VX': 0.0001, 'sigma_VY': 0.0001, 'sigma_VZ': 0.0001}, 
+                     5: {'STAX': 4201791.978, 'STAY': 177945.564, 'STAZ': 4779286.955, 
+                         'sigma_X': 0.001, 'sigma_Y': 0.001, 'sigma_Z': 0.001, 
+                         'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 
+                         'start': datetime.datetime(2015, 10, 1, 0, 0), 
+                         'end': datetime.datetime(2021, 2, 20, 23, 59, 30), 
+                         'VELX': -0.013, 'VELY': 0.0175, 'VELZ': 0.0106, 
+                         'sigma_VX': 0.0001, 'sigma_VY': 0.0001, 'sigma_VZ': 0.0001}
+                    }
+        }
+        
+        Args:
+            raw_info: dictionary with station information from ssc file
+        
+        Attribute history attribute is set.
+        """
+        self.history = self._create_history(raw_info)
 
 
 class SiteCoordSsc(SiteInfoBase):
