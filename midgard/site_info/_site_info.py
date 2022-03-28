@@ -111,18 +111,9 @@ class SiteInfoHistoryBase(abc.ABC):
         self.source_path = source_path
         self.history = self._process_history(deepcopy(source_data))
 
-    @abc.abstractmethod
-    def _process_history(self, source_data: Any) -> Union[None, Dict]:
-        """Convert site information from source to a history dictionary
-
-        Args:
-            source_data:    Raw data from source
-        
-        Returns:
-            dictionary with history information. Keys should be a tuple of two datetimes and values should be an 
-            instance of relevant the site information class based on the type of source_data
-        """ 
-        
+    def __iter__(self):
+        """Make this class iterable"""
+        return SiteInfoHistoryIterator(self)        
 
     def __repr__(self) -> str:
         """A string describing the history information object from a specific site information (e.g. antenna, receiver)
@@ -135,6 +126,18 @@ class SiteInfoHistoryBase(abc.ABC):
             (e.g. antenna, receiver).
         """
         return f"{type(self).__name__}(station={self.station!r})"
+
+    @abc.abstractmethod
+    def _process_history(self, source_data: Any) -> Union[None, Dict]:
+        """Convert site information from source to a history dictionary
+
+        Args:
+            source_data:    Raw data from source
+        
+        Returns:
+            dictionary with history information. Keys should be a tuple of two datetimes and values should be an 
+            instance of relevant the site information class based on the type of source_data
+        """       
 
     def get(self, date: datetime) -> Any:
         """Get site information object for given date
@@ -176,6 +179,26 @@ class SiteInfoHistoryBase(abc.ABC):
         
         return [date_to for (date_from, date_to) in self.history.keys()]
 
+
+class SiteInfoHistoryIterator:
+    """Iterator class for SiteInfoHistory classes"""
+    
+    def __init__(self, site_info_history):
+        """Initialize the iterator"""
+        self._current_index = 0
+        self._data = site_info_history
+    
+    def __next__(self):
+        """Returns the next SiteInfo object in the history dict of SiteInfoHistory"""
+        if self._current_index >= len(self._data.history):
+            raise StopIteration
+        result = self._data.history[self._key(self._current_index)]
+        self._current_index += 1
+        return result
+     
+    def _key(self, index):
+        """Converts index to dictionary key"""
+        return (self._data.date_from[index], self._data.date_to[index])
 
 class ModuleBase(abc.ABC):
     """Base class for each module of site information (e.g. Antenna, Receiver, ...).
