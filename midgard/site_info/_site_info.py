@@ -98,7 +98,7 @@ class SiteInfoHistoryBase(abc.ABC):
 
     source: Union[None, str] = None
 
-    def __init__(self, station: str, source_data: Any, source_path: str) -> None:
+    def __init__(self, station: str, source_data: Any = None, source_path: str = None) -> None:
         """Initialize history information object from input data
 
         Args:
@@ -109,7 +109,10 @@ class SiteInfoHistoryBase(abc.ABC):
         """
         self.station = station.lower()
         self.source_path = source_path
-        self.history = self._process_history(deepcopy(source_data))
+        if source_data:
+            self.history = self._process_history(deepcopy(source_data))
+        else:
+            self.history = {}
 
     def __iter__(self):
         """Make this class iterable"""

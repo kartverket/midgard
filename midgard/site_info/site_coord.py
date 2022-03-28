@@ -78,9 +78,8 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
                 # Site coordinates are not defined in this SINEX file
                 return None
             else:
-                self._history_info = self._combine_sinex_block_data(source_data[station])
-                return self._create_history()
-            
+                raw_info = self._combine_sinex_block_data(source_data[station])
+                return self._create_history(raw_info)
 
     @staticmethod
     def _combine_sinex_block_data(data: Dict[str, Dict]) -> List[Dict[str, Any]]:
@@ -145,14 +144,14 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
                         history_info[idx].update({estimate["param_name"]: estimate})
         return history_info
 
-    def _create_history(self) -> Dict:
+    def _create_history(self, raw_info: Dict) -> Dict:
         """Create dictionary of site coordinate history for station
                   
         Returns:
             dictionary with site coordinate history: keys: tuple(datetime, datetime), value: SiteCoordSinex object.
         """
         history = dict()
-        for site_coord_info in self._history_info:
+        for site_coord_info in raw_info:
             site_coord = SiteCoordSinex(self.station, site_coord_info)
             interval = (site_coord.date_from, site_coord.date_to)
             history[interval] = site_coord
@@ -166,10 +165,9 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
             history_info: List of dictionaries with station as keys and values with information from SOLUTION/EPOCHS 
                           and SOLUTION/ESTIMATE SINEX block
         
-        Attribute self._history_info is updated and history attribute is created again.
+        Attribute history attribute is set.
         """
-        self._history_info = deepcopy(history_info)
-        self.history = self._create_history()
+        self.history = self._create_history(history_info)
 
 
 class SiteCoordSinex(SiteInfoBase):
