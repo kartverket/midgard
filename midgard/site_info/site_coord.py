@@ -35,7 +35,8 @@ Example:
 
 
 # Standard library imports
-from datetime import datetime, timedelta
+from copy import deepcopy
+from datetime import datetime
 from typing import Any, Dict, List, Tuple, Union, Callable
 
 # External library imports
@@ -56,7 +57,7 @@ class SiteCoord(ModuleBase):
 class SiteCoordHistorySinex(SiteInfoHistoryBase):
 
     source: str = "snx"
-
+    
     def _process_history(
                 self, 
                 source_data: Dict,
@@ -77,89 +78,98 @@ class SiteCoordHistorySinex(SiteInfoHistoryBase):
                 # Site coordinates are not defined in this SINEX file
                 return None
             else:
-                raw_info = self._combine_sinex_block_data(source_data[station])
-                return self._create_history(station, raw_info)
+                self._history_info = self._combine_sinex_block_data(source_data[station])
+                return self._create_history()
             
 
     @staticmethod
-    def _combine_sinex_block_data(data: Dict[str, Dict]) -> List[Dict[str, Dict]]:
+    def _combine_sinex_block_data(data: Dict[str, Dict]) -> List[Dict[str, Any]]:
         """Combine SOLUTION/EPOCHS and SOLUTION/ESTIMATE SINEX block data to a common dictionary
 
         Args:
             data: Dictionary with SINEX file data for a station
         Return:
             List of dictionaries with station as keys and values with information from SOLUTION/EPOCHS 
-            and SOLUTION/ESTIMATE SINEX block
+            and SOLUTION/ESTIMATE SINEX block:
+                
+            Example:
+                    
+                [{'site_code': 'ABMF', 'point_code': 'A', 'soln': '1', 'obs_code': 'C', 
+                  'start_epoch': datetime.datetime(2008, 10, 28, 0, 0),
+                  'end_epoch': datetime.datetime(2009, 10, 15, 23, 59, 30),
+                  'mean_epoch': datetime.datetime(2009, 4, 22, 11, 59, 45),
+                  'STAX': {'param_idx': 1, 'param_name': 'STAX', 'site_code': 'ABMF', 'point_code': 'A', 'soln': '1',
+                           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 'unit': 'm', 'constraint': '2',
+                           'estimate': 2919785.71307133, 'estimate_std': 0.00037297
+                           },
+                  'STAY': {...}
+                  'STAZ': {...},
+                  'VELX': {'param_idx': 4, 'param_name': 'VELX', 'site_code': 'ABMF', 'point_code': 'A', 'soln': '1',
+                           'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 'unit': 'm/y', 'constraint': '2',
+                           'estimate': 0.00751651888393245, 'estimate_std': 2.7261e-05
+                          },
+                  'VELY': {...},
+                  'VELZ': {...}
+                  },
+                 {'site_code': 'ABMF', 'point_code': 'A', 'soln': '2', 'obs_code': 'C',
+                  'start_epoch': datetime.datetime(2009, 10, 16, 0, 0),
+                  'end_epoch': datetime.datetime(2012, 1, 24, 23, 59, 30),
+                  'mean_epoch': datetime.datetime(2010, 12, 5, 11, 59, 45),
+                  'STAX': {...},
+                  'STAY': {...},
+                  'STAZ': {...},
+                  'VELX': {...},
+                  'VELY': {...},
+                  'VELZ': {...}
+                  },
+                 {'site_code': 'ABMF', 'point_code': 'A', 'soln': '3', 'obs_code': 'C',
+                  'start_epoch': datetime.datetime(2012, 1, 25, 0, 0),
+                  'end_epoch': datetime.datetime(2020, 4, 12, 0, 0),
+                  'mean_epoch': datetime.datetime(2016, 3, 4, 0, 0),
+                  'STAX': {...},
+                  'STAY': {...},
+                  'STAZ': {...},
+                  'VELX': {...},
+                  'VELY': {...},
+                  'VELZ': {...}
+                  }]
         """
-        raw_info = list()
+        history_info = list()
 
         if "solution_epochs" in data.keys():
             for idx, epoch in enumerate(data["solution_epochs"]):
-                raw_info.append(epoch.copy())
+                history_info.append(epoch.copy())
 
                 for estimate in data["solution_estimate"]:
                     if epoch["soln"] == estimate["soln"]:
-                        raw_info[idx].update({estimate["param_name"]: estimate})
-        return raw_info
+                        history_info[idx].update({estimate["param_name"]: estimate})
+        return history_info
 
-    def _create_history(self, station: str, raw_info: List) -> Dict:
+    def _create_history(self) -> Dict:
         """Create dictionary of site coordinate history for station
-        
-        Args:
-            station    station name
-            raw_info   List with station information from SINEX file
-            
+                  
         Returns:
             dictionary with site coordinate history: keys: tuple(datetime, datetime), value: SiteCoordSinex object.
-
-        raw_info: Example of list for a given station
-        [{'site_code': 'ABMF', 'point_code': 'A', 'soln': '1', 'obs_code': 'C', 
-          'start_epoch': datetime.datetime(2008, 10, 28, 0, 0),
-          'end_epoch': datetime.datetime(2009, 10, 15, 23, 59, 30),
-          'mean_epoch': datetime.datetime(2009, 4, 22, 11, 59, 45),
-          'STAX': {'param_idx': 1, 'param_name': 'STAX', 'site_code': 'ABMF', 'point_code': 'A', 'soln': '1',
-                   'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 'unit': 'm', 'constraint': '2',
-                   'estimate': 2919785.71307133, 'estimate_std': 0.00037297
-                   },
-          'STAY': {...}
-          'STAZ': {...},
-          'VELX': {'param_idx': 4, 'param_name': 'VELX', 'site_code': 'ABMF', 'point_code': 'A', 'soln': '1',
-                   'ref_epoch': datetime.datetime(2010, 1, 1, 0, 0), 'unit': 'm/y', 'constraint': '2',
-                   'estimate': 0.00751651888393245, 'estimate_std': 2.7261e-05
-                  },
-          'VELY': {...},
-          'VELZ': {...}
-          },
-         {'site_code': 'ABMF', 'point_code': 'A', 'soln': '2', 'obs_code': 'C',
-          'start_epoch': datetime.datetime(2009, 10, 16, 0, 0),
-          'end_epoch': datetime.datetime(2012, 1, 24, 23, 59, 30),
-          'mean_epoch': datetime.datetime(2010, 12, 5, 11, 59, 45),
-          'STAX': {...},
-          'STAY': {...},
-          'STAZ': {...},
-          'VELX': {...},
-          'VELY': {...},
-          'VELZ': {...}
-          },
-         {'site_code': 'ABMF', 'point_code': 'A', 'soln': '3', 'obs_code': 'C',
-          'start_epoch': datetime.datetime(2012, 1, 25, 0, 0),
-          'end_epoch': datetime.datetime(2020, 4, 12, 0, 0),
-          'mean_epoch': datetime.datetime(2016, 3, 4, 0, 0),
-          'STAX': {...},
-          'STAY': {...},
-          'STAZ': {...},
-          'VELX': {...},
-          'VELY': {...},
-          'VELZ': {...}
-          }]
         """
         history = dict()
-        for site_coord_info in raw_info:
+        for site_coord_info in self._history_info:
             site_coord = SiteCoordSinex(self.station, site_coord_info)
             interval = (site_coord.date_from, site_coord.date_to)
             history[interval] = site_coord
 
         return history
+     
+    def set_history(self, history_info: List[Dict[str, Any]]) -> None:
+        """Set history station information
+        
+        Args:
+            history_info: List of dictionaries with station as keys and values with information from SOLUTION/EPOCHS 
+                          and SOLUTION/ESTIMATE SINEX block
+        
+        Attribute self._history_info is updated and history attribute is created again.
+        """
+        self._history_info = deepcopy(history_info)
+        self.history = self._create_history()
 
 
 class SiteCoordSinex(SiteInfoBase):

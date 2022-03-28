@@ -232,12 +232,11 @@ class ModuleBase(abc.ABC):
         """Get site coordinate object depending on given source
 
         Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
+            source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
             station:      Station name.
             date:         Date for getting site information
+            source_data:  Source data with site information. 
             source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
 
         Returns:
             Site coordinate object 
@@ -266,11 +265,10 @@ class ModuleBase(abc.ABC):
         """Get site coordinate history object depending on given source
 
         Args:
-            source:       Site information source e.g. 'sinex' (SINEX file)
+            source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
             station:      Station name.
+            source_data:  Source data with site information.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
-            source_data:  Source data with site information. If source data are defined, then 'source_path' is 
-                          ignored.
 
         Returns:
             Site coordinate object 
