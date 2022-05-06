@@ -146,7 +146,10 @@ class TimeBase(np.ndarray):
             val = val.item()
 
         # Store values on array
-        obj = np.asarray(fmt_values.value).view(cls)
+        if cls._formats()[fmt].ndim > 1:
+            obj = np.asarray(fmt_values.value).T.view(cls)
+        else: 
+            obj = np.asarray(fmt_values.value).view(cls)
         jd1 = fmt_values.jd1 if _jd1 is None else _jd1
         jd2 = fmt_values.jd2 if _jd2 is None else _jd2
 
@@ -471,20 +474,22 @@ class TimeBase(np.ndarray):
 
     def __getitem__(self, item):
         """Update _jd*_sliced with correct shape, used by __array_finalize__"""
-        fmt_ndim = self._formats()[self.fmt].ndim
-        if isinstance(item, tuple) and fmt_ndim > 1 and len(item) > 1:
-            # Only use item row to slice jds
-            super().__setattr__("_jd1_sliced", self.jd1[item[-1]])
-            super().__setattr__("_jd2_sliced", self.jd2[item[-1]])
-        else:
+        if not isinstance(item, tuple):
+            # super.__getitem__ and other super methods (like __repr__) will send in a tuple to 
+            # recursively access all individual elements.
+            # Do not update _jd*_sliced when this happens.
+            # TODO: What if the user is indexing the TimeArray with a tuple?
             if isinstance(self.jd1, np.ndarray):
                 super().__setattr__("_jd1_sliced", self.jd1[item])
             if isinstance(self.jd2, np.ndarray):
                 super().__setattr__("_jd2_sliced", self.jd2[item])
+        
         if isinstance(item, (int, np.int_)):
+            # Make a new time object if a single entry is requested
             return self._scales()[self.scale].from_jds(self._jd1_sliced, self._jd2_sliced, self.fmt)
-        return super().__getitem__(item)
-
+        
+        return super().__getitem__(item) # __array_finalize__ is called when this finishes
+    
     @classmethod
     def _read(cls, h5_group, memo):
         scale = h5_group.attrs["scale"]
@@ -1191,46 +1196,6 @@ class TimeDateTime(TimeFormat):
         return cls._dt2000 + timedelta(days=jd1 - cls._jd2000) + timedelta(days=jd2)
 
 
-# @register_format
-# class TimePlotDate(TimeFormat):
-#     """Matplotlib date format
-# 
-#     Matplotlib represents dates using floating point numbers specifying the number
-#     of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
-#     not 0.25. Values < 1, i.e. dates before 0001-01-01 UTC are not supported.
-# 
-#     Warning: This requires matplotlib version 3.2.2 or lower
-#     """
-# 
-#     fmt = "plot_date"
-#     unit = None
-#     _jd0001 = 1721424.5  # julian day 2001-01-01 minus 1
-# 
-#     def __init__(self, val, val2=None, scale=None):
-#         """Convert val and val2 to Julian days"""
-#         print(f"Warning: TimeFormat {self.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
-#         super().__init__(val, val2, scale)
-# 
-#     @classmethod
-#     def _to_jds(cls, val, val2=None, scale=None):
-#         print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
-#         if val2 is None:
-#             try:
-#                 val2 = np.zeros(val.shape)
-#             except AttributeError:
-#                 val2 = 0
-# 
-#         _delta = val - (np.floor(val + val2 - 0.5) + 0.5)
-#         jd1 = cls._jd0001 + val - _delta
-#         jd2 = val2 + _delta
-#         return jd1, jd2
-# 
-#     @classmethod
-#     def _from_jds(cls, jd1, jd2, scale=None):
-#         print(f"Warning: TimeFormat {cls.fmt} is deprecated and requires matplotlib version 3.2.2 or lower. Will be removed in future versions.")
-#         return jd1 - cls._jd0001 + jd2
-
-
 @register_format
 class TimeGPSWeekSec(TimeFormat):
     """GPS weeks and seconds."""
@@ -1444,14 +1409,15 @@ class TimeYyDddSssss(TimeFormat):
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
         try:
-            return np.array([cls._yds2jd(v) for v in val])
+            return np.array([cls._yds2jd(v) for v in val]).T
         except TypeError:
             cls._yds2jd(val)
 
     @classmethod
     @lru_cache()
     def _yds2jd(cls, val):
-        return datetime.strptime(val[:7], "%y:%j:") + timedelta(sec=float(val[7:]))
+        dt = datetime.strptime(val[:7], "%y:%j:") + timedelta(seconds=float(val[7:]))
+        return TimeDateTime._dt2jd(dt)
 
     @classmethod
     def _from_jds(cls, jd1, jd2, scale=None):
@@ -1493,14 +1459,15 @@ class TimeYyyyDddSssss(TimeFormat):
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
         try:
-            return np.array([cls._yds2jd(v) for v in val])
+            return np.array([cls._yds2jd(v) for v in val]).T
         except TypeError:
             cls._yds2jd(val)
 
     @classmethod
     @lru_cache()
     def _yds2jd(cls, val):
-        return datetime.strptime(val[:9], "%Y:%j:") + timedelta(sec=float(val[9:]))
+        dt = datetime.strptime(val[:9], "%Y:%j:") + timedelta(seconds=float(val[9:]))
+        return TimeDateTime._dt2jd(dt)
 
     @classmethod
     def _from_jds(cls, jd1, jd2, scale=None):

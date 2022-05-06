@@ -179,3 +179,30 @@ def test_is_tests():
 
 def test_empty_object():
     time.Time([], scale="utc", fmt="datetime")
+
+@pytest.mark.parametrize(
+    "t",
+    (
+        t_dt_utc_a,
+    ),
+    indirect=True,
+)
+def test_slice(t):
+    scales = time.TimeArray._scales()
+    formats = time.TimeArray._formats()
+    for scale in scales.keys():
+        converted_t = getattr(t, scale)
+        for fmt in formats:
+            try:
+                t_fmt = getattr(converted_t, fmt)
+                print(f"Creating time time.Time({t_fmt}, {scale}, {fmt})")
+                new_time_from_fmt = time.Time(t_fmt, scale=scale, fmt=fmt)
+            except ValueError as err:
+                # some formats are only available for certain scales
+                assert converted_t.scale != "gps" and "gps" in fmt
+                print(f"{fmt} is not a valid format for {converted_t.scale}. As expected.")
+                continue
+            assert len(converted_t[0:2]) == 2
+            print(f"t.{scale}[0:2] == 2 OK")
+            assert len(new_time_from_fmt[0:2]) == 2
+            print(f"t.{scale}.{fmt}[0:2] == 2 OK")
