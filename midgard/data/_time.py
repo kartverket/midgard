@@ -1214,8 +1214,11 @@ class TimeGPSWeekSec(TimeFormat):
         if isinstance(val, cls.WeekSec):
             week = np.asarray(val.week)
             sec = np.asarray(val.seconds)
-        elif val2 is None:
+        elif val2 is None and val.size > 0:
             raise ValueError(f"val2 should be seconds (not {val2}) for format {cls.fmt}")
+        elif val2 is None and val.size == 0:
+            week = np.array([])
+            sec = np.array([])
         else:
             week = np.asarray(val)
             sec = np.asarray(val2)

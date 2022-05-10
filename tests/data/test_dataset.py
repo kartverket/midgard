@@ -200,6 +200,13 @@ def test_subset_2(dset_full):
         test_field(field, dset_full.num_obs)
 
 
+@pytest.mark.parametrize("dset", (dset_empty, dset_float, dset_full, dset_no_collection), indirect=True)
+def test_subset_3(dset):
+    """Test subset which removes all data"""
+    idx = np.zeros(dset.num_obs, dtype=bool)
+    dset.subset(idx)
+    assert dset.num_obs == 0
+
 @pytest.mark.parametrize(
     "dset1, dset2",
     [
