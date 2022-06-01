@@ -331,11 +331,12 @@ class Dataset(collection.Collection):
         for _ in self.for_each_suffix(field):
             values.append(self[field][idx])
         values = np.hstack(values)
-
-        if any(values):
+        
+        if values.any():
             return func(values)
         else:
             return np.nan
+
 
     def rms(self, field: str, **filters: Any) -> float:
         """Calculate Root Mean Square of a field"""
