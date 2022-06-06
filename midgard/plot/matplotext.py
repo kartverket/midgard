@@ -13,6 +13,7 @@ from pathlib import PosixPath
 from typing import Any, Dict, List, Tuple, Union
 
 # External library imports
+import matplotlib as mpl
 from matplotlib.colors import ListedColormap
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
@@ -35,6 +36,8 @@ class MatPlotExt:
 
     | Option             | Value            | Description                                                           |
     |--------------------|------------------|-----------------------------------------------------------------------|
+    | colorbar           | <True|False>     | Plot color bar                                                        |
+    | colorbar_label     | <text>           | Color bar label                                                       |
     | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis,    |
     |                    |                  | jet, tab10, rainbow, hsv, plasma)                                     |
     | dpi                | <num>            | Resolution of file in dots per inch                                   |
@@ -69,9 +72,9 @@ class MatPlotExt:
     |                    |                  | both'.                                                                |
     | title              | <text>           | Main title of subplots                                                |
     | xlabelrotation     | <num>            | Define x-axis label rotation                                          |
-    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
-    |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
-    |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
+    | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If   |
+    |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=     |
+    |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.    | 
     | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                     |
     | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels             |
     | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range       |
@@ -90,6 +93,8 @@ class MatPlotExt:
         # Default plotting options
         self.options = {
             "alpha": 1,
+            "colorbar": False,
+            "colorlabel": "",
             "colormap": "tab20",
             "dpi": 200,
             "ecapsize": 4,
@@ -321,6 +326,8 @@ class MatPlotExt:
     
         | Option             | Value            | Description                                                             |
         |--------------------|------------------|-------------------------------------------------------------------------|
+        | colorbar           | <True|False>     | Plot color bar based on labels                                          |
+        | colorbar_label     | <text>           | Color bar label                                                         |
         | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
         |                    |                  | tab10, rainbow, hsv, plasma)                                            |
         | dpi                | <num>            | Resolution of file in dots per inch                                     |
@@ -348,9 +355,9 @@ class MatPlotExt:
         |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
         | title              | <text>           | Main title of subplots                                                  |
         | xlabelrotation     | <num>            | Define x-axis label rotation                                            |
-        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
-        |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
-        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
+        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+        |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=       |
+        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.      | 
         | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
         | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
         | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
@@ -379,7 +386,7 @@ class MatPlotExt:
                            'labels' and 'events' can not be chosen together, either 'labels' or 'events' should be 
                            defined.
         """
-    
+        statistic_data = list()
         cmap = None
 
         # Overwrite options with argument definition
@@ -416,8 +423,12 @@ class MatPlotExt:
                 colors = [None for ii in range(0, len(y_arrays))]
             else:
                 colors = [cmap(ii) for ii in range(0, len(y_arrays))]
-                
-    
+        
+        # Generate complete array for statistic
+        if self.options["statistic"] and len(y_arrays) > 1:
+            for y_array in y_arrays:
+                statistic_data.extend(list(y_array))
+              
         # Plot several plots depending on number of y-arrays
         for idx, (x_array, y_array, xerr_array, yerr_array, color) in enumerate(zip(x_arrays, y_arrays, xerr_arrays, yerr_arrays, colors)):
     
@@ -430,7 +441,17 @@ class MatPlotExt:
     
             # Plot figure
             self.plot_subplot_row(
-                ax, x_array, y_array, xerr_array, yerr_array, xlabel, ylabel, x_unit=x_unit, y_unit=y_unit, color=color
+                ax, 
+                x_array, 
+                y_array, 
+                xerr_array, 
+                yerr_array, 
+                xlabel, 
+                ylabel, 
+                x_unit=x_unit, 
+                y_unit=y_unit, 
+                color=color,
+                statistic_data=statistic_data
             )
     
             # Plot vertical line for events in plot
@@ -458,7 +479,7 @@ class MatPlotExt:
             self.options["legend_location"] = "bottom" if self.options["legend_location"] == None else self.options["legend_location"]
             self._plot_legend(legend_labels, labels)
     
-        if labels:
+        if labels and not self.options["colorbar"]: # No legend is needed in case of color bar based on labels.
             if self.options["projection"] == "polar":
                 self.options["legend_location"] = "bottom" if self.options["legend_location"] == None else self.options["legend_location"]
             else:
@@ -469,6 +490,19 @@ class MatPlotExt:
         # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
         if isinstance(x_arrays[0][0], datetime):
             fig.autofmt_xdate()
+            
+        # Generate colorbar of labels
+        if self.options["colorbar"]:
+            fig.colorbar(
+                    mpl.cm.ScalarMappable(
+                            norm=mpl.colors.Normalize(vmin=min(labels), vmax=max(labels)), 
+                            cmap=cmap,
+                    ),
+                    #extend='both', 
+                    #shrink=0.70, 
+                    orientation="vertical",
+                    label=self.options["colorbar_label"],
+            )
     
         # Automatically adjusts subplot params so that the subplot(s) fits in to the figure area
         fig.tight_layout()
@@ -695,6 +729,7 @@ class MatPlotExt:
         label: str = "",
         color: Union[None, np.ndarray] = None,
         subtitle: List[str] = [],
+        statistic_data: List[float] = list(),
         options: Dict[str, Any] = None,
     ) -> None:
         """Generate single row of plot subplot
@@ -745,6 +780,7 @@ class MatPlotExt:
            label:          Legend label.
            color:          Marker color.
            subtitle:       List with element of subplot title.
+           statistic_data: Complete set of y-array data in case of statistic is needed for a plot based on len(y_arrays) > 0
            options:        Dictionary with options, which overwrite default plot configuration.
         """
         subtitle = subtitle.copy()
@@ -876,7 +912,13 @@ class MatPlotExt:
     
         # Plot statistical text line as title over each subplot
         if self.options["statistic"]:
-            subtitle.extend(self.get_statistic(y_array, self.options["statistic"], y_unit))
+            subtitle.extend(
+                self.get_statistic(
+                        statistic_data if statistic_data else y_array, 
+                        self.options["statistic"], 
+                        y_unit,
+                )
+            )
     
         # Plot subtitle of current row
         if subtitle:
