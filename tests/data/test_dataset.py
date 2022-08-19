@@ -84,6 +84,8 @@ def dset_full():
     _dset.add_sigma("numbers2", val=[3, 3, 3, 3, 3], sigma=[0.2, 0.2, 0.2, 0.2, 0.2])
     _dset.add_text("text", val=["aaa", "aaa", "aaa", "aaa", "aaa"])
     _dset.add_time("time", val=[datetime(2015, 1, i) for i in range(5, 10)], scale="utc", fmt="datetime")
+    # TODO: will fail when trying to merge or extend with dset_empty. How to handle empty datetime values?
+    #_dset.add_time("time_gps", val=np.asarray([[2205, 875600 + i, 1] for i in range(5)]), scale="gps", fmt="gps_ws")
     _dset.add_time_delta("time_delta", val=[timedelta(seconds=i) for i in range(20, 25)], scale="utc", fmt="timedelta")
 
     # Collections
