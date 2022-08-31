@@ -22,6 +22,10 @@ Signature: `(data: Any) -> Any`
 
 Convert a basic data type to something that can be saved as a hdf5 attribute
 
+Will raise a TypeError if the attribute cannot be saved in a way that allows
+reading and correct interpretation of the attribute.
+
+
 ## midgard.data._position
  Module for dealing with positions, velocities and position corrections in different coordinate systems
 
@@ -371,21 +375,6 @@ Modified Julian Date time format.
 
 This represents the number of days since midnight on November 17, 1858.
 For example, 51544.0 in MJD is midnight on January 1, 2000.
-
-
-### **TimePlotDate**
-
-Full name: `midgard.data._time.TimePlotDate`
-
-Signature: `(val, val2=None, scale=None)`
-
-Matplotlib date format
-
-Matplotlib represents dates using floating point numbers specifying the number
-of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
-not 0.25. Values < 1, i.e. dates before 0001-01-01 UTC are not supported.
-
-Warning: This requires matplotlib version 3.2.2 or lower
 
 
 ### **TimeStr**
@@ -1031,7 +1020,7 @@ Array with time epochs
 
 Full name: `midgard.data.time.Time`
 
-Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: Union[numpy.ndarray, NoneType] = None, _jd1: Union[numpy.ndarray, NoneType] = None, _jd2: Union[numpy.ndarray, NoneType] = None) -> 'TimeArray'`
+Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None, _jd1: Optional[numpy.ndarray] = None, _jd2: Optional[numpy.ndarray] = None) -> 'TimeArray'`
 
 Factory for creating TimeArrays for different systems
 
@@ -1053,7 +1042,7 @@ Array with epochs in the given time scale and format
 
 Full name: `midgard.data.time.TimeDelta`
 
-Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: Union[numpy.ndarray, NoneType] = None) -> 'TimeDeltaArray'`
+Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None) -> 'TimeDeltaArray'`
 
 Factory for creating TimeArrays for different systems
 

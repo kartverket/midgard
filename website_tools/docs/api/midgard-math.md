@@ -43,7 +43,7 @@ Signature: `() -> None`
 
 
 ### constant (Constant)
-`constant = Constant('/home/kirann/miniconda3/lib/python3.8/site-packages/midgard/math/constant.txt')`
+`constant = Constant('/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/constant.txt')`
 
 
 ## midgard.math.ellipsoid
@@ -526,6 +526,31 @@ Tuple with following entries:
 | sdec      | Sun declination in [deg]                     |
 
 
+## midgard.math.plate_motion
+Midgard library module for handling tectonic plate motion
+
+**Description:**
+
+**Example:**
+
+import numpy as np
+from midgard.math.plate_motion import PlateMotion
+
+pm = PlateMotion(plate="eura")
+pos = np.array([2102928.189605, 721619.617278, 5958196.398820]) # in meter
+vel = pm.get_velocity(pos) # in mm/yr
+
+
+
+### **PlateMotion**
+
+Full name: `midgard.math.plate_motion.PlateMotion`
+
+Signature: `(plate: str, model: str = 'itrf2014') -> None`
+
+A class for handling of tectonic plate motion
+
+
 ## midgard.math.rotation
 Library for basic rotation matrices
 
@@ -703,6 +728,47 @@ lon (Float or Array):   Longitude of origin of ENU coordinate system.
 **Returns:**
 
 Numpy array:   Rotation matrix or array of rotation matrices.
+
+
+## midgard.math.spatial_interpolation
+Methods for spatial interpolation in numpy arrays
+
+**Description:**
+
+
+
+**Example:**
+
+TODO
+
+
+
+### **interpolate_for_position**()
+
+Full name: `midgard.math.spatial_interpolation.interpolate_for_position`
+
+Signature: `(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float, y: float, method: str = 'linear') -> float`
+
+Interpolation in grid with size (n, m) for a given position
+
+Interpolation is based on scipy.interpolate.griddata module. More information about this module can be found under:
+    https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html
+
+**Args:**
+
+- `grid_x`: (n,m) Array with x-positions for each grid point 
+- `grid_y`: (n,m) Array with y-positions for each grid point 
+- `values`: (n,m) Array with data values for each grid point
+- `x`:            x-position
+- `y`:            y-position
+- `method`: Method of interpolation:
+                linear:  tessellate the input point set to N-D simplices, and interpolate linearly on each simplex
+                nearest: value of data point closest to the point of interpolation
+                cubic:   value determined from a piecewise cubic
+
+**Returns:**
+
+Interpolated value in data grid for a given position
 
 
 ## midgard.math.transformation
@@ -891,7 +957,7 @@ current (midgard/math) directory.
 
 Full name: `midgard.math.unit.Unit`
 
-Signature: `(from_unit: str, to_unit: Union[str, NoneType] = None) -> Any`
+Signature: `(from_unit: str, to_unit: Optional[str] = None) -> Any`
 
 Unit converter
 
@@ -899,7 +965,7 @@ The implementation of the unit conversion is done in the `_convert_units`-metacl
 
 
 ### fid (TextIOWrapper)
-`fid = <_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.8/site-packages/midgard/math/unit.txt' encoding='utf-8'>`
+`fid = <_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/unit.txt' encoding='utf-8'>`
 
 
 ### np_float (TypeVar)

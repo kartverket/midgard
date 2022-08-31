@@ -69,7 +69,7 @@ individual entry, or for all entries in a configuration.
 
 Full name: `midgard.config.config.CasedConfigParser`
 
-Signature: `(defaults=None, dict_type=<class 'dict'>, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=<object object at 0x7fef7ecaf930>, converters=<object object at 0x7fef7ecaf930>)`
+Signature: `(defaults=None, dict_type=<class 'dict'>, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=<object object at 0x7fa644ae8780>, converters=<object object at 0x7fa644ae8780>)`
 
 ConfigParser with case-sensitive keys
 
@@ -85,7 +85,7 @@ Represents a Configuration
 
 Full name: `midgard.config.config.ConfigurationEntry`
 
-Signature: `(key: str, value: Any, *, source: str = '', meta: Union[Dict[str, str], NoneType] = None, vars_dict: Union[Dict[str, str], NoneType] = None, _used_as: Union[Set[str], NoneType] = None) -> None`
+Signature: `(key: str, value: Any, *, source: str = '', meta: Optional[Dict[str, str]] = None, vars_dict: Optional[Dict[str, str]] = None, _used_as: Optional[Set[str]] = None) -> None`
 
 
 

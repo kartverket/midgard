@@ -202,6 +202,14 @@ Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=
 
 QZSS frequencies in Hz
 
+### **RefSysNameToEpsg**
+
+Full name: `midgard.collections.enums.RefSysNameToEpsg`
+
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+
+Reference system name to EPSG code
+
 ### **SbasFreqNum2Freq**
 
 Full name: `midgard.collections.enums.SbasFreqNum2Freq`
@@ -466,6 +474,14 @@ Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=
 
 Levels used when deciding how much log output to show
 
+### **ref_sys_name_to_epsg**
+
+Full name: `midgard.collections.enums.ref_sys_name_to_epsg`
+
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+
+Reference system name to EPSG code
+
 ### **register_enum**()
 
 Full name: `midgard.collections.enums.register_enum`
@@ -492,3 +508,112 @@ Full name: `midgard.collections.enums.write_level`
 Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
 
 Levels used when deciding which fields of a dataset and other information to write to disk
+
+## midgard.collections.plate_motion_models
+Dataclass for handling tectonic plate motion models
+
+**Description:**
+
+You can add your own tectonic plate motion models via adding at the end of file:
+    
+    <model name> = PlateMotionModel(
+                    name: <model name>
+                    description: <model description>
+                    pole: <List with rotation pole definitions for different tectonics plate>
+    )
+
+
+**Example:**
+
+import numpy as np
+from midgard.collections import plate_motion_models
+
+# Get list with available plate models
+models = 
+
+
+# Get PlateMotionModel instance for a given tectonic name
+model = plate_motion_models.get("itrf2014")
+
+# Get RotationPole object for Eurasian tectonic plate
+pole = model.get_pole("eura", unit="radian per year")
+
+# Determine station velocity for given station position
+pos = np.array([2102928.189605, 721619.617278, 5958196.398820])
+pole_vec = [pole.wx, pole.wy, pole.wz]
+vel = np.cross(pole_vec, pos)
+
+
+### **PlateMotionModel**
+
+Full name: `midgard.collections.plate_motion_models.PlateMotionModel`
+
+Signature: `(name: str, description: str, poles: Dict[str, object]) -> None`
+
+Dataclass for plate motion model
+
+**Attributes:**
+
+- `name`:        Name of plate motion model
+- `description`: Description of plate motion model
+- `poles`:       Dictionary with rotation pole definition for defined tectonic plates
+
+
+### **RotationPole**
+
+Full name: `midgard.collections.plate_motion_models.RotationPole`
+
+Signature: `(name: str, wx: float, wy: float, wz: float, dwx: float, dwy: float, dwz: float, unit: str, description: str) -> None`
+
+Dataclass for plate motion model
+
+**Attributes:**
+
+- `name`:           Name of tectonic plate
+wx, wy, wx:     Rotation pole (angular velocity) components
+dwx, dwy, dwz:  Standard deviation of rotation pole components
+- `unit`:           Unit of rotation pole entries
+- `description`:    Description of tectonic plate
+
+
+### **get**()
+
+Full name: `midgard.collections.plate_motion_models.get`
+
+Signature: `(model: str) -> 'PlateMotionModel'`
+
+Get a tectonic plate motion model by name
+
+**Args:**
+
+- `model`: Plate motion model name
+
+**Returns:**
+
+Instance of PlateMotionModel dataclass
+
+
+### itrf2008 (PlateMotionModel)
+`itrf2008 = PlateMotionModel(name='itrf2008', description='ITRF2008 plate motion model', poles={'amur': RotationPole(name='amur', wx=-0.19, wy=-0.442, wz=0.915, dwx=0.04, dwy=0.051, dwz=0.049, unit='milliarcsecond per year', description='Amurian plate'), 'anta': RotationPole(name='anta', wx=-0.252, wy=-0.302, wz=0.643, dwx=0.008, dwy=0.006, dwz=0.009, unit='milliarcsecond per year', description='Antarctic plate'), 'arab': RotationPole(name='arab', wx=1.202, wy=-0.054, wz=1.485, dwx=0.082, dwy=0.1, dwz=0.063, unit='milliarcsecond per year', description='Arabian plate'), 'aust': RotationPole(name='aust', wx=1.504, wy=1.172, wz=1.228, dwx=0.007, dwy=0.007, dwz=0.007, unit='milliarcsecond per year', description='Australian plate'), 'carb': RotationPole(name='carb', wx=0.049, wy=-1.088, wz=0.664, dwx=0.201, dwy=0.417, dwz=0.146, unit='milliarcsecond per year', description='Caribbean plate'), 'eura': RotationPole(name='eura', wx=-0.083, wy=-0.534, wz=0.775, dwx=0.008, dwy=0.007, dwz=0.008, unit='milliarcsecond per year', description='Eurasian plate'), 'indi': RotationPole(name='indi', wx=1.232, wy=0.303, wz=1.54, dwx=0.031, dwy=0.128, dwz=0.03, unit='milliarcsecond per year', description='Indian plate'), 'nazc': RotationPole(name='nazc', wx=-0.333, wy=-1.551, wz=1.625, dwx=0.011, dwy=0.029, dwz=0.013, unit='milliarcsecond per year', description='Nazca plate'), 'noam': RotationPole(name='noam', wx=0.035, wy=-0.662, wz=-0.1, dwx=0.008, dwy=0.009, dwz=0.008, unit='milliarcsecond per year', description='North American plate'), 'nubi': RotationPole(name='nubi', wx=0.095, wy=-0.598, wz=0.723, dwx=0.009, dwy=0.007, dwz=0.009, unit='milliarcsecond per year', description='Nubia plate'), 'pcfc': RotationPole(name='pcfc', wx=-0.411, wy=1.036, wz=-2.166, dwx=0.007, dwy=0.007, dwz=0.009, unit='milliarcsecond per year', description='Pacific plate'), 'soam': RotationPole(name='soam', wx=-0.243, wy=-0.311, wz=-0.154, dwx=0.009, dwy=0.01, dwz=0.009, unit='milliarcsecond per year', description='South American plate'), 'soma': RotationPole(name='soma', wx=-0.08, wy=-0.745, wz=0.897, dwx=0.028, dwy=0.03, dwz=0.012, unit='milliarcsecond per year', description='Somali plate')})`
+
+
+### itrf2014 (PlateMotionModel)
+`itrf2014 = PlateMotionModel(name='itrf2014', description='ITRF2014 plate motion model', poles={'anta': RotationPole(name='anta', wx=-0.248, wy=-0.324, wz=0.675, dwx=0.004, dwy=0.004, dwz=0.008, unit='milliarcsecond per year', description='Antarctic plate'), 'arab': RotationPole(name='arab', wx=1.154, wy=-0.136, wz=1.444, dwx=0.02, dwy=0.022, dwz=0.014, unit='milliarcsecond per year', description='Arabian plate'), 'aust': RotationPole(name='aust', wx=1.51, wy=1.182, wz=1.215, dwx=0.004, dwy=0.004, dwz=0.004, unit='milliarcsecond per year', description='Australian plate'), 'eura': RotationPole(name='eura', wx=-0.085, wy=-0.531, wz=0.77, dwx=0.004, dwy=0.002, dwz=0.005, unit='milliarcsecond per year', description='Eurasian plate'), 'indi': RotationPole(name='indi', wx=1.154, wy=-0.005, wz=1.454, dwx=0.027, dwy=0.117, dwz=0.035, unit='milliarcsecond per year', description='Indian plate'), 'nazc': RotationPole(name='nazc', wx=-0.333, wy=-1.544, wz=1.623, dwx=0.006, dwy=0.015, dwz=0.007, unit='milliarcsecond per year', description='Nazca plate'), 'noam': RotationPole(name='noam', wx=0.024, wy=-0.694, wz=-0.063, dwx=0.002, dwy=0.005, dwz=0.004, unit='milliarcsecond per year', description='North American plate'), 'nubi': RotationPole(name='nubi', wx=0.099, wy=-0.614, wz=0.733, dwx=0.004, dwy=0.003, dwz=0.003, unit='milliarcsecond per year', description='Nubia plate'), 'pcfc': RotationPole(name='pcfc', wx=-0.409, wy=1.047, wz=-2.169, dwx=0.003, dwy=0.004, dwz=0.004, unit='milliarcsecond per year', description='Pacific plate'), 'soam': RotationPole(name='soam', wx=-0.27, wy=-0.301, wz=-0.14, dwx=0.006, dwy=0.006, dwz=0.003, unit='milliarcsecond per year', description='South American plate'), 'soma': RotationPole(name='soma', wx=-0.121, wy=-0.794, wz=0.884, dwx=0.035, dwy=0.034, dwz=0.008, unit='milliarcsecond per year', description='Somali plate')})`
+
+
+### **models**()
+
+Full name: `midgard.collections.plate_motion_models.models`
+
+Signature: `() -> List[str]`
+
+Get a list of available tectonic plate motion models
+
+**Returns:**
+
+List of available tectonic plate motion models
+
+
+
+### nnr_morvel56 (PlateMotionModel)
+`nnr_morvel56 = PlateMotionModel(name='nnr_morvel56', description='NNR-MORVEL56 plate motion model', poles={'amur': RotationPole(name='amur', wx=-0.26156, wy=-0.40555, wz=0.9541, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Amurian plate'), 'anta': RotationPole(name='anta', wx=-0.17639, wy=-0.33021, wz=0.81844, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Antarctic plate'), 'arab': RotationPole(name='arab', wx=1.30893, wy=-0.19539, wz=1.51601, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Arabian plate'), 'aust': RotationPole(name='aust', wx=1.49003, wy=1.16163, wz=1.26766, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Australian plate'), 'capr': RotationPole(name='capr', wx=1.43757, wy=0.61288, wz=1.53251, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Capricorn plate'), 'carb': RotationPole(name='carb', wx=-0.03846, wy=-0.84045, wz=0.59349, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Caribbean plate'), 'coco': RotationPole(name='coco', wx=-2.16738, wy=-3.17607, wz=1.95327, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Cocos plate'), 'eura': RotationPole(name='eura', wx=-0.15004, wy=-0.50651, wz=0.6045, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Eurasian plate'), 'indi': RotationPole(name='indi', wx=1.24706, wy=-0.07169, wz=1.50832, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Indian plate'), 'juan': RotationPole(name='juan', wx=1.34157, wy=2.32742, wz=-2.12234, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Juan de Fuca plate'), 'lwan': RotationPole(name='lwan', wx=0.22233, wy=-0.59528, wz=0.81012, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Lwandle plate'), 'macq': RotationPole(name='macq', wx=2.64169, wy=0.51589, wz=3.11714, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Macquarie plate'), 'nazc': RotationPole(name='nazc', wx=-0.33251, wy=-1.70109, wz=1.80935, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Nazca plate'), 'noam': RotationPole(name='noam', wx=0.12193, wy=-0.73972, wz=-0.06361, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='North American plate'), 'nubi': RotationPole(name='nubi', wx=0.26008, wy=-0.65822, wz=0.77725, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Nubia plate'), 'pcfc': RotationPole(name='pcfc', wx=-0.43574, wy=0.94737, wz=-2.09883, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Pacific plate'), 'phil': RotationPole(name='phil', wx=1.94255, wy=-1.18388, wz=-2.35735, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Philippine Sea plate'), 'rive': RotationPole(name='rive', wx=-4.55332, wy=-14.62801, wz=5.65195, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Rivera plate'), 'sand': RotationPole(name='sand', wx=3.39908, wy=-2.54932, wz=-2.44715, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Sandwich plate'), 'scot': RotationPole(name='scot', wx=-0.13505, wy=-0.46636, wz=0.20131, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Scotia plate'), 'soam': RotationPole(name='soam', wx=0.07499, wy=-0.78168, wz=0.9342, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='South American plate'), 'soma': RotationPole(name='soma', wx=-0.14054, wy=-0.33384, wz=-0.15092, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Somali plate'), 'sund': RotationPole(name='sund', wx=-0.06815, wy=-0.77587, wz=0.93018, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Sunda plate'), 'sur_': RotationPole(name='sur_', wx=-0.11812, wy=-0.30264, wz=-0.20697, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Sur plate'), 'yang': RotationPole(name='ynag', wx=-0.24434, wy=-0.48751, wz=1.07163, dwx=nan, dwy=nan, dwz=nan, unit='milliarcsecond per year', description='Yangtze plate')})`
