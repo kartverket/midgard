@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.data - Midgard v1.1.5</title>
+        <title>midgard.data - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -242,6 +242,8 @@
 <p>Full name: <code>midgard.data._h5utils.encode_h5attr</code></p>
 <p>Signature: <code>(data: Any) -&gt; Any</code></p>
 <p>Convert a basic data type to something that can be saved as a hdf5 attribute</p>
+<p>Will raise a TypeError if the attribute cannot be saved in a way that allows
+reading and correct interpretation of the attribute.</p>
 <h2 id="midgarddata_position">midgard.data._position</h2>
 <p>Module for dealing with positions, velocities and position corrections in different coordinate systems</p>
 <h3 id="posbase"><strong>PosBase</strong></h3>
@@ -415,14 +417,6 @@ dependance:        name of attribute that needs to be set for field to make sens
 <p>Modified Julian Date time format.</p>
 <p>This represents the number of days since midnight on November 17, 1858.
 For example, 51544.0 in MJD is midnight on January 1, 2000.</p>
-<h3 id="timeplotdate"><strong>TimePlotDate</strong></h3>
-<p>Full name: <code>midgard.data._time.TimePlotDate</code></p>
-<p>Signature: <code>(val, val2=None, scale=None)</code></p>
-<p>Matplotlib date format</p>
-<p>Matplotlib represents dates using floating point numbers specifying the number
-of days since 0001-01-01 UTC, plus 1.  For example, 0001-01-01, 06:00 is 1.25,
-not 0.25. Values &lt; 1, i.e. dates before 0001-01-01 UTC are not supported.</p>
-<p>Warning: This requires matplotlib version 3.2.2 or lower</p>
 <h3 id="timestr"><strong>TimeStr</strong></h3>
 <p>Full name: <code>midgard.data._time.TimeStr</code></p>
 <p>Signature: <code>(val, val2=None, scale=None)</code></p>
@@ -716,7 +710,7 @@ Returns:
 <p>Array with time epochs</p>
 <h3 id="time"><strong>Time</strong>()</h3>
 <p>Full name: <code>midgard.data.time.Time</code></p>
-<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: Union[numpy.ndarray, NoneType] = None, _jd1: Union[numpy.ndarray, NoneType] = None, _jd2: Union[numpy.ndarray, NoneType] = None) -&gt; 'TimeArray'</code></p>
+<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None, _jd1: Optional[numpy.ndarray] = None, _jd2: Optional[numpy.ndarray] = None) -&gt; 'TimeArray'</code></p>
 <p>Factory for creating TimeArrays for different systems</p>
 <p>See each time class for exact optional parameters.</p>
 <p><strong>Args:</strong></p>
@@ -730,7 +724,7 @@ Returns:
 <p>Array with epochs in the given time scale and format</p>
 <h3 id="timedelta"><strong>TimeDelta</strong>()</h3>
 <p>Full name: <code>midgard.data.time.TimeDelta</code></p>
-<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: Union[numpy.ndarray, NoneType] = None) -&gt; 'TimeDeltaArray'</code></p>
+<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None) -&gt; 'TimeDeltaArray'</code></p>
 <p>Factory for creating TimeArrays for different systems</p>
 <p>See each time class for exact optional parameters.</p>
 <p><strong>Args:</strong></p>
@@ -770,16 +764,13 @@ Returns:
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

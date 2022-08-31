@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v1.1.5</title>
+        <title>midgard.dev - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -210,7 +210,7 @@ I am YELLOW text on a BLUE background!
 <p>The width of the console in characters.</p>
 <h3 id="dedent"><strong>dedent</strong>()</h3>
 <p>Full name: <code>midgard.dev.console.dedent</code></p>
-<p>Signature: <code>(text: str, num_spaces: Union[int, NoneType] = None) -&gt; str</code></p>
+<p>Signature: <code>(text: str, num_spaces: Optional[int] = None) -&gt; str</code></p>
 <p>Wrapper around textwrap.dedent</p>
 <p>Dedents at most num_spaces. If num_spaces is not specified, dedents as much as possible.</p>
 <p><strong>Args:</strong></p>
@@ -222,7 +222,7 @@ I am YELLOW text on a BLUE background!
 <p>Dedented string.</p>
 <h3 id="fill"><strong>fill</strong>()</h3>
 <p>Full name: <code>midgard.dev.console.fill</code></p>
-<p>Signature: <code>(text: str, *, width: Union[int, NoneType] = None, hanging: Union[int, NoneType] = None, **tw_args: Any) -&gt; str</code></p>
+<p>Signature: <code>(text: str, *, width: Optional[int] = None, hanging: Optional[int] = None, **tw_args: Any) -&gt; str</code></p>
 <p>Wrapper around textwrap.fill</p>
 <p>The <code>tw_args</code> are passed on to textwrap.fill. See textwrap.TextWrapper for available keyword arguments.</p>
 <p>The default value for <code>width</code> is console.columns(), while the new argument <code>hanging</code>, if defined, will try
@@ -449,11 +449,11 @@ INFO  [My prefix] Calculating the inverse of a  5x3  matrix
 </code></pre>
 <h3 id="consolelogger"><strong>ConsoleLogger</strong></h3>
 <p>Full name: <code>midgard.dev.log.ConsoleLogger</code></p>
-<p>Signature: <code>(log_level: Union[str, NoneType] = None, prefix: str = '', use_command_line: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(log_level: Optional[str] = None, prefix: str = '', use_command_line: bool = True) -&gt; None</code></p>
 <p>Log to the console, the log level can also be set using command line parameters</p>
 <h3 id="filelogger"><strong>FileLogger</strong></h3>
 <p>Full name: <code>midgard.dev.log.FileLogger</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], log_level: Union[str, NoneType] = None, prefix: str = '', rotation: Union[int, NoneType] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], log_level: Optional[str] = None, prefix: str = '', rotation: Optional[int] = None) -&gt; None</code></p>
 <p>Log to a file, the log files can be rotated so that older files are kept</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -466,7 +466,7 @@ INFO  [My prefix] Calculating the inverse of a  5x3  matrix
 </ul>
 <h3 id="logger"><strong>Logger</strong></h3>
 <p>Full name: <code>midgard.dev.log.Logger</code></p>
-<p>Signature: <code>(log_level: Union[str, NoneType] = None, prefix: str = '')</code></p>
+<p>Signature: <code>(log_level: Optional[str] = None, prefix: str = '')</code></p>
 <p>Abstract class that can be specialized to create new loggers</p>
 <h3 id="all"><strong>all</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.all</code></p>
@@ -494,7 +494,7 @@ of the given arguments and keywords.</p>
 of the given arguments and keywords.</p>
 <h3 id="file_init"><strong>file_init</strong></h3>
 <p>Full name: <code>midgard.dev.log.file_init</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], log_level: Union[str, NoneType] = None, prefix: str = '', rotation: Union[int, NoneType] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], log_level: Optional[str] = None, prefix: str = '', rotation: Optional[int] = None) -&gt; None</code></p>
 <p>Log to a file, the log files can be rotated so that older files are kept</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -512,7 +512,7 @@ of the given arguments and keywords.</p>
 of the given arguments and keywords.</p>
 <h3 id="init"><strong>init</strong></h3>
 <p>Full name: <code>midgard.dev.log.init</code></p>
-<p>Signature: <code>(log_level: Union[str, NoneType] = None, prefix: str = '', use_command_line: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(log_level: Optional[str] = None, prefix: str = '', use_command_line: bool = True) -&gt; None</code></p>
 <p>Log to the console, the log level can also be set using command line parameters</p>
 <h3 id="log"><strong>log</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.log</code></p>
@@ -611,7 +611,7 @@ using the <code>part</code> optional parameter to <code>call_one</code>:</p>
 </ul>
 <h3 id="call"><strong>call</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.call</code></p>
-<p>Signature: <code>(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None, plugin_logger: Union[Callable[[str], NoneType], NoneType] = None, **plugin_args: Any) -&gt; Any</code></p>
+<p>Signature: <code>(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None, plugin_logger: Optional[Callable[[str], NoneType]] = None, **plugin_args: Any) -&gt; Any</code></p>
 <p>Call one plug-in</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -626,7 +626,7 @@ using the <code>part</code> optional parameter to <code>call_one</code>:</p>
 <p>Return value of the plug-in.</p>
 <h3 id="call_all"><strong>call_all</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.call_all</code></p>
-<p>Signature: <code>(package_name: str, plugins: Union[List[str], NoneType] = None, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None, plugin_logger: Union[Callable[[str], NoneType], NoneType] = None, **plugin_args: Any) -&gt; Dict[str, Any]</code></p>
+<p>Signature: <code>(package_name: str, plugins: Optional[List[str]] = None, part: Optional[str] = None, prefix: Optional[str] = None, plugin_logger: Optional[Callable[[str], NoneType]] = None, **plugin_args: Any) -&gt; Dict[str, Any]</code></p>
 <p>Call all plug-ins in a package</p>
 <p>If <code>plugins</code> is given, it should be a list of names of plug-ins.  If a
 plug-in listed in the <code>plugins</code>-list or in the config file does not exist,
@@ -646,7 +646,7 @@ however, that this will import all python files in the package.</p>
 <p>Dictionary of all results from the plug-ins.</p>
 <h3 id="doc"><strong>doc</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.doc</code></p>
-<p>Signature: <code>(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -&gt; str</code></p>
+<p>Signature: <code>(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -&gt; str</code></p>
 <p>Document one plug-in</p>
 <p>If the plug-in is not part of the package an UnknownPluginError is raised.</p>
 <p>If there are several functions registered in a plug-in and <code>part</code> is not
@@ -666,7 +666,7 @@ documented.</p>
 <p>Documentation of the plug-in.</p>
 <h3 id="doc_all"><strong>doc_all</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.doc_all</code></p>
-<p>Signature: <code>(package_name: str, plugins: Union[Iterable[str], NoneType] = None, prefix: Union[str, NoneType] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -&gt; Dict[str, str]</code></p>
+<p>Signature: <code>(package_name: str, plugins: Optional[Iterable[str]] = None, prefix: Optional[str] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -&gt; Dict[str, str]</code></p>
 <p>Call all plug-ins in a package</p>
 <p>If <code>plugins</code> is given, it should be a list of names of plug-ins. If a
 plug-in listed in the <code>plugins</code>-list does not exist, an UnknownPluginError
@@ -698,7 +698,7 @@ however, that this will import all python files in the package.</p>
 <p>True if plug-in exists, False otherwise.</p>
 <h3 id="get"><strong>get</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.get</code></p>
-<p>Signature: <code>(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None) -&gt; midgard.dev.plugins.Plugin</code></p>
+<p>Signature: <code>(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None) -&gt; midgard.dev.plugins.Plugin</code></p>
 <p>Get a specific plugin-object</p>
 <p>If the plug-in is not part of the package an UnknownPluginError is raised.</p>
 <p>If there are several functions registered in a plug-in and <code>part</code> is not
@@ -715,7 +715,7 @@ called.</p>
 <p>Plugin-namedtuple representing the plug-in.</p>
 <h3 id="load"><strong>load</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.load</code></p>
-<p>Signature: <code>(package_name: str, plugin_name: str, prefix: Union[str, NoneType] = None) -&gt; str</code></p>
+<p>Signature: <code>(package_name: str, plugin_name: str, prefix: Optional[str] = None) -&gt; str</code></p>
 <p>Load one plug-in from a package</p>
 <p>First tries to load the plugin with the given name. If that fails, it tries
 to load {prefix}_{plugin_name} instead.</p>
@@ -729,7 +729,7 @@ to load {prefix}_{plugin_name} instead.</p>
 <p>Actual name of plug-in (with or without prefix).</p>
 <h3 id="names"><strong>names</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.names</code></p>
-<p>Signature: <code>(package_name: str, plugins: Union[Iterable[str], NoneType] = None, prefix: Union[str, NoneType] = None) -&gt; List[str]</code></p>
+<p>Signature: <code>(package_name: str, plugins: Optional[Iterable[str]] = None, prefix: Optional[str] = None) -&gt; List[str]</code></p>
 <p>List plug-ins in a package</p>
 <p>If <code>plugins</code> is given, it should be a list of names of plug-ins.  If a
 plug-in listed in the <code>plugins</code>-list does not exist, an UnknownPluginError
@@ -746,7 +746,7 @@ however, that this will import all python files in the package.</p>
 <p>List of strings with names of plug-ins.</p>
 <h3 id="parts"><strong>parts</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.parts</code></p>
-<p>Signature: <code>(package_name: str, plugin_name: str, prefix: Union[str, NoneType] = None) -&gt; List[str]</code></p>
+<p>Signature: <code>(package_name: str, plugin_name: str, prefix: Optional[str] = None) -&gt; List[str]</code></p>
 <p>List all parts of one plug-in</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -760,7 +760,7 @@ however, that this will import all python files in the package.</p>
 </ul>
 <h3 id="register"><strong>register</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.register</code></p>
-<p>Signature: <code>(func: Callable, name: Union[str, NoneType] = None, sort_value: int = 0) -&gt; Callable</code></p>
+<p>Signature: <code>(func: Callable, name: Optional[str] = None, sort_value: int = 0) -&gt; Callable</code></p>
 <p>Decorator used to register a plug-in</p>
 <p>Plug-ins are registered based on the name of the module (file) they are
 defined in, as well as the package (directory) which contains
@@ -807,7 +807,7 @@ of 0.</p>
 <p>Decorator that registers an ordered function.</p>
 <h3 id="signature"><strong>signature</strong>()</h3>
 <p>Full name: <code>midgard.dev.plugins.signature</code></p>
-<p>Signature: <code>(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None) -&gt; inspect.Signature</code></p>
+<p>Signature: <code>(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None) -&gt; inspect.Signature</code></p>
 <p>Get signature of a plug-in</p>
 <p>If the plug-in is not part of the package an UnknownPluginError is raised.</p>
 <p>If there are several functions registered in a plug-in and <code>part</code> is not
@@ -876,10 +876,10 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(&lt;function log at 0x7fef7ec3b8b0&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7fa6578b4550&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(&lt;function log at 0x7fef7ec3b8b0&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7fa6578b4550&gt;, level='info')) -&gt; None</code></p>
 <p>Class for timing running time of functions and code blocks.</p>
 <h2 id="midgarddevutil">midgard.dev.util</h2>
 <p>Midgard library module with utility functions for easier script development</p>
@@ -1036,16 +1036,13 @@ string (separated by =). If there are several occurences of the option, the firs
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

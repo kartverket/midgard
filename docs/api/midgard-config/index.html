@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.config - Midgard v1.1.5</title>
+        <title>midgard.config - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -200,7 +200,7 @@ individual entry, or for all entries in a configuration.</p>
 <p><strong>Help text and Type hints:</strong></p>
 <h3 id="casedconfigparser"><strong>CasedConfigParser</strong></h3>
 <p>Full name: <code>midgard.config.config.CasedConfigParser</code></p>
-<p>Signature: <code>(defaults=None, dict_type=&lt;class 'dict'&gt;, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=&lt;object object at 0x7fef7ecaf930&gt;, converters=&lt;object object at 0x7fef7ecaf930&gt;)</code></p>
+<p>Signature: <code>(defaults=None, dict_type=&lt;class 'dict'&gt;, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=&lt;object object at 0x7fa644ae8780&gt;, converters=&lt;object object at 0x7fa644ae8780&gt;)</code></p>
 <p>ConfigParser with case-sensitive keys</p>
 <h3 id="configuration"><strong>Configuration</strong></h3>
 <p>Full name: <code>midgard.config.config.Configuration</code></p>
@@ -208,7 +208,7 @@ individual entry, or for all entries in a configuration.</p>
 <p>Represents a Configuration</p>
 <h3 id="configurationentry"><strong>ConfigurationEntry</strong></h3>
 <p>Full name: <code>midgard.config.config.ConfigurationEntry</code></p>
-<p>Signature: <code>(key: str, value: Any, *, source: str = '', meta: Union[Dict[str, str], NoneType] = None, vars_dict: Union[Dict[str, str], NoneType] = None, _used_as: Union[Set[str], NoneType] = None) -&gt; None</code></p>
+<p>Signature: <code>(key: str, value: Any, *, source: str = '', meta: Optional[Dict[str, str]] = None, vars_dict: Optional[Dict[str, str]] = None, _used_as: Optional[Set[str]] = None) -&gt; None</code></p>
 <h3 id="configurationsection"><strong>ConfigurationSection</strong></h3>
 <p>Full name: <code>midgard.config.config.ConfigurationSection</code></p>
 <p>Signature: <code>(name: str) -&gt; None</code></p>
@@ -259,16 +259,13 @@ make sure files are properly closed they should normally be used with a context 
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.math - Midgard v1.1.5</title>
+        <title>midgard.math - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -164,7 +164,15 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#midgardmathplate_motion" class="nav-link">midgard.math.plate_motion</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#midgardmathrotation" class="nav-link">midgard.math.rotation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardmathspatial_interpolation" class="nav-link">midgard.math.spatial_interpolation</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -209,7 +217,7 @@ lib.unit).</p>
 <p>Full name: <code>midgard.math.constant.Constant</code></p>
 <p>Signature: <code>() -&gt; None</code></p>
 <h3 id="constant-constant">constant (Constant)</h3>
-<p><code>constant = Constant('/home/kirann/miniconda3/lib/python3.8/site-packages/midgard/math/constant.txt')</code></p>
+<p><code>constant = Constant('/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/constant.txt')</code></p>
 <h2 id="midgardmathellipsoid">midgard.math.ellipsoid</h2>
 <p>Midgard library module for handling Earth ellipsoids</p>
 <p><strong>Description:</strong></p>
@@ -515,6 +523,19 @@ SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND LIMITATIONS UNDER THE LICENSE.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="midgardmathplate_motion">midgard.math.plate_motion</h2>
+<p>Midgard library module for handling tectonic plate motion</p>
+<p><strong>Description:</strong></p>
+<p><strong>Example:</strong></p>
+<p>import numpy as np
+from midgard.math.plate_motion import PlateMotion</p>
+<p>pm = PlateMotion(plate="eura")
+pos = np.array([2102928.189605, 721619.617278, 5958196.398820]) # in meter
+vel = pm.get_velocity(pos) # in mm/yr</p>
+<h3 id="platemotion"><strong>PlateMotion</strong></h3>
+<p>Full name: <code>midgard.math.plate_motion.PlateMotion</code></p>
+<p>Signature: <code>(plate: str, model: str = 'itrf2014') -&gt; None</code></p>
+<p>A class for handling of tectonic plate motion</p>
 <h2 id="midgardmathrotation">midgard.math.rotation</h2>
 <p>Library for basic rotation matrices</p>
 <p><strong>Description:</strong></p>
@@ -627,6 +648,31 @@ This is equal to doing::</p>
 lon (Float or Array):   Longitude of origin of ENU coordinate system.</p>
 <p><strong>Returns:</strong></p>
 <p>Numpy array:   Rotation matrix or array of rotation matrices.</p>
+<h2 id="midgardmathspatial_interpolation">midgard.math.spatial_interpolation</h2>
+<p>Methods for spatial interpolation in numpy arrays</p>
+<p><strong>Description:</strong></p>
+<p><strong>Example:</strong></p>
+<p>TODO</p>
+<h3 id="interpolate_for_position"><strong>interpolate_for_position</strong>()</h3>
+<p>Full name: <code>midgard.math.spatial_interpolation.interpolate_for_position</code></p>
+<p>Signature: <code>(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float, y: float, method: str = 'linear') -&gt; float</code></p>
+<p>Interpolation in grid with size (n, m) for a given position</p>
+<p>Interpolation is based on scipy.interpolate.griddata module. More information about this module can be found under:
+    https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>grid_x</code>: (n,m) Array with x-positions for each grid point </li>
+<li><code>grid_y</code>: (n,m) Array with y-positions for each grid point </li>
+<li><code>values</code>: (n,m) Array with data values for each grid point</li>
+<li><code>x</code>:            x-position</li>
+<li><code>y</code>:            y-position</li>
+<li><code>method</code>: Method of interpolation:
+                linear:  tessellate the input point set to N-D simplices, and interpolate linearly on each simplex
+                nearest: value of data point closest to the point of interpolation
+                cubic:   value determined from a piecewise cubic</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Interpolated value in data grid for a given position</p>
 <h2 id="midgardmathtransformation">midgard.math.transformation</h2>
 <p>Midgard library module for handling of geodetic conversions</p>
 <p><strong>Description:</strong></p>
@@ -740,11 +786,11 @@ instance:</p>
 current (midgard/math) directory.</p>
 <h3 id="unit"><strong>Unit</strong></h3>
 <p>Full name: <code>midgard.math.unit.Unit</code></p>
-<p>Signature: <code>(from_unit: str, to_unit: Union[str, NoneType] = None) -&gt; Any</code></p>
+<p>Signature: <code>(from_unit: str, to_unit: Optional[str] = None) -&gt; Any</code></p>
 <p>Unit converter</p>
 <p>The implementation of the unit conversion is done in the <code>_convert_units</code>-metaclass.</p>
 <h3 id="fid-textiowrapper">fid (TextIOWrapper)</h3>
-<p><code>fid = &lt;_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.8/site-packages/midgard/math/unit.txt' encoding='utf-8'&gt;</code></p>
+<p><code>fid = &lt;_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/unit.txt' encoding='utf-8'&gt;</code></p>
 <h3 id="np_float-typevar_1">np_float (TypeVar)</h3>
 <p><code>np_float = ~np_float</code></p></div>
             </div>
@@ -769,16 +815,13 @@ current (midgard/math) directory.</p>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>
