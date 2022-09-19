@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard - Midgard v1.1.5</title>
+        <title>midgard - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -151,18 +151,18 @@ these are geodesy-specific, many are also useful in more general settings.</p>
       and it should not be depended on in any production-like setting.</p>
 <p>Midgard comes organized into different subpackages:</p>
 <ul>
-<li>collections</li>
-<li>config</li>
-<li>data</li>
+<li>writers</li>
 <li>dev</li>
-<li>files</li>
-<li>gnss</li>
-<li>ionosphere</li>
 <li>math</li>
-<li>parsers</li>
+<li>config</li>
+<li>collections</li>
 <li>plot</li>
 <li>site_info</li>
-<li>writers</li>
+<li>ionosphere</li>
+<li>data</li>
+<li>parsers</li>
+<li>files</li>
+<li>gnss</li>
 </ul>
 <p>Look for help inside each subpackage:</p>
 <pre><code>&gt;&gt;&gt; from midgard import subpackage  # doctest: +SKIP
@@ -199,16 +199,13 @@ these are geodesy-specific, many are also useful in more general settings.</p>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

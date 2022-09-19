@@ -29,7 +29,7 @@ use this model. The implementation is based on original paper of Klobuchar
 
 Full name: `midgard.ionosphere.klobuchar.klobuchar`
 
-Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7fef7ec3b8b0>, level='debug'))`
+Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7fa6578b4550>, level='debug'))`
 
 Compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model)
 

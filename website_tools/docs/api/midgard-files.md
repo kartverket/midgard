@@ -215,7 +215,7 @@ False will raise a FileExistsError if to_path already exists.
 
 Full name: `midgard.files.files.open`
 
-Signature: `(file_path: Union[str, pathlib.Path], create_dirs: bool = False, open_as_gzip: Union[bool, NoneType] = None, **open_args: Any) -> Iterator`
+Signature: `(file_path: Union[str, pathlib.Path], create_dirs: bool = False, open_as_gzip: Optional[bool] = None, **open_args: Any) -> Iterator`
 
 Open a file.
 

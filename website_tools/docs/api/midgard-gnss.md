@@ -1,6 +1,96 @@
 # midgard.gnss
 
 
+## midgard.gnss.antenna_calibration
+Handling of GNSS antenna calibration information based on ANTEX file
+
+**Description:**
+
+The module includes a class for handling of GNSS antenna information based on read GNSS ANTEX file (see Rothacher, 2010).
+
+
+**Reference:**
+
+Rothacher, M. and Schmid, R. (2010): "ANTEX: The antenna exchange format", version 1.4, Forschungseinrichtung 
+        Satellitengeodäsie, TU München
+        
+        
+**Example:**
+
+# Import AntennaCalibration class
+from midgard.gnss.antenna_calibration import AntennaCalibration
+
+# Get instance of AntennaCalibration class by defining ANTEX file path 
+ant = AntennaCalibration(file_path="igs14.atx")
+
+
+
+### **AntennaCalibration**
+
+Full name: `midgard.gnss.antenna_calibration.AntennaCalibration`
+
+Signature: `(file_path: Union[str, pathlib.PosixPath]) -> None`
+
+A class for representing GNSS antenna calibration data
+
+The attribute "data" is a dictionary with GNSS satellite PRN or receiver antenna as key. The GNSS satellite antenna
+corrections are time dependent and saved with "valid from" datetime object entry. The dictionary looks like:
+
+    dout = { <prn> : { <valid from>: { cospar_id:   <value>,
+                                       sat_code:    <value>,
+                                       sat_type:    <value>,
+                                       valid_until: <value>,
+                                       azimuth:     <list with azimuth values>,
+                                       elevation:   <list with elevation values>,
+                                       <frequency>: { azi: [<list with azimuth-elevation dependent corrections>],
+                                                      neu: [north, east, up],
+                                                      noazi: [<list with elevation dependent corrections>] }}},
+
+             <receiver antenna> : { azimuth:     <list with azimuth values>,
+                                    elevation:   <list with elevation values>,
+                                    <frequency>: { azi: [<array with azimuth-elevation dependent corrections>],
+                                                   neu: [north, east, up],
+                                                   noazi: [<list with elevation dependent corrections>] }}}
+
+with following entries:
+
+| Value              | Type              | Description                                                             |
+|--------------------|---------------------------------------------------------------------------------------------|
+| azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with  |
+|                    |                   | the shape: number of azimuth values x number of elevation values.       |
+| azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections  |
+|                    |                   | given in `azi`.                                                         |
+| cospar_id          | str               | COSPAR ID <yyyy-xxxa>: yyyy -> year when the satellite was put in       |
+|                    |                   | orbit, xxx -> sequential satellite number for that year, a -> alpha     |
+|                    |                   | numeric sequence number within a launch                                 |
+| elevation          | numpy.ndarray     | List with elevation values in [rad] corresponding to antenna            |
+|                    |                   | corrections given in `azi` or `noazi`.                                  |
+| <frequency>        | str               | Frequency identifier (e.g. G01 - GPS L1)                                |
+| neu                | list              | North, East and Up eccentricities in [m]. The eccentricities of the     |
+|                    |                   | mean antenna phase center is given relative to the antenna reference    |
+|                    |                   | point (ARP) for receiver antennas or to the center of mass of the       |
+|                    |                   | satellite in X-, Y- and Z-direction.                                    |
+| noazi              | numpy.ndarray     | List with elevation dependent (non-azimuth-dependent) antenna           |
+|                    |                   | correction in [mm].                                                     |
+| <prn>              | str               | Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number        |
+| <receiver antenna> | str               | Receiver antenna name together with radome code                         |
+| sat_code           | str               | Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number      |
+| sat_type           | str               | Satellite type (e.g. BLOCK IIA)                                         |
+| valid_from         | datetime.datetime | Start of validity period of satellite in GPS time                       |
+| valid_until        | datetime.datetime | End of validity period of satellite in GPS time                         |
+
+
+Attributes:
+    data (dict):           Data read from GNSS Antenna Exchange (ANTEX) file
+    file_path (str):       ANTEX file path
+
+Methods:
+    satellite_phase_center_offset(): Determine satellite phase center offset correction vectors given in ITRS
+    satellite_type(): Get satellite type from ANTEX file (e.g. BLOCK IIF, GALILEO-1, GALILEO-2, GLONASS-M,
+                      BEIDOU-2G, ...)
+    _used_date(): Choose correct date for use of satellite antenna corrections
+
+
 ## midgard.gnss.compute_dops
 Compute DOP (dilution of precision)
 

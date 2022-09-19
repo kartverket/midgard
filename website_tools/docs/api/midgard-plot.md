@@ -109,7 +109,7 @@ List with strings representing statistical information
 
 Full name: `midgard.plot.matplotlib_extension.plot`
 
-Signature: `(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: Union[List[str], NoneType] = None, labels: Union[List[str], NoneType] = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Union[Dict[str, List[Any]], NoneType] = None) -> None`
+Signature: `(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: Optional[List[str]] = None, labels: Optional[List[str]] = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -> None`
 
 Generate scatter/plot plot
 
@@ -180,7 +180,7 @@ Following **opt_arg** options can be selected:
 
 Full name: `midgard.plot.matplotlib_extension.plot_bar_dataframe_columns`
 
-Signature: `(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: Union[List[str], NoneType] = None, opt_args: Union[Dict[str, Any], NoneType] = None) -> None`
+Signature: `(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: Optional[List[str]] = None, opt_args: Optional[Dict[str, Any]] = None) -> None`
 
 Generate bar plot of given dataframe columns
 
@@ -218,7 +218,7 @@ Following **opt_arg** options can be selected:
 
 Full name: `midgard.plot.matplotlib_extension.plot_scatter_subplots`
 
-Signature: `(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: Union[List[str], NoneType] = None, colors: Union[List[str], NoneType] = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Union[Dict[str, List[Any]], NoneType] = None) -> None`
+Signature: `(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: Optional[List[str]] = None, colors: Optional[List[str]] = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -> None`
 
 Generate scatter subplot
 
@@ -280,7 +280,7 @@ Following **opt_arg** options can be selected:
 
 Full name: `midgard.plot.matplotlib_extension.plot_subplot_row`
 
-Signature: `(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: Union[NoneType, numpy.ndarray] = None, opt_args: Dict[str, Any] = {}) -> None`
+Signature: `(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: Optional[numpy.ndarray] = None, opt_args: Dict[str, Any] = {}) -> None`
 
 Generate single row of plot subplot
 
