@@ -14,11 +14,17 @@ Reads data from files in Terrapos position output format.
 
 """
 # Standard library imports
-from typing import Any, Dict
+from typing import Any, Dict, Tuple, Union
+
+# Third party imports
+import numpy as np
 
 # Midgard imports
-from midgard.parsers import LineParser
+from midgard.data import dataset
+from midgard.data.time import Time
 from midgard.dev import plugins
+from midgard.math.unit import Unit
+from midgard.parsers import LineParser
 
 
 @plugins.register
@@ -53,6 +59,23 @@ class TerraposPositionParser(LineParser):
     | \__data_path__       | File path                                                                            |
     | \__parser_name__     | Parser name                                                                          |
     """
+    
+    def __init__(
+        self,
+        *args: Tuple[Any],
+        station: Union[None, str] = None,
+        **kwargs: Dict[Any, Any],
+    ) -> None:
+        """Initialize Rinex3-parser
+        
+        Args:
+            args:           Parameters without keyword.
+            station:        Station name.
+            kwargs:         Keyword arguments.
+        """
+        super().__init__(*args, **kwargs)
+        self.station = station
+
 
     def setup_parser(self) -> Dict[str, Any]:
         """Set up information needed for the parser
@@ -94,3 +117,73 @@ class TerraposPositionParser(LineParser):
             ),
             delimiter=(5, 15, 15, 16, 11, 11, 11, 11, 8, 8, 8, 8, 8, 8, 4, 8, 10, 10, 10),
         )
+        
+        
+    #
+    # WRITE DATA
+    #
+    def as_dataset(self) -> "Dataset":
+        """Store Terrapos position output data in a dataset
+
+        Returns:
+            Midgard Dataset where Terrapos position output data are stored with following fields:
+            
+
+       | Field              | Type              | Description                                                         |
+       |--------------------|-------------------|---------------------------------------------------------------------|
+       | head               | numpy.ndarray     | Head in [deg]                                                       |
+       | num_sat            | numpy.ndarray     | Number of satellites                                                |
+       | pdop               | numpy.ndarray     | Position Dilution of Precision (PDOP)                               |
+       | pitch              | numpy.ndarray     | Pitch in [deg]                                                      |
+       | reliability_east   | numpy.ndarray     | East position external reliability in [m] #TODO: Is that correct?   |
+       | reliability_height | numpy.ndarray     | Height position external reliability in [m] #TODO: Is that correct? |
+       | reliability_north  | numpy.ndarray     | North position external reliability in [m] #TODO: Is that correct?  |
+       | roll               | numpy.ndarray     | Roll in [deg]                                                       |
+       | sigma_east         | numpy.ndarray     | Standard deviation of East position in [m] #TODO: Is that correct?  |
+       | sigma_height       | numpy.ndarray     | Standard deviation of Height position in [m] #TODO: Is that correct?|
+       | sigma_north        | numpy.ndarray     | Standard deviation of North position in [m] #TODO: Is that correct? |
+       | site_pos           | Position          | x, y and z station coordinates                                      |
+       | time               | Time              | Parameter time given as TimeTable object                            |
+        
+        """
+        dset = dataset.Dataset(num_obs=len(self.data["gpsweek"]))
+        dset.meta.update(self.meta)
+
+        # Define and add float fields
+        float_fields = list()
+        for key in self.data.keys():
+            if key not in ["gpsweek", "gpssec"]:
+                float_fields.append(key)
+        
+        for field in float_fields:        
+            dset.add_float(field, val=self.data[field])
+
+        # Add time field
+        dset.add_time(
+            "time",
+            val=Time(
+                val=self.data["gpsweek"], 
+                val2=self.data["gpssec"], 
+                scale="gps", 
+                fmt="gps_ws",
+            )
+        )
+        
+        # Add position field
+        dset.add_position(
+            "site_pos",
+            time=dset.time,
+            system="llh",
+            val=np.stack((
+                    self.data["lat"] * Unit.deg2rad,
+                    self.data["lon"] * Unit.deg2rad, 
+                    self.data["height"]), 
+                    axis=1,
+            )
+        )
+        
+        # Add text field
+        if self.station:
+            dset.add_text("station", val=np.repeat(self.station, dset.num_obs)[:, None])
+        
+        return dset
