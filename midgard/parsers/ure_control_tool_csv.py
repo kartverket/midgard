@@ -16,12 +16,15 @@ not read (TODO).
 
 # Standard library import
 import dateutil.parser
+from typing import Callable, List
 
 # External library import
 import numpy as np
 
 
 # Midgard imports
+from midgard.data import dataset
+from midgard.data import position
 from midgard.dev import log
 from midgard.dev import plugins
 from midgard.parsers.csv_ import CsvParser
@@ -35,12 +38,40 @@ class UreControlToolCsvParser(CsvParser):
     **data** dictionary are represented by the URE Control Tool CSV colum values.
 
     """
+    
+    #
+    # SETUP POSTPROCESSORS
+    #
+    def setup_postprocessors(self) -> List[Callable[[], None]]:
+        """List steps necessary for postprocessing
+        """
+        return [
+            self._remove_additional_header_lines,
+        ]
+        
+    def _remove_additional_header_lines(self) -> None:
+        """Remove additional header lines
 
-    def write_to_dataset(self, dset) -> "Dataset":
+        It can happen that URE Control Tool CSV uses additional header lines in the file. These lines will be removed.
+        
+        TODO: Exists better solution would be, e.g. to take into account these already by reading step csv_.read_data?
+        """
+        if "IOD" in self.data["IOD"]:
+        
+            # Get index of additional header lines 
+            idx = self.data["IOD"]=="IOD"
+            
+            # Keep only field lines, which are not header lines [~idx]
+            for field in self.data.keys():
+                self.data[field] = self.data[field][~idx]
+
+
+    def as_dataset(self) -> "Dataset":
         """Return the parsed data as a Dataset
 
-        Args:
-            dset (Dataset): The Dataset. Depending on the Spring CSV following dataset fields can be available:
+        Returns:
+            Midgard Dataset where URE Control tool data are stored with following fields (depending if fields are 
+            available from on the URE Control tool output):
 
         | Field                 | Former name | Description                                                            |
         |-----------------------|--------------------------------------------------------------------------------------|
@@ -85,18 +116,35 @@ class UreControlToolCsvParser(CsvParser):
             "SVID": "satellite",
             "URE_Av_mean(m)": "sisre",
         }
+        
+        float_field_def = [
+             'AdjBGD-DCB_mean(m)',
+             'AdjBGD-DCB_med(m)',
+             'IOD',
+             'URE_Av_mean(m)',
+             'URE_Av_med(m)',
+             'URE_WUL_mean(m)',
+             'URE_WUL_med(m)',
+             'd3D(m)',
+             'dAC(m)',
+             'dBGD_mean(m)',
+             'dBGD_med(m)',
+             'dB_mean(m)',
+             'dB_med(m)',
+             'dH_mean(m)',
+             'dH_med(m)',
+             'dR(m)',
+        ]
+        
+        # Initialize dataset        
+        dset = dataset.Dataset(num_obs=len(self.data["SVID"]))
+        dset.meta.update(self.meta)
 
-        # Initialize dataset
-        if not self.data:
-            log.warn("No data in {self.file_path}.")
-            return dset
-        dset.num_obs = len(self.data["dX(m)"])
-
-        # Add time
+        # Add time             
         dset.add_time(
             "time",
             val=[
-                dateutil.parser.parse(self.data["YYYY/MM/DD"][i] + " " + self.data["HH:MM:SS"][i])
+                dateutil.parser.parse(self.data["YY/MM/DD HH:MM:SS"][i])
                 for i in range(0, dset.num_obs)
             ],
             scale="gps",
@@ -107,13 +155,24 @@ class UreControlToolCsvParser(CsvParser):
         # Add system field
         dset.add_text("system", val=[s[0:1] for s in self.data["SVID"]])
 
-        # Add position field
-        dset.add_position(
-            "orb_diff", itrs=np.vstack((self.data["dX(m)"], self.data["dY(m)"], self.data["dZ(m)"])).T, time="time"
+        # Add posvel delta field
+        ref_pos = position.PosVel(np.repeat(np.array([[0,0,0,0,0,0]]), dset.num_obs, axis=0), system="trs")
+        dset.add_posvel_delta(
+            name="orb_diff",
+            val=np.vstack((
+                        self.data["dX(m)"], 
+                        self.data["dY(m)"], 
+                        self.data["dZ(m)"], 
+                        np.repeat(0, dset.num_obs), 
+                        np.repeat(0, dset.num_obs), 
+                        np.repeat(0, dset.num_obs), 
+            )).T,
+            system="trs",
+            ref_pos=ref_pos,
         )
 
         # Define fields to save in dataset
-        remove_fields = {"YYYY/MM/DD", "HH:MM:SS", "dX(m)", "dY(m)", "dZ(m)"}
+        remove_fields = {"YY/MM/DD HH:MM:SS", "dX(m)", "dY(m)", "dZ(m)"}
         fields = set(self.data.keys()) - remove_fields
 
         # Add text and float fields
@@ -126,8 +185,12 @@ class UreControlToolCsvParser(CsvParser):
             )
             where_fieldname = where_fieldname.replace("(m)", "")  # Remove unit (m) from field name
 
-            if self.data[field].dtype.kind in {"U", "S"}:  # Check if numpy type is string
+            if self.data[field].dtype.kind in {"U", "S"} and field not in float_field_def:  # Check if numpy type is string
                 dset.add_text(where_fieldname, val=self.data[field])
                 continue
 
             dset.add_float(where_fieldname, val=self.data[field], unit="meter")
+            
+        return dset
+            
+
