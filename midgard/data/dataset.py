@@ -186,9 +186,9 @@ class Dataset(collection.Collection):
                                  (columns) that will be used to find common
                                  elements (rows).
             copy_self_on_error:  Copy value of fields in self to the difference 
-                                 dataset if the - operation fails for a field
+                                 dataset if the "-" operation fails for a field
             copy_other_on_error: Copy value of fields in other to the difference
-                                 dataset if the - operation fails for a field
+                                 dataset if the "-" operation fails for a field
         Returns:
             A new dataset with fields that contains the differene between fields in self and other
         """
@@ -204,8 +204,12 @@ class Dataset(collection.Collection):
             _index_by = index_by.split(",")
             self_index_data = [self[n.strip()] for n in _index_by]
             other_index_data = [other[n.strip()] for n in _index_by]
-            A = np.rec.fromarrays(self_index_data)
-            B = np.rec.fromarrays(other_index_data)
+            # intersect1d does not like to compare unicode strings of different lengths
+            # use object as dtype for all fields to avoid the problem
+            dtype_self = ",".join("O"*len(self_index_data))
+            dtype_other = ",".join("O"*len(other_index_data))
+            A = np.rec.fromarrays(self_index_data, dtype=dtype_self)
+            B = np.rec.fromarrays(other_index_data, dtype=dtype_other)
             common, self_idx, other_idx = np.intersect1d(A, B, return_indices=True)
             num_obs = len(common)
 
