@@ -25,7 +25,6 @@ import numpy as np
 # Midgard imports
 from midgard.data import dataset
 from midgard.data import position
-from midgard.dev import log
 from midgard.dev import plugins
 from midgard.parsers.csv_ import CsvParser
 
@@ -105,6 +104,7 @@ class UreControlToolCsvParser(CsvParser):
         |                       |             | MEAN constellation clock offset                                        |
         | ure_wul_med           |             | Global average user range error for worst user location with use of    |
         |                       |             | MEDIAN constellation clock offset                                      |
+        | used_iode             | IOD         | Used Issue of data                                                     |
         """
 
         field_ure_control_tool_to_where = {
@@ -113,6 +113,7 @@ class UreControlToolCsvParser(CsvParser):
             "dH_mean(m)": "clk_diff_with_dt_mean",
             "dR(m)": "dradial",
             "d3D(m)": "orb_diff_3d",
+            "IOD": "used_iode",
             "SVID": "satellite",
             "URE_Av_mean(m)": "sisre",
         }
