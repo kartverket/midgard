@@ -14,4 +14,4 @@ percent = unit / 100
 ppb = 1e-9 * unit = parts per billion
 mas = milliarcsec
 masD = milliarcsec per day
-Megameter = 1000 * kilometer
+Megameter = 1000 * kilometer = Mm
