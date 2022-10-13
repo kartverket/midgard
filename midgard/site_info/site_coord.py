@@ -4,12 +4,12 @@ Description:
 ------------
 This module is divided into three different types of classes:
 
-    1. Main class SiteCoord that provides basic functionality to the user. See examples
+    1. Main class SiteCoord provides basic functionality to the user. See exampless
     2. Site coordinate source type classes:
-        - There is one class for each source type
+        - There is one class for each source type.
         - A class with all relevant site coordinate information for a point in time.
     3. Site coordinate history source type classes:
-        - There is one class for each source type
+        - There is one class for each source type.
         - Converts input from source_data to a object of type SiteCoordHistorySinex, etc and provides functions
           for accessing the history and relevant dates. 
         - The history consist of a time interval for which the entry is valid and an instance of a site coordinate 
@@ -22,6 +22,7 @@ Example:
     
     from midgard import parsers
     from midgard.site_info.site_coord import SiteCoord
+    from datetime import datetime
 
     # Read SINEX data    
     p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
@@ -226,11 +227,6 @@ class SiteCoordSinex(SiteInfoBase):
 
     source: str = "snx"
     fields: Dict = dict()
-
-
-    #
-    # GET METHODS
-    #
 
     @property
     def date_from(self) -> datetime:
