@@ -189,9 +189,9 @@ def sinex_data():
                'start_time': datetime.datetime(1993, 5, 1, 0, 0),
                'end_time': None,
                'vector_type': 'UNE',
-               'vector_1': 0.0,
-               'vector_2': 0.0,
-               'vector_3': 0.0}]}
+               'vector_1': 0.01,
+               'vector_2': 0.02,
+               'vector_3': 0.03}]}
     
     data["hrao"] = {'site_id': {'site_code': 'hrao',
               'point_code': 'A',
