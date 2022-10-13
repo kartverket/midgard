@@ -492,6 +492,7 @@ class MatPlotExt:
             fig.autofmt_xdate()
             
         # Generate colorbar of labels
+        # TODO: Does not work correctly. Color of labels and colormap does not fit. See e.g. https://jakevdp.github.io/mpl_tutorial/tutorial_pages/tut3.html
         if self.options["colorbar"]:
             fig.colorbar(
                     mpl.cm.ScalarMappable(
