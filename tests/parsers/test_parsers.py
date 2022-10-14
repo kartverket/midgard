@@ -1,6 +1,10 @@
 """Tests for the parsers-package
 
 Tests for individual parsers are in their own files
+
+Note: pytest can be started with commando:
+    python -m pytest -s test_parsers.py
+    
 """
 
 # Standard library imports
@@ -295,6 +299,15 @@ def test_parser_spring_csv():
     assert len(parser) == 17
     assert "GPSEpoch" in parser
     assert 2047 in parser["GPSWeek"]
+    
+    
+def test_parser_ssc_site():
+    """Test that parsing ssc_site gives expected output"""
+    parser = get_parser("ssc_site").as_dict()
+
+    assert len(parser) == 4
+    assert "TOUL" in parser
+    assert "antenna_num" in parser["TOUL"]
 
 
 def test_parser_terrapos_position():
