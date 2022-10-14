@@ -450,7 +450,7 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
             source_data:  Source data with site information.
 
         Returns:
-            Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordSinex objects.
+            Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordSsc objects.
         """
         if self.station in source_data:
             raw_info = source_data[self.station]

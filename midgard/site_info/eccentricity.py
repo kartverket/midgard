@@ -176,7 +176,7 @@ class EccentricityHistorySsc(SiteInfoHistoryBase):
             Dictionary with (date_from, date_to) tuple as key. The values are EccentricitySsc objects.
         """
         if self.station in source_data or self.station.upper() in source_data:
-            # Station is defined but SSC files do not contain receiver information
+            # Station is defined but SSC files do not contain eccentricity information
             return None
         else:
             raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
