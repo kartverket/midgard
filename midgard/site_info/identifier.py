@@ -8,12 +8,6 @@ This module is divided into three different types of classes:
     2. Identifier source type classes:
         - There is one class for each source type
         - A class with all relevant site coordinate information for a point in time.
-    3. Identifier history source type classes:
-        - There is one class for each source type
-        - Converts input from source_data to a object of type IdentifierHistorySinex, etc and provides functions
-          for accessing the history and relevant dates. 
-        - The history consist of a time interval for which the entry is valid and an instance of an identifier 
-          source type class for each defined time interval.
 
     If a source type does not contain information about the identifier the module will return 'None'.
 
@@ -96,6 +90,20 @@ class IdentifierSinex(SiteInfoBase):
             raise MissingDataError(f"Station '{self.station}' unknown in source '{self.source}:{self.source_path}'.")
 
         return raw_info
+
+    @property
+    def country(self) -> str:
+        """ Get country of site
+
+        Returns:
+            Country name
+        """
+        description = self._info["description"].split(",") 
+        if len(description) > 1:
+            country = description[1].strip().capitalize()
+            country = None if len(country) < 3 else country  # Country with less than 3 characters are not excepted.
+            
+        return country
         
     @property
     def domes(self) -> str:
@@ -119,20 +127,6 @@ class IdentifierSinex(SiteInfoBase):
             
         return name
     
-    @property
-    def county(self) -> str:
-        """ Get county of site
-
-        Returns:
-            County name
-        """
-        description = self._info["description"].split(",") 
-        if len(description) > 1:
-            county = description[1].strip().capitalize()
-            county = None if len(county) < 3 else county  # County with less than 3 characters are not excepted.
-            
-        return county 
-
 
 @Identifier.register_source
 class IdentifierSsc(SiteInfoBase):
@@ -197,11 +191,11 @@ class IdentifierSsc(SiteInfoBase):
         return None
     
     @property
-    def county(self) -> str:
-        """ Get county of site
+    def country(self) -> str:
+        """ Get country of site
 
         Returns:
-            County name
+            Country name
         """
-        # County not given in SSC file
+        # Country not given in SSC file
         return None

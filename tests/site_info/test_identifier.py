@@ -19,7 +19,7 @@ def test_identifier_sinex_one_station(sinex_data):
     assert len(a) == 1
         
     # Test identifier information
-    assert a["zimm"].county == 'Switzerlan'
+    assert a["zimm"].country == 'Switzerlan'
     assert a["zimm"].domes == '14001M004'
     assert a["zimm"].name == 'Zimmerwald'
 
@@ -98,7 +98,7 @@ def test_identifier_ssc_one_station(ssc_data):
     assert len(a) == 1
     
     # Test identifier information
-    assert a["gras"].county is None
+    assert a["gras"].country is None
     assert a["gras"].domes == '10002M006'
     assert a["gras"].name is None
     
