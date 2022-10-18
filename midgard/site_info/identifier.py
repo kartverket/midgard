@@ -98,10 +98,15 @@ class IdentifierSinex(SiteInfoBase):
         Returns:
             Country name
         """
-        description = self._info["description"].split(",") 
-        if len(description) > 1:
-            country = description[1].strip().capitalize()
-            country = None if len(country) < 3 else country  # Country with less than 3 characters are not excepted.
+        description = self._info["description"].split(",")
+        if description:
+            if len(description) > 1:
+                country = description[1].strip().capitalize()
+                #country = None if len(country) < 3 else country  # Country with less than 3 characters are not excepted.
+            else:
+                country = None
+        else:
+            country = None
             
         return country
         
@@ -122,8 +127,7 @@ class IdentifierSinex(SiteInfoBase):
             Site name
         """
         description = self._info["description"].split(",") 
-        if description:
-            name = description[0].strip().capitalize()
+        name = description[0].strip().capitalize() if description else None
             
         return name
     
