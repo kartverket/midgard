@@ -56,7 +56,8 @@ class SinexSiteParser(SinexParser):
 
                    with the site entry dictionary entries
 
-                      site_antenna[ii]      = { 'point_code':         point_code,
+                      site_antenna[ii]      = { 'site_code':          site_code,
+                                                'point_code':         point_code,
                                                 'soln':               soln,
                                                 'obs_code':           obs_code,
                                                 'start_time':         start_time,
@@ -65,18 +66,19 @@ class SinexSiteParser(SinexParser):
                                                 'radome_type':        radome_type,
                                                 'serial_number':      serial_number }
 
-                      site_eccentricity[ii] = { 'point_code':         point_code,
+                      site_eccentricity[ii] = { 'site_code':          site_code,
+                                                'point_code':         point_code,
                                                 'soln':               soln,
                                                 'obs_code':           obs_code,
                                                 'start_time':         start_time,
                                                 'end_time':           end_time,
-                                                'reference_system':   reference_system,
                                                 'vector_1':           vector_1,
                                                 'vector_2':           vector_2,
                                                 'vector_3':           vector_3,
                                                 'vector_type':        UNE }
 
-                      site_id               = { 'point_code':         point_code,
+                      site_id               = { 'site_code':          site_code,
+                                                'point_code':         point_code,
                                                 'domes':              domes,
                                                 'marker':             marker,
                                                 'obs_code':           obs_code,
@@ -85,7 +87,8 @@ class SinexSiteParser(SinexParser):
                                                 'approx_lat':         approx_lat,
                                                 'approx_height':      approx_height }
 
-                      site_receiver[ii]     = { 'point_code':         point_code,
+                      site_receiver[ii]     = { 'site_code':          site_code,
+                                                'point_code':         point_code,
                                                 'soln':               soln,
                                                 'obs_code':           obs_code,
                                                 'start_time':         start_time,
@@ -94,7 +97,8 @@ class SinexSiteParser(SinexParser):
                                                 'serial_number':      serial_number,
                                                 'firmware':           firmware }
 
-                      solution_epochs[ii]   = { 'point_code':         point_code,
+                      solution_epochs[ii]   = { 'site_code':          site_code,
+                                                'point_code':         point_code,
                                                 'soln':               soln,
                                                 'obs_code':           obs_code,
                                                 'start_epoch':        start_epoch,
@@ -104,6 +108,7 @@ class SinexSiteParser(SinexParser):
                       solution_estimate[ii] = { 'param_idx':          param_idx,
                                                 'param_name':         param_name,
                                                 'point_code':         point_code,
+                                                'site_code':          site_code,
                                                 'soln':               soln,
                                                 'ref_epoch':          ref_epoch,
                                                 'unit':               unit,

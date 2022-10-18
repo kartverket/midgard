@@ -50,7 +50,7 @@ The width of the console in characters.
 
 Full name: `midgard.dev.console.dedent`
 
-Signature: `(text: str, num_spaces: Union[int, NoneType] = None) -> str`
+Signature: `(text: str, num_spaces: Optional[int] = None) -> str`
 
 Wrapper around textwrap.dedent
 
@@ -70,7 +70,7 @@ Dedented string.
 
 Full name: `midgard.dev.console.fill`
 
-Signature: `(text: str, *, width: Union[int, NoneType] = None, hanging: Union[int, NoneType] = None, **tw_args: Any) -> str`
+Signature: `(text: str, *, width: Optional[int] = None, hanging: Optional[int] = None, **tw_args: Any) -> str`
 
 Wrapper around textwrap.fill
 
@@ -458,7 +458,7 @@ To add a different logger, you should subclass the Logger abstract class.
 
 Full name: `midgard.dev.log.ConsoleLogger`
 
-Signature: `(log_level: Union[str, NoneType] = None, prefix: str = '', use_command_line: bool = True) -> None`
+Signature: `(log_level: Optional[str] = None, prefix: str = '', use_command_line: bool = True) -> None`
 
 Log to the console, the log level can also be set using command line parameters
 
@@ -466,7 +466,7 @@ Log to the console, the log level can also be set using command line parameters
 
 Full name: `midgard.dev.log.FileLogger`
 
-Signature: `(file_path: Union[str, pathlib.Path], log_level: Union[str, NoneType] = None, prefix: str = '', rotation: Union[int, NoneType] = None) -> None`
+Signature: `(file_path: Union[str, pathlib.Path], log_level: Optional[str] = None, prefix: str = '', rotation: Optional[int] = None) -> None`
 
 Log to a file, the log files can be rotated so that older files are kept
 
@@ -484,7 +484,7 @@ Log to a file, the log files can be rotated so that older files are kept
 
 Full name: `midgard.dev.log.Logger`
 
-Signature: `(log_level: Union[str, NoneType] = None, prefix: str = '')`
+Signature: `(log_level: Optional[str] = None, prefix: str = '')`
 
 Abstract class that can be specialized to create new loggers
 
@@ -540,7 +540,7 @@ of the given arguments and keywords.
 
 Full name: `midgard.dev.log.file_init`
 
-Signature: `(file_path: Union[str, pathlib.Path], log_level: Union[str, NoneType] = None, prefix: str = '', rotation: Union[int, NoneType] = None) -> None`
+Signature: `(file_path: Union[str, pathlib.Path], log_level: Optional[str] = None, prefix: str = '', rotation: Optional[int] = None) -> None`
 
 Log to a file, the log files can be rotated so that older files are kept
 
@@ -568,7 +568,7 @@ of the given arguments and keywords.
 
 Full name: `midgard.dev.log.init`
 
-Signature: `(log_level: Union[str, NoneType] = None, prefix: str = '', use_command_line: bool = True) -> None`
+Signature: `(log_level: Optional[str] = None, prefix: str = '', use_command_line: bool = True) -> None`
 
 Log to the console, the log level can also be set using command line parameters
 
@@ -713,7 +713,7 @@ This allows one package of plug-ins to be spread over several directories
 
 Full name: `midgard.dev.plugins.call`
 
-Signature: `(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None, plugin_logger: Union[Callable[[str], NoneType], NoneType] = None, **plugin_args: Any) -> Any`
+Signature: `(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None, plugin_logger: Optional[Callable[[str], NoneType]] = None, **plugin_args: Any) -> Any`
 
 Call one plug-in
 
@@ -735,7 +735,7 @@ Return value of the plug-in.
 
 Full name: `midgard.dev.plugins.call_all`
 
-Signature: `(package_name: str, plugins: Union[List[str], NoneType] = None, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None, plugin_logger: Union[Callable[[str], NoneType], NoneType] = None, **plugin_args: Any) -> Dict[str, Any]`
+Signature: `(package_name: str, plugins: Optional[List[str]] = None, part: Optional[str] = None, prefix: Optional[str] = None, plugin_logger: Optional[Callable[[str], NoneType]] = None, **plugin_args: Any) -> Dict[str, Any]`
 
 Call all plug-ins in a package
 
@@ -764,7 +764,7 @@ Dictionary of all results from the plug-ins.
 
 Full name: `midgard.dev.plugins.doc`
 
-Signature: `(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -> str`
+Signature: `(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -> str`
 
 Document one plug-in
 
@@ -793,7 +793,7 @@ Documentation of the plug-in.
 
 Full name: `midgard.dev.plugins.doc_all`
 
-Signature: `(package_name: str, plugins: Union[Iterable[str], NoneType] = None, prefix: Union[str, NoneType] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -> Dict[str, str]`
+Signature: `(package_name: str, plugins: Optional[Iterable[str]] = None, prefix: Optional[str] = None, long_doc: bool = True, include_details: bool = False, use_module: bool = False) -> Dict[str, str]`
 
 Call all plug-ins in a package
 
@@ -842,7 +842,7 @@ True if plug-in exists, False otherwise.
 
 Full name: `midgard.dev.plugins.get`
 
-Signature: `(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None) -> midgard.dev.plugins.Plugin`
+Signature: `(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None) -> midgard.dev.plugins.Plugin`
 
 Get a specific plugin-object
 
@@ -868,7 +868,7 @@ Plugin-namedtuple representing the plug-in.
 
 Full name: `midgard.dev.plugins.load`
 
-Signature: `(package_name: str, plugin_name: str, prefix: Union[str, NoneType] = None) -> str`
+Signature: `(package_name: str, plugin_name: str, prefix: Optional[str] = None) -> str`
 
 Load one plug-in from a package
 
@@ -891,7 +891,7 @@ Actual name of plug-in (with or without prefix).
 
 Full name: `midgard.dev.plugins.names`
 
-Signature: `(package_name: str, plugins: Union[Iterable[str], NoneType] = None, prefix: Union[str, NoneType] = None) -> List[str]`
+Signature: `(package_name: str, plugins: Optional[Iterable[str]] = None, prefix: Optional[str] = None) -> List[str]`
 
 List plug-ins in a package
 
@@ -917,7 +917,7 @@ List of strings with names of plug-ins.
 
 Full name: `midgard.dev.plugins.parts`
 
-Signature: `(package_name: str, plugin_name: str, prefix: Union[str, NoneType] = None) -> List[str]`
+Signature: `(package_name: str, plugin_name: str, prefix: Optional[str] = None) -> List[str]`
 
 List all parts of one plug-in
 
@@ -936,7 +936,7 @@ List all parts of one plug-in
 
 Full name: `midgard.dev.plugins.register`
 
-Signature: `(func: Callable, name: Union[str, NoneType] = None, sort_value: int = 0) -> Callable`
+Signature: `(func: Callable, name: Optional[str] = None, sort_value: int = 0) -> Callable`
 
 Decorator used to register a plug-in
 
@@ -1008,7 +1008,7 @@ Decorator that registers an ordered function.
 
 Full name: `midgard.dev.plugins.signature`
 
-Signature: `(package_name: str, plugin_name: str, part: Union[str, NoneType] = None, prefix: Union[str, NoneType] = None) -> inspect.Signature`
+Signature: `(package_name: str, plugin_name: str, part: Optional[str] = None, prefix: Optional[str] = None) -> inspect.Signature`
 
 Get signature of a plug-in
 
@@ -1103,7 +1103,7 @@ logger is used to report the timing. See `Timer.__init__` for more details.
 
 Full name: `midgard.dev.timer.AccumulatedTimer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(<function log at 0x7fef7ec3b8b0>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7fa6578b4550>, level='info')) -> None`
 
 
 
@@ -1111,7 +1111,7 @@ Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callab
 
 Full name: `midgard.dev.timer.Timer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Union[Callable[[str], NoneType], NoneType] = functools.partial(<function log at 0x7fef7ec3b8b0>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7fa6578b4550>, level='info')) -> None`
 
 Class for timing running time of functions and code blocks.
 

@@ -286,7 +286,7 @@ class TimeBase(np.ndarray):
 
         b = b if a.scale == b.scale else getattr(b, a.scale)
         b_formatted = np.asarray(b) if a.fmt == b.fmt else getattr(b, a.fmt)
-        val = np.insert(np.asarray(a), pos, b_formatted)
+        val = np.insert(np.asarray(a), pos, b_formatted, axis=0)
         jd1 = np.insert(a.jd1, pos, b.jd1)
         jd2 = np.insert(a.jd2, pos, b.jd2)
         new_time = cls._scales()[a.scale](val, fmt=a.fmt, _jd1=jd1, _jd2=jd2)

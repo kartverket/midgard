@@ -426,6 +426,7 @@ class Rinex2NavParser(ChainParser):
             self._rename_fields_based_on_system,
             self._time_system_correction,
             self._determine_message_type,
+            self._galileo_signal_health_status,
         ]
 
     def _rename_fields_based_on_system(self) -> None:
@@ -530,6 +531,58 @@ class Rinex2NavParser(ChainParser):
         # TODO: What should be done, if this happens? Use of another navigation message?
         # if set(self.data["gnss_iodc_groupdelay"]).difference(set(self.data["iode"])):
         #    log.fatal("Issue of ephemeris data (IODE) and clock issue of data (IODC) are not equal.")
+           
+    def _galileo_signal_health_status(self) -> None:
+        """Determine Galileo signal health status and save it in 'data' dictionary under '<freq>_shs' and '<freq>_dvs'
+        (<freq>: e1, e5a and/or e5b)
+
+        How the signal health status has to be handled depends on the GNSS. For Galileo it is described in Section 2.3 
+        of :cite:`galileo-os-sdd`.
+
+        The Galileo Signal Health Status (SHS) and the Data Validity Status (DVS) is given for the E1, E5a and E5b
+        signal in 'BROADCAST ORBIT - 6' RINEX navigation record. Following bit numbers are used in RINEX for SHS and 
+        DVS representation for the Galileo signals E1, E5a and E5b:
+
+            |                  | Bit numbers |
+            | Signal | Message | DVS |  SHS  |
+            |--------|---------|-----|-------|
+            | E1     |  I/NAV  | 0   |  1-2  |
+            | E5a    |  F/NAV  | 3   |  4-5  |
+            | E5b    |  I/NAV  | 6   |  7-8  |
+      
+        """
+        # Get indices for Galileo navigation messages
+        idx = np.array(self.data["system"]) == "E"
+        if not np.any(idx):  # No Galileo navigation messages are given
+            return 0
+
+        sv_health = np.array(self.data["sv_health"])
+        num_obs = len(self.data["time"])
+
+        # Mask definition for SHS status detection
+        signal_shs_masks = {
+            # bit number: 876543210
+            "e5b": [0b010000000, 0b100000000, 0b110000000],
+            "e5a": [0b000010000, 0b000100000, 0b000110000],
+            "e1": [0b000000010, 0b000000100, 0b000000110],
+        }
+
+        # Mask definition for DVS status detection
+        signal_dvs_masks = {"e5b": 0b001000000, "e5a": 0b000001000, "e1": 0b000000001}
+
+        # Loop over Galileo signals and belonging SHS masks for SHS detection
+        for signal, shs_masks in signal_shs_masks.items():
+            self.data["shs_" + signal] = np.zeros(num_obs, dtype=bool)
+            for shs_mask in shs_masks:
+                self.data["shs_" + signal][idx] = np.bitwise_and(sv_health[idx].astype(int), shs_mask)
+            self.data["shs_" + signal] = self.data["shs_" + signal].astype(bool)
+
+        # Loop over Galileo signals and belonging DVS masks for DVS detection
+        for signal, dvs_mask in signal_dvs_masks.items():
+            self.data["dvs_" + signal] = np.zeros(num_obs, dtype=bool)
+            self.data["dvs_" + signal][idx] = np.bitwise_and(sv_health[idx].astype(int), dvs_mask)
+            self.data["dvs_" + signal] = self.data["dvs_" + signal].astype(bool)
+            
 
     def _determine_message_type(self) -> None:
         """Determine navigation message type and save it in 'data' dictionary under 'nav_type' key
@@ -758,6 +811,9 @@ class Rinex2NavParser(ChainParser):
        |                     |        |                 |   :cite:`galileo-os-sis-icd`)                                  |
        | bgd_e1_e5b          |  E     | s               | Galileo: group delay E1-E5b BGD (see section 5.1.5 in          |
        |                     |        |                 |   :cite:`galileo-os-sis-icd`)                                  |
+       | dvs_e1              |  E     |                 | Data validity status for E1 signal                             |
+       | dvs_e5a             |  E     |                 | Data validity status for E5a signal                            |
+       | dvs_e5b             |  E     |                 | Data validity status for E5b signal                            |
        | cic, cis            | CEGIJ  | rad             | Correction coefficients of inclination                         |
        | crc, crs            | CEGIJ  | m               | Correction coefficients of orbit radius                        |
        | cuc, cus            | CEGIJ  | rad             | Correction coefficients of argument of perigee                 |
@@ -810,6 +866,9 @@ class Rinex2NavParser(ChainParser):
        | sat_clock_drift     | CEGIJ  | s/s             | Satellite clock frequency offset                               |
        | sat_clock_drift_rate| CEGIJ  | :math:`s/s^2`   | Satellite clock frequency drift                                |
        | satellite           | CEGIJ  |                 | Satellite PRN number                                           |
+       | shs_e1              |  E     |                 | Signal health status for E1 signal                             |
+       | shs_e5a             |  E     |                 | Signal health status for E5a signal                            |
+       | shs_e5b             |  E     |                 | Signal health status for E5b signal                            |
        | sqrt_a              | CEGIJ  | :math:`\sqrt{m}`| Square root of semi-major axis of the orbit                    |
        | sv_accuracy         | CEGIJ  | m               | Satellite accuracy index, which is different for GNSS:         |
        |                     |        |                 |   - GPS: SV accuracy in meters (see section 20.3.3.3.1.3 in    |

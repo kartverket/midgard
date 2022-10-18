@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.1.5</title>
+        <title>midgard.plot - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -436,7 +436,7 @@
 <p>List with strings representing statistical information</p>
 <h3 id="plot"><strong>plot</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot</code></p>
-<p>Signature: <code>(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: Union[List[str], NoneType] = None, labels: Union[List[str], NoneType] = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Union[Dict[str, List[Any]], NoneType] = None) -&gt; None</code></p>
+<p>Signature: <code>(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: Optional[List[str]] = None, labels: Optional[List[str]] = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -&gt; None</code></p>
 <p>Generate scatter/plot plot</p>
 <p>Several scatter/plot plots can be plotted on one plot. This is defined via the chosen number of y_arrays data.
 Histogram is only plotted for the last given y-array in "y_arrays".</p>
@@ -642,7 +642,7 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
                    'events' can not be chosen together, either 'labels' or 'events' should be defined.</p>
 <h3 id="plot_bar_dataframe_columns"><strong>plot_bar_dataframe_columns</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_bar_dataframe_columns</code></p>
-<p>Signature: <code>(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: Union[List[str], NoneType] = None, opt_args: Union[Dict[str, Any], NoneType] = None) -&gt; None</code></p>
+<p>Signature: <code>(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: Optional[List[str]] = None, opt_args: Optional[Dict[str, Any]] = None) -&gt; None</code></p>
 <p>Generate bar plot of given dataframe columns</p>
 <p>If 'label' column is given in Dataframe (as 'df.label'), then the bars are color coded based on the defined labels.
 In addition a legend is added with information about the labels.</p>
@@ -715,7 +715,7 @@ In addition a legend is added with information about the labels.</p>
    opt_args:    Dictionary with options, which overwrite default plot configuration.</p>
 <h3 id="plot_scatter_subplots"><strong>plot_scatter_subplots</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_scatter_subplots</code></p>
-<p>Signature: <code>(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: Union[List[str], NoneType] = None, colors: Union[List[str], NoneType] = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Union[Dict[str, List[Any]], NoneType] = None) -&gt; None</code></p>
+<p>Signature: <code>(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: Optional[List[str]] = None, colors: Optional[List[str]] = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -&gt; None</code></p>
 <p>Generate scatter subplot</p>
 <p>The subplot has only one column. The number of rows is defined via the chosen number of y-axis data.</p>
 <p>Following <strong>opt_arg</strong> options can be selected:</p>
@@ -904,7 +904,7 @@ In addition a legend is added with information about the labels.</p>
                    x-axis data. Event colors are automatically chosen based on 'colormap'. </p>
 <h3 id="plot_subplot_row"><strong>plot_subplot_row</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_subplot_row</code></p>
-<p>Signature: <code>(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: Union[NoneType, numpy.ndarray] = None, opt_args: Dict[str, Any] = {}) -&gt; None</code></p>
+<p>Signature: <code>(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: Optional[numpy.ndarray] = None, opt_args: Dict[str, Any] = {}) -&gt; None</code></p>
 <p>Generate single row of plot subplot</p>
 <p>Following <strong>options</strong> can be selected:</p>
 <table>
@@ -1061,16 +1061,13 @@ In addition a legend is added with information about the labels.</p>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.gnss - Midgard v1.1.5</title>
+        <title>midgard.gnss - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -140,6 +140,20 @@
             
             <li class="nav-item" data-level="1"><a href="#midgardgnss" class="nav-link">midgard.gnss</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#midgardgnssantenna_calibration" class="nav-link">midgard.gnss.antenna_calibration</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#import-antennacalibration-class" class="nav-link">Import AntennaCalibration class</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#get-instance-of-antennacalibration-class-by-defining-antex-file-path" class="nav-link">Get instance of AntennaCalibration class by defining ANTEX file path</a>
+              <ul class="nav flex-column">
             <li class="nav-item" data-level="2"><a href="#midgardgnsscompute_dops" class="nav-link">midgard.gnss.compute_dops</a>
               <ul class="nav flex-column">
               </ul>
@@ -169,6 +183,73 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="midgardgnss">midgard.gnss</h1>
+<h2 id="midgardgnssantenna_calibration">midgard.gnss.antenna_calibration</h2>
+<p>Handling of GNSS antenna calibration information based on ANTEX file</p>
+<p><strong>Description:</strong></p>
+<p>The module includes a class for handling of GNSS antenna information based on read GNSS ANTEX file (see Rothacher, 2010).</p>
+<p><strong>Reference:</strong></p>
+<p>Rothacher, M. and Schmid, R. (2010): "ANTEX: The antenna exchange format", version 1.4, Forschungseinrichtung 
+        Satellitengeodäsie, TU München</p>
+<p><strong>Example:</strong></p>
+<h1 id="import-antennacalibration-class">Import AntennaCalibration class</h1>
+<p>from midgard.gnss.antenna_calibration import AntennaCalibration</p>
+<h1 id="get-instance-of-antennacalibration-class-by-defining-antex-file-path">Get instance of AntennaCalibration class by defining ANTEX file path</h1>
+<p>ant = AntennaCalibration(file_path="igs14.atx")</p>
+<h3 id="antennacalibration"><strong>AntennaCalibration</strong></h3>
+<p>Full name: <code>midgard.gnss.antenna_calibration.AntennaCalibration</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.PosixPath]) -&gt; None</code></p>
+<p>A class for representing GNSS antenna calibration data</p>
+<p>The attribute "data" is a dictionary with GNSS satellite PRN or receiver antenna as key. The GNSS satellite antenna
+corrections are time dependent and saved with "valid from" datetime object entry. The dictionary looks like:</p>
+<pre><code>dout = { &lt;prn&gt; : { &lt;valid from&gt;: { cospar_id:   &lt;value&gt;,
+                                   sat_code:    &lt;value&gt;,
+                                   sat_type:    &lt;value&gt;,
+                                   valid_until: &lt;value&gt;,
+                                   azimuth:     &lt;list with azimuth values&gt;,
+                                   elevation:   &lt;list with elevation values&gt;,
+                                   &lt;frequency&gt;: { azi: [&lt;list with azimuth-elevation dependent corrections&gt;],
+                                                  neu: [north, east, up],
+                                                  noazi: [&lt;list with elevation dependent corrections&gt;] }}},
+
+         &lt;receiver antenna&gt; : { azimuth:     &lt;list with azimuth values&gt;,
+                                elevation:   &lt;list with elevation values&gt;,
+                                &lt;frequency&gt;: { azi: [&lt;array with azimuth-elevation dependent corrections&gt;],
+                                               neu: [north, east, up],
+                                               noazi: [&lt;list with elevation dependent corrections&gt;] }}}
+</code></pre>
+<p>with following entries:</p>
+<p>| Value              | Type              | Description                                                             |
+|--------------------|---------------------------------------------------------------------------------------------|
+| azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with  |
+|                    |                   | the shape: number of azimuth values x number of elevation values.       |
+| azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections  |
+|                    |                   | given in <code>azi</code>.                                                         |
+| cospar_id          | str               | COSPAR ID <yyyy-xxxa>: yyyy -&gt; year when the satellite was put in       |
+|                    |                   | orbit, xxx -&gt; sequential satellite number for that year, a -&gt; alpha     |
+|                    |                   | numeric sequence number within a launch                                 |
+| elevation          | numpy.ndarray     | List with elevation values in [rad] corresponding to antenna            |
+|                    |                   | corrections given in <code>azi</code> or <code>noazi</code>.                                  |
+| <frequency>        | str               | Frequency identifier (e.g. G01 - GPS L1)                                |
+| neu                | list              | North, East and Up eccentricities in [m]. The eccentricities of the     |
+|                    |                   | mean antenna phase center is given relative to the antenna reference    |
+|                    |                   | point (ARP) for receiver antennas or to the center of mass of the       |
+|                    |                   | satellite in X-, Y- and Z-direction.                                    |
+| noazi              | numpy.ndarray     | List with elevation dependent (non-azimuth-dependent) antenna           |
+|                    |                   | correction in [mm].                                                     |
+| <prn>              | str               | Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number        |
+| <receiver antenna> | str               | Receiver antenna name together with radome code                         |
+| sat_code           | str               | Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number      |
+| sat_type           | str               | Satellite type (e.g. BLOCK IIA)                                         |
+| valid_from         | datetime.datetime | Start of validity period of satellite in GPS time                       |
+| valid_until        | datetime.datetime | End of validity period of satellite in GPS time                         |</p>
+<p>Attributes:
+    data (dict):           Data read from GNSS Antenna Exchange (ANTEX) file
+    file_path (str):       ANTEX file path</p>
+<p>Methods:
+    satellite_phase_center_offset(): Determine satellite phase center offset correction vectors given in ITRS
+    satellite_type(): Get satellite type from ANTEX file (e.g. BLOCK IIF, GALILEO-1, GALILEO-2, GLONASS-M,
+                      BEIDOU-2G, ...)
+    _used_date(): Choose correct date for use of satellite antenna corrections</p>
 <h2 id="midgardgnsscompute_dops">midgard.gnss.compute_dops</h2>
 <p>Compute DOP (dilution of precision)</p>
 <p><strong>Description:</strong></p>
@@ -308,16 +389,13 @@ be an identity matrix. The cofactor matrix Q is related to a topocentric coordin
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

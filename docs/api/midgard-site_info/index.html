@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.site_info - Midgard v1.1.5</title>
+        <title>midgard.site_info - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -140,11 +140,19 @@
             
             <li class="nav-item" data-level="1"><a href="#midgardsite_info" class="nav-link">midgard.site_info</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#midgardsite_info_site_info" class="nav-link">midgard.site_info._site_info</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#midgardsite_infoantenna" class="nav-link">midgard.site_info.antenna</a>
               <ul class="nav flex-column">
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardsite_inforeceiver" class="nav-link">midgard.site_info.receiver</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardsite_infosite_coord" class="nav-link">midgard.site_info.site_coord</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -160,107 +168,183 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="midgardsite_info">midgard.site_info</h1>
+<h2 id="midgardsite_info_site_info">midgard.site_info._site_info</h2>
+<p>Base classes for site information.</p>
+<p><strong>Description:</strong></p>
+<p>All the base classes are abstract classes. There are three base classes defined.</p>
+<h3 id="modulebase"><strong>ModuleBase</strong></h3>
+<p>Full name: <code>midgard.site_info._site_info.ModuleBase</code></p>
+<p>Signature: <code>()</code></p>
+<p>Base class for each module of site information (e.g. Antenna, Receiver, ...).</p>
+<p>Allows different sources of site information history to be registered.</p>
+<h3 id="siteinfobase"><strong>SiteInfoBase</strong></h3>
+<p>Full name: <code>midgard.site_info._site_info.SiteInfoBase</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Site information base class defining common attributes and methods</p>
+<h3 id="siteinfohistorybase"><strong>SiteInfoHistoryBase</strong></h3>
+<p>Full name: <code>midgard.site_info._site_info.SiteInfoHistoryBase</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<p>Base class defining common attributes and methods for history classes</p>
+<h3 id="siteinfohistoryiterator"><strong>SiteInfoHistoryIterator</strong></h3>
+<p>Full name: <code>midgard.site_info._site_info.SiteInfoHistoryIterator</code></p>
+<p>Signature: <code>(site_info_history)</code></p>
+<p>Iterator class for SiteInfoHistory classes</p>
 <h2 id="midgardsite_infoantenna">midgard.site_info.antenna</h2>
-<p>Antenna site information classes</p>
+<p>Antenna information classes</p>
 <p><strong>Description:</strong>
-The antenna module generates a antenna object based on site information from 
-the SINEX file or other sources.</p>
-<p>Following steps are carried out for getting a antenna object:</p>
-<pre><code>1. Plugins modulen register AntennaHistory classes (e.g. 
-   AntennaHistorySinex) and updates the 'sources' attribute of the 
-   AntennaHistory class. 
-2. The Antenna object is initialized by calling the Antenna.get function. 
-3. The AntennaHistory.get function is called via the Antenna.get function.
-   Here the correct AntennaHistory class is choosen by accessing the 
-   registered 'sources' attribute of the AntennaHistory class.
-4. The AntennaBase.get function reads the antenna information via the
-   _read_history() function of the AntennaHistorySinex or other 
-   calls. The antenna information is selected via a given date.
+This module is divided into three different types of classes:</p>
+<pre><code>1. Main class Antenna that provides basic functionality to the user. See examples
+2. Antenna source type classes:
+    - There is one class for each source type
+    - A class with all relevant site coordinate information for a point in time.
+3. Antenna history source type classes:
+    - There is one class for each source type
+    - Converts input from source_data to a object of type AntennaHistorySinex, etc and provides functions
+      for accessing the history and relevant dates. 
+    - The history consist of a time interval for which the entry is valid and an instance of an antenna 
+      source type class for each defined time interval.
+
+If a source type does not contain information about the antenna the module will return 'None'.
 </code></pre>
 <p><strong>Example:</strong></p>
-<pre><code>from midgard.site_info import antenna; from datetime import datetime
-antenna.Antenna.get(source="sinex", station="zimm", date=datetime(2018, 10, 1), source_path="igs.snx")
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+source_data = p.as_dict()
+all_stations = source_data.keys()
+
+Antenna.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+Antenna.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+
+Antenna.get_history("snx", "osls", source_data, source_path=p.file_path)
+Antenna.get_history("snx", all_stations, source_data, source_path=p.file_path)
 </code></pre>
 <h3 id="antenna"><strong>Antenna</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.Antenna</code></p>
 <p>Signature: <code>()</code></p>
-<p>Main antenna class for getting antenna object depending on site information source</p>
-<p>The site information source can be e.g. a SINEX file.</p>
-<h3 id="antennabase"><strong>AntennaBase</strong></h3>
-<p>Full name: <code>midgard.site_info.antenna.AntennaBase</code></p>
-<p>Signature: <code>(station: str, antenna_info: Dict[str, Any]) -&gt; None</code></p>
-<p>Antenna base class defining common attributes and methods</p>
-<h3 id="antennahistory"><strong>AntennaHistory</strong></h3>
-<p>Full name: <code>midgard.site_info.antenna.AntennaHistory</code></p>
-<p>Signature: <code>()</code></p>
-<h3 id="antennahistorybase"><strong>AntennaHistoryBase</strong></h3>
-<p>Full name: <code>midgard.site_info.antenna.AntennaHistoryBase</code></p>
-<p>Signature: <code>(station: str, source_path: str) -&gt; None</code></p>
-<p>History base class defining common attributes and methods from a specific site information (e.g. antenna, receiver)</p>
+<p>Main class for converting antenna information from various sources into unified classes</p>
 <h3 id="antennahistorysinex"><strong>AntennaHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.AntennaHistorySinex</code></p>
-<p>Signature: <code>(station: str, source_path: str) -&gt; None</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="antennahistoryssc"><strong>AntennaHistorySsc</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaHistorySsc</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="antennasinex"><strong>AntennaSinex</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.AntennaSinex</code></p>
-<p>Signature: <code>(station: str, antenna_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
 <p>Antenna class handling SINEX file antenna station information</p>
 <h2 id="midgardsite_inforeceiver">midgard.site_info.receiver</h2>
-<p>Receiver site information classes</p>
-<p><strong>Description:</strong></p>
-<p>The receiver module generates a receiver object based on site information from 
-the SINEX file or other sources.</p>
-<p>Following steps are carried out for getting a receiver object:</p>
-<pre><code>1. Plugins modulen register ReceiverHistory classes (e.g. 
-   ReceiverHistorySinex) and updates the 'sources' attribute of the 
-   ReceiverHistory class. 
-2. The Receiver object is initialized by calling the Receiver.get function. 
-3. The ReceiverHistory.get function is called via the Receiver.get function.
-   Here the correct ReceiverHistory class is choosen by accessing the 
-   registered 'sources' attribute of the ReceiverHistory class.
-4. The ReceiverBase.get function reads the receiver information via the
-   _read_history() function of the ReceiverHistorySinex or other 
-   calls. The receiver information is selected via a given date.
+<p>Receiver information classes</p>
+<p><strong>Description:</strong>
+This module is divided into three different types of classes:</p>
+<pre><code>1. Main class Receiver that provides basic functionality to the user. See examples
+2. Receiver source type classes:
+    - There is one class for each source type
+    - A class with all relevant site coordinate information for a point in time.
+3. Receiver history source type classes:
+    - There is one class for each source type
+    - Converts input from source_data to a object of type ReceiverHistorySinex, etc and provides functions
+      for accessing the history and relevant dates. 
+    - The history consist of a time interval for which the entry is valid and an instance of a receiver 
+      source type class for each defined time interval.
+
+If a source type does not contain information about the receiver the module will return 'None'.
 </code></pre>
 <p><strong>Example:</strong></p>
-<pre><code>from midgard.site_info import receiver
-receiver.Receiver.get(source="sinex", station="ales", date=datetime(2018, 10, 1), source_path="igs.snx")
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+source_data = p.as_dict()
+all_stations = source_data.keys()
+
+Receiver.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+Receiver.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+
+Receiver.get_history("snx", "osls", source_data, source_path=p.file_path)
+Receiver.get_history("snx", all_stations, source_data, source_path=p.file_path)
 </code></pre>
 <h3 id="receiver"><strong>Receiver</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.Receiver</code></p>
 <p>Signature: <code>()</code></p>
-<p>Main receiver class for getting receiver object depending on site information source</p>
-<p>The site information source can be e.g. a SINEX file.</p>
-<h3 id="receiverbase"><strong>ReceiverBase</strong></h3>
-<p>Full name: <code>midgard.site_info.receiver.ReceiverBase</code></p>
-<p>Signature: <code>(station: str, receiver_info: Dict[str, Any]) -&gt; None</code></p>
-<p>Receiver base class defining common attributes and methods</p>
-<h3 id="receiverhistory"><strong>ReceiverHistory</strong></h3>
-<p>Full name: <code>midgard.site_info.receiver.ReceiverHistory</code></p>
-<p>Signature: <code>()</code></p>
-<h3 id="receiverhistorybase"><strong>ReceiverHistoryBase</strong></h3>
-<p>Full name: <code>midgard.site_info.receiver.ReceiverHistoryBase</code></p>
-<p>Signature: <code>(station: str, source_path: str) -&gt; None</code></p>
-<p>History base class defining common attributes and methods from a specific site information (e.g. antenna, receiver)</p>
+<p>Main class for converting receiver information from various sources into unified classes</p>
 <h3 id="receiverhistorysinex"><strong>ReceiverHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.ReceiverHistorySinex</code></p>
-<p>Signature: <code>(station: str, source_path: str) -&gt; None</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="receiverhistoryssc"><strong>ReceiverHistorySsc</strong></h3>
+<p>Full name: <code>midgard.site_info.receiver.ReceiverHistorySsc</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="receiversinex"><strong>ReceiverSinex</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.ReceiverSinex</code></p>
-<p>Signature: <code>(station: str, receiver_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
 <p>Receiver class handling SINEX file receiver station information</p>
-<h2 id="midgardsite_infosite_info">midgard.site_info.site_info</h2>
-<p>Basic functionality for parsing and saving site information</p>
-<p><strong>Description:</strong></p>
-<p>This module contains functions and classes for parsing site information.</p>
-<p>This file defines the general structure shared by site information types. More specific format details are implemented
-in subclasses. </p>
-<h3 id="siteinfohistory"><strong>SiteInfoHistory</strong></h3>
-<p>Full name: <code>midgard.site_info.site_info.SiteInfoHistory</code></p>
+<h2 id="midgardsite_infosite_coord">midgard.site_info.site_coord</h2>
+<p>Site cooridnate information classes</p>
+<p><strong>Description:</strong>
+This module is divided into three different types of classes:</p>
+<pre><code>1. Main class SiteCoord that provides basic functionality to the user. See examples
+2. Site coordinate source type classes:
+    - There is one class for each source type
+    - A class with all relevant site coordinate information for a point in time.
+3. Site coordinate history source type classes:
+    - There is one class for each source type
+    - Converts input from source_data to a object of type SiteCoordHistorySinex, etc and provides functions
+      for accessing the history and relevant dates. 
+    - The history consist of a time interval for which the entry is valid and an instance of a site coordinate 
+      source type class for each defined time interval.
+
+If a source type does not contain information about the site coordinates the module will return 'None'.
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+from midgard.site_info.site_coord import SiteCoord
+
+# Read SINEX data    
+p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+source_data = p.as_dict()
+all_stations = source_data.keys()
+
+# Get station information
+SiteCoord.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+SiteCoord.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+
+SiteCoord.get_history("snx", "osls", source_data, source_path=p.file_path)
+SiteCoord.get_history("snx", all_stations, source_data, source_path=p.file_path)
+</code></pre>
+<h3 id="sitecoord"><strong>SiteCoord</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoord</code></p>
 <p>Signature: <code>()</code></p>
-<h3 id="siteinfohistorybase"><strong>SiteInfoHistoryBase</strong></h3>
-<p>Full name: <code>midgard.site_info.site_info.SiteInfoHistoryBase</code></p>
-<p>Signature: <code>(station: str, source_path: str) -&gt; None</code></p>
-<p>History base class defining common attributes and methods from a specific site information (e.g. antenna, receiver)</p></div>
+<p>Main class for converting site coordinates from various sources into unified classes</p>
+<h3 id="sitecoordhistorysinex"><strong>SiteCoordHistorySinex</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistorySinex</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="sitecoordhistoryssc"><strong>SiteCoordHistorySsc</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistorySsc</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="sitecoordsinex"><strong>SiteCoordSinex</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoordSinex</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Site coordinate class handling SINEX file station coordinate information</p>
+<h3 id="sitecoordssc"><strong>SiteCoordSsc</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoordSsc</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Site coordinate class handling SSC file station coordinate information</p>
+<h2 id="midgardsite_infosite_info">midgard.site_info.site_info</h2>
+<p>Module that provides site information as unified objects independent of source. </p>
+<p>Site information consists of antenna and receiver information and coordinates for a station.
+If a source type does not contain information about the antenna, receiver or coordinate the 
+corresponding entry will be set to 'None'.</p>
+<p>Example:</p>
+<p>from midgard import parsers
+p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+source_data = p.as_dict()
+all_stations = source_data.keys()</p>
+<p>SiteInfo.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+SiteInfo.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)</p>
+<p>SiteInfo.get_history("snx", "osls", source_data, source_path=p.file_path)
+SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)</p>
+<p><strong>Description:</strong></p>
+<h3 id="siteinfo"><strong>SiteInfo</strong></h3>
+<p>Full name: <code>midgard.site_info.site_info.SiteInfo</code></p>
+<p>Signature: <code>()</code></p>
+<p>Main site information class for site information from various sources into unified classes</p></div>
             </div>
         </div>
 
@@ -283,16 +367,13 @@ in subclasses. </p>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

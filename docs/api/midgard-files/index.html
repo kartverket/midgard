@@ -8,22 +8,22 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.files - Midgard v1.1.5</title>
+        <title>midgard.files - Midgard v1.2.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
 
         <script src="../../js/jquery-1.10.2.min.js" defer></script>
         <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.1.5</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -297,7 +297,7 @@ False will raise a FileExistsError if to_path already exists.</p>
 </ul>
 <h3 id="open"><strong>open</strong>()</h3>
 <p>Full name: <code>midgard.files.files.open</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], create_dirs: bool = False, open_as_gzip: Union[bool, NoneType] = None, **open_args: Any) -&gt; Iterator</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], create_dirs: bool = False, open_as_gzip: Optional[bool] = None, **open_args: Any) -&gt; Iterator</code></p>
 <p>Open a file.</p>
 <p>Can automatically create the necessary directories before writing to a file, as well as handle gzipped files.</p>
 <p>With <code>open_as_gzip</code> set to None (default), it will try to detect whether the path is a .gz file simply by looking
@@ -340,16 +340,13 @@ at the path suffix. For more control, you can set the parameter to True or False
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
+                <p>From here you can search these documents. Enter your search terms below.</p>
                 <form>
                     <div class="form-group">
                         <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
                     </div>
                 </form>
-                <div id="mkdocs-search-results"></div>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
             </div>
             <div class="modal-footer">
             </div>

@@ -4,12 +4,12 @@ Description:
 ------------
 This module is divided into three different types of classes:
 
-    1. Main class Antenna that provides basic functionality to the user. See examples
+    1. Main class Antenna provides basic functionality to the user. See exampless
     2. Antenna source type classes:
-        - There is one class for each source type
-        - A class with all relevant site coordinate information for a point in time.
+        - There is one class for each source type.
+        - A class with all relevant antenna information for a point in time.
     3. Antenna history source type classes:
-        - There is one class for each source type
+        - There is one class for each source type.
         - Converts input from source_data to a object of type AntennaHistorySinex, etc and provides functions
           for accessing the history and relevant dates. 
         - The history consist of a time interval for which the entry is valid and an instance of an antenna 
@@ -21,10 +21,15 @@ Example:
 --------
     
     from midgard import parsers
+    from midgard.site_info.antenna import Antenna
+    from datetime import datetime
+    
+    # Read SINEX data  
     p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
     source_data = p.as_dict()
     all_stations = source_data.keys()
-    
+
+    # Get station information    
     Antenna.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
     Antenna.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
     
