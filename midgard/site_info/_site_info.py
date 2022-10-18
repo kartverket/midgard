@@ -16,6 +16,9 @@ from copy import deepcopy
 from datetime import datetime
 from typing import Any, Dict, List, Union, Iterable
 
+# Midgard imports
+from midgard.dev import log
+
 
 class SiteInfoBase(abc.ABC):
     """Site information base class defining common attributes and methods"""
@@ -247,6 +250,10 @@ class ModuleBase(abc.ABC):
             stations = [s.strip().lower() for s in stations.split(",")]
         else:
             stations = [s.lower() for s in stations]
+
+        if cls.__name__ == "Identifier":
+            log.warn("Option 'date' is ignored. 'date' option should not be used together with 'Identifier' module.")
+            date = None
 
         for station in stations:
             data = cls.sources[source](station, source_data, source_path)
