@@ -227,6 +227,10 @@ class ModuleBase(abc.ABC):
             source_path: Union[None, str] = None,
     ) -> Any:
         """Get site coordinate object depending on given source
+        
+        If date is not defined, then history objects (e.g. AntennaHistorySinex) are returned instead of site 
+        information objects like 'AntennaSinex'. If no history classes are defined, for example in case of 
+        'identifier' module, then normal site information objects are returned like 'IdentifierSinex'.
 
         Args:
             source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
