@@ -107,6 +107,16 @@ class AntennaSinex(SiteInfoBase):
         radome_type="radome_type",
         radome_serial_number="radome_type",
     )
+    
+    @property
+    def calibration(self) -> bool:
+        """ Get information if individual antenna calibration file exists
+
+        Returns:
+            True if individual antenna calibration file exits otherwise False
+        """
+        #Note: Information about individual antenna calibration is not given in SINEX file. 
+        return False
 
     @property
     def date_from(self) -> datetime:
