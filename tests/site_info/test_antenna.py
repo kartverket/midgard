@@ -60,6 +60,12 @@ def test_antenna_sinex_two_stations_error(sinex_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         a = Antenna.get("snx", sinex_data, "zimm,xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/sinex")
+        
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_last_entry(sinex_data):
+    a = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in a
+    assert a["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
 
 # Tests: Antenna.get_history("snx",...)
 
@@ -100,6 +106,7 @@ def test_antenna_history_sinex_two_stations_error(sinex_data):
     with pytest.raises(MissingDataError):
         a = Antenna.get_history("snx", sinex_data, "zimm,xxxx", source_path="/path/to/sinex")
 
+
 # Tests: Antenna.get("ssc",...)
 
 @pytest.mark.usefixtures("ssc_data")
@@ -136,6 +143,7 @@ def test_antenna_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         a = Antenna.get("ssc", ssc_data, "zimm,xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/ssc")
+        
 
 # Tests: Antenna.get_history("ssc",...)
 

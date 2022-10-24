@@ -173,6 +173,12 @@ def test_site_coord_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         c = SiteCoord.get("ssc", ssc_data, "gras, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/ssc")
+        
+@pytest.mark.usefixtures("sinex_data")
+def test_site_coord_sinex_last_entry(sinex_data):
+    c = SiteCoord.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in c
+    #TODO assert c["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
 
 # Tests: SiteCoord.get_history("ssc",...)
         

@@ -58,6 +58,12 @@ def test_receiver_sinex_two_stations_error(sinex_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         r = Receiver.get("snx", sinex_data, "zimm, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/sinex")
+        
+@pytest.mark.usefixtures("sinex_data")
+def test_receiver_sinex_last_entry(sinex_data):
+    r = Receiver.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in r
+    assert r["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
 
 # Tests: Receiver.get_history("snx",...)
 
