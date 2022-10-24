@@ -138,17 +138,22 @@ class SiteInfoHistoryBase(abc.ABC):
             instance of relevant the site information class based on the type of source_data
         """       
 
-    def get(self, date: datetime) -> Any:
+    def get(self, date: Union[datetime, str]) -> Any:
         """Get site information object for given date
 
         Args:
-            date:  Date for which site information is chosen
+            date:  Date for which site information is chosen. If date="last", then the last site information is
+                   returned.
 
         Returns:
-            Site information object for given date            
+            Site information object for given date
         """
         if self.history is None:
             return None
+        
+        if date == "last":
+            last_date_period = sorted(self.history.keys())[-1]
+            return self.history[last_date_period]
         
         for (date_from, date_to), site_info in self.history.items():
             if date_from <= date < date_to:
@@ -229,7 +234,7 @@ class ModuleBase(abc.ABC):
             date: Union[None, datetime] = None, 
             source_path: Union[None, str] = None,
     ) -> Any:
-        """Get site coordinate object depending on given source
+        """Get site information object depending on given source
         
         If date is not defined, then history objects (e.g. AntennaHistorySinex) are returned instead of site 
         information objects like 'AntennaSinex'. If no history classes are defined, for example in case of 
@@ -238,12 +243,13 @@ class ModuleBase(abc.ABC):
         Args:
             source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
             source_data:  Source data with site information. 
-            station:      Station name.
-            date:         Date for getting site information
+            stations:     Station names.
+            date:         Date for getting site information. If date="last", then the last site information is
+                          returned.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
 
         Returns:
-            Site coordinate object 
+            Site information object 
         """
         site_dict: Dict[str, Any] = dict()
         if isinstance(stations, str):
@@ -252,7 +258,7 @@ class ModuleBase(abc.ABC):
             stations = [s.lower() for s in stations]
 
         if cls.__name__ == "Identifier":
-            log.warn("Option 'date' is ignored. 'date' option should not be used together with 'Identifier' module.")
+            log.debug("Option 'date' is ignored. 'date' option should not be used together with 'Identifier' module.")
             date = None
 
         for station in stations:
@@ -273,16 +279,16 @@ class ModuleBase(abc.ABC):
             stations: Union[str, Iterable], 
             source_path: Union[None, str] = None, 
     ) -> Any:
-        """Get site coordinate history object depending on given source
+        """Get site information history object depending on given source
 
         Args:
             source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
             source_data:  Source data with site information.
-            station:      Station name.
+            stations:     Station names.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
 
         Returns:
-            Site coordinate object 
+            Site information object 
         """
         site_dict: Dict[str, Any] = dict()
         if isinstance(stations, str):
