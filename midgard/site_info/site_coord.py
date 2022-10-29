@@ -632,9 +632,9 @@ class SiteCoordSsc(SiteInfoBase):
             Standard deviation of site coordinate for X, Y and Z in [m]
         """
         return np.array([
-                        self._info["sigma_X"],
-                        self._info["sigma_Y"],
-                        self._info["sigma_Z"],                
+                        self._info["sigma_x"],
+                        self._info["sigma_y"],
+                        self._info["sigma_z"],                
         ])
 
     @property
@@ -733,9 +733,9 @@ class SiteCoordSsc(SiteInfoBase):
         Args:
             pos_sigma: Standard deviation of site coordinate for X, Y and Z in [m]
         """
-        self._info["sigma_X"] = pos_sigma[0]
-        self._info["sigma_Y"] = pos_sigma[1]
-        self._info["sigma_Z"] = pos_sigma[2]                
+        self._info["sigma_x"] = pos_sigma[0]
+        self._info["sigma_y"] = pos_sigma[1]
+        self._info["sigma_z"] = pos_sigma[2]                
 
 
     def set_ref_epoch(self, ref_epoch: datetime) -> None:
