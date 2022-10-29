@@ -30,9 +30,6 @@ from typing import Callable, List
 
 # Midgard imports
 from midgard.dev import plugins
-from midgard.site_info.antenna import Antenna
-from midgard.site_info.receiver import Receiver
-from midgard.site_info.site_coord import SiteCoord
 
 # Where imports
 from midgard.parsers._parser_sinex import SinexParser
