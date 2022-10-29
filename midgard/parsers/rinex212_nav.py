@@ -438,6 +438,7 @@ class Rinex212NavParser(ChainParser):
             self._rename_fields_based_on_system,
             self._time_system_correction,
             self._determine_message_type,
+            self._galileo_signal_health_status,
         ]
 
     def _rename_fields_based_on_system(self) -> None:
@@ -542,6 +543,59 @@ class Rinex212NavParser(ChainParser):
         # TODO: What should be done, if this happens? Use of another navigation message?
         # if set(self.data["gnss_iodc_groupdelay"]).difference(set(self.data["iode"])):
         #    log.fatal("Issue of ephemeris data (IODE) and clock issue of data (IODC) are not equal.")
+
+
+    def _galileo_signal_health_status(self) -> None:
+        """Determine Galileo signal health status and save it in 'data' dictionary under '<freq>_shs' and '<freq>_dvs'
+        (<freq>: e1, e5a and/or e5b)
+
+        How the signal health status has to be handled depends on the GNSS. For Galileo it is described in Section 2.3 
+        of :cite:`galileo-os-sdd`.
+
+        The Galileo Signal Health Status (SHS) and the Data Validity Status (DVS) is given for the E1, E5a and E5b
+        signal in 'BROADCAST ORBIT - 6' RINEX navigation record. Following bit numbers are used in RINEX for SHS and 
+        DVS representation for the Galileo signals E1, E5a and E5b:
+
+            |                  | Bit numbers |
+            | Signal | Message | DVS |  SHS  |
+            |--------|---------|-----|-------|
+            | E1     |  I/NAV  | 0   |  1-2  |
+            | E5a    |  F/NAV  | 3   |  4-5  |
+            | E5b    |  I/NAV  | 6   |  7-8  |
+      
+        """
+        # Get indices for Galileo navigation messages
+        idx = np.array(self.data["system"]) == "E"
+        if not np.any(idx):  # No Galileo navigation messages are given
+            return 0
+
+        sv_health = np.array(self.data["sv_health"])
+        num_obs = len(self.data["time"])
+
+        # Mask definition for SHS status detection
+        signal_shs_masks = {
+            # bit number: 876543210
+            "e5b": [0b010000000, 0b100000000, 0b110000000],
+            "e5a": [0b000010000, 0b000100000, 0b000110000],
+            "e1": [0b000000010, 0b000000100, 0b000000110],
+        }
+
+        # Mask definition for DVS status detection
+        signal_dvs_masks = {"e5b": 0b001000000, "e5a": 0b000001000, "e1": 0b000000001}
+
+        # Loop over Galileo signals and belonging SHS masks for SHS detection
+        for signal, shs_masks in signal_shs_masks.items():
+            self.data["shs_" + signal] = np.zeros(num_obs, dtype=bool)
+            for shs_mask in shs_masks:
+                self.data["shs_" + signal][idx] = np.bitwise_and(sv_health[idx].astype(int), shs_mask)
+            self.data["shs_" + signal] = self.data["shs_" + signal].astype(bool)
+
+        # Loop over Galileo signals and belonging DVS masks for DVS detection
+        for signal, dvs_mask in signal_dvs_masks.items():
+            self.data["dvs_" + signal] = np.zeros(num_obs, dtype=bool)
+            self.data["dvs_" + signal][idx] = np.bitwise_and(sv_health[idx].astype(int), dvs_mask)
+            self.data["dvs_" + signal] = self.data["dvs_" + signal].astype(bool)
+
 
     def _determine_message_type(self) -> None:
         """Determine navigation message type and save it in 'data' dictionary under 'nav_type' key
@@ -865,6 +919,33 @@ class Rinex212NavParser(ChainParser):
       | version             | str   | Format version                                                             |
         """
 
+        # Unit definition for "float" fields
+        unit_def = {
+            "bgd_e1_e5a": "second",
+            "bgd_e1_e5b": "second",
+            "cic": "radian",
+            "cis": "radian",
+            "crc": "meter",
+            "crs": "meter",
+            "cuc": "radian",
+            "cus": "radian",
+            "delta_n": "radian/second",
+            "i0": "rad",
+            "idot": "radian/second",
+            "m0": "radian",
+            "omega": "radian",
+            "Omega": "radian",
+            "Omega_dot": "radian/second",
+            "sat_clock_bias": "second",
+            "sat_clock_drift": "second/second",
+            "sat_clock_drift_rate": "second/second**2",
+            "sqrt_a": "meter ** 0.5",  # sqrt(meter)
+            "sv_accuracy": "meter",
+            "tgd": "second",
+            "tgd_b1_b3": "second",
+            "tgd_b2_b3": "second",
+        }
+
         dset = dataset.Dataset(num_obs=len(self.data["time"]))
         dset.meta.update(self.meta)
 
@@ -875,8 +956,11 @@ class Rinex212NavParser(ChainParser):
             elif k in ["nav_type", "satellite", "system"]:
                 dset.add_text(k, val=v)
             else:
+                unit = unit_def[k] if k in unit_def.keys() else None
                 if isinstance(v, list):
-                    dset.add_float(k, val=np.array(v))
+                    dset.add_float(k, val=np.array(v), unit=unit)
+                elif isinstance(v, np.ndarray):
+                    dset.add_float(k, val=v, unit=unit)
 
         return dset
 
