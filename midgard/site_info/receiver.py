@@ -4,10 +4,10 @@ Description:
 ------------
 This module is divided into three different types of classes:
 
-    1. Main class Receiver that provides basic functionality to the user. See examples
+    1. Main class Receiver provides basic functionality to the user. See examples.
     2. Receiver source type classes:
         - There is one class for each source type
-        - A class with all relevant site coordinate information for a point in time.
+        - A class with all relevant receiver information for a point in time.
     3. Receiver history source type classes:
         - There is one class for each source type
         - Converts input from source_data to a object of type ReceiverHistorySinex, etc and provides functions
@@ -21,10 +21,15 @@ Example:
 --------
     
     from midgard import parsers
+    from midgard.site_info.receiver import Receiver
+    from datetime import datetime
+    
+    # Read SINEX data  
     p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
     source_data = p.as_dict()
     all_stations = source_data.keys()
     
+    # Get station information
     Receiver.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
     Receiver.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
     
@@ -34,7 +39,7 @@ Example:
 """
 
 # Standard library imports
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports

@@ -488,10 +488,12 @@ class MatPlotExt:
             self._plot_legend(legend_labels, labels)
     
         # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
-        if isinstance(x_arrays[0][0], datetime):
-            fig.autofmt_xdate()
-            
+        #if isinstance(x_arrays[0][0], datetime):
+        #    fig.autofmt_xdate()
+        fig.autofmt_xdate()
+                
         # Generate colorbar of labels
+        # TODO: Does not work correctly. Color of labels and colormap does not fit. See e.g. https://jakevdp.github.io/mpl_tutorial/tutorial_pages/tut3.html
         if self.options["colorbar"]:
             fig.colorbar(
                     mpl.cm.ScalarMappable(

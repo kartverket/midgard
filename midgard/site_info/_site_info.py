@@ -5,6 +5,9 @@ Description:
 
 All the base classes are abstract classes. There are three base classes defined.
 
+TODO: 'Identifier' module has no history information. ModuleBase and SiteInfoBase class are adapted to that. The 
+      question is should it be handled differently. E.g. ModuleBase.get_history() function is not needed from
+      'Identifier' module, but is available.
 """
 
 # Standard library imports
@@ -12,6 +15,9 @@ import abc
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Dict, List, Union, Iterable
+
+# Midgard imports
+from midgard.dev import log
 
 
 class SiteInfoBase(abc.ABC):
@@ -82,16 +88,6 @@ class SiteInfoBase(abc.ABC):
         """        
         return type(self)(self.station, deepcopy(self._info))
 
-    @property
-    @abc.abstractmethod
-    def date_from(self) -> datetime:
-        """First valid epoch for site info entry"""
-
-    @property
-    @abc.abstractmethod
-    def date_to(self) -> datetime:
-        """Last valid epoch for site info entry"""
-
 
 class SiteInfoHistoryBase(abc.ABC):
     """Base class defining common attributes and methods for history classes"""
@@ -142,17 +138,22 @@ class SiteInfoHistoryBase(abc.ABC):
             instance of relevant the site information class based on the type of source_data
         """       
 
-    def get(self, date: datetime) -> Any:
+    def get(self, date: Union[datetime, str]) -> Any:
         """Get site information object for given date
 
         Args:
-            date:  Date for which site information is chosen
+            date:  Date for which site information is chosen. If date="last", then the last site information is
+                   returned.
 
         Returns:
-            Site information object for given date            
+            Site information object for given date
         """
         if self.history is None:
             return None
+        
+        if date == "last":
+            last_date_period = sorted(self.history.keys())[-1]
+            return self.history[last_date_period]
         
         for (date_from, date_to), site_info in self.history.items():
             if date_from <= date < date_to:
@@ -203,6 +204,7 @@ class SiteInfoHistoryIterator:
         """Converts index to dictionary key"""
         return (self._data.date_from[index], self._data.date_to[index])
 
+
 class ModuleBase(abc.ABC):
     """Base class for each module of site information (e.g. Antenna, Receiver, ...).
     
@@ -227,22 +229,27 @@ class ModuleBase(abc.ABC):
     def get(
             cls,
             source: str, 
-            stations: Union[str, Iterable], 
-            date: datetime, 
             source_data: Any,
+            stations: Union[str, Iterable], 
+            date: Union[None, datetime] = None, 
             source_path: Union[None, str] = None,
     ) -> Any:
-        """Get site coordinate object depending on given source
+        """Get site information object depending on given source
+        
+        If date is not defined, then history objects (e.g. AntennaHistorySinex) are returned instead of site 
+        information objects like 'AntennaSinex'. If no history classes are defined, for example in case of 
+        'identifier' module, then normal site information objects are returned like 'IdentifierSinex'.
 
         Args:
             source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
-            station:      Station name.
-            date:         Date for getting site information
             source_data:  Source data with site information. 
+            stations:     Station names.
+            date:         Date for getting site information. If date="last", then the last site information is
+                          returned.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
 
         Returns:
-            Site coordinate object 
+            Site information object 
         """
         site_dict: Dict[str, Any] = dict()
         if isinstance(stations, str):
@@ -250,9 +257,16 @@ class ModuleBase(abc.ABC):
         else:
             stations = [s.lower() for s in stations]
 
+        if cls.__name__ == "Identifier":
+            log.debug("Option 'date' is ignored. 'date' option should not be used together with 'Identifier' module.")
+            date = None
+
         for station in stations:
-            history = cls.sources[source](station, source_data, source_path)
-            site_dict[station] = history.get(date) if history is not None else None
+            data = cls.sources[source](station, source_data, source_path)
+            if date is None:
+                site_dict[station] = data if data is not None else None
+            else:
+                site_dict[station] = data.get(date) if data is not None else None
 
         return site_dict
         
@@ -261,20 +275,20 @@ class ModuleBase(abc.ABC):
     def get_history(
             cls, 
             source: str,
-            stations: Union[str, Iterable], 
             source_data: Any,
+            stations: Union[str, Iterable], 
             source_path: Union[None, str] = None, 
     ) -> Any:
-        """Get site coordinate history object depending on given source
+        """Get site information history object depending on given source
 
         Args:
             source:       Site information source e.g. 'snx' (SINEX file) or 'ssc' (SSC file)
-            station:      Station name.
             source_data:  Source data with site information.
+            stations:     Station names.
             source_path:  Source path of site information source (e.g. file path of SINEX file)
 
         Returns:
-            Site coordinate object 
+            Site information object 
         """
         site_dict: Dict[str, Any] = dict()
         if isinstance(stations, str):
