@@ -248,11 +248,14 @@ class FileConfiguration(Configuration):
         """
         file_vars = dict() if file_vars is None else file_vars
         directory = self[file_key].directory.replace(default=default, **file_vars).path
+        directory_aliases = self.get("directory_aliases", section=file_key, default="").replace(default=default, **file_vars).list
         file_name = self[file_key].filename.replace(default=default, **file_vars).path
-        file_path = self._replace_gz(directory / file_name, is_zipped)
-
+        file_paths = list()
+        file_paths.append(self._replace_gz(directory / file_name, is_zipped))
+        for da in directory_aliases:
+            file_paths.append(self._replace_gz(da / file_name, is_zipped))
         aliases = self.get("aliases", section=file_key, default="").replace(default=default, **file_vars).list
-        return [self._replace_gz(file_path.with_name(a), is_zipped) for a in aliases]
+        return [self._replace_gz(fp.with_name(a), is_zipped) for fp in file_paths for a in aliases]
 
     def url(self, file_key, file_vars=None, default=None, is_zipped=None, use_aliases=False):
         """Construct a URL for a given file with variables
@@ -493,7 +496,6 @@ class FileConfiguration(Configuration):
         re_vars = {**file_vars, variable: f"(?P<{variable}>__pattern__)"}
         file_path_pattern = self.path(file_key, file_vars=re_vars, default=".*")
         aliased_path_patterns = self.aliased_path(file_key, file_vars=re_vars, default=".*")
-
         for path_pattern in [file_path_pattern] + aliased_path_patterns:
             path_pattern = str(path_pattern).replace("\\", "\\\\")
             values = self._match_pattern(search_paths, path_pattern, variable, pattern)
