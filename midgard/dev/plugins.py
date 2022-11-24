@@ -119,7 +119,7 @@ def register(func: Callable, name: Optional[str] = None, sort_value: int = 0) ->
     If `name` is given, the plug-in is registered based on this name instead of
     the name of the module. The name of the module is still registered as a
     part that can be used to distinguish between similar plug-ins in different
-    files (see for instance how `session` is used in `midgard.pipelines`).
+    files.
 
     Args:
         func:        The function that is being registered.

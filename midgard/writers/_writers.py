@@ -72,7 +72,7 @@ def get_existing_fields_by_attrs(dset: "Dataset", writers_in: Tuple["WriterField
 
 
 # TODO: This function should be replaced by get_field_by_attrs!!!
-def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.ndarray:
+def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: Union[str, None] = None) -> np.ndarray:
     """Get field values of a Dataset specified by the field attributes
 
     If necessary the unit of the data fields are corrected to the defined 'output' unit.
@@ -96,7 +96,7 @@ def get_field(dset: "Dataset", field: str, attrs: Tuple[str], unit: str) -> np.n
         
         try:
             field_unit = dset.unit(field_attrs)[0]
-        except (exceptions.UnitError, TypeError) as e:
+        except (exceptions.UnitError, TypeError):
             log.debug(f"Skip unit conversion for field '{field_attrs}'.")
             return f # Skip unit conversion for text fields, which do not have a unit.
         
