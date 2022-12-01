@@ -680,8 +680,10 @@ class MatPlotExt:
     
             # Plot vertical line for events in each subplot
             if events:
+                linestyle_def = [(0, (5,5)), (2, (5,5)), (4, (5,5)), (6, (5,5)), (8, (5,5))]
                 for idx, (label, entries) in enumerate(sorted(events.items())):
-                    [ax.axvline(x=e, label=label, color=cmap(idx)) for e in entries]
+                    linestyle = linestyle_def[idx] if len(events.keys()) <= len(linestyle_def) else "--"
+                    [ax.axvline(x=e, label=label, linestyle=linestyle, color=cmap(idx)) for e in entries]
     
         # Change tick labelsize
         if self.options["tick_labelsize"]:
@@ -693,7 +695,7 @@ class MatPlotExt:
         # Plot event legend
         if events:
             self.options["legend_location"] = "bottom" if self.options["legend_location"] == None else self.options["legend_location"]
-            self._plot_legend(legend_labels, labels=events.keys())
+            self._plot_legend(legend_labels, labels=sorted(events.keys()))
     
         # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
         if isinstance(x_array[0], datetime):
