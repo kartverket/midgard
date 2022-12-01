@@ -134,16 +134,6 @@ def test_parser_csv_():
     assert 2047 in parser["GPSWeek"]
 
 
-def test_parser_sinex_discontinuities():
-    """Test that parsing sinex_discontinuities gives expected output"""
-    parser = get_parser("sinex_discontinuities").as_dict()
-
-    assert len(parser) == 9
-    assert "0194" in parser
-    assert "solution_discontinuity" in parser["ab06"]
-    assert "point_code" in parser["ab06"]["solution_discontinuity"][0]
-
-
 @pytest.mark.skip(reason="TODO: Failure in pandas.io.html.py")
 def test_parser_galileo_constellation_html():
     """Test that parsing galileo_constellation_html gives expected output"""
@@ -279,6 +269,37 @@ def test_parser_wip_rinex3_obs():
     assert data["C1C"][0] == np.nan
 
     assert header["time_of_first_obs"] == data["epoch"][0]
+    
+
+def test_parser_sinex_discontinuities():
+    """Test that parsing sinex_discontinuities gives expected output"""
+    parser = get_parser("sinex_discontinuities").as_dict()
+
+    assert len(parser) == 9
+    assert "0194" in parser
+    assert "solution_discontinuity" in parser["ab06"]
+    assert "point_code" in parser["ab06"]["solution_discontinuity"][0]
+    
+
+def test_parser_sinex_events():
+    """Test that parsing sinex_events gives expected output"""
+    parser = get_parser("sinex_events").as_dict()
+    
+    assert len(parser) == 2
+    assert "ande" in parser
+    assert "solution_event" in parser["ande"]
+    assert "point_code" in parser["ande"]["solution_event"][0]
+    
+
+def test_parser_sinex_site():
+    """Test that parsing sinex_site gives expected output"""
+    parser = get_parser("sinex_site").as_dict()
+
+    assert len(parser) == 3
+    assert "aasc" in parser
+    assert "site_id" in parser["aasc"]
+    assert "site_code" in parser["aasc"]["site_id"]
+    assert "AASC" in parser["aasc"]["site_id"]["site_code"]
 
 
 def test_parser_spring_csv():
