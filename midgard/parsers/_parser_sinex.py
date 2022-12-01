@@ -1084,6 +1084,11 @@ class SinexParser(Parser):
     parse_solution_normal_equation_matrix = parsing_matrix_factory(
         "SOLUTION/NORMAL_EQUATION_MATRIX", size_marker="SOLUTION/ESTIMATE"
     )
+    
+    
+    #
+    # NOT OFFICIAL SINEX BLOCKS
+    #
 
     @property
     def solution_discontinuity(self) -> SinexBlock:
@@ -1116,7 +1121,7 @@ class SinexParser(Parser):
     
     
     @property
-    def solution_events(self) -> SinexBlock:
+    def solution_event(self) -> SinexBlock:
         """Site events.
         
         Note: This is not a official SINEX block.
@@ -1128,7 +1133,7 @@ class SinexParser(Parser):
             01234567890123456789012345678901234567890123456789012345678901234567890123456789
         """
         return SinexBlock(
-            marker="SOLUTION/EVENTS",
+            marker="SOLUTION/EVENT",
             fields=(
                 SinexField("site_code", 1, "U4"),
                 SinexField("point_code", 6, "U2"),
@@ -1139,7 +1144,7 @@ class SinexParser(Parser):
                 SinexField("event_code", 42, "U1"),
                 SinexField("description", 44, "U120"),
             ),
-            parser=self.parse_event,
+            parser=self.parse_solution_event,
         )
 
     parse_solution_event = parsing_factory()
