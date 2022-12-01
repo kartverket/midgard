@@ -49,9 +49,9 @@ class DiscontinuitiesSnxParser(SinexParser):
     """
 
     def setup_parser(self):
-        return (self.discontinuity,)
+        return (self.solution_discontinuity,)
 
-    def parse_discontinuity(self, data: np.ndarray):
+    def parse_solution_discontinuity(self, data: np.ndarray):
         """Parse SOLUTION/DISCONTINUITY SINEX block
         """
         for d in data:
