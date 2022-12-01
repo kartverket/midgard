@@ -229,17 +229,6 @@ def test_parser_gravsoft_grid():
     assert 72.0 in parser["latitude"]
 
 
-def test_parser_gnss_sinex_igs():
-    """Test that parsing gnss_sinex_igs gives expected output"""
-    parser = get_parser("gnss_sinex_igs").as_dict()
-
-    assert len(parser) == 8
-    assert "abmf" in parser
-    assert "site_id" in parser["abmf"]
-    assert "site_code" in parser["abmf"]["site_id"]
-    assert "abmf" in parser["abmf"]["site_id"]["site_code"]
-
-
 def test_parser_rinex2_nav():
     """Test that parsing rinex2_nav gives expected output"""
     parser = get_parser("rinex2_nav", pathlib.Path(__file__).parent / "example_files" / "rinex2_nav.19n").as_dict()
@@ -306,8 +295,8 @@ def test_parser_ssc_site():
     parser = get_parser("ssc_site").as_dict()
 
     assert len(parser) == 4
-    assert "TOUL" in parser
-    assert "antenna_num" in parser["TOUL"]
+    assert "toul" in parser
+    assert "site_id" in parser["toul"]
 
 
 def test_parser_terrapos_position():

@@ -1,0 +1,24 @@
+%=SNX 1.00 NMA 14:001:00000 NMA 00:001:00000 13:365:00000 P 00000 1 X        
+*-------------------------------------------------------------------------------             
++FILE/COMMENT      
+ The events block documents receiver configuration and station environment
+ change. Following codes are used:
+      CLK = Clock steering (ON/OFF)
+      ELV = Elevation cut-off in degree
+      MTP = Multipath rejection (ON/OFF)
+      RMV = Remove data for given period
+      TRC = Tree clearing
+-FILE/COMMENT                                                                      
+*-------------------------------------------------------------------------------
++SOLUTION/EVENT
+*
+ ANDE  A    1 P 00:353:00000 07:176:55123 CLK ON
+ ANDE  A    1 P 07:176:55123 00:000:00000 CLK OFF
+ ANDE  A    1 P 00:353:00000 00:000:00000 ELV 0    
+ ANDO  A    1 P 96:166:00000 03:001:00000 MTP OFF
+ ANDO  A    1 P 03:001:00000 00:000:00000 MTP ON
+ ANDO  A    1 P 04:184:00000 00:000:00000 TRC ---  A 6 m high tree is cleared on the west side of station
+ ANDO  A    1 P 12:228:00000 12:330:00000 RMV ---  Defect antenna 
+-SOLUTION/EVENT
+*----------------------------------------------------------------
+%ENDSNX
