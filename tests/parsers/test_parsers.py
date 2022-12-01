@@ -134,9 +134,9 @@ def test_parser_csv_():
     assert 2047 in parser["GPSWeek"]
 
 
-def test_parser_discontinuities_snx():
-    """Test that parsing discontinuities_snx gives expected output"""
-    parser = get_parser("discontinuities_snx").as_dict()
+def test_parser_sinex_discontinuities():
+    """Test that parsing sinex_discontinuities gives expected output"""
+    parser = get_parser("sinex_discontinuities").as_dict()
 
     assert len(parser) == 9
     assert "0194" in parser
