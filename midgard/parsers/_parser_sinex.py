@@ -1086,8 +1086,10 @@ class SinexParser(Parser):
     )
 
     @property
-    def discontinuity(self) -> SinexBlock:
-        """Station discontinuities.
+    def solution_discontinuity(self) -> SinexBlock:
+        """Site discontinuities.
+        
+        Note: This is not a official SINEX block.
 
         Example:
             *CODE PT SOLN O __START_TIME __END_TIME__ E __DESCRIPTION
@@ -1107,7 +1109,37 @@ class SinexParser(Parser):
                 SinexField("event_code", 42, "U1"),
                 SinexField("description", 44, "U120"),
             ),
-            parser=self.parse_discontinuity,
+            parser=self.parse_solution_discontinuity,
         )
 
-    parse_discontinuity = parsing_factory()
+    parse_solution_discontinuity = parsing_factory()
+    
+    
+    @property
+    def solution_events(self) -> SinexBlock:
+        """Site events.
+        
+        Note: This is not a official SINEX block.
+
+        Example:
+            *CODE PT SOLN O __START_TIME __END_TIME__ E __DESCRIPTION
+             0194  A    1 P 00:000:00000 03:160:00000 P - antenna change
+                      1111111111222222222233333333334444444444555555555566666666667777777777
+            01234567890123456789012345678901234567890123456789012345678901234567890123456789
+        """
+        return SinexBlock(
+            marker="SOLUTION/EVENTS",
+            fields=(
+                SinexField("site_code", 1, "U4"),
+                SinexField("point_code", 6, "U2"),
+                SinexField("soln", 9, "U4"),
+                SinexField("obs_code", 14, "U1"),
+                SinexField("start_time", 16, "O", "epoch"),
+                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("event_code", 42, "U1"),
+                SinexField("description", 44, "U120"),
+            ),
+            parser=self.parse_event,
+        )
+
+    parse_solution_event = parsing_factory()
