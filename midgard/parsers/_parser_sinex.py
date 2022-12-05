@@ -1127,8 +1127,8 @@ class SinexParser(Parser):
         Note: This is not a official SINEX block.
 
         Example:
-            *CODE PT SOLN O __START_TIME __END_TIME__ E __DESCRIPTION
-             0194  A    1 P 00:000:00000 03:160:00000 P - antenna change
+            *CODE PT SOLN O __START_TIME __END_TIME__ _EVENT   __DESCRIPTION
+             0194  A    1 P 00:000:00000 03:160:00000 CLK ON   Clock steering is used
                       1111111111222222222233333333334444444444555555555566666666667777777777
             01234567890123456789012345678901234567890123456789012345678901234567890123456789
         """
@@ -1141,8 +1141,8 @@ class SinexParser(Parser):
                 SinexField("obs_code", 14, "U1"),
                 SinexField("start_time", 16, "O", "epoch"),
                 SinexField("end_time", 29, "O", "epoch"),
-                SinexField("event_code", 42, "U1"),
-                SinexField("description", 44, "U120"),
+                SinexField("event_code", 42, "U7"),
+                SinexField("description", 51, "U120"),
             ),
             parser=self.parse_solution_event,
         )
