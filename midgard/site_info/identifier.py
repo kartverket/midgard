@@ -110,6 +110,18 @@ class IdentifierSinex(SiteInfoBase):
             
         return country
         
+        
+    @property
+    def country_code(self) -> str:
+        """ Get country code of site
+
+        Returns:
+            Country code
+        """
+        # Country not given in SINEX file.
+        return None 
+        
+        
     @property
     def domes(self) -> str:
         """ Get DOMES number
@@ -130,6 +142,16 @@ class IdentifierSinex(SiteInfoBase):
         name = description[0].strip().capitalize() if description else None
             
         return name
+    
+    @property
+    def tectonic_plate(self) -> str:
+        """ Get tectonic plate name
+
+        Returns:
+            Tectonic plate name
+        """
+        # Tectonic plate name is not available in SINEX file.
+        return None 
     
 
 @Identifier.register_source
@@ -174,7 +196,27 @@ class IdentifierSsc(SiteInfoBase):
             raise MissingDataError(f"Station '{self.station}' unknown in source '{self.source_path}'.")
 
         return raw_info
-        
+    
+    @property
+    def country(self) -> str:
+        """ Get country of site
+
+        Returns:
+            Country name
+        """
+        # Country not given in SSC file.
+        return None
+    
+    @property
+    def country_code(self) -> str:
+        """ Get country code of site
+
+        Returns:
+            Country code
+        """
+        # Country not given in SSC file.
+        return None 
+    
     @property
     def domes(self) -> str:
         """ Get DOMES number
@@ -193,13 +235,13 @@ class IdentifierSsc(SiteInfoBase):
         """    
         # Site name not given in SSC file
         return None
-    
+        
     @property
-    def country(self) -> str:
-        """ Get country of site
+    def tectonic_plate(self) -> str:
+        """ Get tectonic plate name
 
         Returns:
-            Country name
+            Tectonic plate name
         """
-        # Country not given in SSC file
-        return None
+        # Tectonic plate name is not available in SSC file.
+        return None 
