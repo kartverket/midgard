@@ -37,8 +37,9 @@ import statsmodels.api as sm
 class LinearRegression:
     """Linear regression class
     
-    Attributes:
-        | Attribute             | Type       | Description                                                           |
+    Following arguments can be chosen by initialization of LinearRegression class objects:
+        
+        | Arguments             | Type       | Description                                                           |
         |:----------------------| :----------| :---------------------------------------------------------------------|
         | outlier_limit_factor  | float      | RMS of residuals are used for detecting outliers, whereby             |
         |                       |            | 'outlier_limit_factor' * 'RMS' is used as limit. As default is        |
@@ -48,6 +49,7 @@ class LinearRegression:
         |                       |            | 'False', which means that no outliers are rejected.                   |
         | x                     | np.ndarray | X training data                                                       |
         | y                     | np.ndarray | Y target data                                                         | 
+        
     """
     x: np.ndarray
     y: np.ndarray
@@ -63,13 +65,13 @@ class LinearRegression:
             self._result = self._generate_result()
     
     @property
-    def interception(self) -> np.ndarray:
+    def interception(self) -> np.float64:
         """Interception of regression line
         """
         return self._result.params[0]
     
     @property
-    def interception_sigma(self) -> np.ndarray:
+    def interception_sigma(self) -> np.float64:
         """Standard deviation of interception of regression line
         """
         return self._result.bse[0]
@@ -81,13 +83,13 @@ class LinearRegression:
         return self._result.resid
             
     @property
-    def rms(self) -> np.ndarray:
+    def rms(self) -> np.float64:
         """RMS of regression line residuals
         """
         return np.sqrt(np.nanmean(np.square(self.residuals)))
     
     @property
-    def r_square(self) -> np.ndarray:
+    def r_square(self) -> np.float64:
         """Coefficient of determination R^2
         
         Better fitted regression line, if R^2 closer to 1.
@@ -95,13 +97,13 @@ class LinearRegression:
         return self._result.rsquared
 
     @property
-    def slope(self) -> np.ndarray:
+    def slope(self) -> np.float64:
         """Slope of regression line
         """
         return self._result.params[1]
     
     @property
-    def slope_sigma(self) -> np.ndarray:
+    def slope_sigma(self) -> np.float64:
         """Standard deviation of slope of regression line
         """
         return self._result.bse[1]
