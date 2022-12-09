@@ -30,5 +30,5 @@ testpaths = [
 
 # Requirements
 requires-python    = ">=3.6"
-requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy"]
+requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy", "statsmodels"]
 dev-requires       = ["black", "bumpversion", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]
