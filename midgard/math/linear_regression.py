@@ -28,6 +28,7 @@ slope = linreg.slope
 
 # Standard library imports
 from dataclasses import dataclass
+from typing import Union
 
 # Third party imports
 import numpy as np
@@ -51,14 +52,20 @@ class LinearRegression:
         | y                     | np.ndarray | Y target data                                                         | 
         
     """
-    x: np.ndarray
-    y: np.ndarray
+    x: Union[np.ndarray, list]
+    y: Union[np.ndarray, list]
     reject_outlier: bool = False
     outlier_limit_factor: float = 1.0
     outlier_iteration: int = 1
     
     def __post_init__(self):
         
+        if type(self.x) == list:
+            self.x = np.array(self.x)
+        
+        if type(self.y) == list:
+            self.y = np.array(self.x)    
+                
         if self.reject_outlier:
             self._result = self._generate_result_and_reject_outlier()
         else:
