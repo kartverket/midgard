@@ -47,6 +47,7 @@ class MatPlotExt:
     | elinewidth         | <num>            | Line width of error bar                                               |
     | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
     | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
+    | fontsize           | <num>            | Fontsize of title, axis labels and legend                             |
     | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                   |
     | grid               | <True|False>     | Plot grid                                                             |
     | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both   |
@@ -132,11 +133,10 @@ class MatPlotExt:
             "yticks": [],
             "yticklabels": [],
         }
-                             
+                                     
         # Update options
         if options:
-            self.set_options(options)
-        
+            self.set_options_and_rcparams(options)       
             
     def get_statistic(
         self,
@@ -194,14 +194,24 @@ class MatPlotExt:
         return stats
 
 
-    def set_options(self, options: Dict[str, Any]) -> None:
-        """Overwrite default plotting options
+    def set_options_and_rcparams(self, options: Dict[str, Any]) -> None:
+        """Overwrite default plotting options and rcParams
         
         Args:
             options:    Plotting options, which can overwrite default definition.
         """
         self.options.update(options)
-    
+
+        # Change fontsize
+        for entry in ["axes.labelsize", "legend.fontsize", "xtick.labelsize", "ytick.labelsize"]:
+            plt.rcParams[entry] = self.options["fontsize"]
+        
+        # Change fontsize of titles
+        for entry in ["axes.titlesize", "figure.titlesize", "legend.title_fontsize"]:
+            plt.rcParams[entry] = self.options["fontsize"] + 2  
+            
+            
+        #plt.rcParams["legend.frameon"] = False
     
     #
     # BAR PLOTS
@@ -250,7 +260,7 @@ class MatPlotExt:
        
         # Overwrite options with argument definition
         if options:
-            self.set_options(options)   
+            self.set_options_and_rcparams(options)   
     
         # Assign to each label a color
         if label in df.columns:
@@ -391,7 +401,7 @@ class MatPlotExt:
 
         # Overwrite options with argument definition
         if options:
-            self.set_options(options)    
+            self.set_options_and_rcparams(options)    
         original_histogram_option = self.options["histogram"]
     
         # Convert x_arrays, y_arrays to list
@@ -610,7 +620,7 @@ class MatPlotExt:
 
         # Overwrite options with argument definition
         if options:
-            self.set_options(options)  
+            self.set_options_and_rcparams(options)  
     
         # Generate subplot
         fig, axes = plt.subplots(
@@ -791,7 +801,7 @@ class MatPlotExt:
         
         # Overwrite options with argument definition
         if options:
-            self.set_options(options)  
+            self.set_options_and_rcparams(options)  
     
         if self.options["plot_type"] == "scatter":
             import matplotlib
@@ -961,7 +971,7 @@ class MatPlotExt:
        
         # Overwrite options with argument definition
         if options:
-            self.set_options(options) 
+            self.set_options_and_rcparams(options) 
     
         histogram = self.options["histogram"].replace(",", " ").split()
     
