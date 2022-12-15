@@ -48,6 +48,7 @@ def decode_h5attr(attr: Any) -> Any:
             # ast.literal_eval does not understand that nan and inf are floats. convert these to strings
             attr = re.sub(r"\bnan\b", "'nan'", attr)
             attr = re.sub(r"\binf\b", "'inf'", attr)
+            attr = re.sub(r"-'\binf\b'", "'-inf'", attr)
         result = globals()[f"_h5attr2{attr_type}"](attr)
         return _recursive_replace(result)
     except (AttributeError, KeyError):
@@ -122,6 +123,8 @@ def _recursive_replace(data):
             return float("nan")
         if data == "inf":
             return float("inf")
+        if data == "-inf":
+            return -float("inf")
     if isinstance(data, List):
         return [_recursive_replace(v) for v in data]
     if isinstance(data, Tuple):
