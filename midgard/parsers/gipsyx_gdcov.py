@@ -42,8 +42,11 @@ class GipsyxGdcovParser(ChainParser):
 
     | Key                  | Description                                                                          |
     |----------------------|--------------------------------------------------------------------------------------|
-    | column               | Column number of correlations                                                        |
     | correlation          | Correlation values                                                                   |
+    | correlation_index1   | Correlation index (1st column)                                                       |
+    | correlation_index2   | Correlation index (2nd column)                                                       |
+    | estimate             | Parameter estimate at the given time                                                 |
+    | estimate_index       | Estimate index                                                                       |
     | parameter            | Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."     |
     |                      | without spaces.                                                                      |
     | row                  | Row number of correlations                                                           |
@@ -51,7 +54,7 @@ class GipsyxGdcovParser(ChainParser):
     | sigma                | Standard deviation of the parameter.                                                 |
     | time_past_j2000      | Time given in GPS seconds past J2000, whereby GipsyX uses following definition:      |
     |                      | J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.                          |
-    | estimate             | Parameter estimate at the given time                                                 |
+
 
 
     and **meta**-data:
@@ -89,14 +92,14 @@ class GipsyxGdcovParser(ChainParser):
                 True: {
                     "parser": self._parse_estimate,
                     "delimiter": " ",
-                    "fields": ["_", "name", "time_past_j2000", "estimate", "sigma"],
+                    "fields": ["estimate_index", "name", "time_past_j2000", "estimate", "sigma"],
                 },
                 # ----+----1----+----2----+---
                 # 2 1 -5.741554474985751e-01
                 False: {
                     "parser": self._parse_correlation,
                     "delimiter": " ",
-                    "fields": ["row", "column", "correlation"],
+                    "fields": ["correlation_index1", "correlation_index2", "correlation"],
                 },
             },
         )
@@ -106,6 +109,10 @@ class GipsyxGdcovParser(ChainParser):
     def _parse_estimate(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse estimate lines
         """
+        print(line)
+        import IPython; IPython.embed()
+
+        self.data.setdefault("estimate_index", list()).append(int(line["estimate_index"]))
         self.data.setdefault("time_past_j2000", list()).append(float(line["time_past_j2000"]))
         self.data.setdefault("estimate", list()).append(float(line["estimate"]))
         self.data.setdefault("sigma", list()).append(float(line["sigma"]))
@@ -117,8 +124,8 @@ class GipsyxGdcovParser(ChainParser):
     def _parse_correlation(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse correlation lines
         """
-        self.data.setdefault("row", list()).append(int(line["row"]))
-        self.data.setdefault("column", list()).append(int(line["column"]))
+        self.data.setdefault("correlation_index1", list()).append(int(line["correlation_index1"]))
+        self.data.setdefault("correlation_index2", list()).append(int(line["correlation_index2"]))
         self.data.setdefault("correlation", list()).append(float(line["correlation"]))
 
     #
@@ -199,23 +206,35 @@ class GipsyxGdcovParser(ChainParser):
                 (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
             ).T,
         )
-        # TODO: how to use dset.add_sigma? how to save correlation?
-        # tmp = dict()
-        # for num_sta, station in enumerate(self.data["station"]):
-        #    tmp.setdefault("correlation_x", list()).append()
-        #    tmp.setdefault("correlation_y", list()).append()
-        #    tmp.setdefault("correlation_z", list()).append()
 
+        # Extract correlation coefficients of each station coordinate solution
         #   |1
         #   |2  3
         #   ------
         #    4  5  6
-        #    7  8  9 |10
-        #   11 12 13 |14 15
+        #    7  8  9 |10           <- idx_yx = 3 * 3 + 1
+        #   11 12 13 |14 15        <- idx_zx = idx_yx + 3 + 1
         #            --------
         #   16 17 18  19 20 21
-        #   22 23 24  25 26 27 |28
-        #   29 30 31  32 33 34 |35 36
+        #   22 23 24  25 26 27 |28         <- idx_yx = 3 * 9 + 1
+        #   29 30 31  32 33 34 |35 36      <- idx_zx = idx_yx + 6 + 1
         #                      -------
-
+        #
+        #   37 38 39  40 41 24  43 44 45
+        #   46 47 48  49 50 51  52 53 54 |55        <- idx_yx = 3 * 18 + 1
+        #   56 57 58  59 60 61  62 63 64 |65 66     <- idx_zx = idx_yx + 9 + 1
+        #                                -------
+        #tmp = dict()
+        #factor = 0
+        #addend = 0
+        #for _ in range(0, dset.num_obs):
+        #    idx_yx = 3 * factor + 1
+        #    idx_zx = idx_yx + addend + 1
+        #    idx_zy = idx_zx + 1
+        #    tmp.setdefault("correlation_yx", list()).append(self.data["correlation"][idx_yx])
+        #    tmp.setdefault("correlation_zx", list()).append(self.data["correlation"][idx_zx])
+        #    tmp.setdefault("correlation_zy", list()).append(self.data["correlation"][idx_zy])
+        #    factor = 3 if factor == 0 else factor * 2
+        #    addend = addend + 3
+            
         return dset
