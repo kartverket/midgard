@@ -75,7 +75,7 @@ class GipsyxSummary(Parser):
 
 
     and **meta**-data:
-
+summary, tdp,
     | Key                  | Description                                                                          |
     |----------------------|--------------------------------------------------------------------------------------|
     | \__data_path__       | File path                                                                            |
@@ -203,7 +203,7 @@ class GipsyxSummary(Parser):
         line = line.split()
         if len(line) == 10:
 
-            if line[1] == "IonoFreeC_1P_2P":
+            if line[1].startswith("IonoFreeC"):
                 if line[2] == "included":
                     self.data["residual"].update(
                         {
@@ -223,7 +223,7 @@ class GipsyxSummary(Parser):
                         }
                     )
 
-            if line[1] == "IonoFreeL_1P_2P":
+            if line[1].startswith("IonoFreeL"):
                 if line[2] == "included":
                     self.data["residual"].update(
                         {
