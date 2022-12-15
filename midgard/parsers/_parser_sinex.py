@@ -389,9 +389,18 @@ class SinexParser(Parser):
         Returns:
             Field converted to datetime object.
         """
-        ce = "19" if int(field[:2]) > 50 else "20"
-        date = datetime.strptime(ce + field[:6].decode(self.file_encoding or "utf-8"), "%Y:%j")
-        time = timedelta(seconds=int(field[7:]))
+        field_str = field.decode(self.file_encoding or "utf-8")
+
+        ce = "19" if int(field_str[:2]) > 50 else "20"
+
+        if field_str != "00:000:00000" and field_str[3:6] == "000":
+            # Doy field may be 000 which does not make sense. Increase value by one
+            year_doy = field_str[:2] + ":"+ "001"
+        else:
+            year_doy = field_str[:6]
+
+        date = datetime.strptime(ce + year_doy, "%Y:%j")
+        time = timedelta(seconds=int(field_str[7:]))
         return date + time
 
     def _convert_exponent(self, field: bytes) -> float:
