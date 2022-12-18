@@ -84,21 +84,22 @@ class GipsyxGdcovParser(ChainParser):
         data_parser = ParserDef(
             end_marker=lambda line, _ln, _n: False,
             end_callback=lambda line: self._parse_correlation,
-            label=lambda line, _ln: not re.match("^\d+ \d+", line),
+            label=lambda line, _ln: not re.match("^\d+ [A-Za-z0-9]+\.", line),
             skip_line=lambda line: "PARAMETERS" in line,
             parser_def={
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+--
                 # 1 USN3.STA.X 376018350 1.112162030692846e+06 6.422311946865588e-04
-                True: {
+                False: {
                     "parser": self._parse_estimate,
-                    "delimiter": " ",
+                    "delimiter": "\s+",
                     "fields": ["estimate_index", "name", "time_past_j2000", "estimate", "sigma"],
                 },
                 # ----+----1----+----2----+---
                 # 2 1 -5.741554474985751e-01
-                False: {
+                True: {
                     "parser": self._parse_correlation,
-                    "delimiter": " ",
+                    "delimiter": "\s+",
+                    "strip": " \t\n",
                     "fields": ["correlation_index1", "correlation_index2", "correlation"],
                 },
             },
@@ -109,9 +110,6 @@ class GipsyxGdcovParser(ChainParser):
     def _parse_estimate(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
         """Parse estimate lines
         """
-        print(line)
-        import IPython; IPython.embed()
-
         self.data.setdefault("estimate_index", list()).append(int(line["estimate_index"]))
         self.data.setdefault("time_past_j2000", list()).append(float(line["time_past_j2000"]))
         self.data.setdefault("estimate", list()).append(float(line["estimate"]))
@@ -208,33 +206,44 @@ class GipsyxGdcovParser(ChainParser):
         )
 
         # Extract correlation coefficients of each station coordinate solution
-        #   |1
-        #   |2  3
+        #   |0          <- idx_yx = 0
+        #   |1  2       <- idx_zx = idx_yx + 0 + 1 = 1
         #   ------
-        #    4  5  6
-        #    7  8  9 |10           <- idx_yx = 3 * 3 + 1
-        #   11 12 13 |14 15        <- idx_zx = idx_yx + 3 + 1
+        #    3  4  5
+        #    6  7  8 |9            <- idx_yx = idx_zy + 1 * 6 + 1 = 9
+        #   10 11 12 |13 14        <- idx_zx = idx_yx + 3 + 1 = 13
         #            --------
-        #   16 17 18  19 20 21
-        #   22 23 24  25 26 27 |28         <- idx_yx = 3 * 9 + 1
-        #   29 30 31  32 33 34 |35 36      <- idx_zx = idx_yx + 6 + 1
+        #   15 16 17  18 19 20
+        #   21 22 23  24 25 26 |27         <- idx_yx = idx_zy + 2 * 6 + 1 = 27
+        #   28 29 30  31 32 33 |34 35      <- idx_zx = idx_yx + 6 + 1 = 34
         #                      -------
         #
-        #   37 38 39  40 41 24  43 44 45
-        #   46 47 48  49 50 51  52 53 54 |55        <- idx_yx = 3 * 18 + 1
-        #   56 57 58  59 60 61  62 63 64 |65 66     <- idx_zx = idx_yx + 9 + 1
+        #   36 37 38  39 40 41  42 43 44
+        #   45 46 47  48 49 50  51 52 53 |54        <- idx_yx = idx_zy + 3 * 6 + 1 = 54
+        #   55 56 57  58 59 60  61 62 63 |64 65     <- idx_zx = idx_yx + 9 + 1 = 64
         #                                -------
-        #tmp = dict()
-        #factor = 0
-        #addend = 0
-        #for _ in range(0, dset.num_obs):
-        #    idx_yx = 3 * factor + 1
-        #    idx_zx = idx_yx + addend + 1
-        #    idx_zy = idx_zx + 1
-        #    tmp.setdefault("correlation_yx", list()).append(self.data["correlation"][idx_yx])
-        #    tmp.setdefault("correlation_zx", list()).append(self.data["correlation"][idx_zx])
-        #    tmp.setdefault("correlation_zy", list()).append(self.data["correlation"][idx_zy])
-        #    factor = 3 if factor == 0 else factor * 2
-        #    addend = addend + 3
+        #
+        #   66 67 68  69 70 71  72 73 74  75  76  77
+        #   78 79 80  81 82 83  84 85 86  87  88  89  | 90         <- idx_yx = idx_zy + 4 * 6 + 1 = 90
+        #   91 92 93  94 95 96  97 98 99  100 101 102 |103 104     <- idx_zx = idx_yx + 12 + 1 = 103
+        #                                               ---------
+        #    
+        tmp = dict()
+        addend = 0
+        idx_yx = 0
+        for ii in range(0, dset.num_obs):
+
+            idx_zx = idx_yx + addend + 1
+            idx_zy = idx_zx + 1
+            tmp.setdefault("correlation_yx", list()).append(self.data["correlation"][idx_yx])
+            tmp.setdefault("correlation_zx", list()).append(self.data["correlation"][idx_zx])
+            tmp.setdefault("correlation_zy", list()).append(self.data["correlation"][idx_zy])
+            addend = addend + 3
+            idx_yx = idx_zy + (ii + 1) * 6 + 1
             
+        # Add correlation coefficient to dataset
+        for suffix in ["yx", "zx", "zy"]:
+            field = f"correlation_{suffix}"
+            dset.add_float(field, tmp[field]) # unitless
+
         return dset
