@@ -168,8 +168,9 @@ def test_parser_gipsyx_gdcov():
     """Test that parsing gipsyx_gdcov gives expected output"""
     parser = get_parser("gipsyx_gdcov").as_dict()
 
-    assert len(parser) == 8
+    assert len(parser) == 9
     assert "time_past_j2000" in parser
+    assert "correlation" in parser
     assert 376018350.0 in parser["time_past_j2000"]
 
 
