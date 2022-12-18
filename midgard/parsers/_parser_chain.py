@@ -16,6 +16,7 @@ Example:
 """
 # Standard library imports
 import itertools
+import re
 from typing import Any, Callable, Dict, NamedTuple, Optional
 
 # Midgard imports
@@ -41,9 +42,10 @@ class ParserDef(NamedTuple):
     The parser definition `parser_def` includes the `parser`, `field`, `strip` and `delimiter` entries. The `parser`
     entry points to the parser function and the `field` entry defines how to separate the line in fields. The separated
     fields are saved either in a dictionary or in a list. In the last case the line is split on whitespace by
-    default. With the `delimiter` entry the default definition can be overwritten. Leading and trailing whitespace
-    characters are removed by default before a line is parsed.  This default can be overwritten by defining the
-    characters, which should be removed with the 'strip' entry. The `parser` dictionary is defined like:
+    default. With the `delimiter` entry the default definition can be overwritten, whereby also regular expressions can
+    be used (like '\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default 
+    before a line is parsed.  This default can be overwritten by defining the characters, which should be removed with 
+    the 'strip' entry. The `parser` dictionary is defined like:
 
         parser_def = { <label>: {'fields':    <dict or list of fields>,
                                  'parser':    <parser function>,
@@ -135,7 +137,8 @@ class ChainParser(Parser):
             for field, idx in fields.items():
                 values[field] = line[slice(*idx)].strip(parser.parser_def[label].get("strip"))
         elif isinstance(fields, list):
-            for field, value in zip(fields, line.split(parser.parser_def[label].get("delimiter"))):
+            line = line.strip(parser.parser_def[label].get("strip"))
+            for field, value in zip(fields, re.split(parser.parser_def[label].get("delimiter"), line)):
                 if field is not None:
                     values[field] = value.strip(parser.parser_def[label].get("strip"))
 
