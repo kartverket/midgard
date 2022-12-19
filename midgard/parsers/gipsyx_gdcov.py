@@ -155,9 +155,9 @@ class GipsyxGdcovParser(ChainParser):
 
        | Field               | Type              | Description                                                        |
        |---------------------|-------------------|--------------------------------------------------------------------|
-       | correlation_x       | numpy.ndarray     | Correlation for x station coordinate                               |
-       | correlation_y       | numpy.ndarray     | Correlation for y station coordinate                               |
-       | correlation_z       | numpy.ndarray     | Correlation for z station coordinate                               |
+       | correlation_xy      | numpy.ndarray     | Correlation between x and y station coordinate                     |
+       | correlation_xz      | numpy.ndarray     | Correlation between x and z station coordinate                     |
+       | correlation_yz      | numpy.ndarray     | Correlation between y and z station coordinate                     |
        | sigma_x             | numpy.ndarray     | Standard deviation for x station coordinate                        |
        | sigma_y             | numpy.ndarray     | Standard deviation for y station coordinate                        |
        | sigma_z             | numpy.ndarray     | Standard deviation for z station coordinate                        |
@@ -206,43 +206,43 @@ class GipsyxGdcovParser(ChainParser):
         )
 
         # Extract correlation coefficients of each station coordinate solution
-        #   |0          <- idx_yx = 0
-        #   |1  2       <- idx_zx = idx_yx + 0 + 1 = 1
+        #   |0          <- idx_xy = 0
+        #   |1  2       <- idx_xz = idx_xy + 0 + 1 = 1
         #   ------
         #    3  4  5
-        #    6  7  8 |9            <- idx_yx = idx_zy + 1 * 6 + 1 = 9
-        #   10 11 12 |13 14        <- idx_zx = idx_yx + 3 + 1 = 13
+        #    6  7  8 |9            <- idx_xy = idx_yz + 1 * 6 + 1 = 9
+        #   10 11 12 |13 14        <- idx_xz = idx_xy + 3 + 1 = 13
         #            --------
         #   15 16 17  18 19 20
-        #   21 22 23  24 25 26 |27         <- idx_yx = idx_zy + 2 * 6 + 1 = 27
-        #   28 29 30  31 32 33 |34 35      <- idx_zx = idx_yx + 6 + 1 = 34
+        #   21 22 23  24 25 26 |27         <- idx_xy = idx_yz + 2 * 6 + 1 = 27
+        #   28 29 30  31 32 33 |34 35      <- idx_xz = idx_xy + 6 + 1 = 34
         #                      -------
         #
         #   36 37 38  39 40 41  42 43 44
-        #   45 46 47  48 49 50  51 52 53 |54        <- idx_yx = idx_zy + 3 * 6 + 1 = 54
-        #   55 56 57  58 59 60  61 62 63 |64 65     <- idx_zx = idx_yx + 9 + 1 = 64
+        #   45 46 47  48 49 50  51 52 53 |54        <- idx_xy = idx_yz + 3 * 6 + 1 = 54
+        #   55 56 57  58 59 60  61 62 63 |64 65     <- idx_xz = idx_xy + 9 + 1 = 64
         #                                -------
         #
         #   66 67 68  69 70 71  72 73 74  75  76  77
-        #   78 79 80  81 82 83  84 85 86  87  88  89  | 90         <- idx_yx = idx_zy + 4 * 6 + 1 = 90
-        #   91 92 93  94 95 96  97 98 99  100 101 102 |103 104     <- idx_zx = idx_yx + 12 + 1 = 103
+        #   78 79 80  81 82 83  84 85 86  87  88  89  | 90         <- idx_xy = idx_yz + 4 * 6 + 1 = 90
+        #   91 92 93  94 95 96  97 98 99  100 101 102 |103 104     <- idx_xz = idx_xy + 12 + 1 = 103
         #                                               ---------
         #    
         tmp = dict()
         addend = 0
-        idx_yx = 0
+        idx_xy = 0
         for ii in range(0, dset.num_obs):
 
-            idx_zx = idx_yx + addend + 1
-            idx_zy = idx_zx + 1
-            tmp.setdefault("correlation_yx", list()).append(self.data["correlation"][idx_yx])
-            tmp.setdefault("correlation_zx", list()).append(self.data["correlation"][idx_zx])
-            tmp.setdefault("correlation_zy", list()).append(self.data["correlation"][idx_zy])
+            idx_xz = idx_xy + addend + 1
+            idx_yz = idx_xz + 1
+            tmp.setdefault("correlation_xy", list()).append(self.data["correlation"][idx_xy])
+            tmp.setdefault("correlation_xz", list()).append(self.data["correlation"][idx_xz])
+            tmp.setdefault("correlation_yz", list()).append(self.data["correlation"][idx_yz])
             addend = addend + 3
-            idx_yx = idx_zy + (ii + 1) * 6 + 1
+            idx_xy = idx_yz + (ii + 1) * 6 + 1
             
         # Add correlation coefficient to dataset
-        for suffix in ["yx", "zx", "zy"]:
+        for suffix in ["xy", "xz", "yz"]:
             field = f"correlation_{suffix}"
             dset.add_float(field, tmp[field]) # unitless
 
