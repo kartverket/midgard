@@ -344,6 +344,48 @@ class Unit(metaclass=_convert_units):
     # Conversion routines not defined by pint
     #
     @classmethod
+    def deg_to_dms(cls, degrees: np_float) -> Tuple[np_float, np_float, np_float]:
+        """Converts degrees to degrees, minutes and seconds
+
+        Args:
+            degrees:  Angle(s) in degree
+
+        Returns:
+            Tuple with degrees, minutes, and seconds.
+
+        Examples:
+
+            >>> Unit.deg_to_dms(59.91453333333334)
+            (59.0, 54.0, 52.3200000000179)
+            >>> Unit.deg_to_dms(-12.582441388888888)
+            (-12.0, 34.0, 56.78899999999828)
+            >>> Unit.deg_to_dms(-0.3333263527777778)
+            (-0.0, 19.0, 59.974869999999925)
+        """
+        return cls.rad_to_dms(degrees * cls.degrees2radians)
+        
+    @classmethod
+    def dms_to_deg(cls, degrees: np_float, minutes: np_float, seconds: np_float) -> np_float:
+        """Converts degrees, minutes and seconds to degrees
+
+        Args:
+            degrees:  Angle(s) in degree
+
+        Returns:
+            Given degrees, minutes and seconds as degrees.
+
+        Examples:
+
+            >>> Unit.dms_to_deg(59, 54, 52.32)
+            59.91453333333334 
+            >>> Unit.dms_to_deg(-12.0, 34, 56.789)
+            -12.582441388888888
+            >>> Unit.dms_to_deg(-0.0, 19, 59.974870)
+            -0.3333263527777778
+        """
+        return cls.dms_to_rad(degrees, minutes, seconds) * cls.radians2degrees
+    
+    @classmethod
     def rad_to_dms(cls, radians: np_float) -> Tuple[np_float, np_float, np_float]:
         """Converts radians to degrees, minutes and seconds
 
