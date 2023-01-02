@@ -138,7 +138,8 @@ class ChainParser(Parser):
                 values[field] = line[slice(*idx)].strip(parser.parser_def[label].get("strip"))
         elif isinstance(fields, list):
             line = line.strip(parser.parser_def[label].get("strip"))
-            for field, value in zip(fields, re.split(parser.parser_def[label].get("delimiter"), line)):
+            # Split on whitespaces if delimiter is not defined
+            for field, value in zip(fields, re.split(parser.parser_def[label].get("delimiter", "\s+"), line)):
                 if field is not None:
                     values[field] = value.strip(parser.parser_def[label].get("strip"))
 
