@@ -17,7 +17,7 @@ Reads coordinate comparison data from files in OUT format
 # Standard library imports
 from datetime import datetime
 import itertools
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, Tuple
 
 # Midgard imports
 from midgard.data import dataset
@@ -93,8 +93,8 @@ class BerneseComparOutParser(ChainParser):
         # Skip lines until 'Verification of fiducial stations' section
         skip_lines_parser = ParserDef(
             end_marker=lambda line, _ln, _n: (
-                "LIST OF COORDINATE FILES" in line            # Start of num_files_parser
-                or "COMPARISON OF COORDINATES" in line        # Start of coord_comp_parser
+                "LIST OF COORDINATE FILES" in line            # Start of num_coord_files_parser
+                or "COMPARISON OF COORDINATES" in line        # Start of coord_comparison_parser
             ),
             label= lambda line, _ln: line,
             parser_def = {},
