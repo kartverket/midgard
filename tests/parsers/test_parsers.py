@@ -116,6 +116,15 @@ def test_parser_bernese_crd():
     assert "domes" in parser["aasc"]
 
 
+def test_parser_bernese_sta():
+    """Test that parsing bernese_sta gives expected output"""
+    parser = get_parser("bernese_sta").as_dict()
+
+    assert len(parser) == 1
+    assert "argi" in parser
+    assert (datetime(2008,9,25), datetime(2016,11,11)) in parser["argi"][0]
+    
+
 def test_parser_bernese_trp():
     """Test that parsing bernese_trp gives expected output"""
     parser = get_parser("bernese_trp").as_dict()
