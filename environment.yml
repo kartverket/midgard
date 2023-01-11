@@ -16,7 +16,7 @@ dependencies:
   - mypy
   - numpy
   - pandas
-  - pint
+  - pint>=0.20
   - pycurl
   - pytest
   - pytest-cov
