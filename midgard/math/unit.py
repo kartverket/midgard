@@ -137,18 +137,6 @@ class _convert_units(type):
         else:
             return cls(key)
 
-    def load_definitions(cls, file_path: Union[str, pathlib.Path]) -> None:
-        """Load customized units and constants
-
-        Piggybacking on `pint`'s system for defining new units and constants,
-        `http://pint.readthedocs.io/en/latest/defining.html`.
-
-        Args:
-            file_path:  File containing definitions of units and constants.
-        """
-        with open(file_path, mode="rt") as fid:
-            cls._ureg.load_definitions(fid)
-
     def function(cls, from_unit: str, to_unit: str) -> Callable[[float], float]:
         """Create a conversion function
 
@@ -486,5 +474,5 @@ class Unit(metaclass=_convert_units):
 
 
 # Read extra units defined specially for Midgard
-with importlib_resources.open_text("midgard.math", "unit.txt") as fid:
-    Unit._ureg.load_definitions(fid)
+with importlib_resources.path("midgard.math", "unit.txt") as unit_path:
+    Unit._ureg.load_definitions(unit_path)
