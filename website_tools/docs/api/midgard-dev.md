@@ -950,7 +950,7 @@ file when the plug-in is called.
 If `name` is given, the plug-in is registered based on this name instead of
 the name of the module. The name of the module is still registered as a
 part that can be used to distinguish between similar plug-ins in different
-files (see for instance how `session` is used in `midgard.pipelines`).
+files.
 
 **Args:**
 
@@ -1103,7 +1103,7 @@ logger is used to report the timing. See `Timer.__init__` for more details.
 
 Full name: `midgard.dev.timer.AccumulatedTimer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7fa6578b4550>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7f6bf7042550>, level='info')) -> None`
 
 
 
@@ -1111,7 +1111,7 @@ Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Cal
 
 Full name: `midgard.dev.timer.Timer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7fa6578b4550>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7f6bf7042550>, level='info')) -> None`
 
 Class for timing running time of functions and code blocks.
 

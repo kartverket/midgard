@@ -360,16 +360,51 @@ Same function.
 Midgard library module for linear regression
 
 **Description:**
+The 'statsmodels' module is used for the linear regression. Outlier can be rejected beside normal linear regression 
+analysis. Hereby a linear regression analysis is carried out, whereby a linear trend is estimated of the given data.
+The root-mean square (RMS) of the residuals (observation - linear trend) is used to detect outliers. As default
+the following outlier limit is defined: 
+    
+    limit = outlier_limit_factor * RMS   (with outlier_limit_factor=1.0)
+    
+The 'outlier_limit_factor' can be chosen as argument by initialization of a LinearRegression class object. In addition
+the number of iteration for the outlier detection can be chosen with the argument 'outlier_iteration'.
 
+**Example:**
+
+# Import Midgard LinearRegression class of linear_regression module
+from midgard.math.linear_regression import LinearRegression
+
+# Generate LinearRegression object
+linreg = LinearRegression(x,y)
+
+# Get solution
+interception = linreg.interception
+slope = linreg.slope
 
 
 ### **LinearRegression**
 
 Full name: `midgard.math.linear_regression.LinearRegression`
 
-Signature: `(x: numpy.ndarray, y: numpy.ndarray) -> None`
+Signature: `(x: Union[numpy.ndarray, list], y: Union[numpy.ndarray, list], reject_outlier: bool = False, outlier_limit_factor: float = 1.0, outlier_iteration: int = 1) -> None`
 
-LinearRegression(x: numpy.ndarray, y: numpy.ndarray)
+Linear regression class
+
+Following arguments can be chosen by initialization of LinearRegression class objects:
+
+    | Arguments             | Type       | Description                                                           |
+    |:----------------------| :----------| :---------------------------------------------------------------------|
+    | outlier_limit_factor  | float      | RMS of residuals are used for detecting outliers, whereby             |
+    |                       |            | 'outlier_limit_factor' * 'RMS' is used as limit. As default is        |
+    |                       |            | 'outlier_limit_factor' = 1.0 chosen.                                  |
+    | outlier_iteration     | int        | Number of iteration used to detect and reject outliers. Default is 1. |
+    | reject_outlier        | bool       | Determine if outliers should be detected and rejected. Default is     |
+    |                       |            | 'False', which means that no outliers are rejected.                   |
+    | x                     | np.ndarray | X training data                                                       |
+    | y                     | np.ndarray | Y target data                                                         | 
+
+
 
 ## midgard.math.nputil
 Utility wrapper for numpy functions
@@ -962,10 +997,6 @@ Signature: `(from_unit: str, to_unit: Optional[str] = None) -> Any`
 Unit converter
 
 The implementation of the unit conversion is done in the `_convert_units`-metaclass.
-
-
-### fid (TextIOWrapper)
-`fid = <_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/unit.txt' encoding='utf-8'>`
 
 
 ### np_float (TypeVar)

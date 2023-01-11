@@ -23,6 +23,8 @@ Following *options** can be selected:
 
 | Option             | Value            | Description                                                           |
 |--------------------|------------------|-----------------------------------------------------------------------|
+| colorbar           | <True|False>     | Plot color bar                                                        |
+| colorbar_label     | <text>           | Color bar label                                                       |
 | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis,    |
 |                    |                  | jet, tab10, rainbow, hsv, plasma)                                     |
 | dpi                | <num>            | Resolution of file in dots per inch                                   |
@@ -32,6 +34,7 @@ Following *options** can be selected:
 | elinewidth         | <num>            | Line width of error bar                                               |
 | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
 | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
+| fontsize           | <num>            | Fontsize of title, axis labels and legend                             |
 | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                   |
 | grid               | <True|False>     | Plot grid                                                             |
 | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both   |
@@ -57,9 +60,9 @@ Following *options** can be selected:
 |                    |                  | both'.                                                                |
 | title              | <text>           | Main title of subplots                                                |
 | xlabelrotation     | <num>            | Define x-axis label rotation                                          |
-| xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
-|                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
-|                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
+| xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If   |
+|                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=     |
+|                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.    | 
 | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                     |
 | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels             |
 | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range       |

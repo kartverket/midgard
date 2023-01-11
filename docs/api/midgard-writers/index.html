@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.writers - Midgard v1.2.0</title>
+        <title>midgard.writers - Midgard v1.2.1</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -205,7 +205,7 @@ def write_as_fancy_format(arg_1, arg_2):
 <p>Existing writer fields</p>
 <h3 id="get_field"><strong>get_field</strong>()</h3>
 <p>Full name: <code>midgard.writers._writers.get_field</code></p>
-<p>Signature: <code>(dset: 'Dataset', field: str, attrs: Tuple[str], unit: str) -&gt; numpy.ndarray</code></p>
+<p>Signature: <code>(dset: 'Dataset', field: str, attrs: Tuple[str], unit: Optional[str] = None) -&gt; numpy.ndarray</code></p>
 <p>Get field values of a Dataset specified by the field attributes</p>
 <p>If necessary the unit of the data fields are corrected to the defined 'output' unit.</p>
 <p><strong>Args:</strong></p>

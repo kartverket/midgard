@@ -8,6 +8,9 @@ Base classes for site information.
 
 All the base classes are abstract classes. There are three base classes defined.
 
+TODO: 'Identifier' module has no history information. ModuleBase and SiteInfoBase class are adapted to that. The 
+      question is should it be handled differently. E.g. ModuleBase.get_history() function is not needed from
+      'Identifier' module, but is available.
 
 
 ### **ModuleBase**
@@ -51,12 +54,12 @@ Antenna information classes
 **Description:**
 This module is divided into three different types of classes:
 
-    1. Main class Antenna that provides basic functionality to the user. See examples
+    1. Main class Antenna provides basic functionality to the user. See exampless
     2. Antenna source type classes:
-        - There is one class for each source type
-        - A class with all relevant site coordinate information for a point in time.
+        - There is one class for each source type.
+        - A class with all relevant antenna information for a point in time.
     3. Antenna history source type classes:
-        - There is one class for each source type
+        - There is one class for each source type.
         - Converts input from source_data to a object of type AntennaHistorySinex, etc and provides functions
           for accessing the history and relevant dates. 
         - The history consist of a time interval for which the entry is valid and an instance of an antenna 
@@ -67,10 +70,15 @@ This module is divided into three different types of classes:
 **Example:**
     
     from midgard import parsers
+    from midgard.site_info.antenna import Antenna
+    from datetime import datetime
+    
+    # Read SINEX data  
     p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
     source_data = p.as_dict()
     all_stations = source_data.keys()
-    
+
+    # Get station information    
     Antenna.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
     Antenna.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
     
@@ -112,16 +120,144 @@ Signature: `(station: str, site_info: Dict[str, Any]) -> None`
 Antenna class handling SINEX file antenna station information
 
 
+## midgard.site_info.eccentricity
+Eccentricity information classes
+
+**Description:**
+This module is divided into three different types of classes:
+
+    1. Main class Eccentricity provides basic functionality to the user. See examples.
+    2. Eccentricity source type classes:
+        - There is one class for each source type
+        - A class with all relevant site coordinate information for a point in time.
+    3. Eccentricity history source type classes:
+        - There is one class for each source type
+        - Converts input from source_data to a object of type EccentricityHistorySinex, etc and provides functions
+          for accessing the history and relevant dates. 
+        - The history consist of a time interval for which the entry is valid and an instance of an eccentricity 
+          source type class for each defined time interval.
+
+    If a source type does not contain information about the eccentricity the module will return 'None'.
+
+**Example:**
+    
+    from midgard import parsers
+    from midgard.site_info.eccentricity import Eccentricity
+    from datetime import datetime
+    
+    # Read SINEX data  
+    p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+    source_data = p.as_dict()
+    all_stations = source_data.keys()
+
+    # Get station information
+    Eccentricity.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    Eccentricity.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    
+    Eccentricity.get_history("snx", "osls", source_data, source_path=p.file_path)
+    Eccentricity.get_history("snx", all_stations, source_data, source_path=p.file_path)
+
+
+
+### **Eccentricity**
+
+Full name: `midgard.site_info.eccentricity.Eccentricity`
+
+Signature: `()`
+
+Main class for converting eccentricity information from various sources into unified classes
+
+### **EccentricityHistorySinex**
+
+Full name: `midgard.site_info.eccentricity.EccentricityHistorySinex`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+
+
+### **EccentricityHistorySsc**
+
+Full name: `midgard.site_info.eccentricity.EccentricityHistorySsc`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+
+
+### **EccentricitySinex**
+
+Full name: `midgard.site_info.eccentricity.EccentricitySinex`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Eccentricity class handling SINEX file eccentricity station information
+
+
+## midgard.site_info.identifier
+Identifier information classes
+
+**Description:**
+This module is divided into three different types of classes:
+
+    1. Main class Identifier provides basic functionality to the user. See examples.
+    2. Identifier source type classes:
+        - There is one class for each source type
+        - A class with all relevant site coordinate information for a point in time.
+
+    If a source type does not contain information about the identifier the module will return 'None'.
+
+**Example:**
+    
+    from midgard import parsers
+    from midgard.site_info.identifier import Identifier
+    from datetime import datetime
+    
+    # Read SINEX data  
+    p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+    source_data = p.as_dict()
+    all_stations = source_data.keys()
+
+    # Get station information
+    Identifier.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    Identifier.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    
+
+
+### **Identifier**
+
+Full name: `midgard.site_info.identifier.Identifier`
+
+Signature: `()`
+
+Main class for converting identifier information from various sources into unified classes
+
+### **IdentifierSinex**
+
+Full name: `midgard.site_info.identifier.IdentifierSinex`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+Identifier class handling SINEX file identifier station information
+
+
+### **IdentifierSsc**
+
+Full name: `midgard.site_info.identifier.IdentifierSsc`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+Identifier class handling SSC file identifier station information
+
+
 ## midgard.site_info.receiver
 Receiver information classes
 
 **Description:**
 This module is divided into three different types of classes:
 
-    1. Main class Receiver that provides basic functionality to the user. See examples
+    1. Main class Receiver provides basic functionality to the user. See examples.
     2. Receiver source type classes:
         - There is one class for each source type
-        - A class with all relevant site coordinate information for a point in time.
+        - A class with all relevant receiver information for a point in time.
     3. Receiver history source type classes:
         - There is one class for each source type
         - Converts input from source_data to a object of type ReceiverHistorySinex, etc and provides functions
@@ -134,10 +270,15 @@ This module is divided into three different types of classes:
 **Example:**
     
     from midgard import parsers
+    from midgard.site_info.receiver import Receiver
+    from datetime import datetime
+    
+    # Read SINEX data  
     p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
     source_data = p.as_dict()
     all_stations = source_data.keys()
     
+    # Get station information
     Receiver.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
     Receiver.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
     
@@ -185,12 +326,12 @@ Site cooridnate information classes
 **Description:**
 This module is divided into three different types of classes:
 
-    1. Main class SiteCoord that provides basic functionality to the user. See examples
+    1. Main class SiteCoord provides basic functionality to the user. See exampless
     2. Site coordinate source type classes:
-        - There is one class for each source type
+        - There is one class for each source type.
         - A class with all relevant site coordinate information for a point in time.
     3. Site coordinate history source type classes:
-        - There is one class for each source type
+        - There is one class for each source type.
         - Converts input from source_data to a object of type SiteCoordHistorySinex, etc and provides functions
           for accessing the history and relevant dates. 
         - The history consist of a time interval for which the entry is valid and an instance of a site coordinate 
@@ -202,6 +343,7 @@ This module is divided into three different types of classes:
     
     from midgard import parsers
     from midgard.site_info.site_coord import SiteCoord
+    from datetime import datetime
 
     # Read SINEX data    
     p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
@@ -261,22 +403,28 @@ Site coordinate class handling SSC file station coordinate information
 ## midgard.site_info.site_info
 Module that provides site information as unified objects independent of source. 
 
-Site information consists of antenna and receiver information and coordinates for a station.
-If a source type does not contain information about the antenna, receiver or coordinate the 
-corresponding entry will be set to 'None'.
+**Description:**
 
-Example:
+Site information consists of antenna, eccentricity and receiver information and coordinates 
+for a station. If a source type does not contain information about the antenna, receiver or 
+coordinate the corresponding entry will be set to 'None'.
 
-from midgard import parsers
-p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
-source_data = p.as_dict()
-all_stations = source_data.keys()
 
-SiteInfo.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
-SiteInfo.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+**Example:**
 
-SiteInfo.get_history("snx", "osls", source_data, source_path=p.file_path)
-SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)
+    from midgard import parsers
+    from midgard.site_info.site_info import SiteInfo
+    from datetime import datetime
+    
+    p = parsers.parse_file(parser_name='sinex_site', file_path='./data/site_info/igs.snx')
+    source_data = p.as_dict()
+    all_stations = source_data.keys()
+    
+    SiteInfo.get("snx", "osls", datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    SiteInfo.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_path=p.file_path)
+    
+    SiteInfo.get_history("snx", "osls", source_data, source_path=p.file_path)
+    SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)
 
 **Description:**
 

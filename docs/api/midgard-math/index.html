@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.math - Midgard v1.2.0</title>
+        <title>midgard.math - Midgard v1.2.1</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -156,6 +156,21 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#import-midgard-linearregression-class-of-linear_regression-module" class="nav-link">Import Midgard LinearRegression class of linear_regression module</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#generate-linearregression-object" class="nav-link">Generate LinearRegression object</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#get-solution" class="nav-link">Get solution</a>
+              <ul class="nav flex-column">
             <li class="nav-item" data-level="2"><a href="#midgardmathnputil" class="nav-link">midgard.math.nputil</a>
               <ul class="nav flex-column">
               </ul>
@@ -413,11 +428,39 @@ finding the closest original point and essentially picking the <code>window // 2
 <p>Same function.</p>
 <h2 id="midgardmathlinear_regression">midgard.math.linear_regression</h2>
 <p>Midgard library module for linear regression</p>
-<p><strong>Description:</strong></p>
+<p><strong>Description:</strong>
+The 'statsmodels' module is used for the linear regression. Outlier can be rejected beside normal linear regression 
+analysis. Hereby a linear regression analysis is carried out, whereby a linear trend is estimated of the given data.
+The root-mean square (RMS) of the residuals (observation - linear trend) is used to detect outliers. As default
+the following outlier limit is defined: </p>
+<pre><code>limit = outlier_limit_factor * RMS   (with outlier_limit_factor=1.0)
+</code></pre>
+<p>The 'outlier_limit_factor' can be chosen as argument by initialization of a LinearRegression class object. In addition
+the number of iteration for the outlier detection can be chosen with the argument 'outlier_iteration'.</p>
+<p><strong>Example:</strong></p>
+<h1 id="import-midgard-linearregression-class-of-linear_regression-module">Import Midgard LinearRegression class of linear_regression module</h1>
+<p>from midgard.math.linear_regression import LinearRegression</p>
+<h1 id="generate-linearregression-object">Generate LinearRegression object</h1>
+<p>linreg = LinearRegression(x,y)</p>
+<h1 id="get-solution">Get solution</h1>
+<p>interception = linreg.interception
+slope = linreg.slope</p>
 <h3 id="linearregression"><strong>LinearRegression</strong></h3>
 <p>Full name: <code>midgard.math.linear_regression.LinearRegression</code></p>
-<p>Signature: <code>(x: numpy.ndarray, y: numpy.ndarray) -&gt; None</code></p>
-<p>LinearRegression(x: numpy.ndarray, y: numpy.ndarray)</p>
+<p>Signature: <code>(x: Union[numpy.ndarray, list], y: Union[numpy.ndarray, list], reject_outlier: bool = False, outlier_limit_factor: float = 1.0, outlier_iteration: int = 1) -&gt; None</code></p>
+<p>Linear regression class</p>
+<p>Following arguments can be chosen by initialization of LinearRegression class objects:</p>
+<pre><code>| Arguments             | Type       | Description                                                           |
+|:----------------------| :----------| :---------------------------------------------------------------------|
+| outlier_limit_factor  | float      | RMS of residuals are used for detecting outliers, whereby             |
+|                       |            | 'outlier_limit_factor' * 'RMS' is used as limit. As default is        |
+|                       |            | 'outlier_limit_factor' = 1.0 chosen.                                  |
+| outlier_iteration     | int        | Number of iteration used to detect and reject outliers. Default is 1. |
+| reject_outlier        | bool       | Determine if outliers should be detected and rejected. Default is     |
+|                       |            | 'False', which means that no outliers are rejected.                   |
+| x                     | np.ndarray | X training data                                                       |
+| y                     | np.ndarray | Y target data                                                         |
+</code></pre>
 <h2 id="midgardmathnputil">midgard.math.nputil</h2>
 <p>Utility wrapper for numpy functions</p>
 <p>Makes sure numpy functions can be called in a similar fashion for different use cases
@@ -789,8 +832,6 @@ current (midgard/math) directory.</p>
 <p>Signature: <code>(from_unit: str, to_unit: Optional[str] = None) -&gt; Any</code></p>
 <p>Unit converter</p>
 <p>The implementation of the unit conversion is done in the <code>_convert_units</code>-metaclass.</p>
-<h3 id="fid-textiowrapper">fid (TextIOWrapper)</h3>
-<p><code>fid = &lt;_io.TextIOWrapper name='/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/unit.txt' encoding='utf-8'&gt;</code></p>
 <h3 id="np_float-typevar_1">np_float (TypeVar)</h3>
 <p><code>np_float = ~np_float</code></p></div>
             </div>

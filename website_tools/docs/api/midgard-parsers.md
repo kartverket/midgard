@@ -157,9 +157,10 @@ The end_marker, label, skip_line and end_callback parameters should all be funct
 The parser definition `parser_def` includes the `parser`, `field`, `strip` and `delimiter` entries. The `parser`
 entry points to the parser function and the `field` entry defines how to separate the line in fields. The separated
 fields are saved either in a dictionary or in a list. In the last case the line is split on whitespace by
-default. With the `delimiter` entry the default definition can be overwritten. Leading and trailing whitespace
-characters are removed by default before a line is parsed.  This default can be overwritten by defining the
-characters, which should be removed with the 'strip' entry. The `parser` dictionary is defined like:
+default. With the `delimiter` entry the default definition can be overwritten, whereby also regular expressions can
+be used (like '\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default 
+before a line is parsed.  This default can be overwritten by defining the characters, which should be removed with 
+the 'strip' entry. The `parser` dictionary is defined like:
 
     parser_def = { <label>: {'fields':    <dict or list of fields>,
                              'parser':    <parser function>,
@@ -794,6 +795,60 @@ and **meta**-data:
 | \__parser_name__     | Parser name                                                                          |
 
 
+## midgard.parsers.bernese_sta
+A parser for reading station information in Bernese STA format
+
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_sta', file_path='NKG.STA')
+    data = p.as_dict()
+
+**Description:**
+
+Reads station information from files in STA format, whereby at the moment only the 'STATION INFORMATION' part is
+parsed.
+
+
+
+### **BerneseStaParser**
+
+Full name: `midgard.parsers.bernese_sta.BerneseStaParser`
+
+Signature: `(*args: Tuple[Any], **kwargs: Dict[Any, Any])`
+
+A parser for reading station information in Bernese STA format
+
+
+The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key and a list with 
+dictionaries. These dictionaries have date period as key and following entries:
+
+| Key                          | Type  |Description                                                         |
+|------------------------------|-------|--------------------------------------------------------------------|
+| antenna_serial_number        | str   | Antenna serial number                                              |
+| antenna_serial_number_short  | str   | 6 last digits of antennna serial number                            |
+| antenna_type                 | str   | Antenna type                                                       |
+| domes                        | str   | Domes number                                                       |
+| description                  | str   | Description normally with station name and country code            |
+| eccentricity_east            | float | East component of eccentricity in [m]                              |
+| eccentricity_north           | float | North component of eccentricity in [m]                             |
+| eccentricity_up              | float | Up component of eccentricity in [m]                                |
+| flag                         | str   | Flag number                                                        |
+| radome                       | str   | Antenna radome type                                                |
+| receiver_serial_number       | str   | Receiver serial number                                             |
+| receiver_serial_number_short | str   | 6 last digits of receiver serial number                            |
+| receiver_type                | str   | Receiver type                                                      |
+| remark                       | str   | Remark                                                             |
+
+and **meta**-data:
+
+| Key                  | Description                                                                        |
+|----------------------|------------------------------------------------------------------------------------|
+| \__data_path__       | File path                                                                          |
+| \__parser_name__     | Parser name                                                                        |
+
+
 ## midgard.parsers.bernese_trp
 A parser for reading troposphere files in Bernese TRP format
 
@@ -926,50 +981,6 @@ Following **meta**-data are available after reading of CSV file:
 | \__parser_name__     | Parser name                                                                          |
 
 
-## midgard.parsers.discontinuities_snx
-A parser for reading data from discontinuities.snx in SINEX format
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='discontinuities_snx', file_path='discontinuities_snx')
-    data = p.as_dict()
-
-**Description:**
-
-Reads discontinuities of GNSS station timeseries in SINEX format .
-
-
-
-
-### **DiscontinuitiesSnxParser**
-
-Full name: `midgard.parsers.discontinuities_snx.DiscontinuitiesSnxParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
-
-A parser for reading data from discontinuties.snx file in SINEX format
-
-The solution discontinuity dictionary has as keys the site identifiers and as value the 'solution_discontinuity'
-entry. The dictionary has following strucuture:
-
-   self.data[site] = { 'solution_discontinuity':  [] }   # SOLUTION/DISCONTINUITY SINEX block information
-
-with the 'solution_discontinuity' dictionary entries
-
-   solution_discontinuity[ii]     = [ 'point_code':         point_code,
-                                      'soln':               soln,
-                                      'obs_code':           obs_code,
-                                      'start_time':         start_time,
-                                      'end_time':           end_time,
-                                      'event_code':         event_code,
-                                      'description':        description ]
-
-The counter 'ii' ranges from 0 to n and depends on how many discontinuities exists for a site. Note also, that 
-time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
-SINEX file, then the value is saved as 'None' in the Sinex class.
-
-
 ## midgard.parsers.galileo_constellation_html
 A parser for reading Galileo constellation info from a web page
 
@@ -1064,8 +1075,11 @@ Following **data** are available after reading GipsyX `gdcov` output file:
 
 | Key                  | Description                                                                          |
 |----------------------|--------------------------------------------------------------------------------------|
-| column               | Column number of correlations                                                        |
 | correlation          | Correlation values                                                                   |
+| correlation_index1   | Correlation index (1st column)                                                       |
+| correlation_index2   | Correlation index (2nd column)                                                       |
+| estimate             | Parameter estimate at the given time                                                 |
+| estimate_index       | Estimate index                                                                       |
 | parameter            | Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."     |
 |                      | without spaces.                                                                      |
 | row                  | Row number of correlations                                                           |
@@ -1073,7 +1087,7 @@ Following **data** are available after reading GipsyX `gdcov` output file:
 | sigma                | Standard deviation of the parameter.                                                 |
 | time_past_j2000      | Time given in GPS seconds past J2000, whereby GipsyX uses following definition:      |
 |                      | J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.                          |
-| estimate             | Parameter estimate at the given time                                                 |
+
 
 
 and **meta**-data:
@@ -1210,58 +1224,58 @@ Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None
 
 A parser for reading GipsyX summary file
 
-GipsyX summary file **data** are grouped as follows:
+    GipsyX summary file **data** are grouped as follows:
 
-| Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| position              | Dictionary with position summary information                                         |
-| residual              | Dictionary with residual summary information                                         |
-| station               | Station name                                                                         |
+    | Key                   | Description                                                                          |
+    |-----------------------|--------------------------------------------------------------------------------------|
+    | position              | Dictionary with position summary information                                         |
+    | residual              | Dictionary with residual summary information                                         |
+    | station               | Station name                                                                         |
 
-**position** entries are:
+    **position** entries are:
 
-| Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| pos_x                 | X-coordinate of station position solution                                            |
-| pos_y                 | Y-coordinate of station position solution                                            |
-| pos_z                 | Z-coordinate of station position solution                                            |
-| pos_vs_ref_x          | X-coordinate of difference between solution and reference of station coordinate      |
-| pos_vs_ref_y          | Y-coordinate of difference between solution and reference of station coordinate      |
-| pos_vs_ref_z          | Z-coordinate of difference between solution and reference of station coordinate      |
-| pos_vs_ref_e          | East-coordinate of difference between solution and reference of station coordinate   |
-| pos_vs_ref_n          | North-coordinate of difference between solution and reference of station coordinate  |
-| pos_vs_ref_v          | Vertical-coordinate of difference between solution and reference of station          |
-|                       | coordinate                                                                           |
-
-
-**residual** entries are:
-
-| Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| code_max              | Maximal residual of used pseudo-range observations                                   |
-| code_min              | Minimal residual of used pseudo-range observations                                   |
-| code_num              | Number of used pseudo-range observations                                             |
-| code_rms              | RMS of residuals from used pseudo-range observations                                 |
-| code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
-| code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
-| code_outlier_num      | Number of rejected pseudo-range observations                                         |
-| code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
-| phase_max             | Maximal residual of used phase observations                                          |
-| phase_min             | Minimal residual of used phase observations                                          |
-| phase_num             | Number of used phase observations                                                    |
-| phase_rms             | RMS of residuals from used phase observations                                        |
-| phase_outlier_max     | Maximal residual of rejected phase observations                                      |
-| phase_outlier_min     | Minimal residual of rejected phase observations                                      |
-| phase_outlier_num     | Number of rejected phase observations                                                |
-| phase_outlier_rms     | RMS of residuals from rejected phase observations                                    |
+    | Key                   | Description                                                                          |
+    |-----------------------|--------------------------------------------------------------------------------------|
+    | pos_x                 | X-coordinate of station position solution                                            |
+    | pos_y                 | Y-coordinate of station position solution                                            |
+    | pos_z                 | Z-coordinate of station position solution                                            |
+    | pos_vs_ref_x          | X-coordinate of difference between solution and reference of station coordinate      |
+    | pos_vs_ref_y          | Y-coordinate of difference between solution and reference of station coordinate      |
+    | pos_vs_ref_z          | Z-coordinate of difference between solution and reference of station coordinate      |
+    | pos_vs_ref_e          | East-coordinate of difference between solution and reference of station coordinate   |
+    | pos_vs_ref_n          | North-coordinate of difference between solution and reference of station coordinate  |
+    | pos_vs_ref_v          | Vertical-coordinate of difference between solution and reference of station          |
+    |                       | coordinate                                                                           |
 
 
-and **meta**-data:
+    **residual** entries are:
 
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+    | Key                   | Description                                                                          |
+    |-----------------------|--------------------------------------------------------------------------------------|
+    | code_max              | Maximal residual of used pseudo-range observations                                   |
+    | code_min              | Minimal residual of used pseudo-range observations                                   |
+    | code_num              | Number of used pseudo-range observations                                             |
+    | code_rms              | RMS of residuals from used pseudo-range observations                                 |
+    | code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
+    | code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
+    | code_outlier_num      | Number of rejected pseudo-range observations                                         |
+    | code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
+    | phase_max             | Maximal residual of used phase observations                                          |
+    | phase_min             | Minimal residual of used phase observations                                          |
+    | phase_num             | Number of used phase observations                                                    |
+    | phase_rms             | RMS of residuals from used phase observations                                        |
+    | phase_outlier_max     | Maximal residual of rejected phase observations                                      |
+    | phase_outlier_min     | Minimal residual of rejected phase observations                                      |
+    | phase_outlier_num     | Number of rejected phase observations                                                |
+    | phase_outlier_rms     | RMS of residuals from rejected phase observations                                    |
+
+
+    and **meta**-data:
+summary, tdp,
+    | Key                  | Description                                                                          |
+    |----------------------|--------------------------------------------------------------------------------------|
+    | \__data_path__       | File path                                                                            |
+    | \__parser_name__     | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_tdp
@@ -1431,87 +1445,6 @@ and **meta**-data:
 | \__data_path__       | File path                                                                            |
 | \__params__          | np.genfromtxt parameters                                                             |
 | \__parser_name__     | Parser name                                                                          |
-
-
-## midgard.parsers.gnss_sinex_igs
-A parser for reading data from igs.snx file based on IGS sitelog files in SINEX format
-
-**Example:**
-
-    from midgard import parsers
-    p = parsers.parse_file(parser_name='gnss_sinex_igs', file_path='igs.snx')
-    data = p.as_dict()
-
-**Description:**
-
-Reads station information (e.g. approximated station coordinates, receiver and antenna type, station eccentricities,
-...) igs.snx file in SINEX format.
-
-
-
-
-### **IgsSnxParser**
-
-Full name: `midgard.parsers.gnss_sinex_igs.IgsSnxParser`
-
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
-
-A parser for reading data from igs.snx file based on IGS sitelog files in SINEX format
-
-site - Site dictionary, whereby keys are the site identifiers and values are a site entry
-       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id' and 'site_receiver'. The
-       site dictionary has following structure:
-
-          self.site[site] = { 'site_antenna':          [],  # SITE/ANTENNA SINEX block information
-                              'site_eccentricity':     [],  # SITE/ECCENTRICITY block information
-                              'site_id':               {},  # SITE/ID block information
-                              'site_receiver':         [],  # SITE/RECEIVER block information }
-
-       with the site entry dictionary entries
-
-          site_antenna[ii]      = { 'point_code':         point_code,
-                                    'soln':               soln,
-                                    'obs_code':           obs_code,
-                                    'start_time':         start_time,
-                                    'end_time':           end_time,
-                                    'antenna_type':       antenna_type,
-                                    'radome_type':        radome_type,
-                                    'serial_number':      serial_number }
-
-          site_eccentricity[ii] = { 'point_code':         point_code,
-                                    'soln':               soln,
-                                    'obs_code':           obs_code,
-                                    'start_time':         start_time,
-                                    'end_time':           end_time,
-                                    'reference_system':   reference_system,
-                                    'vector_1':           vector_1,
-                                    'vector_2':           vector_2,
-                                    'vector_3':           vector_3,
-                                    'vector_type':        UNE }
-
-          site_id               = { 'point_code':         point_code,
-                                    'domes':              domes,
-                                    'marker':             marker,
-                                    'obs_code':           obs_code,
-                                    'description':        description,
-                                    'approx_lon':         approx_lon,
-                                    'approx_lat':         approx_lat,
-                                    'approx_height':      approx_height }
-
-          site_receiver[ii]     = { 'point_code':         point_code,
-                                    'soln':               soln,
-                                    'obs_code':           obs_code,
-                                    'start_time':         start_time,
-                                    'end_time':           end_time,
-                                    'receiver_type':      receiver_type,
-                                    'serial_number':      serial_number,
-                                    'firmware':           firmware }
-
-       The counter 'ii' ranges from 0 to n and depends on how many antenna type, receiver type and
-       antenna monument changes were done at each site. Note also, that time entries (e.g. start_time,
-       end_time) are given in Modified Julian Date. If the time is defined as 00:000:00000 in the SINEX
-       file, then the value is saved as 'None' in the Sinex class.
-
 
 
 ## midgard.parsers.gnssrefl_allrh
@@ -2033,6 +1966,94 @@ used.
 file_path (pathlib.PosixPath):  File path to broadcast orbit file.
 
 
+## midgard.parsers.sinex_discontinuities
+A parser for reading data from discontinuities.snx in SINEX format
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='discontinuities_snx', file_path='discontinuities_snx')
+    data = p.as_dict()
+
+**Description:**
+
+Reads discontinuities of GNSS station timeseries in SINEX format .
+
+
+
+
+### **DiscontinuitiesSnxParser**
+
+Full name: `midgard.parsers.sinex_discontinuities.DiscontinuitiesSnxParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
+
+A parser for reading data from discontinuties.snx file in SINEX format
+
+The solution discontinuity dictionary has as keys the site identifiers and as value the 'solution_discontinuity'
+entry. The dictionary has following strucuture:
+
+   self.data[site] = { 'solution_discontinuity':  [] }   # SOLUTION/DISCONTINUITY SINEX block information
+
+with the 'solution_discontinuity' dictionary entries
+
+   solution_discontinuity[ii]     = [ 'point_code':         point_code,
+                                      'soln':               soln,
+                                      'obs_code':           obs_code,
+                                      'start_time':         start_time,
+                                      'end_time':           end_time,
+                                      'event_code':         event_code,
+                                      'description':        description ]
+
+The counter 'ii' ranges from 0 to n and depends on how many discontinuities exists for a site. Note also, that 
+time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
+SINEX file, then the value is saved as 'None' in the Sinex class.
+
+
+## midgard.parsers.sinex_events
+A parser for reading data from events.snx in SINEX format
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='events_snx', file_path='events_snx')
+    data = p.as_dict()
+
+**Description:**
+
+Reads events related to GNSS configuration, environment changes or station timeseries data problems in SINEX format .
+
+
+
+
+### **EventsSnxParser**
+
+Full name: `midgard.parsers.sinex_events.EventsSnxParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
+
+A parser for reading data from events.snx file in SINEX format
+
+The solution events dictionary has as keys the site identifiers and as value the 'solution_event'
+entry. The dictionary has following strucuture:
+
+   self.data[site] = { 'solution_event':  [] }   # SOLUTION/EVENT SINEX block information
+
+with the 'solution_event' dictionary entries
+
+   solution_event[ii]    = [ 'point_code':         point_code,
+                             'soln':               soln,
+                             'obs_code':           obs_code,
+                             'start_time':         start_time,
+                             'end_time':           end_time,
+                             'event_code':         event_code,
+                             'description':        description ]
+
+The counter 'ii' ranges from 0 to n and depends on how many events exists for a site. Note also, that 
+time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
+SINEX file, then the value is saved as 'None' in the Sinex class.
+
+
 ## midgard.parsers.sinex_site
 A parser for reading site related information from SINEX format
 
@@ -2082,7 +2103,8 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
 
        with the site entry dictionary entries
 
-          site_antenna[ii]      = { 'point_code':         point_code,
+          site_antenna[ii]      = { 'site_code':          site_code,
+                                    'point_code':         point_code,
                                     'soln':               soln,
                                     'obs_code':           obs_code,
                                     'start_time':         start_time,
@@ -2091,18 +2113,19 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
                                     'radome_type':        radome_type,
                                     'serial_number':      serial_number }
 
-          site_eccentricity[ii] = { 'point_code':         point_code,
+          site_eccentricity[ii] = { 'site_code':          site_code,
+                                    'point_code':         point_code,
                                     'soln':               soln,
                                     'obs_code':           obs_code,
                                     'start_time':         start_time,
                                     'end_time':           end_time,
-                                    'reference_system':   reference_system,
                                     'vector_1':           vector_1,
                                     'vector_2':           vector_2,
                                     'vector_3':           vector_3,
                                     'vector_type':        UNE }
 
-          site_id               = { 'point_code':         point_code,
+          site_id               = { 'site_code':          site_code,
+                                    'point_code':         point_code,
                                     'domes':              domes,
                                     'marker':             marker,
                                     'obs_code':           obs_code,
@@ -2111,7 +2134,8 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
                                     'approx_lat':         approx_lat,
                                     'approx_height':      approx_height }
 
-          site_receiver[ii]     = { 'point_code':         point_code,
+          site_receiver[ii]     = { 'site_code':          site_code,
+                                    'point_code':         point_code,
                                     'soln':               soln,
                                     'obs_code':           obs_code,
                                     'start_time':         start_time,
@@ -2120,7 +2144,8 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
                                     'serial_number':      serial_number,
                                     'firmware':           firmware }
 
-          solution_epochs[ii]   = { 'point_code':         point_code,
+          solution_epochs[ii]   = { 'site_code':          site_code,
+                                    'point_code':         point_code,
                                     'soln':               soln,
                                     'obs_code':           obs_code,
                                     'start_epoch':        start_epoch,
@@ -2130,6 +2155,7 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
           solution_estimate[ii] = { 'param_idx':          param_idx,
                                     'param_name':         param_name,
                                     'point_code':         point_code,
+                                    'site_code':          site_code,
                                     'soln':               soln,
                                     'ref_epoch':          ref_epoch,
                                     'unit':               unit,
@@ -2271,7 +2297,7 @@ Reads data from files in Terrapos position output format.
 
 Full name: `midgard.parsers.terrapos_position.TerraposPositionParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(*args: Tuple[Any], station: Optional[str] = None, **kwargs: Dict[Any, Any]) -> None`
 
 A parser for reading Terrapos position output file
 

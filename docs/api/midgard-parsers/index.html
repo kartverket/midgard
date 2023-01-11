@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v1.2.0</title>
+        <title>midgard.parsers - Midgard v1.2.1</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -192,6 +192,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_sta" class="nav-link">midgard.parsers.bernese_sta</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_trp" class="nav-link">midgard.parsers.bernese_trp</a>
               <ul class="nav flex-column">
               </ul>
@@ -201,10 +205,6 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparserscsv_" class="nav-link">midgard.parsers.csv_</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersdiscontinuities_snx" class="nav-link">midgard.parsers.discontinuities_snx</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -245,10 +245,6 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersgnss_galat_results" class="nav-link">midgard.parsers.gnss_galat_results</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgnss_sinex_igs" class="nav-link">midgard.parsers.gnss_sinex_igs</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -296,6 +292,14 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersrinex_nav" class="nav-link">midgard.parsers.rinex_nav</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_discontinuities" class="nav-link">midgard.parsers.sinex_discontinuities</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_events" class="nav-link">midgard.parsers.sinex_events</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -502,9 +506,10 @@ end_callback = func(cache)
 <p>The parser definition <code>parser_def</code> includes the <code>parser</code>, <code>field</code>, <code>strip</code> and <code>delimiter</code> entries. The <code>parser</code>
 entry points to the parser function and the <code>field</code> entry defines how to separate the line in fields. The separated
 fields are saved either in a dictionary or in a list. In the last case the line is split on whitespace by
-default. With the <code>delimiter</code> entry the default definition can be overwritten. Leading and trailing whitespace
-characters are removed by default before a line is parsed.  This default can be overwritten by defining the
-characters, which should be removed with the 'strip' entry. The <code>parser</code> dictionary is defined like:</p>
+default. With the <code>delimiter</code> entry the default definition can be overwritten, whereby also regular expressions can
+be used (like '\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default 
+before a line is parsed.  This default can be overwritten by defining the characters, which should be removed with 
+the 'strip' entry. The <code>parser</code> dictionary is defined like:</p>
 <pre><code>parser_def = { &lt;label&gt;: {'fields':    &lt;dict or list of fields&gt;,
                          'parser':    &lt;parser function&gt;,
                          'delimiter': &lt;optional delimiter for splitting line&gt;,
@@ -1518,6 +1523,122 @@ related data are saved in a dictionary with following keys:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="midgardparsersbernese_sta">midgard.parsers.bernese_sta</h2>
+<p>A parser for reading station information in Bernese STA format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_sta', file_path='NKG.STA')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads station information from files in STA format, whereby at the moment only the 'STATION INFORMATION' part is
+parsed.</p>
+<h3 id="bernesestaparser"><strong>BerneseStaParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_sta.BerneseStaParser</code></p>
+<p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any])</code></p>
+<p>A parser for reading station information in Bernese STA format</p>
+<p>The parsed data are saved in variable <strong>data</strong> as a dictionay with 4-digit station name as key and a list with 
+dictionaries. These dictionaries have date period as key and following entries:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>antenna_serial_number</td>
+<td>str</td>
+<td>Antenna serial number</td>
+</tr>
+<tr>
+<td>antenna_serial_number_short</td>
+<td>str</td>
+<td>6 last digits of antennna serial number</td>
+</tr>
+<tr>
+<td>antenna_type</td>
+<td>str</td>
+<td>Antenna type</td>
+</tr>
+<tr>
+<td>domes</td>
+<td>str</td>
+<td>Domes number</td>
+</tr>
+<tr>
+<td>description</td>
+<td>str</td>
+<td>Description normally with station name and country code</td>
+</tr>
+<tr>
+<td>eccentricity_east</td>
+<td>float</td>
+<td>East component of eccentricity in [m]</td>
+</tr>
+<tr>
+<td>eccentricity_north</td>
+<td>float</td>
+<td>North component of eccentricity in [m]</td>
+</tr>
+<tr>
+<td>eccentricity_up</td>
+<td>float</td>
+<td>Up component of eccentricity in [m]</td>
+</tr>
+<tr>
+<td>flag</td>
+<td>str</td>
+<td>Flag number</td>
+</tr>
+<tr>
+<td>radome</td>
+<td>str</td>
+<td>Antenna radome type</td>
+</tr>
+<tr>
+<td>receiver_serial_number</td>
+<td>str</td>
+<td>Receiver serial number</td>
+</tr>
+<tr>
+<td>receiver_serial_number_short</td>
+<td>str</td>
+<td>6 last digits of receiver serial number</td>
+</tr>
+<tr>
+<td>receiver_type</td>
+<td>str</td>
+<td>Receiver type</td>
+</tr>
+<tr>
+<td>remark</td>
+<td>str</td>
+<td>Remark</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardparsersbernese_trp">midgard.parsers.bernese_trp</h2>
 <p>A parser for reading troposphere files in Bernese TRP format</p>
 <p><strong>Example:</strong></p>
@@ -1641,33 +1762,6 @@ dictionary are represented by the CSV colum values.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="midgardparsersdiscontinuities_snx">midgard.parsers.discontinuities_snx</h2>
-<p>A parser for reading data from discontinuities.snx in SINEX format</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='discontinuities_snx', file_path='discontinuities_snx')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads discontinuities of GNSS station timeseries in SINEX format .</p>
-<h3 id="discontinuitiessnxparser"><strong>DiscontinuitiesSnxParser</strong></h3>
-<p>Full name: <code>midgard.parsers.discontinuities_snx.DiscontinuitiesSnxParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
-<p>A parser for reading data from discontinuties.snx file in SINEX format</p>
-<p>The solution discontinuity dictionary has as keys the site identifiers and as value the 'solution_discontinuity'
-entry. The dictionary has following strucuture:</p>
-<p>self.data[site] = { 'solution_discontinuity':  [] }   # SOLUTION/DISCONTINUITY SINEX block information</p>
-<p>with the 'solution_discontinuity' dictionary entries</p>
-<p>solution_discontinuity[ii]     = [ 'point_code':         point_code,
-                                      'soln':               soln,
-                                      'obs_code':           obs_code,
-                                      'start_time':         start_time,
-                                      'end_time':           end_time,
-                                      'event_code':         event_code,
-                                      'description':        description ]</p>
-<p>The counter 'ii' ranges from 0 to n and depends on how many discontinuities exists for a site. Note also, that 
-time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
-SINEX file, then the value is saved as 'None' in the Sinex class.</p>
 <h2 id="midgardparsersgalileo_constellation_html">midgard.parsers.galileo_constellation_html</h2>
 <p>A parser for reading Galileo constellation info from a web page</p>
 <p>See https://www.gsc-europa.eu/system-status/Constellation-Information for an example</p>
@@ -1781,12 +1875,24 @@ data = p.as_dict()
 </thead>
 <tbody>
 <tr>
-<td>column</td>
-<td>Column number of correlations</td>
-</tr>
-<tr>
 <td>correlation</td>
 <td>Correlation values</td>
+</tr>
+<tr>
+<td>correlation_index1</td>
+<td>Correlation index (1st column)</td>
+</tr>
+<tr>
+<td>correlation_index2</td>
+<td>Correlation index (2nd column)</td>
+</tr>
+<tr>
+<td>estimate</td>
+<td>Parameter estimate at the given time</td>
+</tr>
+<tr>
+<td>estimate_index</td>
+<td>Estimate index</td>
 </tr>
 <tr>
 <td>parameter</td>
@@ -1815,10 +1921,6 @@ data = p.as_dict()
 <tr>
 <td></td>
 <td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
-</tr>
-<tr>
-<td>estimate</td>
-<td>Parameter estimate at the given time</td>
 </tr>
 </tbody>
 </table>
@@ -2056,174 +2158,59 @@ data = p.as_dict()
 <p>Full name: <code>midgard.parsers.gipsyx_summary.GipsyxSummary</code></p>
 <p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX summary file</p>
-<p>GipsyX summary file <strong>data</strong> are grouped as follows:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>position</td>
-<td>Dictionary with position summary information</td>
-</tr>
-<tr>
-<td>residual</td>
-<td>Dictionary with residual summary information</td>
-</tr>
-<tr>
-<td>station</td>
-<td>Station name</td>
-</tr>
-</tbody>
-</table>
-<p><strong>position</strong> entries are:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pos_x</td>
-<td>X-coordinate of station position solution</td>
-</tr>
-<tr>
-<td>pos_y</td>
-<td>Y-coordinate of station position solution</td>
-</tr>
-<tr>
-<td>pos_z</td>
-<td>Z-coordinate of station position solution</td>
-</tr>
-<tr>
-<td>pos_vs_ref_x</td>
-<td>X-coordinate of difference between solution and reference of station coordinate</td>
-</tr>
-<tr>
-<td>pos_vs_ref_y</td>
-<td>Y-coordinate of difference between solution and reference of station coordinate</td>
-</tr>
-<tr>
-<td>pos_vs_ref_z</td>
-<td>Z-coordinate of difference between solution and reference of station coordinate</td>
-</tr>
-<tr>
-<td>pos_vs_ref_e</td>
-<td>East-coordinate of difference between solution and reference of station coordinate</td>
-</tr>
-<tr>
-<td>pos_vs_ref_n</td>
-<td>North-coordinate of difference between solution and reference of station coordinate</td>
-</tr>
-<tr>
-<td>pos_vs_ref_v</td>
-<td>Vertical-coordinate of difference between solution and reference of station</td>
-</tr>
-<tr>
-<td></td>
-<td>coordinate</td>
-</tr>
-</tbody>
-</table>
-<p><strong>residual</strong> entries are:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>code_max</td>
-<td>Maximal residual of used pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_min</td>
-<td>Minimal residual of used pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_num</td>
-<td>Number of used pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_rms</td>
-<td>RMS of residuals from used pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_outlier_max</td>
-<td>Maximal residual of rejected pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_outlier_min</td>
-<td>Minimal residual of rejected pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_outlier_num</td>
-<td>Number of rejected pseudo-range observations</td>
-</tr>
-<tr>
-<td>code_outlier_rms</td>
-<td>RMS of residuals from rejected pseudo-range observations</td>
-</tr>
-<tr>
-<td>phase_max</td>
-<td>Maximal residual of used phase observations</td>
-</tr>
-<tr>
-<td>phase_min</td>
-<td>Minimal residual of used phase observations</td>
-</tr>
-<tr>
-<td>phase_num</td>
-<td>Number of used phase observations</td>
-</tr>
-<tr>
-<td>phase_rms</td>
-<td>RMS of residuals from used phase observations</td>
-</tr>
-<tr>
-<td>phase_outlier_max</td>
-<td>Maximal residual of rejected phase observations</td>
-</tr>
-<tr>
-<td>phase_outlier_min</td>
-<td>Minimal residual of rejected phase observations</td>
-</tr>
-<tr>
-<td>phase_outlier_num</td>
-<td>Number of rejected phase observations</td>
-</tr>
-<tr>
-<td>phase_outlier_rms</td>
-<td>RMS of residuals from rejected phase observations</td>
-</tr>
-</tbody>
-</table>
-<p>and <strong>meta</strong>-data:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__data_path__</td>
-<td>File path</td>
-</tr>
-<tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
-</tr>
-</tbody>
-</table>
+<pre><code>GipsyX summary file **data** are grouped as follows:
+
+| Key                   | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| position              | Dictionary with position summary information                                         |
+| residual              | Dictionary with residual summary information                                         |
+| station               | Station name                                                                         |
+
+**position** entries are:
+
+| Key                   | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| pos_x                 | X-coordinate of station position solution                                            |
+| pos_y                 | Y-coordinate of station position solution                                            |
+| pos_z                 | Z-coordinate of station position solution                                            |
+| pos_vs_ref_x          | X-coordinate of difference between solution and reference of station coordinate      |
+| pos_vs_ref_y          | Y-coordinate of difference between solution and reference of station coordinate      |
+| pos_vs_ref_z          | Z-coordinate of difference between solution and reference of station coordinate      |
+| pos_vs_ref_e          | East-coordinate of difference between solution and reference of station coordinate   |
+| pos_vs_ref_n          | North-coordinate of difference between solution and reference of station coordinate  |
+| pos_vs_ref_v          | Vertical-coordinate of difference between solution and reference of station          |
+|                       | coordinate                                                                           |
+
+
+**residual** entries are:
+
+| Key                   | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| code_max              | Maximal residual of used pseudo-range observations                                   |
+| code_min              | Minimal residual of used pseudo-range observations                                   |
+| code_num              | Number of used pseudo-range observations                                             |
+| code_rms              | RMS of residuals from used pseudo-range observations                                 |
+| code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
+| code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
+| code_outlier_num      | Number of rejected pseudo-range observations                                         |
+| code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
+| phase_max             | Maximal residual of used phase observations                                          |
+| phase_min             | Minimal residual of used phase observations                                          |
+| phase_num             | Number of used phase observations                                                    |
+| phase_rms             | RMS of residuals from used phase observations                                        |
+| phase_outlier_max     | Maximal residual of rejected phase observations                                      |
+| phase_outlier_min     | Minimal residual of rejected phase observations                                      |
+| phase_outlier_num     | Number of rejected phase observations                                                |
+| phase_outlier_rms     | RMS of residuals from rejected phase observations                                    |
+
+
+and **meta**-data:
+</code></pre>
+<p>summary, tdp,
+    | Key                  | Description                                                                          |
+    |----------------------|--------------------------------------------------------------------------------------|
+    | __data_path__       | File path                                                                            |
+    | __parser_name__     | Parser name                                                                          |</p>
 <h2 id="midgardparsersgipsyx_tdp">midgard.parsers.gipsyx_tdp</h2>
 <p>A parser for reading NASA JPL GipsyX time dependent parameter (TDP) file</p>
 <p><strong>Example:</strong></p>
@@ -2451,73 +2438,6 @@ data = p.as_dict()
 </tr>
 </tbody>
 </table>
-<h2 id="midgardparsersgnss_sinex_igs">midgard.parsers.gnss_sinex_igs</h2>
-<p>A parser for reading data from igs.snx file based on IGS sitelog files in SINEX format</p>
-<p><strong>Example:</strong></p>
-<pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='gnss_sinex_igs', file_path='igs.snx')
-data = p.as_dict()
-</code></pre>
-<p><strong>Description:</strong></p>
-<p>Reads station information (e.g. approximated station coordinates, receiver and antenna type, station eccentricities,
-...) igs.snx file in SINEX format.</p>
-<h3 id="igssnxparser"><strong>IgsSnxParser</strong></h3>
-<p>Full name: <code>midgard.parsers.gnss_sinex_igs.IgsSnxParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
-<p>A parser for reading data from igs.snx file based on IGS sitelog files in SINEX format</p>
-<p>site - Site dictionary, whereby keys are the site identifiers and values are a site entry
-       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id' and 'site_receiver'. The
-       site dictionary has following structure:</p>
-<pre><code>      self.site[site] = { 'site_antenna':          [],  # SITE/ANTENNA SINEX block information
-                          'site_eccentricity':     [],  # SITE/ECCENTRICITY block information
-                          'site_id':               {},  # SITE/ID block information
-                          'site_receiver':         [],  # SITE/RECEIVER block information }
-
-   with the site entry dictionary entries
-
-      site_antenna[ii]      = { 'point_code':         point_code,
-                                'soln':               soln,
-                                'obs_code':           obs_code,
-                                'start_time':         start_time,
-                                'end_time':           end_time,
-                                'antenna_type':       antenna_type,
-                                'radome_type':        radome_type,
-                                'serial_number':      serial_number }
-
-      site_eccentricity[ii] = { 'point_code':         point_code,
-                                'soln':               soln,
-                                'obs_code':           obs_code,
-                                'start_time':         start_time,
-                                'end_time':           end_time,
-                                'reference_system':   reference_system,
-                                'vector_1':           vector_1,
-                                'vector_2':           vector_2,
-                                'vector_3':           vector_3,
-                                'vector_type':        UNE }
-
-      site_id               = { 'point_code':         point_code,
-                                'domes':              domes,
-                                'marker':             marker,
-                                'obs_code':           obs_code,
-                                'description':        description,
-                                'approx_lon':         approx_lon,
-                                'approx_lat':         approx_lat,
-                                'approx_height':      approx_height }
-
-      site_receiver[ii]     = { 'point_code':         point_code,
-                                'soln':               soln,
-                                'obs_code':           obs_code,
-                                'start_time':         start_time,
-                                'end_time':           end_time,
-                                'receiver_type':      receiver_type,
-                                'serial_number':      serial_number,
-                                'firmware':           firmware }
-
-   The counter 'ii' ranges from 0 to n and depends on how many antenna type, receiver type and
-   antenna monument changes were done at each site. Note also, that time entries (e.g. start_time,
-   end_time) are given in Modified Julian Date. If the time is defined as 00:000:00000 in the SINEX
-   file, then the value is saved as 'None' in the Sinex class.
-</code></pre>
 <h2 id="midgardparsersgnssrefl_allrh">midgard.parsers.gnssrefl_allrh</h2>
 <p>A parser for reading GNSSREFL reflector height timeseries files</p>
 <p><strong>Example:</strong></p>
@@ -2968,6 +2888,60 @@ parser.write_to_dataset(dset)
 used.</p>
 <p><strong>Args:</strong></p>
 <p>file_path (pathlib.PosixPath):  File path to broadcast orbit file.</p>
+<h2 id="midgardparserssinex_discontinuities">midgard.parsers.sinex_discontinuities</h2>
+<p>A parser for reading data from discontinuities.snx in SINEX format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='discontinuities_snx', file_path='discontinuities_snx')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads discontinuities of GNSS station timeseries in SINEX format .</p>
+<h3 id="discontinuitiessnxparser"><strong>DiscontinuitiesSnxParser</strong></h3>
+<p>Full name: <code>midgard.parsers.sinex_discontinuities.DiscontinuitiesSnxParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
+<p>A parser for reading data from discontinuties.snx file in SINEX format</p>
+<p>The solution discontinuity dictionary has as keys the site identifiers and as value the 'solution_discontinuity'
+entry. The dictionary has following strucuture:</p>
+<p>self.data[site] = { 'solution_discontinuity':  [] }   # SOLUTION/DISCONTINUITY SINEX block information</p>
+<p>with the 'solution_discontinuity' dictionary entries</p>
+<p>solution_discontinuity[ii]     = [ 'point_code':         point_code,
+                                      'soln':               soln,
+                                      'obs_code':           obs_code,
+                                      'start_time':         start_time,
+                                      'end_time':           end_time,
+                                      'event_code':         event_code,
+                                      'description':        description ]</p>
+<p>The counter 'ii' ranges from 0 to n and depends on how many discontinuities exists for a site. Note also, that 
+time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
+SINEX file, then the value is saved as 'None' in the Sinex class.</p>
+<h2 id="midgardparserssinex_events">midgard.parsers.sinex_events</h2>
+<p>A parser for reading data from events.snx in SINEX format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='events_snx', file_path='events_snx')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads events related to GNSS configuration, environment changes or station timeseries data problems in SINEX format .</p>
+<h3 id="eventssnxparser"><strong>EventsSnxParser</strong></h3>
+<p>Full name: <code>midgard.parsers.sinex_events.EventsSnxParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
+<p>A parser for reading data from events.snx file in SINEX format</p>
+<p>The solution events dictionary has as keys the site identifiers and as value the 'solution_event'
+entry. The dictionary has following strucuture:</p>
+<p>self.data[site] = { 'solution_event':  [] }   # SOLUTION/EVENT SINEX block information</p>
+<p>with the 'solution_event' dictionary entries</p>
+<p>solution_event[ii]    = [ 'point_code':         point_code,
+                             'soln':               soln,
+                             'obs_code':           obs_code,
+                             'start_time':         start_time,
+                             'end_time':           end_time,
+                             'event_code':         event_code,
+                             'description':        description ]</p>
+<p>The counter 'ii' ranges from 0 to n and depends on how many events exists for a site. Note also, that 
+time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
+SINEX file, then the value is saved as 'None' in the Sinex class.</p>
 <h2 id="midgardparserssinex_site">midgard.parsers.sinex_site</h2>
 <p>A parser for reading site related information from SINEX format</p>
 <p><strong>Example:</strong></p>
@@ -3005,7 +2979,8 @@ SOLUTION/ESTIMATE dictionary.</p>
 
    with the site entry dictionary entries
 
-      site_antenna[ii]      = { 'point_code':         point_code,
+      site_antenna[ii]      = { 'site_code':          site_code,
+                                'point_code':         point_code,
                                 'soln':               soln,
                                 'obs_code':           obs_code,
                                 'start_time':         start_time,
@@ -3014,18 +2989,19 @@ SOLUTION/ESTIMATE dictionary.</p>
                                 'radome_type':        radome_type,
                                 'serial_number':      serial_number }
 
-      site_eccentricity[ii] = { 'point_code':         point_code,
+      site_eccentricity[ii] = { 'site_code':          site_code,
+                                'point_code':         point_code,
                                 'soln':               soln,
                                 'obs_code':           obs_code,
                                 'start_time':         start_time,
                                 'end_time':           end_time,
-                                'reference_system':   reference_system,
                                 'vector_1':           vector_1,
                                 'vector_2':           vector_2,
                                 'vector_3':           vector_3,
                                 'vector_type':        UNE }
 
-      site_id               = { 'point_code':         point_code,
+      site_id               = { 'site_code':          site_code,
+                                'point_code':         point_code,
                                 'domes':              domes,
                                 'marker':             marker,
                                 'obs_code':           obs_code,
@@ -3034,7 +3010,8 @@ SOLUTION/ESTIMATE dictionary.</p>
                                 'approx_lat':         approx_lat,
                                 'approx_height':      approx_height }
 
-      site_receiver[ii]     = { 'point_code':         point_code,
+      site_receiver[ii]     = { 'site_code':          site_code,
+                                'point_code':         point_code,
                                 'soln':               soln,
                                 'obs_code':           obs_code,
                                 'start_time':         start_time,
@@ -3043,7 +3020,8 @@ SOLUTION/ESTIMATE dictionary.</p>
                                 'serial_number':      serial_number,
                                 'firmware':           firmware }
 
-      solution_epochs[ii]   = { 'point_code':         point_code,
+      solution_epochs[ii]   = { 'site_code':          site_code,
+                                'point_code':         point_code,
                                 'soln':               soln,
                                 'obs_code':           obs_code,
                                 'start_epoch':        start_epoch,
@@ -3053,6 +3031,7 @@ SOLUTION/ESTIMATE dictionary.</p>
       solution_estimate[ii] = { 'param_idx':          param_idx,
                                 'param_name':         param_name,
                                 'point_code':         point_code,
+                                'site_code':          site_code,
                                 'soln':               soln,
                                 'ref_epoch':          ref_epoch,
                                 'unit':               unit,
@@ -3180,7 +3159,7 @@ data = p.as_dict()
 <p>Reads data from files in Terrapos position output format.</p>
 <h3 id="terrapospositionparser"><strong>TerraposPositionParser</strong></h3>
 <p>Full name: <code>midgard.parsers.terrapos_position.TerraposPositionParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(*args: Tuple[Any], station: Optional[str] = None, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
 <p>A parser for reading Terrapos position output file</p>
 <p>Following <strong>data</strong> are available after reading Terrapos position file:</p>
 <table>

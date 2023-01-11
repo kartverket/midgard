@@ -89,7 +89,7 @@ Existing writer fields
 
 Full name: `midgard.writers._writers.get_field`
 
-Signature: `(dset: 'Dataset', field: str, attrs: Tuple[str], unit: str) -> numpy.ndarray`
+Signature: `(dset: 'Dataset', field: str, attrs: Tuple[str], unit: Optional[str] = None) -> numpy.ndarray`
 
 Get field values of a Dataset specified by the field attributes
 
