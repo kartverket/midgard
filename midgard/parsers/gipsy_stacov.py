@@ -83,7 +83,7 @@ class GipsyStacovParser(ChainParser):
             end_marker=lambda line, _ln, _n: False,
             end_callback=lambda line: self._parse_correlation,
             label=lambda line, _ln: bool(re.match("^\d+\s+[A-Za-z0-9]+ [A-Za-z0-9]+", line.strip())),
-            skip_line=lambda line: "PARAMETERS" in line or "ANTENNA" in line,
+            skip_line=lambda line: "PARAMETERS" in line or "ANTENNA" in line or "transformed" in line,
             parser_def={
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----
                 #     1  MLGA STA X         0.510513494339477E+07  +-  0.405932080367999E+00
@@ -147,7 +147,7 @@ class GipsyStacovParser(ChainParser):
     #
     # GENERATE DATASET
     #
-    def as_dataset(self, time: Union["Time", None] = None) -> "Dataset":
+    def as_dataset(self, time: Union[datetime, None] = None) -> "Dataset":
         """Store GipsyX estimates and covariance information in a dataset
         
         Args:
@@ -182,6 +182,10 @@ class GipsyStacovParser(ChainParser):
         #       is used for initializing position field.
         if not time:
             time = Time(datetime.utcnow(), scale="utc", fmt="datetime")
+        else:
+            time = Time(time, scale="utc", fmt="datetime")
+            
+        dset.add_time("time", time)
 
         dset.add_text("station", val=self.data["station"][idx_x])
         dset.add_float("sigma_x", val=self.data["sigma"][idx_x], unit="meter")
@@ -189,7 +193,7 @@ class GipsyStacovParser(ChainParser):
         dset.add_float("sigma_z", val=self.data["sigma"][idx_z], unit="meter")
         dset.add_position(
             "site_pos",
-            time=time,
+            time=dset.time,
             system="trs",
             val=np.squeeze(
                     np.vstack(
