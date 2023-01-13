@@ -32,24 +32,26 @@ class BerneseStaParser(ChainParser):
 
 
     The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key and a list with 
-    dictionaries. These dictionaries have date period as key and following entries:
+    station information dictionaries with following entries:
 
-    | Key                          | Type  |Description                                                         |
-    |------------------------------|-------|--------------------------------------------------------------------|
-    | antenna_serial_number        | str   | Antenna serial number                                              |
-    | antenna_serial_number_short  | str   | 6 last digits of antennna serial number                            |
-    | antenna_type                 | str   | Antenna type                                                       |
-    | domes                        | str   | Domes number                                                       |
-    | description                  | str   | Description normally with station name and country code            |
-    | eccentricity_east            | float | East component of eccentricity in [m]                              |
-    | eccentricity_north           | float | North component of eccentricity in [m]                             |
-    | eccentricity_up              | float | Up component of eccentricity in [m]                                |
-    | flag                         | str   | Flag number                                                        |
-    | radome                       | str   | Antenna radome type                                                |
-    | receiver_serial_number       | str   | Receiver serial number                                             |
-    | receiver_serial_number_short | str   | 6 last digits of receiver serial number                            |
-    | receiver_type                | str   | Receiver type                                                      |
-    | remark                       | str   | Remark                                                             |
+    | Key                          | Type     |Description                                                         |
+    |------------------------------|----------|--------------------------------------------------------------------|
+    | antenna_serial_number        | str      | Antenna serial number                                              |
+    | antenna_serial_number_short  | str      | 6 last digits of antennna serial number                            |
+    | antenna_type                 | str      | Antenna type                                                       |
+    | date_from                    | datetime | Start date where station information is valid                      |
+    | date_to                      | datetime | End date of station information                                    | 
+    | domes                        | str      | Domes number                                                       |
+    | description                  | str      | Description normally with station name and country code            |
+    | eccentricity_east            | float    | East component of eccentricity in [m]                              |
+    | eccentricity_north           | float    | North component of eccentricity in [m]                             |
+    | eccentricity_up              | float    | Up component of eccentricity in [m]                                |
+    | flag                         | str      | Flag number                                                        |
+    | radome                       | str      | Antenna radome type                                                |
+    | receiver_serial_number       | str      | Receiver serial number                                             |
+    | receiver_serial_number_short | str      | 6 last digits of receiver serial number                            |
+    | receiver_type                | str      | Receiver type                                                      |
+    | remark                       | str      | Remark                                                             |
 
     and **meta**-data:
 
@@ -144,15 +146,14 @@ class BerneseStaParser(ChainParser):
         self.data.setdefault(station, list())
         
         # Define date period
-        date_from = _date2datetime(line["date_from"])
-        date_to = _date2datetime(line["date_to"])
+        line["date_from"] = _date2datetime(line["date_from"])
+        line["date_to"] = _date2datetime(line["date_to"])
         
         # Add rest of entries to dictionary
-        for entry in ["station", "date_from", "date_to"]:
-            del line[entry]
+        del line["station"]
         for entry in ["eccentricity_north", "eccentricity_east", "eccentricity_up"]:
             line[entry] = float(line[entry])
-        self.data[station].append({(date_from, date_to): line})
+        self.data[station].append(line)
 
 
 #
