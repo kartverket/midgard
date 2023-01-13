@@ -16,9 +16,10 @@ Reads data from files in Gipsy `stacov` format.
 
 """
 # Standard library imports
+from datetime import datetime
 import itertools
 import re
-from typing import Any, Callable, Dict, Iterable, List
+from typing import Any, Callable, Dict, Iterable, List, Union
 
 # External library imports
 import numpy as np
@@ -27,7 +28,6 @@ import numpy as np
 from midgard.data import dataset
 from midgard.data.time import Time
 from midgard.dev import plugins
-from midgard.math.unit import Unit
 from midgard.parsers import ChainParser, ParserDef
 
 
@@ -82,25 +82,24 @@ class GipsyStacovParser(ChainParser):
         data_parser = ParserDef(
             end_marker=lambda line, _ln, _n: False,
             end_callback=lambda line: self._parse_correlation,
-            label=lambda line, _ln: not re.match("^\d+ [A-Za-z0-9]+\.", line.strip()),
-            skip_line=lambda line: "PARAMETERS" in line,
+            label=lambda line, _ln: bool(re.match("^\d+\s+[A-Za-z0-9]+ [A-Za-z0-9]+", line.strip())),
+            skip_line=lambda line: "PARAMETERS" in line or "ANTENNA" in line,
             parser_def={
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----
                 #     1  MLGA STA X         0.510513494339477E+07  +-  0.405932080367999E+00
-                False: {
+                True: {
                     "parser": self._parse_estimate,
-["estimate_index", "name", "time_past_j2000", "estimate", "sigma"],
                     "fields": {
                         "estimate_index":   (0, 5),
                         "station": (6, 11),
                         "parameter": (12, 25),
                         "estimate": (26, 47),
-                        "sigma": (54, 74),
+                        "sigma": (53, 74),
                     },
                 },
                 # ----+----1----+----2----+----3----+
                 #     2     1  -0.332009585488013E+00
-                True: {
+                False: {
                     "parser": self._parse_correlation,
                     "delimiter": "\s+",
                     "strip": " \t\n",
@@ -148,8 +147,11 @@ class GipsyStacovParser(ChainParser):
     #
     # GENERATE DATASET
     #
-    def as_dataset(self) -> "Dataset":
+    def as_dataset(self, time: Union["Time", None] = None) -> "Dataset":
         """Store GipsyX estimates and covariance information in a dataset
+        
+        Args:
+            time: Time (epoch) of station coordinates as Midgard Time object
 
         Returns:
             Midgard Dataset where time dependent parameter data are stored with following fields:
@@ -170,30 +172,16 @@ class GipsyStacovParser(ChainParser):
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
         """
-        import IPython; IPython.embed()
-        idx_x = "STA.X" == self.data["parameter"]
-        idx_y = "STA.Y" == self.data["parameter"]
-        idx_z = "STA.Z" == self.data["parameter"]
-        dset = dataset.Dataset(num_obs=len(self.data["time_past_j2000"][idx_x]))
+        idx_x = "STA X" == self.data["parameter"]
+        idx_y = "STA Y" == self.data["parameter"]
+        idx_z = "STA Z" == self.data["parameter"]
+        dset = dataset.Dataset(num_obs=len(self.data["station"][idx_x]))
         dset.meta.update(self.meta)
-
-        # Note: GipsyX uses continuous seconds past Jan. 1, 2000 11:59:47 UTC time format in TDP files. That means,
-        #       GipsyX does not follow convention of J2000:
-        #           1.01.2000 12:00:00     TT  (TT = GipsyX(t) + 13s)
-        #           1.01.2000 11:59:27.816 TAI (TAI = TT - 32.184s)
-        #           1.01.2000 11:58:55.816 UTC (UTC = TAI + leap_seconds = TAI - 32s)
-        #           1.01.2000 11:59:08.816 GPS (GPS = TAI - 19s)
-        #
-        #       Therefore Time object initialized with TT time scale has to be corrected about 13 seconds.
-        #
-        dset.add_time(
-            "time",
-            val=Time(
-                (np.array(self.data["time_past_j2000"][idx_x]) + 13.0) * Unit.second2day + 2451545.0,
-                scale="tt",
-                fmt="jd",
-            ).gps,
-        )
+        
+        # Note: Time is unknown for STACOV files, therefore in case of time is not given as argument the current date
+        #       is used for initializing position field.
+        if not time:
+            time = Time(datetime.utcnow(), scale="utc", fmt="datetime")
 
         dset.add_text("station", val=self.data["station"][idx_x])
         dset.add_float("sigma_x", val=self.data["sigma"][idx_x], unit="meter")
@@ -201,7 +189,7 @@ class GipsyStacovParser(ChainParser):
         dset.add_float("sigma_z", val=self.data["sigma"][idx_z], unit="meter")
         dset.add_position(
             "site_pos",
-            time=dset.time,
+            time=time,
             system="trs",
             val=np.squeeze(
                     np.vstack(

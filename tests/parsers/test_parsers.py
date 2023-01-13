@@ -122,7 +122,8 @@ def test_parser_bernese_sta():
 
     assert len(parser) == 1
     assert "argi" in parser
-    assert (datetime(2008,9,25), datetime(2016,11,11)) in parser["argi"][0]
+    assert "date_from" in parser["argi"][0]
+    assert "LEICA GRX1200GGPRO" == parser["argi"][0]["receiver_type"]
     
 
 def test_parser_bernese_trp():
@@ -162,6 +163,16 @@ def test_parser_galileo_constellation_html():
 def test_parser_galileo_constellation_html_download():
     """Test that parsing galileo_constellation_html gives expected output"""
     assert False
+
+
+def test_parser_gipsy_stacov():
+    """Test that parsing gipsy_stacov gives expected output"""
+    parser = get_parser("gipsy_stacov").as_dict()
+
+    assert len(parser) == 8
+    assert "station" in parser
+    assert "correlation" in parser
+    assert 5105134.94339477 in parser["estimate"]
 
 
 def test_parser_gipsy_tdp():
