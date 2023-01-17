@@ -206,8 +206,9 @@ class Dataset(collection.Collection):
             other_index_data = [other[n.strip()] for n in _index_by]
             # intersect1d does not like to compare unicode strings of different lengths
             # use object as dtype for all fields to avoid the problem
-            dtype_self = ",".join("O"*len(self_index_data))
-            dtype_other = ",".join("O"*len(other_index_data))
+            
+            dtype_self = np.dtype([(f"f{i}", "O") for i, _ in enumerate(self_index_data)])
+            dtype_other = np.dtype([(f"f{i}", "O") for i, _ in enumerate(other_index_data)])
             A = np.rec.fromarrays(self_index_data, dtype=dtype_self)
             B = np.rec.fromarrays(other_index_data, dtype=dtype_other)
             common, self_idx, other_idx = np.intersect1d(A, B, return_indices=True)
