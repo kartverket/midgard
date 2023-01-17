@@ -153,6 +153,94 @@ def dset_full():
     _dset.meta.add_event(_dset.time[0], "jump", "something happened")
     return _dset
 
+@pytest.fixture
+def dset_one_obs():
+    """Contains all available fieldstypes, but with only one observation.
+
+    Serves as an example on how a dataset with only one observation should be constructed."""
+    _dset = dataset.Dataset(1)
+    _dset.add_bool("idx", val=[0])
+    _dset.add_float("numbers", val=[1])
+    _dset.add_float("numbers_1", val=[2])
+    _dset.add_float("numbers_2", val=[3])
+    _dset.add_position("sat_pos", val=np.ones((1, 3)), system="trs")
+    _dset.add_position("site_pos", val=np.ones((1, 3)) * 2, system="trs", other=_dset.sat_pos)
+    _dset.add_position_delta("site_delta", val=np.ones((1, 3)) * 0.5, system="trs", ref_pos=_dset.site_pos)
+    _dset.add_posvel("sat_posvel", val=np.ones((1, 6)), system="trs")
+    _dset.add_posvel("site_posvel", val=np.ones((1, 6)) * 2, system="trs", other=_dset.sat_posvel)
+    _dset.add_posvel_delta("site_posvel_delta", val=np.ones((1, 6)) * 0.5, system="trs", ref_pos=_dset.site_posvel)
+    _dset.add_sigma("numbers2", val=[3], sigma=[0.2])
+    _dset.add_text("text", val=["aaa"])
+    _dset.add_time("time", val=[datetime(2015, 1, 5)], scale="utc", fmt="datetime")
+    # TODO: will fail when trying to merge or extend with dset_empty. How to handle empty datetime values?
+    #_dset.add_time("time_gps", val=np.asarray([[2205, 875600 + i, 1] for i in range(5)]), scale="gps", fmt="gps_ws")
+    _dset.add_time_delta("time_delta", val=[timedelta(seconds=20)], scale="utc", fmt="timedelta")
+
+    # Collections
+    _dset.add_bool("group.idx", val=[0])
+    _dset.add_float("group.numbers", val=[6])
+    _dset.add_position("group.sat_pos", val=np.ones((1, 3)) * 7, system="trs")
+    _dset.add_position("group.site_pos", val=np.ones((1, 3)) * 8, system="trs", other=_dset.group.sat_pos)
+    _dset.add_position_delta("group.site_delta", val=np.ones((1, 3)) * 9.5, system="trs", ref_pos=_dset.group.site_pos)
+    _dset.add_posvel("group.sat_posvel", val=np.ones((1, 6)) * 6, system="trs")
+    _dset.add_posvel("group.site_posvel", val=np.ones((1, 6)) * 5, system="trs", other=_dset.group.sat_posvel)
+    _dset.add_posvel_delta(
+        "group.site_posvel_delta", val=np.ones((1, 6)) * 1.5, system="trs", ref_pos=_dset.group.site_posvel
+    )
+    _dset.add_sigma("group.numbers2", val=[1.2], sigma=[3.2])
+    _dset.add_text("group.text", val=["bbb"])
+    _dset.add_time("group.time", val=[datetime(2015, 1, 10)], scale="utc", fmt="datetime")
+    _dset.add_time_delta(
+        "group.time_delta", val=[timedelta(seconds=0)], scale="utc", fmt="timedelta"
+    )
+
+    # Nested collections
+    _dset.add_bool("group.anothergroup.idx", val=[0])
+    _dset.add_float("group.anothergroup.numbers", val=[6])
+    _dset.add_position("group.anothergroup.sat_pos", val=np.ones((1, 3)) * 7, system="trs")
+    _dset.add_position(
+        "group.anothergroup.site_pos", val=np.ones((1, 3)) * 8, system="trs", other=_dset.group.anothergroup.sat_pos
+    )
+    _dset.add_position_delta(
+        "group.anothergroup.site_delta",
+        val=np.ones((1, 3)) * 9.5,
+        system="trs",
+        ref_pos=_dset.group.anothergroup.site_pos,
+    )
+    _dset.add_posvel("group.anothergroup.sat_posvel", val=np.ones((1, 6)) * 6, system="trs")
+    _dset.add_posvel(
+        "group.anothergroup.site_posvel",
+        val=np.ones((1, 6)) * 5,
+        system="trs",
+        other=_dset.group.anothergroup.sat_posvel,
+    )
+    _dset.add_posvel_delta(
+        "group.anothergroup.site_posvel_delta",
+        val=np.ones((1, 6)) * 1.5,
+        system="trs",
+        ref_pos=_dset.group.anothergroup.site_posvel,
+    )
+    _dset.add_sigma("group.anothergroup.numbers2", val=[1.2], sigma=[3.2])
+    _dset.add_text("group.anothergroup.text", val=["bbb"])
+    _dset.add_time(
+        "group.anothergroup.time", val=[datetime(2015, 1, 10)], scale="utc", fmt="datetime"
+    )
+    _dset.add_time_delta(
+        "group.anothergroup.time_delta", val=[timedelta(seconds=0)], scale="utc", fmt="timedelta"
+    )
+
+    _dset.meta.add("dummy", "something")
+    _dset.meta.add("testlist", [1, 2])
+    _dset.meta.add("testdict", {"a": 2, "b": 3})
+    _dset.meta.add("testtuple", ("c", "d"))
+    _dset.meta.add("testset", {1, 2})
+    _dset.meta.add("testlist2", list())
+    _dset.meta.add("testdict2", dict())
+    _dset.meta.add("testtuple2", tuple())
+    _dset.meta.add("testset2", set())
+    _dset.meta.add_event(_dset.time[0], "jump", "something happened")
+    return _dset
+
 
 @pytest.mark.parametrize("dset", (dset_float, dset_full), indirect=True)
 def test_num_obs_setter(dset):
@@ -217,6 +305,9 @@ def test_subset_3(dset):
         (dset_full, dset_null),
         (dset_full, dset_full),
         (dset_no_collection, dset_full),
+        (dset_one_obs, dset_one_obs),
+        (dset_full, dset_one_obs),
+        (dset_one_obs, dset_full),
     ],
     indirect=True,
 )
