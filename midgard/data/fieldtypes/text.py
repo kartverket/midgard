@@ -18,7 +18,7 @@ class TextField(FieldType):
     _factory = staticmethod(np.array)
 
     def _post_init(self, val, **field_args):
-        """Initialize float field"""
+        """Initialize text field"""
         if field_args:
             raise exceptions.InitializationError(
                 f"{self._factory.__name__}() received unknown argument {','.join(field_args.keys())}"
