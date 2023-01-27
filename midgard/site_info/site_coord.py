@@ -692,7 +692,7 @@ class SiteCoordSsc(SiteInfoBase):
     def set_date_from(self, date_from: datetime) -> None:
         """ Set site coordinate starting date in site information attribute
 
-        Returns:
+        Args:
             date_from: Site coordinate starting date
         """
         self._info["start"] = date_from
@@ -701,7 +701,7 @@ class SiteCoordSsc(SiteInfoBase):
     def set_date_to(self, date_to: datetime) -> None:
         """ Set site coordinate ending date in site information attribute
 
-        Returns:
+        Args:
             date_to: Site coordinate ending date
         """
         self._info["end"] = date_to
