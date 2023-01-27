@@ -136,7 +136,15 @@ class SiteInfoHistoryBase(abc.ABC):
         Returns:
             dictionary with history information. Keys should be a tuple of two datetimes and values should be an 
             instance of relevant the site information class based on the type of source_data
-        """       
+        """    
+        
+    def copy(self) -> object:
+        """Return a copy of object
+
+        Returns:
+            A copy of object
+        """        
+        return deepcopy(self)
 
     def get(self, date: Union[datetime, str]) -> Any:
         """Get site information object for given date
