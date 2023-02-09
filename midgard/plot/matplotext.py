@@ -36,6 +36,9 @@ class MatPlotExt:
 
     | Option             | Value            | Description                                                           |
     |--------------------|------------------|-----------------------------------------------------------------------|
+    | bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                              |
+    | bar_text_offset    | <num>            | Define text offset for text of bar plots                              |
+    | bar_zeroline       | <True|False>     | Plot zero line at a bar plot                                          |
     | colorbar           | <True|False>     | Plot color bar                                                        |
     | colorbar_label     | <text>           | Color bar label                                                       |
     | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis,    |
@@ -44,6 +47,7 @@ class MatPlotExt:
     | ecapsize           | <num>            | Cap size of error bar                                                 |
     | ecapthick          | <num>            | Cap thick of error bar                                                |
     | ecolor             | <name>           | Color of error bar                                                    |
+    | edgecolor          | <name>           | Edge color of bars of bar plots                                       |
     | elinewidth         | <num>            | Line width of error bar                                               |
     | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
     | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
@@ -61,8 +65,8 @@ class MatPlotExt:
     | marker             | <'.'|'-'>        | Marker type                                                           |
     |                    |                  | if in one scatter subplot several plots should be plotted.            |
     | plot_to            | <console|file>   | Plot figure on console or file                                        |
-    | plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                         |
-    |                    | bar>             |                                                                       |
+    | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                         |
+    |                    | scatter>         |                                                                       |
     | projection         | <type>           | Projection type of plot (e.g. 'polar')                                |
     | reg_line           | <True|False>     | Regression line flag                                                  |
     | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
@@ -94,6 +98,9 @@ class MatPlotExt:
         # Default plotting options
         self.options = {
             "alpha": 1,
+            "bar_text": False,
+            "bar_text_offset": 0,
+            "bar_zeroline": False,
             "colorbar": False,
             "colorlabel": "",
             "colormap": "tab20",
@@ -101,6 +108,7 @@ class MatPlotExt:
             "ecapsize": 4,
             "ecapthick": 1,
             "ecolor": "grey",
+            "edgecolor": "black",
             "elinewidth": 1,
             "errorbar": False,
             "figsize": (6, 8),
@@ -355,7 +363,8 @@ class MatPlotExt:
         | marker             | <'.'|'-'>        | Marker type                                                             |
         |                    |                  | if in one scatter subplot several plots should be plotted.              |
         | plot_to            | <console|file>   | Plot figure on console or file                                          |
-        | plot_type          | <scatter|plot>   | Choose either "scatter" or "plot" type                                  |
+        | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                           |
+        |                    | scatter>         |                                                                         |
         | projection         | <type>           | Projection type of plot (e.g. 'polar')                                  |
         | reg_line           | <True|False>     | Regression line flag                                                    |
         | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
@@ -583,8 +592,8 @@ class MatPlotExt:
         | legend_ncol        | <num>            | The number of legend columns                                            |
         | marker             | <'.'|'-'>        | Marker type                                                             |
         | plot_to            | <console|file>   | Plot figure on console or file                                          |
-        | plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                           |
-        |                    | bar>             |                                                                         |
+        | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                           |
+        |                    | scatter>         |                                                                         |
         | reg_line           | <True|False>     | Regression line flag                                                    |
         | sharex             | <True|False>     | Share x-axis                                                            |
         | sharey             | <True|False>     | Share y-axis                                                            |
@@ -594,9 +603,9 @@ class MatPlotExt:
         | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
         |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
         | title              | <text>           | Main title of subplots                                                  |
-        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If       |
-        |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=        |
-        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.       |        
+        | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
+        |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=       |
+        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.      |        
         | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
         | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
         | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
@@ -753,9 +762,13 @@ class MatPlotExt:
         | Option             | Value            | Description                                                       |
         |--------------------|------------------|-------------------------------------------------------------------|
         | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)            |
+        | bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                          |
+        | bar_text_offset    | <num>            | Define text offset for text of bar plots                          |
+        | bar_zeroline       | <True|False>     | Plot zero line at a bar plot                                      |
         | ecapsize           | <num>            | Cap size of error bar                                             |
         | ecapthick          | <num>            | Cap thick of error bar                                            |
         | ecolor             | <name>           | Color of error bar                                                |
+        | edgecolor          | <name>           | Edge color of bars of bar plots                                   |
         | elinewidth         | <num>            | Line width of error bar                                           |
         | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined|
         | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)               |
@@ -767,8 +780,8 @@ class MatPlotExt:
         | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                 |
         | marker             | <'.'|'-'>        | Marker type                                                       |
         | markersize         | <num>            | Marker size                                                       |
-        | plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                     |
-        |                    | bar>             |                                                                   |
+        | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                     |
+        |                    | scatter>         |                                                                   |
         | reg_line           | <True|False>     | Regression line flag                                              |
         | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:  |
         |                    |                  | 'rms', 'mean', 'min', 'max', 'std', 'percentile' (see function    |
@@ -866,8 +879,17 @@ class MatPlotExt:
                 alpha=self.options["alpha"],
                 align="center",
                 color=color,
+                edgecolor=self.options["edgecolor"],
                 label=label,
             )
+            if self.options["bar_zeroline"]:
+                ax.axhline(0.0, color="black")
+            
+            if self.options["bar_text"]:
+                offset = self.options["bar_text_offset"]
+                for idx, value in enumerate(y_array):
+                    dy = -offset -3 if value < 0 else offset
+                    ax.text(idx - 0.25, value + dy, f"{value:.2f}", color="black")
             ax.set_xticks(xtick_location)
             ax.set_xticklabels(x_array)
             
