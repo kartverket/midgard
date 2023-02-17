@@ -13,15 +13,13 @@ Description:
 Reads data from files in GipsyX summary output format.
 
 """
-# Standard library imports
-from typing import Any, Callable, Dict, List
 
 # Midgard imports
 from midgard.data import dataset
 from midgard.dev import log
 from midgard.dev import plugins
 from midgard.files import files
-from midgard.parsers import LineParser, Parser
+from midgard.parsers import Parser
 
 
 @plugins.register
@@ -75,7 +73,7 @@ class GipsyxSummary(Parser):
 
 
     and **meta**-data:
-summary, tdp,
+        
     | Key                  | Description                                                                          |
     |----------------------|--------------------------------------------------------------------------------------|
     | \__data_path__       | File path                                                                            |
