@@ -632,9 +632,9 @@ class SiteCoordSsc(SiteInfoBase):
             Standard deviation of site coordinate for X, Y and Z in [m]
         """
         return np.array([
-                        self._info["sigma_x"],
-                        self._info["sigma_y"],
-                        self._info["sigma_z"],                
+                        self._info["sigma_X"],
+                        self._info["sigma_Y"],
+                        self._info["sigma_Z"],                
         ])
 
     @property
