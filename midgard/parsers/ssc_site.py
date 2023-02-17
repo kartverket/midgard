@@ -1,5 +1,13 @@
 """A parser for reading data from TRF files in SSC format
 
+
+Example:
+--------
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='ssc_site', file_path='ssc_site')
+    data = p.as_dict()
+
 Description:
 ------------
 
