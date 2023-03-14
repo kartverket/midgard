@@ -16,8 +16,7 @@ classifiers        = ["Development Status :: 2 - Pre-Alpha",
                       "Operating System :: MacOS",
                       "Operating System :: Microsoft",
                       "Operating System :: POSIX :: Linux",
-                      "Programming Language :: Python :: 3.6",
-                      "Programming Language :: Python :: 3.7",
+                      "Programming Language :: Python :: 3.8",
                       "Topic :: Scientific/Engineering",
                       "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -29,6 +28,6 @@ testpaths = [
 ]
 
 # Requirements
-requires-python    = ">=3.6"
+requires-python    = ">=3.8"
 requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy", "statsmodels"]
 dev-requires       = ["black", "bumpversion", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]
