@@ -312,8 +312,8 @@ class MatPlotExt:
         else:
             log.fatal(f"Option <plot_to> is wrong with '{self.options['plot_to']}', expected 'console' or 'file'.")
     
-        # Clear the current figure
-        plt.clf()
+        # Close the current figure
+        plt.close()
         
         
     #
@@ -543,7 +543,7 @@ class MatPlotExt:
             log.fatal(f"Option <plot_to> is wrong with '{self.options['plot_to']}', expected 'console' or 'file'.")
     
         # Clear the current figure
-        plt.clf()
+        plt.close()
         
         
     def plot_subplots(
@@ -734,8 +734,8 @@ class MatPlotExt:
         else:
             log.fatal(f"Option <plot_to> is wrong with '{self.options['plot_to']}', expected 'console' or 'file'.")
     
-        # Clear the current figure
-        plt.clf()
+        # Close the current figure
+        plt.close()
     
     
     def plot_subplot_row(
