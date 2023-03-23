@@ -19,8 +19,7 @@ import numpy as np
 from midgard.collections import plate_motion_models
 
 # Get list with available plate models
-models = 
-
+models = plate_motion_models.models()
 
 # Get PlateMotionModel instance for a given tectonic name
 model = plate_motion_models.get("itrf2014")
