@@ -106,7 +106,7 @@ class SiteInfoHistoryBase(abc.ABC):
         self.station = station.lower()
         self.source_path = source_path
         if source_data:
-            self.history = self._process_history(deepcopy(source_data))
+            self.history = self._process_history(source_data)
         else:
             self.history = {}
 
