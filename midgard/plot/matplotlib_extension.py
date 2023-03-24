@@ -1,5 +1,7 @@
 """Matplotlib extension library
 
+NOTE: THIS LIBRARY SHOULD NOT BE USED ANYMORE. IT SHOULD BE REPLACED BY MATPLOTEXT.
+
 Description:
 ------------
 
