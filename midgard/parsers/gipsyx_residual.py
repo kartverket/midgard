@@ -143,9 +143,10 @@ class GipsyxResidualParser(Parser):
        |---------------------|-------------------|--------------------------------------------------------------------|
        | azimuth             | numpy.ndarray     | Azimuth from receiver                                              |
        | azimuth_sat         | numpy.ndarray     | Azimuth from satellite                                             |
+       | data_type           | numpy.ndarray     | Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)                  |
+       | deleted             | numpy.ndarray     | Boolean array which indicates deleted residuals (True = deleted)   |
        | elevation           | numpy.ndarray     | Elevation from receiver                                            |
        | elevation_sat       | numpy.ndarray     | Elevation from satellite                                           |
-       | data_type           | numpy.ndarray     | Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)                  |
        | residual            | numpy.ndarray     | Post-fit residual                                                  |
        | satellite           | numpy.ndarray     | Satellite PRN number together with GNSS identifier (e.g. G07)      |
        | station             | numpy.ndarray     | Station name list                                                  |
