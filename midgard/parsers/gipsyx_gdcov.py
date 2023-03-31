@@ -207,45 +207,47 @@ class GipsyxGdcovParser(ChainParser):
             ),
         )
 
-        # Extract correlation coefficients of each station coordinate solution
-        #   |0          <- idx_xy = 0
-        #   |1  2       <- idx_xz = idx_xy + 0 + 1 = 1
-        #   ------
-        #    3  4  5
-        #    6  7  8 |9            <- idx_xy = idx_yz + 1 * 6 + 1 = 9
-        #   10 11 12 |13 14        <- idx_xz = idx_xy + 3 + 1 = 13
-        #            --------
-        #   15 16 17  18 19 20
-        #   21 22 23  24 25 26 |27         <- idx_xy = idx_yz + 2 * 6 + 1 = 27
-        #   28 29 30  31 32 33 |34 35      <- idx_xz = idx_xy + 6 + 1 = 34
-        #                      -------
-        #
-        #   36 37 38  39 40 41  42 43 44
-        #   45 46 47  48 49 50  51 52 53 |54        <- idx_xy = idx_yz + 3 * 6 + 1 = 54
-        #   55 56 57  58 59 60  61 62 63 |64 65     <- idx_xz = idx_xy + 9 + 1 = 64
-        #                                -------
-        #
-        #   66 67 68  69 70 71  72 73 74  75  76  77
-        #   78 79 80  81 82 83  84 85 86  87  88  89  | 90         <- idx_xy = idx_yz + 4 * 6 + 1 = 90
-        #   91 92 93  94 95 96  97 98 99  100 101 102 |103 104     <- idx_xz = idx_xy + 12 + 1 = 103
-        #                                               ---------
-        #    
-        tmp = dict()
-        addend = 0
-        idx_xy = 0
-        for ii in range(0, dset.num_obs):
+        if "correlation" in self.data.keys():
 
-            idx_xz = idx_xy + addend + 1
-            idx_yz = idx_xz + 1
-            tmp.setdefault("correlation_xy", list()).append(self.data["correlation"][idx_xy])
-            tmp.setdefault("correlation_xz", list()).append(self.data["correlation"][idx_xz])
-            tmp.setdefault("correlation_yz", list()).append(self.data["correlation"][idx_yz])
-            addend = addend + 3
-            idx_xy = idx_yz + (ii + 1) * 6 + 1
-            
-        # Add correlation coefficient to dataset
-        for suffix in ["xy", "xz", "yz"]:
-            field = f"correlation_{suffix}"
-            dset.add_float(field, tmp[field]) # unitless
+            # Extract correlation coefficients of each station coordinate solution
+            #   |0          <- idx_xy = 0
+            #   |1  2       <- idx_xz = idx_xy + 0 + 1 = 1
+            #   ------
+            #    3  4  5
+            #    6  7  8 |9            <- idx_xy = idx_yz + 1 * 6 + 1 = 9
+            #   10 11 12 |13 14        <- idx_xz = idx_xy + 3 + 1 = 13
+            #            --------
+            #   15 16 17  18 19 20
+            #   21 22 23  24 25 26 |27         <- idx_xy = idx_yz + 2 * 6 + 1 = 27
+            #   28 29 30  31 32 33 |34 35      <- idx_xz = idx_xy + 6 + 1 = 34
+            #                      -------
+            #
+            #   36 37 38  39 40 41  42 43 44
+            #   45 46 47  48 49 50  51 52 53 |54        <- idx_xy = idx_yz + 3 * 6 + 1 = 54
+            #   55 56 57  58 59 60  61 62 63 |64 65     <- idx_xz = idx_xy + 9 + 1 = 64
+            #                                -------
+            #
+            #   66 67 68  69 70 71  72 73 74  75  76  77
+            #   78 79 80  81 82 83  84 85 86  87  88  89  | 90         <- idx_xy = idx_yz + 4 * 6 + 1 = 90
+            #   91 92 93  94 95 96  97 98 99  100 101 102 |103 104     <- idx_xz = idx_xy + 12 + 1 = 103
+            #                                               ---------
+            #    
+            tmp = dict()
+            addend = 0
+            idx_xy = 0
+            for ii in range(0, dset.num_obs):
+
+                idx_xz = idx_xy + addend + 1
+                idx_yz = idx_xz + 1
+                tmp.setdefault("correlation_xy", list()).append(self.data["correlation"][idx_xy])
+                tmp.setdefault("correlation_xz", list()).append(self.data["correlation"][idx_xz])
+                tmp.setdefault("correlation_yz", list()).append(self.data["correlation"][idx_yz])
+                addend = addend + 3
+                idx_xy = idx_yz + (ii + 1) * 6 + 1
+                
+            # Add correlation coefficient to dataset
+            for suffix in ["xy", "xz", "yz"]:
+                field = f"correlation_{suffix}"
+                dset.add_float(field, tmp[field]) # unitless
 
         return dset
