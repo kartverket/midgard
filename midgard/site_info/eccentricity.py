@@ -44,7 +44,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
-from midgard.data.position import Position, PositionDelta
 from midgard.dev.exceptions import MissingDataError
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 
@@ -129,15 +128,15 @@ class EccentricitySinex(SiteInfoBase):
             return datetime.max
         
     @property
-    def dpos(self) -> "TrsPositionDelta":
+    def dpos(self) -> List:
         """ Get eccentricity from SINEX file
 
         Returns:
             Eccentricity
         """
-        
+
         type_ = self._info["vector_type"]
-        
+
         if type_ == "UNE":
             val = [self._info["vector_3"], self._info["vector_2"], self._info["vector_1"]]
             system = "enu"
@@ -146,14 +145,83 @@ class EccentricitySinex(SiteInfoBase):
             system = "xyz"
         else:
             raise ValueError(f"Reference system type '{type_}' is unknown. Type should be 'UNE' or 'XYZ'.")
-        
-        dpos = PositionDelta(
-            val=val,
-            system=system,
-            ref_pos=Position(val=[0,0,0], system="trs"),
-        )
 
-        return dpos
+        return val
+
+    @property
+    def vector_type(self) -> str:
+        """ Get type of eccentricity vector for property dpos
+
+        Returns:
+            Eccentricity vector type
+        """
+        if self._info["vector_type"] == "UNE":
+            return "ENU"
+        elif self._info["vector_type"] == "XYZ":
+            return "XYZ"
+        else:
+            raise ValueError(f"Reference system type '{type_}' is unknown. Type should be 'UNE' or 'XYZ'.")
+        return self._info["vector_type"]
+    
+    @property
+    def east(self) -> float:
+        """ Get the east component of the eccentricity vector
+
+            Returns:
+                East [meter] or None
+        """
+        if self._info["vector_type"] == "UNE":
+            return self._info["vector_3"]
+
+    @property
+    def north(self) -> float:
+        """ Get the north component of the eccentricity vector
+
+            Returns:
+                North [meter] or None
+        """
+        if self._info["vector_type"] == "UNE":
+            return self._info["vector_2"]
+    
+    @property
+    def up(self) -> float:
+        """ Get the up component of the eccentricity vector
+
+            Returns:
+                Up [meter] or None
+        """
+        if self._info["vector_type"] == "UNE":
+            return self._info["vector_1"]
+
+    @property
+    def x(self) -> float:
+        """ Get the X component of the eccentricity vector
+
+            Returns:
+                X [meter] or None
+        """
+        if self._info["vector_type"] == "XYZ":
+            return self._info["vector_1"]
+
+    @property
+    def y(self) -> float:
+        """ Get the Y component of the eccentricity vector
+
+            Returns:
+                Y [meter] or None
+        """
+        if self._info["vector_type"] == "XYZ":
+            return self._info["vector_2"]
+
+    @property
+    def z(self) -> float:
+        """ Get the Z component of the eccentricity vector
+
+            Returns:
+                Z [meter] or None
+        """
+        if self._info["vector_type"] == "XYZ":
+            return self._info["vector_3"]
 
 
 @Eccentricity.register_source

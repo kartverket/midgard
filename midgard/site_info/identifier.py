@@ -63,8 +63,7 @@ class IdentifierSinex(SiteInfoBase):
         """
         self.station = station.lower()
         self.source_path = source_path
-        self._info = self._process(deepcopy(source_data))
-        
+        self._info = self._process(source_data)
 
     def _process(
                 self, 
