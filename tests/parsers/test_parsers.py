@@ -175,6 +175,16 @@ def test_parser_gipsy_stacov():
     assert 5105134.94339477 in parser["estimate"]
 
 
+def test_parser_gipsy_sum():
+    """Test that parsing gipsy_sum gives expected output"""
+    parser = get_parser("gipsy_sum").as_dict()
+
+    assert len(parser) == 3
+    assert "residual" in parser
+    assert "code_rms" in parser["residual"]
+    assert 0.42938 == parser["residual"]["code_rms"]
+
+
 def test_parser_gipsy_tdp():
     """Test that parsing gipsy_tdp gives expected output"""
     parser = get_parser("gipsy_tdp").as_dict()
