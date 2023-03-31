@@ -21,6 +21,7 @@ from typing import Any
 import numpy as np
 
 # Midgard imports
+from midgard.dev import log
 from midgard.parsers._parser import Parser
 
 
@@ -50,6 +51,10 @@ class LineParser(Parser):
         self.meta["__params__"] = self.setup_parser()
         self.meta["__params__"].setdefault("encoding", self.file_encoding or "bytes")  # TODO: Default to None instead?
         self._array = np.atleast_1d(np.genfromtxt(self.file_path, **self.meta["__params__"]))
+        if self._array.size == 0:
+            log.warn(f"Empty input file {self.file_path}. No data available.")
+            self.data_available = False
+
         self.structure_data()
 
     def structure_data(self) -> None:
