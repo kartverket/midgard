@@ -24,8 +24,7 @@ import numpy as np
 from midgard.collections import enums
 from midgard.data import dataset
 from midgard.data.time import Time
-from midgard.dev import log
-from midgard.dev import plugins
+from midgard.dev import log, plugins
 from midgard.math.unit import Unit
 from midgard.parsers import LineParser
 
@@ -116,7 +115,7 @@ class GipsyxTdpParser(LineParser):
        | Field               | Type              | Description                                                        |
        |---------------------|-------------------|--------------------------------------------------------------------|
        | receiver_clock      | numpy.ndarray     | Receiver clock parameter                                           |
-       | satellite           | numpy.ndarray     | Satellite PRN number together with GNSS identifier (e.g. G07)      |
+       | satellite           | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)      |
        | satellite_clock     | numpy.ndarray     | Satellite clock parameter                                          |
        | satellite_ant_pco   | PositionTable     | Satellite antenna phase center offset                              |
        | site_posvel         | PosVel            | Station coordinates and velocities                                 |
