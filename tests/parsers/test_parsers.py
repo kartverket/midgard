@@ -191,7 +191,7 @@ def test_parser_gipsy_tdp():
 
     assert len(parser) == 5
     assert "time_past_j2000" in parser
-    assert "TRPAZSINZIMM" in parser["name"]
+    assert "TRPAZSINEMBL" in parser["name"]
 
 
 def test_parser_gipsyx_gdcov():
