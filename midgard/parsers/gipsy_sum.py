@@ -104,7 +104,7 @@ class GipsySummary(LineParser):
                     {
                         "phase_num": self.data["num_obs"][idx],
                         "phase_rms": self.data["residual"][idx] * Unit.km2m,
-                        "phase_outlier_sum": self.data["outliers"][idx],
+                        "phase_outlier_num": self.data["outliers"][idx],
                     }
                 )
             elif type_ == "PC":
@@ -112,7 +112,7 @@ class GipsySummary(LineParser):
                     {
                         "code_num": self.data["num_obs"][idx],
                         "code_rms": self.data["residual"][idx] * Unit.km2m,
-                        "code_outlier_sum": self.data["outliers"][idx],
+                        "code_outlier_num": self.data["outliers"][idx],
                     }
                 )
             else:
