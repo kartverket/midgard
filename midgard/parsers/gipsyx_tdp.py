@@ -112,8 +112,8 @@ class GipsyxTdpParser(LineParser):
             Midgard Dataset where time dependent parameter data are stored with following fields:
 
 
-       | Field               | Type              | Description                                                        |
-       |----------------------|-------------------|-------------------------------------------------------------------|
+       | Field                | Type              | Description                                                       |
+       | :------------------- | :---------------- | :---------------------------------------------------------------- |
        | receiver_clock       | numpy.ndarray     | Receiver clock parameter                                          |
        | satellite            | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)     |
        | satellite_clock      | numpy.ndarray     | Satellite clock parameter                                         |
