@@ -157,17 +157,17 @@ class GipsyStacovParser(ChainParser):
             Midgard Dataset where time dependent parameter data are stored with following fields:
 
 
-       | Field               | Type              | Description                                                        |
-       |---------------------|-------------------|--------------------------------------------------------------------|
-       | correlation_xy      | numpy.ndarray     | Correlation between x and y station coordinate                     |
-       | correlation_xz      | numpy.ndarray     | Correlation between x and z station coordinate                     |
-       | correlation_yz      | numpy.ndarray     | Correlation between y and z station coordinate                     |
-       | sigma_x             | numpy.ndarray     | Standard deviation for x station coordinate                        |
-       | sigma_y             | numpy.ndarray     | Standard deviation for y station coordinate                        |
-       | sigma_z             | numpy.ndarray     | Standard deviation for z station coordinate                        |
-       | site_pos            | Position          | x, y and z station coordinates                                     |
-       | station             | numpy.ndarray     | Station name list                                                  |
-       | time                | Time              | Parameter time given as TimeTable object                           |
+       | Field                    | Type              | Description                                                   |
+       | :----------------------- | :---------------- | :------------------------------------------------------------ |
+       | site_pos                 | Position          | x, y and z station coordinates                                |
+       | site_pos_xy_correlation  | numpy.ndarray     | Correlation between x and y station coordinate                |
+       | site_pos_xz_correlation  | numpy.ndarray     | Correlation between x and z station coordinate                |
+       | site_pos_yz_correlation  | numpy.ndarray     | Correlation between y and z station coordinate                |
+       | site_pos_x_sigma         | numpy.ndarray     | Standard deviation for x station coordinate                   |
+       | site_pos_y_sigma         | numpy.ndarray     | Standard deviation for y station coordinate                   |
+       | site_pos_z_sigma         | numpy.ndarray     | Standard deviation for z station coordinate                   |
+       | station                  | numpy.ndarray     | Station name list                                             |
+       | time                     | Time              | Parameter time given as TimeTable object                      |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
@@ -188,9 +188,9 @@ class GipsyStacovParser(ChainParser):
         dset.add_time("time", time)
 
         dset.add_text("station", val=self.data["station"][idx_x])
-        dset.add_float("sigma_x", val=self.data["sigma"][idx_x], unit="meter")
-        dset.add_float("sigma_y", val=self.data["sigma"][idx_y], unit="meter")
-        dset.add_float("sigma_z", val=self.data["sigma"][idx_z], unit="meter")
+        dset.add_float("site_pos_x_sigma", val=self.data["sigma"][idx_x], unit="meter")
+        dset.add_float("site_pos_y_sigma", val=self.data["sigma"][idx_y], unit="meter")
+        dset.add_float("site_pos_z_sigma", val=self.data["sigma"][idx_z], unit="meter")
         dset.add_position(
             "site_pos",
             time=dset.time,
@@ -232,15 +232,15 @@ class GipsyStacovParser(ChainParser):
 
             idx_xz = idx_xy + addend + 1
             idx_yz = idx_xz + 1
-            tmp.setdefault("correlation_xy", list()).append(self.data["correlation"][idx_xy])
-            tmp.setdefault("correlation_xz", list()).append(self.data["correlation"][idx_xz])
-            tmp.setdefault("correlation_yz", list()).append(self.data["correlation"][idx_yz])
+            tmp.setdefault("site_pos_xy_correlation", list()).append(self.data["correlation"][idx_xy])
+            tmp.setdefault("site_pos_xz_correlation", list()).append(self.data["correlation"][idx_xz])
+            tmp.setdefault("site_pos_yz_correlation", list()).append(self.data["correlation"][idx_yz])
             addend = addend + 3
             idx_xy = idx_yz + (ii + 1) * 6 + 1
             
         # Add correlation coefficient to dataset
         for suffix in ["xy", "xz", "yz"]:
-            field = f"correlation_{suffix}"
+            field = f"site_pos_{suffix}_correlation"
             dset.add_float(field, tmp[field]) # unitless
 
         return dset

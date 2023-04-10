@@ -102,20 +102,20 @@ class GipsyTdpParser(LineParser):
 
 
        | Field               | Type              | Description                                                        |
-       |---------------------|-------------------|--------------------------------------------------------------------|
+       | :------------------ | :---------------- | :----------------------------------------------------------------- |
        | receiver_clock      | numpy.ndarray     | Receiver clock parameter                                           |
        | satellite           | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)      |
        |                     |                   | related to ambiguity                                               |
        | ambiguity           | numpy.ndarray     | Ambiguity (phase bias) given for satellite vehicle number (SVN)    |                             |
-       | site_posvel         | PosVel            | Station coordinates and velocities (not given and set NaN for      |
+       | site_posvel         | PosVel            | Station coordinates and velocities (not given and set to NaN for   |
        |                     |                   | consistency reason related to GipsyX TDP format)                   |
        | station             | numpy.ndarray     | Station name list                                                  |
        | system              | numpy.ndarray     | GNSS identifier (e.g. G or E)                                      |
        | time                | Time              | Parameter time given as TimeTable object                           |
-       | troposphere_zhd     | numpy.ndarray     | Zenith hydrostatic troposphere delay parameter                     |
-       | troposphere_zwd     | numpy.ndarray     | Zenith hydrostatic troposphere delay parameter                     |
-       | troposphere_ge      | numpy.ndarray     | Horizontal delay gradient in the East direction                    |
-       | troposphere_gn      | numpy.ndarray     | Horizontal delay gradient in the North direction                   |
+       | trop_zenith_model   | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter                 |
+       | trop_zenith_wet     | numpy.ndarray     | Zenith wet troposphere delay parameter                             |
+       | trop_gradient_east  | numpy.ndarray     | Troposphere horizontal delay gradient in the East direction        |
+       | trop_gradient_north | numpy.ndarray     | Troposphere horizontal delay gradient in the North direction       |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
@@ -125,10 +125,10 @@ class GipsyTdpParser(LineParser):
             "PB": DatasetField("ambiguity", "float"),  
             "STA BIAS": DatasetField("receiver_clock", "float"),
             "STA X": DatasetField("site_posvel", "posvel"),
-            "TRPAZCOS": DatasetField("troposphere_ge", "float"),
-            "TRPAZSIN": DatasetField("troposphere_gn", "float"),
-            "DRYZTROP": DatasetField("troposphere_zhd", "float"),
-            "WETZTROP": DatasetField("troposphere_zwd", "float"),
+            "TRPAZCOS": DatasetField("trop_gradient_east", "float"),
+            "TRPAZSIN": DatasetField("trop_gradient_north", "float"),
+            "DRYZTROP": DatasetField("trop_zenith_dry", "float"),
+            "WETZTROP": DatasetField("trop_zenith_wet", "float"),
         }
 
         not_used_parameter = [
