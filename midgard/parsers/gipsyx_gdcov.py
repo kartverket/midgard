@@ -154,7 +154,7 @@ class GipsyxGdcovParser(ChainParser):
 
 
        | Field                    | Type              | Description                                                   |
-       |--------------------------|-------------------|---------------------------------------------------------------|
+       | :----------------------- | :---------------- | :------------------------------------------------------------ |
        | site_pos                 | Position          | x, y and z station coordinates                                |
        | site_pos_xy_correlation  | numpy.ndarray     | Correlation between x and y station coordinate                |
        | site_pos_xz_correlation  | numpy.ndarray     | Correlation between x and z station coordinate                |
