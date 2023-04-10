@@ -17,12 +17,6 @@ Format description: https://files.igs.org/pub/data/format/sinex_tropo.txt
 
 """
 
-# Standard library imports
-from datetime import datetime
-
-# External library imports
-import numpy as np
-
 # Midgard imports
 from midgard.dev import plugins
 from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField, parsing_factory
