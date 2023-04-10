@@ -239,9 +239,9 @@ class GipsyxGdcovParser(ChainParser):
 
                 idx_xz = idx_xy + addend + 1
                 idx_yz = idx_xz + 1
-                tmp.setdefault("correlation_xy", list()).append(self.data["correlation"][idx_xy])
-                tmp.setdefault("correlation_xz", list()).append(self.data["correlation"][idx_xz])
-                tmp.setdefault("correlation_yz", list()).append(self.data["correlation"][idx_yz])
+                tmp.setdefault("site_pos_xy_correlation", list()).append(self.data["correlation"][idx_xy])
+                tmp.setdefault("site_pos_xz_correlation", list()).append(self.data["correlation"][idx_xz])
+                tmp.setdefault("site_pos_yz_correlation", list()).append(self.data["correlation"][idx_yz])
                 addend = addend + 3
                 idx_xy = idx_yz + (ii + 1) * 6 + 1
                 
