@@ -33,13 +33,13 @@ class BerneseTrpPaser(LineParser):
     Following **data** can be available after reading troposphere files in Bernese TRP file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | TODO                 |                                                                                      |
 
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | TODO                 |                                                                                      |
     | \__data_path__       | File path                                                                            |
     | \__params__          | np.genfromtxt parameters                                                             |
@@ -81,14 +81,14 @@ class BerneseTrpPaser(LineParser):
                 "flag", 
                 "from_time", 
                 "to_time", 
-                "zhd", 
-                "zwd", 
-                "sigma_zwd", 
-                "ztd", 
-                "gradient_ns", 
-                "sigma_gradient_ns", 
-                "gradient_ew", 
-                "sigma_gradient_ew",
+                "trop_zenith_dry", 
+                "trop_zenith_wet", 
+                "trop_zenith_wet_sigma", 
+                "trop_zenith_total", 
+                "trop_gradient_north", 
+                "trop_gradient_north_sigma", 
+                "trop_gradient_east", 
+                "trop_gradient_east_sigma",
             ),
             delimiter=(19, 1, 23, 23, 9, 9, 8, 8, 9, 8, 9, 8),
             dtype=("U19", "U1", "U23", "U23", "f8", "f8", "f8", "f8", "f8", "f8", "f8", "f8"),
@@ -193,20 +193,23 @@ class BerneseTrpPaser(LineParser):
         Returns:
             Midgard Dataset where troposphere observation are stored with following fields:
 
-       |  Field                   | Type           | Description                                                      |
-       |--------------------------|----------------|------------------------------------------------------------------|
-       | flag                     | numpy.ndarray  | Station flag (see section 24.7.1 of Bernese GNSS software        |
-       |                          |                | version 5.2, November 2015)                                      |
-       | gradients_ew             | numpy.ndarray  | Gradients in East/West in [m]                                    |
-       | gradients_ns             | numpy.ndarray  | Gradients in North/South in [m]                                  |
-       | sigma_gradients_ew       | numpy.ndarray  | Standard deviation of gradients in East/West in [m]              |
-       | sigma_gradients_ns       | numpy.ndarray  | Standard deviation of gradients in North/South in [m]            |
-       | sigma_zwd                | numpy.ndarray  | Standard devivation of ZWD in [m]                                |
-       | station                  | numpy.ndarray  | Station name                                                     |
-       | time                     | TimeTable      | Observation time given as TimeTable object                       |
-       | zhd                      | numpy.ndarray  | Zenith Hydrostatic Delay (ZHD) from a-priori model in [m]        |
-       | ztd                      | numpy.ndarray  | Zenith Total Delay (ZTD) in [m]                                  |
-       | zwd                      | numpy.ndarray  | Zenith Wet Delay (ZWD) in [m]                                    |
+       |  Field                    | Type           | Description                                                     |
+       | :------------------------ | :------------- | :-------------------------------------------------------------- |
+       | flag                      | numpy.ndarray  | Station flag (see section 24.7.1 of Bernese GNSS software       |
+       |                           |                | version 5.2, November 2015)                                     |
+       | station                   | numpy.ndarray  | Station name                                                    |
+       | time                      | TimeTable      | Observation time given as TimeTable object                      |
+       | trop_gradient_east        | numpy.ndarray  | Troposphere horizontal gradients in East/West direction in [m]  |
+       | trop_gradient_east_sigma  | numpy.ndarray  | Standard deviation of troposphere horizontal gradients in       |
+       |                           |                | East/West direction in [m]                                      |
+       | trop_gradient_north       | numpy.ndarray  | Troposphere horizonatl gradients in North/South direction in [m]|
+       | trop_gradient_north_sigma | numpy.ndarray  | Standard deviation of troposphere horizontal gradients in       |
+       |                           |                | North/South direction in [m]                                    |
+       | trop_zenith_dry           | numpy.ndarray  | Zenith hydrostatic/dry troposphere delay from a-priori model in |
+       |                           |                | [m]                                                             |
+       | trop_zenith_wet           | numpy.ndarray  | Zenith wet troposphere delay (estimated part) in [m]            |
+       | trop_zenith_wet_sigma     | numpy.ndarray  | Standard devivation of zenith wet troposphere delay in [m]      |
+       | trop_zenith_total         | numpy.ndarray  | Zenith total troposphere delay in [m]                           |
         """
         
         skip_fields = ["to_time"]

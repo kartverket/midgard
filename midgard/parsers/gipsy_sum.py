@@ -33,28 +33,26 @@ class GipsySummary(LineParser):
     Gipsy summary file **data** are grouped as follows:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
+    | :-------------------- | :----------------------------------------------------------------------------------- |
     | date                  | Processing date                                                                      |
     | residual              | Dictionary with residual summary information                                         |
     | station               | Station name                                                                         |
 
-
     **residual** entries are:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
-    | code_num              | Number of used pseudo-range observations                                             |
-    | code_rms              | RMS of residuals from used pseudo-range observations in [m]                          |
+    | :-------------------- | :----------------------------------------------------------------------------------- |
+    | code_obs_num          | Number of used pseudo-range observations                                             |
     | code_outlier_num      | Number of rejected pseudo-range observations                                         |
-    | phase_num             | Number of used phase observations                                                    |
-    | phase_rms             | RMS of residuals from used phase observations in [m]                                 |
+    | code_residual_rms     | RMS of residuals from used pseudo-range observations in [m]                          |
+    | phase_obs_num         | Number of used phase observations                                                    |
     | phase_outlier_num     | Number of rejected phase observations                                                |
-
+    | phase_residual_rms    | RMS of residuals from used phase observations in [m]                                 |
 
     and **meta**-data:
         
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | \__data_path__       | File path                                                                            |
     | \__parser_name__     | Parser name                                                                          |
     """
@@ -102,16 +100,16 @@ class GipsySummary(LineParser):
             if type_ == "LC":
                 dict_["residual"].update(
                     {
-                        "phase_num": self.data["num_obs"][idx],
-                        "phase_rms": self.data["residual"][idx] * Unit.km2m,
+                        "phase_obs_num": self.data["num_obs"][idx],
+                        "phase_residual_rms": self.data["residual"][idx] * Unit.km2m,
                         "phase_outlier_num": self.data["outliers"][idx],
                     }
                 )
             elif type_ == "PC":
                 dict_["residual"].update(
                     {
-                        "code_num": self.data["num_obs"][idx],
-                        "code_rms": self.data["residual"][idx] * Unit.km2m,
+                        "code_obs_num": self.data["num_obs"][idx],
+                        "code_residual_rms": self.data["residual"][idx] * Unit.km2m,
                         "code_outlier_num": self.data["outliers"][idx],
                     }
                 )

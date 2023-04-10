@@ -113,20 +113,20 @@ class GipsyxTdpParser(LineParser):
 
 
        | Field               | Type              | Description                                                        |
-       |---------------------|-------------------|--------------------------------------------------------------------|
-       | receiver_clock      | numpy.ndarray     | Receiver clock parameter                                           |
-       | satellite           | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)      |
-       | satellite_clock     | numpy.ndarray     | Satellite clock parameter                                          |
-       | satellite_ant_pco   | PositionTable     | Satellite antenna phase center offset                              |
-       | site_posvel         | PosVel            | Station coordinates and velocities                                 |
-       | source_id           | numpy.ndarray     | Source ID                                                          |
-       | station             | numpy.ndarray     | Station name list                                                  |
-       | system              | numpy.ndarray     | GNSS identifier (e.g. G or E)                                      |
-       | time                | Time              | Parameter time given as TimeTable object                           |
-       | troposphere_zhd     | numpy.ndarray     | Zenith hydrostatic troposphere delay parameter                     |
-       | troposphere_zwd     | numpy.ndarray     | Zenith hydrostatic troposphere delay parameter                     |
-       | troposphere_ge      | numpy.ndarray     | Horizontal delay gradient in the East direction                    |
-       | troposphere_gn      | numpy.ndarray     | Horizontal delay gradient in the North direction                   |
+       |----------------------|-------------------|-------------------------------------------------------------------|
+       | receiver_clock       | numpy.ndarray     | Receiver clock parameter                                          |
+       | satellite            | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)     |
+       | satellite_clock      | numpy.ndarray     | Satellite clock parameter                                         |
+       | satellite_ant_pco    | PositionTable     | Satellite antenna phase center offset                             |
+       | site_posvel          | PosVel            | Station coordinates and velocities                                |
+       | source_id            | numpy.ndarray     | Source ID                                                         |
+       | station              | numpy.ndarray     | Station name list                                                 |
+       | system               | numpy.ndarray     | GNSS identifier (e.g. G or E)                                     |
+       | time                 | Time              | Parameter time given as TimeTable object                          |
+       | trop_zenith_model    | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter                |
+       | trop_zenith_wet      | numpy.ndarray     | Zenith wet troposphere delay parameter                            |
+       | trop_gradient_east   | numpy.ndarray     | Troposphere horizontal delay gradient in the East direction       |
+       | trop_gradient_north  | numpy.ndarray     | Troposphere horizontal delay gradient in the North direction      |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
@@ -138,10 +138,10 @@ class GipsyxTdpParser(LineParser):
             "Antennas Antenna1 MapCenterOffset All Z": DatasetField("satellite_ant_pco", "Satellite", "position"),
             "State Pos Z": DatasetField("site_posvel", "Station", "posvel"),
             "Source": DatasetField("source_id", "Source", "float"),
-            "Trop GradEast": DatasetField("troposphere_ge", "Station", "float"),
-            "Trop GradNorth": DatasetField("troposphere_gn", "Station", "float"),
-            "Trop DryZ": DatasetField("troposphere_zhd", "Station", "float"),
-            "Trop WetZ": DatasetField("troposphere_zwd", "Station", "float"),
+            "Trop GradEast": DatasetField("trop_gradient_east", "Station", "float"),
+            "Trop GradNorth": DatasetField("trop_gradient_north", "Station", "float"),
+            "Trop DryZ": DatasetField("trop_zenith_dry", "Station", "float"),
+            "Trop WetZ": DatasetField("trop_zenith_wet", "Station", "float"),
         }
 
         not_used_parameter = [

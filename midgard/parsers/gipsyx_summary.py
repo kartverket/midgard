@@ -54,18 +54,18 @@ class GipsyxSummary(Parser):
 
     | Key                   | Description                                                                          |
     |-----------------------|--------------------------------------------------------------------------------------|
-    | code_max              | Maximal residual of used pseudo-range observations                                   |
-    | code_min              | Minimal residual of used pseudo-range observations                                   |
-    | code_num              | Number of used pseudo-range observations                                             |
-    | code_rms              | RMS of residuals from used pseudo-range observations                                 |
+    | code_obs_num          | Number of used pseudo-range observations                                             |
+    | code_residual_max     | Maximal residual of used pseudo-range observations                                   |
+    | code_residual_min     | Minimal residual of used pseudo-range observations                                   |
+    | code_residual_rms     | RMS of residuals from used pseudo-range observations                                 |
     | code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
     | code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
     | code_outlier_num      | Number of rejected pseudo-range observations                                         |
     | code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
-    | phase_max             | Maximal residual of used phase observations                                          |
-    | phase_min             | Minimal residual of used phase observations                                          |
-    | phase_num             | Number of used phase observations                                                    |
-    | phase_rms             | RMS of residuals from used phase observations                                        |
+    | phase_obs_num         | Number of used phase observations                                                    |
+    | phase_residual_min    | Minimal residual of used phase observations                                          |
+    | phase_residual_max    | Maximal residual of used phase observations                                          |
+    | phase_residual_rms    | RMS of residuals from used phase observations                                        |
     | phase_outlier_max     | Maximal residual of rejected phase observations                                      |
     | phase_outlier_min     | Minimal residual of rejected phase observations                                      |
     | phase_outlier_num     | Number of rejected phase observations                                                |
@@ -168,18 +168,18 @@ class GipsyxSummary(Parser):
         # Set residual entries to NaN
         if "No Residuals" in line:
             entries = [
-                "code_rms",
-                "code_max",
-                "code_min",
-                "code_num",
+                "code_residual_rms",
+                "code_residual_max",
+                "code_residual_min",
+                "code_obs_num",
                 "code_outlier_rms",
                 "code_outlier_max",
                 "code_outlier_min",
                 "code_outlier_num",
-                "phase_rms",
-                "phase_max",
-                "phase_min",
-                "phase_num",
+                "phase_residual_rms",
+                "phase_residual_max",
+                "phase_residual_min",
+                "phase_obs_num",
                 "phase_outlier_rms",
                 "phase_outlier_max",
                 "phase_outlier_min",
@@ -205,10 +205,10 @@ class GipsyxSummary(Parser):
                 if line[2] == "included":
                     self.data["residual"].update(
                         {
-                            "code_rms": float(line[3]),
-                            "code_max": float(line[4]),
-                            "code_min": float(line[5]),
-                            "code_num": float(line[6]),
+                            "code_residual_rms": float(line[3]),
+                            "code_residual_max": float(line[4]),
+                            "code_residual_min": float(line[5]),
+                            "code_obs_num": float(line[6]),
                         }
                     )
                 if line[2] == "deleted":
@@ -225,10 +225,10 @@ class GipsyxSummary(Parser):
                 if line[2] == "included":
                     self.data["residual"].update(
                         {
-                            "phase_rms": float(line[3]),
-                            "phase_max": float(line[4]),
-                            "phase_min": float(line[5]),
-                            "phase_num": float(line[6]),
+                            "phase_residual_rms": float(line[3]),
+                            "phase_residual_max": float(line[4]),
+                            "phase_residual_min": float(line[5]),
+                            "phase_obs_num": float(line[6]),
                         }
                     )
                 if line[2] == "deleted":

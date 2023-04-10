@@ -181,8 +181,8 @@ def test_parser_gipsy_sum():
 
     assert len(parser) == 3
     assert "residual" in parser
-    assert "code_rms" in parser["residual"]
-    assert 0.42938 == parser["residual"]["code_rms"]
+    assert "code_residual_rms" in parser["residual"]
+    assert 0.42938 == parser["residual"]["code_residual_rms"]
 
 
 def test_parser_gipsy_tdp():
@@ -219,8 +219,8 @@ def test_parser_gipsyx_summary():
 
     assert len(parser) == 3
     assert "residual" in parser
-    assert "code_rms" in parser["residual"]
-    assert 0.6312075 == parser["residual"]["code_rms"]
+    assert "code_residual_rms" in parser["residual"]
+    assert 0.6312075 == parser["residual"]["code_residual_rms"]
 
 
 def test_parser_gipsyx_tdp():
