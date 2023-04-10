@@ -49,19 +49,19 @@ UnitField.__doc__ = """A convenience class for defining a COST units of fields
     """
 
 UNIT_DEF = {
-  "gradients_ew":  UnitField("millimeter", "meter"),
-  "gradients_ns":  UnitField("millimeter", "meter"),
   "height_geoid": UnitField("meter", "meter"),
   "humidity":  UnitField("", ""),
   "iwv":  UnitField("kilogram/meter**2", "kilogram/meter**2"),
   "pressure":  UnitField("hectopascal", "pascal"),
-  "sigma_gradients_ew":  UnitField("millimeter", "meter"),
-  "sigma_gradients_ns":  UnitField("millimeter", "meter"),
-  "sigma_ztd": UnitField("millimeter", "meter"),
   #TODO "tec":  UnitField("tecu", "tecu"),
   "temperature":  UnitField("kelvin", "kelvin"),
-  "ztd": UnitField("millimeter", "meter"),
-  "zwd": UnitField("millimeter", "meter"),
+  "trop_gradient_east":  UnitField("millimeter", "meter"),
+  "trop_gradient_east_sigma":  UnitField("millimeter", "meter"),
+  "trop_gradient_north":  UnitField("millimeter", "meter"),
+  "trop_gradient_north_sigma":  UnitField("millimeter", "meter"),
+  "trop_zenith_total": UnitField("millimeter", "meter"),
+  "trop_zenith_total_sigma": UnitField("millimeter", "meter"),
+  "trop_zenith_wet": UnitField("millimeter", "meter"),
 }
         
 
@@ -227,17 +227,17 @@ class CostParser(ChainParser):
                         "minute": (3, 6),
                         "second": (6, 9),
                         "product_confidence": (9, 18),
-                        "ztd": (18, 25),
-                        "sigma_ztd": (25, 32),
-                        "zwd": (32, 39),
+                        "trop_zenith_total": (18, 25),
+                        "trop_zenith_total_sigma": (25, 32),
+                        "trop_zenith_wet": (32, 39),
                         "iwv": (39, 46),
                         "pressure": (46, 53),
                         "temperature": (53, 60),
                         "humidity": (60, 67),
-                        "gradients_ns": (67, 74),
-                        "gradients_ew": (74, 81),
-                        "sigma_gradients_ns": (81, 88),
-                        "sigma_gradients_ew": (88, 95),
+                        "trop_gradient_north": (67, 74),
+                        "trop_gradient_east": (74, 81),
+                        "trop_gradient_north_sigma": (81, 88),
+                        "trop_gradient_east_sigma": (88, 95),
                         "tec": (95, 103),
                     },
                 },
@@ -294,7 +294,7 @@ class CostParser(ChainParser):
                 
             cache.setdefault(f"data_{key}", list()).append(value)
         
-        cache.setdefault(f"data_time", list()).append(datetime(
+        cache.setdefault("data_time", list()).append(datetime(
                 cache["date_data"].year, 
                 cache["date_data"].month, 
                 cache["date_data"].day,
@@ -347,31 +347,28 @@ class CostParser(ChainParser):
         Returns:
             Midgard Dataset where COST observation are stored with following fields:
 
-       |  Field                   | Type           | Description                                                      |
-       |--------------------------|----------------|------------------------------------------------------------------|
-       | gradients_ew             | numpy.ndarray  | Gradients in East/West in [m]                                    |
-       | gradients_ns             | numpy.ndarray  | Gradients in North/South in [m]                                  |
-       | humidity                 | numpy.ndarray  | Relative humidity for IWV in [%]                                 |
-       | iwv                      | numpy.ndarray  | Integrated Water Vapour (IWV) in [kg/m²]                         |
-       | pressure                 | numpy.ndarray  | Pressure used for ZWD in [Pa]                                    |
-       | product_confidence       | numpy.ndarray  | Product Confidence Data as bit flags describing the quality of   |
-       |                          |                | the data sample                                                  |
-       | sigma_gradients_ew       | numpy.ndarray  | Standard deviation of gradients in East/West in [m]              |
-       | sigma_gradients_ns       | numpy.ndarray  | Standard deviation of gradients in North/South in [m]            |
-       | sigma_ztd                | numpy.ndarray  | Standard devivation of ZTD in [m]                                |
-       | station                  | numpy.ndarray  | Station name                                                     |
-       | temperature              | numpy.ndarray  | Temperature used for IWV in [Kelvin]                             |
-       | time                     | TimeTable      | Observation time given as TimeTable object                       |
-       | ztd                      | numpy.ndarray  | Zenith Total Delay (ZTD) in [m]                                  |
-       | zwd                      | numpy.ndarray  | Zenith Wet Delay (ZWD) in [m]                                    |
-
-
-
+       |  Field                    | Type           | Description                                                     |
+       | :------------------------ | :------------- | :-------------------------------------------------------------- |
+       | humidity                  | numpy.ndarray  | Relative humidity for IWV in [%]                                |
+       | iwv                       | numpy.ndarray  | Integrated Water Vapour (IWV) in [kg/m²]                        |
+       | pressure                  | numpy.ndarray  | Pressure used for ZWD in [Pa]                                   |
+       | product_confidence        | numpy.ndarray  | Product Confidence Data as bit flags describing the quality of  |
+       |                           |                | the data sample                                                 |
+       | station                   | numpy.ndarray  | Station name                                                    |
+       | temperature               | numpy.ndarray  | Temperature used for IWV in [Kelvin]                            |
+       | trop_gradient_east        | numpy.ndarray  | Gradients in East/West in [m]                                   |
+       | trop_gradient_east_sigma  | numpy.ndarray  | Standard deviation of gradients in East/West in [m]             |
+       | trop_gradient_north       | numpy.ndarray  | Gradients in North/South in [m]                                 |
+       | trop_gradient_north_sigma | numpy.ndarray  | Standard deviation of gradients in North/South in [m]           |
+       | trop_zenith_total         | numpy.ndarray  | Zenith Total Delay (ZTD) in [m]                                 |
+       | trop_zenith_total_sigma   | numpy.ndarray  | Standard devivation of ZTD in [m]                               |
+       | trop_zenith_wet           | numpy.ndarray  | Zenith Wet Delay (ZWD) in [m]                                   |
+       | time                      | TimeTable      | Observation time given as TimeTable object                      |
 
             and following Dataset `meta` data, which are saved for each station separately:
 
        |  Entry              | Type  | Description                                                                    |
-       |---------------------|-------|--------------------------------------------------------------------------------|
+       | :------------------ | :---- | :----------------------------------------------------------------------------- |
        | analysis_center     | str   | Analysis center name                                                           |
        | antenna             | str   | Antenna type with radome                                                       |
        | batch_length        | str   | Total length of batch time                                                     |
