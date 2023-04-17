@@ -155,9 +155,10 @@ class ExitStatus(int, enum.Enum):
     """Exit status definition"""
 
     ok = 0
-    warn = 1
-    error = 2
-    fatal = 3
+    skip = 1  # TODO: break can not be used.
+    warn = 2
+    error = 3
+    fatal = 4
 
 
 @register_enum("log_level")
