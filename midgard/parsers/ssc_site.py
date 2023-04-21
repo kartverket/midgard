@@ -91,7 +91,7 @@ class SscSiteParser(ChainParser):
             line (Dict):  The fields of a line.
             cache (Dict): Dict that persists information.
         """
-        data_fields = ("STAX", "STAY", "STAZ", "sigma_x", "sigma_y", "sigma_z", "soln", "start", "end", "ref_epoch")
+        data_fields = ("STAX", "STAY", "STAZ", "sigma_X", "sigma_Y", "sigma_Z", "soln", "start", "end", "ref_epoch")
         data_values = line.pop("data")
         line.update({k: v for k, v in itertools.zip_longest(data_fields, data_values.split())})
         line["site_id"] = line["site_id"].lower()
@@ -135,7 +135,7 @@ class SscSiteParser(ChainParser):
             line (Dict):  The fields of a line.
             cache (Dict): Dict that persists information.
         """
-        data_fields = ("VELX", "VELY", "VELZ", "sigma_vx", "sigma_vy", "sigma_vz")
+        data_fields = ("VELX", "VELY", "VELZ", "sigma_VX", "sigma_VY", "sigma_VZ")
         data = {k: float(v) for k, v in zip(data_fields, line["data"].split())}
         self.data[cache["site_id"]]["pos_vel"][cache["soln"]].update(data)
         
