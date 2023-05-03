@@ -164,6 +164,13 @@ def test_parser_galileo_constellation_html_download():
     """Test that parsing galileo_constellation_html gives expected output"""
     assert False
 
+def test_parser_gamit_org():
+    """Test that parsing gamit file gives expected output"""
+    dset = get_parser("gamit_org").as_dataset()
+    assert len(dset.site_pos) == 8
+    assert len(dset.time) == 8
+    assert "REYK_JPS" in dset.station
+
 
 def test_parser_gipsy_stacov():
     """Test that parsing gipsy_stacov gives expected output"""

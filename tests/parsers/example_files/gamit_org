@@ -1,0 +1,553 @@
+Globk Analysis GGVer 10.71.015 Tue Feb  2 16:13:21 EST 2021
+
+ +++++++++++++++++++++++++++++++++++++
+ + GLORG                 Version 5.20 +
+ +++++++++++++++++++++++++++++++++++++
+
+
+ Stabilization with  20.0% constant,  80.0% site dependent weighting.
+ Delete sites with   4.0-sigma condition.
+ Height variance factor      10.00 Position,     10.00 Velocity
+ For Position: Min dH sigma 0.0050 m;    Min RMS 0.0030 m,    Min dNE sigma 0.00050 m
+ For Velocity: Min dH sigma 0.0050 m/yr; Min RMS 0.0030 m/yr, Min dNE sigma 0.00010 m/yr
+ Sigma Ratio to allow use: Position   3.00 Velocity   3.00
+
+====================================================================================================
+ Starting Position stabilization iteration   1 combined_fix.gdl
+ For   34 sites in origin, min/max height sigma      15.32     27.62 mm; Median       21.61 mm, Tol      18.88 mm combined_fix.gdl
+
+ Position system stabilization results 
+ --------------------------------------- 
+ X Rotation  (mas)    -0.03662 +-    0.02793 Iter  1 combined_fix.gdl
+ Y Rotation  (mas)    -0.40509 +-    0.02829 Iter  1 combined_fix.gdl
+ Z Rotation  (mas)     0.08851 +-    0.03147 Iter  1 combined_fix.gdl
+ X Translation (m)    -0.01034 +-    0.00085 Iter  1 combined_fix.gdl
+ Y Translation (m)     0.01975 +-    0.00084 Iter  1 combined_fix.gdl
+ Z Translation (m)    -0.00681 +-    0.00092 Iter  1 combined_fix.gdl
+ Scale       (ppb)     0.04935 +-    0.29740 Iter  1 combined_fix.gdl
+ Condition Sigmas used     0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+Sites and relative sigmas used in stabilization
+QAQ1_6PS   1.00  STJO_7PS   1.00  OHI2_7PS   1.00  UNSA_9PS   1.00  SCH2_3PS   1.00  SCUB_5PS   1.00 
+CHUR_7PS   1.00  GOLD_5GU   1.00  WHIT_7DN   1.00  THTI_3PS   1.00  MKEA_609   1.00  KOKB_4PS   1.00 
+CHTI_3PS   1.00  MQZG_LPS   1.00  MCM4_4PS   1.00  MCIL_4PS   1.00  HOB2_5PS   1.00  GUAM_4PS   1.00 
+ALIC_2PS   1.00  DARW_6PS   1.00  TNML_5PS   1.00  COCO_7PS   1.00  DAV1_5PS   1.00  POL2_4PS   1.00 
+DGAR_5PS   1.00  KERG_5PS   1.00  SYOG_6PS   1.00  MBAR_3PS   1.00  SUTH_3PS   1.00  TRO1_6PS   1.00 
+NOT1_3PS   1.00  NYA1_2PS   1.00  NYAL_5PS   1.00  NKLG_2PS   1.00 
+ For  102 Position Iter  1 Pre RMS    0.0107 m; Post RMS   0.00349 m combined_fix.gdl
+ For   34 sites in origin, min/max NE sigma       2.72      6.93 mm; Median        4.22 mm, Tol       4.49 mm combined_fix.gdl
+Deleting GUAM_4PS Position error   0.0142 m, relative variance     0.89 Nsigma     4.34
+
+====================================================================================================
+ Starting Position stabilization iteration   2 combined_fix.gdl
+ For   33 sites in origin, min/max height sigma      15.32     27.62 mm; Median       21.80 mm, Tol      19.44 mm combined_fix.gdl
+
+ Position system stabilization results 
+ --------------------------------------- 
+ X Rotation  (mas)    -0.04475 +-    0.02520 Iter  2 combined_fix.gdl
+ Y Rotation  (mas)    -0.38531 +-    0.02544 Iter  2 combined_fix.gdl
+ Z Rotation  (mas)     0.05579 +-    0.02996 Iter  2 combined_fix.gdl
+ X Translation (m)    -0.01043 +-    0.00076 Iter  2 combined_fix.gdl
+ Y Translation (m)     0.02027 +-    0.00075 Iter  2 combined_fix.gdl
+ Z Translation (m)    -0.00634 +-    0.00086 Iter  2 combined_fix.gdl
+ Scale       (ppb)    -0.10006 +-    0.27081 Iter  2 combined_fix.gdl
+ Condition Sigmas used     0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+Sites and relative sigmas used in stabilization
+QAQ1_6PS   0.91  STJO_7PS   1.05  OHI2_7PS   0.93  UNSA_9PS   1.37  SCH2_3PS   0.93  SCUB_5PS   1.20 
+CHUR_7PS   0.78  GOLD_5GU   0.92  WHIT_7DN   0.87  THTI_3PS   1.21  MKEA_609   1.13  KOKB_4PS   1.22 
+CHTI_3PS   1.03  MQZG_LPS   0.90  MCM4_4PS   0.84  MCIL_4PS   1.05  HOB2_5PS   0.77  ALIC_2PS   0.87 
+DARW_6PS   0.95  TNML_5PS   1.08  COCO_7PS   1.02  DAV1_5PS   0.93  POL2_4PS   0.90  DGAR_5PS   1.04 
+KERG_5PS   0.96  SYOG_6PS   0.99  MBAR_3PS   0.94  SUTH_3PS   0.96  TRO1_6PS   1.14  NOT1_3PS   0.96 
+NYA1_2PS   1.01  NYAL_5PS   1.01  NKLG_2PS   0.93 
+ For   99 Position Iter  2 Pre RMS    0.0111 m; Post RMS   0.00322 m combined_fix.gdl
+ For   33 sites in origin, min/max NE sigma       2.51      7.33 mm; Median        4.14 mm, Tol       4.89 mm combined_fix.gdl
+Deleting OHI2_7PS Position error   0.0121 m, relative variance     0.86 Nsigma     4.04
+
+====================================================================================================
+ Starting Position stabilization iteration   3 combined_fix.gdl
+ For   32 sites in origin, min/max height sigma      15.32     27.62 mm; Median       21.61 mm, Tol      18.88 mm combined_fix.gdl
+
+ Position system stabilization results 
+ --------------------------------------- 
+ X Rotation  (mas)    -0.06081 +-    0.02424 Iter  3 combined_fix.gdl
+ Y Rotation  (mas)    -0.39020 +-    0.02453 Iter  3 combined_fix.gdl
+ Z Rotation  (mas)     0.04483 +-    0.02862 Iter  3 combined_fix.gdl
+ X Translation (m)    -0.01091 +-    0.00074 Iter  3 combined_fix.gdl
+ Y Translation (m)     0.02042 +-    0.00072 Iter  3 combined_fix.gdl
+ Z Translation (m)    -0.00680 +-    0.00082 Iter  3 combined_fix.gdl
+ Scale       (ppb)     0.01144 +-    0.25710 Iter  3 combined_fix.gdl
+ Condition Sigmas used     0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+Sites and relative sigmas used in stabilization
+QAQ1_6PS   0.91  STJO_7PS   1.04  UNSA_9PS   1.42  SCH2_3PS   0.91  SCUB_5PS   1.22  CHUR_7PS   0.75 
+GOLD_5GU   0.90  WHIT_7DN   0.84  THTI_3PS   1.23  MKEA_609   1.14  KOKB_4PS   1.24  CHTI_3PS   1.02 
+MQZG_LPS   0.88  MCM4_4PS   0.82  MCIL_4PS   1.06  HOB2_5PS   0.75  ALIC_2PS   0.86  DARW_6PS   0.94 
+TNML_5PS   1.09  COCO_7PS   1.02  DAV1_5PS   0.91  POL2_4PS   0.89  DGAR_5PS   1.04  KERG_5PS   0.96 
+SYOG_6PS   0.98  MBAR_3PS   0.92  SUTH_3PS   0.94  TRO1_6PS   1.16  NOT1_3PS   0.94  NYA1_2PS   1.02 
+NYAL_5PS   1.01  NKLG_2PS   0.91 
+ For   96 Position Iter  3 Pre RMS    0.0110 m; Post RMS   0.00304 m combined_fix.gdl
+ For   32 sites in origin, min/max NE sigma       2.44      7.53 mm; Median        4.19 mm, Tol       5.24 mm combined_fix.gdl
+
+====================================================================================================
+ Starting Position stabilization iteration   4 combined_fix.gdl
+ For   32 sites in origin, min/max height sigma      15.32     27.62 mm; Median       21.61 mm, Tol      18.88 mm combined_fix.gdl
+
+ Position system stabilization results 
+ --------------------------------------- 
+ X Rotation  (mas)    -0.06102 +-    0.02419 Iter  4 combined_fix.gdl
+ Y Rotation  (mas)    -0.38952 +-    0.02448 Iter  4 combined_fix.gdl
+ Z Rotation  (mas)     0.04461 +-    0.02853 Iter  4 combined_fix.gdl
+ X Translation (m)    -0.01093 +-    0.00073 Iter  4 combined_fix.gdl
+ Y Translation (m)     0.02043 +-    0.00072 Iter  4 combined_fix.gdl
+ Z Translation (m)    -0.00680 +-    0.00082 Iter  4 combined_fix.gdl
+ Scale       (ppb)     0.00505 +-    0.25642 Iter  4 combined_fix.gdl
+ Condition Sigmas used     0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+Sites and relative sigmas used in stabilization
+QAQ1_6PS   0.90  STJO_7PS   1.04  UNSA_9PS   1.45  SCH2_3PS   0.91  SCUB_5PS   1.21  CHUR_7PS   0.74 
+GOLD_5GU   0.89  WHIT_7DN   0.83  THTI_3PS   1.23  MKEA_609   1.13  KOKB_4PS   1.24  CHTI_3PS   1.02 
+MQZG_LPS   0.87  MCM4_4PS   0.83  MCIL_4PS   1.06  HOB2_5PS   0.74  ALIC_2PS   0.85  DARW_6PS   0.94 
+TNML_5PS   1.09  COCO_7PS   1.01  DAV1_5PS   0.91  POL2_4PS   0.88  DGAR_5PS   1.04  KERG_5PS   0.96 
+SYOG_6PS   0.99  MBAR_3PS   0.91  SUTH_3PS   0.94  TRO1_6PS   1.16  NOT1_3PS   0.93  NYA1_2PS   1.02 
+NYAL_5PS   1.02  NKLG_2PS   0.90 
+ For   96 Position Iter  4 Pre RMS    0.0111 m; Post RMS   0.00305 m combined_fix.gdl
+ For   32 sites in origin, min/max NE sigma       2.44      7.55 mm; Median        4.19 mm, Tol       5.26 mm combined_fix.gdl
+Rotating into local coordinates for equates
+ Checking covariance matrix after equate and force
+Globk Analysis GGVer 10.71.015 Tue Feb  2 16:13:21 EST 2021
+
+
+---------------------------------------------------------
+ GLOBK Ver 5.34, Global solution
+---------------------------------------------------------
+
+ Solution commenced with: 2022/ 6/22  0: 0    (2022.4712)
+ Solution ended with    : 2022/ 6/22 23:59    (2022.4740)
+ Solution refers to     : 2022/ 6/22 11:59    (2022.4726) [Seconds tag  45.000]
+ Satellite IC epoch     : 2022/ 6/22 12: 0  0.00
+ GPS System Information : Time GPST Frame J2000 Precession IAU0A Radiation model BERNE Nutation IAU0A Gravity EGR08 EarthRad NONE  AntThrust NONE 
+ MODELS Used in Analysis: SD-WOB  | SD-UT1  | IERS10  | E-Tide  | K1-Tide | PTide   | OC-Load | IERS10  |  
+ ATM Delay Models Used  : GP31    | GP31    | NMFH    | NMFW    | 2nd Order Ion     | GMAP    | IGRF13  | 
+ Reference Frame        : IGb14           
+ Run time               : 2022/11/ 1  8:22 58.00
+
+ There were         5 exps from          5 global files in the solution
+ There were       388823 data used,       0 data not used and       388823 data total
+ There were          618 global parameters estimated
+ There were   126 Sites,   64 Used Sites,    0 radio sources, and   32 Satellites
+
+ The  prefit chi**2 for    2327 input parameters is     0.280
+
+ LIST file      : combined_fix.gdl
+ COMMON file    : globk_comb.com
+ GLOBK CMD file : globk_comb.cmd
+ GLORG CMD file : ./glorg_comb.cmd
+ APRIORI file   : /home/kiehal/gg/tables/igb14_comb.apr
+ APRIORI file   : /home/kiehal/gg/tables/igb14_comb.apr (glorg)
+ NUTATION file  :  
+ PLANETARY file :  
+ SD ORIENT file :  
+ PMU file       : /home/kiehal/gg/tables/pmu.bull_a
+ BACK SOLN file :  
+ OUTGLOBAL file : combined_fix.GLX
+ SVS EPHEM file : ../sat1.apr_A
+ SVS MARKOV file:  
+ EARTHQUAKE file: /home/kiehal/gg/tables/igb14_comb.eq
+ EARTHQUAKE file: /home/kiehal/gg/tables/All_PBO_eqs.eq
+
+ There were   6675 site renames input     57 were used.  Reporting UNIQ. Renames used are: 
+   #   Orig     New          Specific  Period from   ----->      To              Position change (m)       Type
+   404 ALIC    ->ALIC_2PS                 2011/ 7/20  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+   451 ANTC    ->ANTC_3PS                 2015/ 4/10  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+   707 BJFS    ->BJFS_5PS                 2016/ 1/10  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+   776 BOGT    ->BOGT_JPS                 2015/ 8/19 15:59  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+   975 CEDU    ->CEDU_3PS                 2016/10/17  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1049 CHTI    ->CHTI_3PS                 2019/10/31  0:34  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1057 CHUR    ->CHUR_7PS                 2010/ 9/ 2  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1169 COCO    ->COCO_7PS                 2016/ 3/ 2 12:48  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1358 DARW    ->DARW_6PS                 2017/ 7/ 4  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1362 DAV1    ->DAV1_5PS                 2011/ 2/21  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1400 DGAR    ->DGAR_5PS                 2012/ 4/11  8:37  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  1974 GOLD    ->GOLD_5PS                 2019/ 7/ 6  3:19  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2027 GUAM    ->GUAM_4PS                 2019/ 3/ 7  0:57  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2150 HOB2    ->HOB2_5PS                 2004/12/23 14:59  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2163 HOFN    ->HOFN_6PS                 2014/ 8/25  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2347 IRKJ    ->IRKJ_2PS                 2011/ 3/11  5:46  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2474 KERG    ->KERG_5PS                 2011/ 2/15  2:29  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2504 KIR0    ->KIR0_2PS                 2016/ 8/23  8: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2562 KOKB    ->KOKB_4PS                 2004/ 5/18 21:30  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2570 KOUC    ->KOUC_6PS                 2013/ 2/ 3  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2674 LAE1    ->LAE1_4PS                 2007/11/22  8:48  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2752 LHAZ    ->LHAZ_8PS                 2016/ 3/16 12: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  2996 MANA    ->MANA_7PS                 2016/ 4/ 6  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3006 MAR6    ->MAR6_2PS                 2013/12/29  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3043 MBAR    ->MBAR_3PS                 2011/ 4/ 5 12:59  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3085 MCIL    ->MCIL_4PS                 2015/ 2/26  9:59  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3088 MCM4    ->MCM4_4PS                 2002/ 1/ 3  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3103 MDO1    ->MDO1_5PS                 2015/ 1/28  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3317 MKEA    ->MKEA_6PS                 2020/ 1/15  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3600 MQZG    ->MQZG_LPS                 2020/ 1/29 22:19  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3970 NKLG    ->NKLG_2PS                 2010/ 5/ 5 15:59  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  3976 NLIB    ->NLIB_4PS                 2018/ 6/14 15: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4017 NOT1    ->NOT1_3PS                 2017/10/11  9:30  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4082 NYA1    ->NYA1_2PS                 1999/ 6/ 2  0:40  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4091 NYAL    ->NYAL_5PS                 2001/ 9/ 6  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4271 OHI2    ->OHI2_7PS                 2017/ 2/27  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4398 ONSA    ->ONSA_2PS                 1999/ 2/ 2  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4583 PDEL    ->PDEL_4PS                 2012/10/17 12: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4695 POL2    ->POL2_4PS                 2009/10/23  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4696 POLV    ->POLV_2PS                 2013/ 2/13 11: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4837 QAQ1    ->QAQ1_6PS                 2013/ 6/29  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4858 RAMO    ->RAMO_3PS                 2004/ 3/18  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  4890 REYK    ->REYK_JPS                 2019/ 5/14 18: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5037 SCH2    ->SCH2_3PS                 2008/10/ 6 14:15  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5056 SCUB    ->SCUB_5PS                 2014/12/18  9: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5283 STJO    ->STJO_7PS                 2013/ 1/31 23: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5333 SUTH    ->SUTH_3PS                 2004/ 6/ 1  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5356 SYOG    ->SYOG_6PS                 2020/ 1/18  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5420 THTI    ->THTI_3PS                 2004/ 1/13  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5577 TNML    ->TNML_5PS                 2018/ 2/ 6 15:49  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  5622 TRO1    ->TRO1_6PS                 2010/ 7/26 16:52  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  6152 UNSA    ->UNSA_9PS                 2020/ 2/17 15: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  6409 WHIT    ->WHIT_7PS                 2013/ 1/ 5  8:58  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  6435 WIND    ->WIND_3PS                 2019/ 5/14  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  6471 WSRT    ->WSRT_3PS                 2017/ 1/29  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  6475 WTZR    ->WTZR_3PS                 2010/ 6/30  8: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+  6537 YARR    ->YARR_3PS                 2014/12/26  0: 0  2100/ 1/ 1  0: 0      0.0000     0.0000     0.0000 XYZ
+
+ There were  41 earthquakes input;   4 were used. Earthquakes used are:
+  #  CODE     Lat (deg)  Long (deg) Radius (km) Depth (km)    Date       Rename?
+  5   DN      63.5200   212.5600     839.4000     8.0000 2002/11/ 3 22:11  YES
+ 14   09      19.8800   204.0700     125.5000     5.0000 2006/10/15 17: 6  YES
+ 24   GU      32.2980   244.7100     500.0000    15.0000 2010/ 4/ 4 22:40  YES
+ 29   21      10.1000   274.6900     521.0000     8.0000 2012/ 9/ 5 14:41  YES
+
+ COSEISMIC characteristics
+ #  CODE              Static sigma               Spatial Sigma (Depth/Dist)^2
+               North      East       Height (m)    North     East       Height (m)
+  5   DN     0.00100    0.00100    0.00100     18.93500   18.93500   18.93500
+ 14   09     0.00100    0.00100    0.00100      0.20000    0.20000    0.20000
+ 24   GU     0.00100    0.00100    0.00100      3.14400    3.14400    0.30000
+ 29   21     0.00100    0.00100    0.00100      8.77200    8.77200    8.77200
+
+ PRE-SEISMIC characteristics
+ #  CODE    Dur              Static Process           Spatial Process (Depth/Dist)^2
+          (days)    North      East       Height        North     East       Height
+                             (mm^2/day)                       (mm^2/day)
+  5   DN    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 14   09    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 24   GU    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 29   21    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+
+ POST-SEISMIC characteristics
+ #  CODE    Dur              Static Process           Spatial Process (Depth/Dist)^2
+          (days)    North      East       Height        North     East       Height
+                             (mm^2/day)                       (mm^2/day)
+  5   DN    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 14   09    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 24   GU    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 29   21    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+
+ POST-SEISMIC LOG Estimates
+ #  CODE    Tau              Static Log           Spatial Process (Depth/Dist)^2
+          (days)    North      East       Height        North     East       Height
+                                (m)                        (m)
+  5   DN   10.0    0.00100    0.00100    0.00100      5.00000    5.00000    5.00000
+ 14   09    0.0    0.00000    0.00000    0.00000      0.00000    0.00000    0.00000
+ 24   GU   10.0    0.00050    0.00050    0.00020      0.60000    0.60000    0.10000
+ 29   21    2.0    0.00050    0.00050    0.00020      2.00000    2.00000    2.00000
+
+ NON-SECULAR EXP      REPORT
+           Site     Type     YY  MM DD HR MN       Decay T   North     East   Height       N       E        U
+                                                      (days)                                      at epoch (m)
+ EXTENDED BJFS_5PS EXP       2011  3 11  5 46     251.600  0.00000  0.00593  0.00000   0.00000  0.00593  0.00000
+ EXTENDED BJFS_5PS EXP       2011  3 11  5 46     340.700 -0.00273  0.00000 -0.00000  -0.00273  0.00000  0.00000
+ EXTENDED BJFS_5PS EXP       2011  3 11  5 46     691.900 -0.00000 -0.00000 -0.00639  -0.00000 -0.00000 -0.00637
+ EXTENDED COCO_7PS EXP       2000  6 18 14 44     460.400 -0.00176  0.00000  0.00000  -0.00176  0.00000  0.00000
+ EXTENDED COCO_7PS EXP       2000  6 18 14 44     492.000 -0.00000  0.01378 -0.00000  -0.00000  0.01378 -0.00000
+ EXTENDED COCO_7PS EXP       2007  9 12 11 10     700.500  0.00000  0.00352 -0.00000  -0.00000  0.00352 -0.00000
+ EXTENDED COCO_7PS EXP       2012  4 11  8 39     147.900  0.00000 -0.00279  0.00000   0.00000 -0.00279  0.00000
+ EXTENDED DGAR_5PS EXP       2004 12 26  0 59     227.500  0.00000  0.00397 -0.00000   0.00000  0.00397 -0.00000
+ EXTENDED DGAR_5PS EXP       2012  4 11  8 39     207.000 -0.00000 -0.00321  0.00000  -0.00000 -0.00321  0.00000
+ EXTENDED GOLD_5PS EXP       1999 10 16  9 47    1937.600  0.00000 -0.01227 -0.00000   0.00000 -0.01210 -0.00000
+ EXTENDED GOLD_5PS EXP       1999 10 16  9 47    3772.200  0.02389 -0.00000  0.00000   0.02123 -0.00000  0.00000
+ EXTENDED GOLD_5PS EXP       1999 10 16  9 47     470.900 -0.00000  0.00000  0.00994  -0.00000  0.00000  0.00994
+ EXTENDED MCIL_4PS EXP       2011  3 11  5 46     923.300  0.00761  0.00000  0.00000   0.00752  0.00000 -0.00000
+ EXTENDED GOLD_5GU EXP       1999 10 16  9 47    1937.600  0.00000 -0.01227 -0.00000   0.00000 -0.01210 -0.00000
+ EXTENDED GOLD_5GU EXP       1999 10 16  9 47    3772.200  0.02389 -0.00000  0.00000   0.02123 -0.00000  0.00000
+ EXTENDED GOLD_5GU EXP       1999 10 16  9 47     470.900 -0.00000  0.00000  0.00994  -0.00000  0.00000  0.00994
+
+ NON-SECULAR LOG      REPORT
+           Site     Type     YY  MM DD HR MN       Decay T   North     East   Height       N       E        U
+                                                      (days)                                      at epoch (m)
+ EXTENDED COCO_7PS LOG       2007  9 12 11 10      99.800  0.00272  0.00000 -0.00000   0.01090 -0.00000 -0.00000
+ EXTENDED COCO_7PS LOG       2012  4 11  8 39     135.500  0.00503 -0.00000 -0.00000   0.01685 -0.00000 -0.00000
+
+ SITES WITH NO UPDATED APRIORI COORDINATES:
+ HOPS_GPS  ESOX_GPS  BJOS_GPS  SVEA_GPS  LYRS_GPS  ESIS_GPS  TRYS_GPS  BRGS_GPS                     
+
+ Summary of GLOBK command file globk_comb.cmd
+-------------------------------------------------------------------------------
+*
+* Globk file for combination of daily h-files
+*
+  eq_file  /home/kiehal/gg/tables/igb14_comb.eq
+  eq_file  /home/kiehal/gg/tables/All_PBO_eqs.eq
+#  make_svs /home/kiehal/gamit/tables_upset_NKG_solution/run_glbf_dir/tables/sat1.apr
+  make_svs ../sat1.apr
+  com_file globk_comb.com
+  srt_file glb.srt
+  sol_file globk_comb.sol
+#  earth-rotation values
+ in_pmu /home/kiehal/gg/tables/pmu.bull_a
+# apr site file(s)
+  apr_file  /home/kiehal/gg/tables/igb14_comb.apr
+# Optionally use separate file for sites to be used and random or Markov noise
+#     (1) Max chi**2, (2) Max prefit diff, (3) Max rotation; defaults are 100 10000 10000
+  max_chi 30 50 2000.0
+#  max_chi 100 10000 10000
+* Apply the pole tide whenever not applied in GAMIT
+  app_ptid ALL
+#REMOVE ATM LOAD
+  app_modl -atmload
+# Allow the network to be loose since using glorg for stabilization
+  apr_neu  all  10 10 10  0 0 0
+# Satellites are loose if combining with global SOPAC H-files
+#                X       Y      Z    XDOT  YDOT  ZDOT  DRAD YRAD ZRAD BRAD XRAD DCOS DSIN YCOS YSIN BCOS BSIN
+  apr_svs all   100     100    100   10     10    10    1     1  .02  .02  .02 . 02  .02 . 02 . 02  .02 . 02
+#  tight if not combining with global data
+#  apr_svs all .05 .05 .05 .005 .005 .005 .01 .01 F F F F F F F F F F F F F F F
+# Keep EOP loose
+  apr_wob  100.  100.  10. 10.0  0.0  0.0  0.0  0.0
+  apr_ut1  100.  10.  0.0  0.0  0.0  0.0
+  mar_wob  36500 36500 365 365 0 0 0 0
+  mar_ut1  36500 365 0 0 0 0
+#  unless not using global data
+#  apr_wob  .25 .25  .001 .001 0 0 0 0
+#  apr_ut1  .25 .25 .001 .001 0 0
+#  mar_wob    1 1  .001 .001
+#  mar_ut1    1 .001
+* Estimate translation   -   .0005 m**2/yr = 15 mm/half-yr
+ apr_tran .01 .01 .01 0 0 0
+ apr_scale 1.0
+# Set minimal globk print options since using glorg output
+   prt_opt cdms gldf
+# Invoke glorg for stabilization
+  org_cmd ./glorg_comb.cmd
+  org_opt cmds psum gdlf
+# NEW TEST
+  use_site   all -HOFN -SCOR
+#-HOLC -VAN6 -TERC
+# Write out an h-file if needed for future combinations
+  out_glb combined_@.GLX
+-------------------------------------------------------------------------------
+
+ Summary of GLORG command file ./glorg_comb.cmd
+-------------------------------------------------------------------------------
+*
+* Glorg file for repeatabilities HEI
+*
+# apr site file(s)
+# ITRF2014 for global stabilization
+  apr_file  /home/kiehal/gg/tables/igb14_comb.apr
+#  Define the stabilization frame
+  stab_site clear areq arev unsa artu mdvj mdvo nril asc1 ascg sthl
+  stab_site bahr bhr1 bhr4 yibl nama isba chat chti auck
+  stab_site chpi braz ufpr savo ckis nium coco xmis dgar dgav
+  stab_site cro1 scub abmf lmmf aoml cusv daej taej suwn osn1 yssk
+  stab_site dakr darw kat1 tow2 alic dav1 maw1 drao albh will holb nano
+  stab_site fair whit glps guat gode godz usno usn3 goug guam guug cnmr
+  stab_site holm yell chur flin hrao harb pre1 iisc hyde
+  stab_site badg irkt irkm yakt ispa eisl kely qaq1 qiki thu2 thu3 scor
+  stab_site kerg krgg kiru tro1 trom nya1 nyal kokb kokv hnlc
+  stab_site kour koug fort brft salu recf mac1 ous2 mqzg
+  stab_site mal2 mali rcmn nurk mbar mas1 gmas lpal func sfer
+  stab_site mate mat1 not1 cagl cagz mcil mcm4 dum1 cas1
+  stab_site mkea maui mobs hob2 tidb tid1 sydn naur kiri kwj1 pohn
+  stab_site nklg bjco noum nrmd laut tuva ohi3 ohi2 ohig
+  stab_site parc rio2 riog falk pert nnor yar2 yar1
+  stab_site pol2 chum tash kit3 guao reun vacs abpo sant lpgs cfag conz
+  stab_site seyg stjo sch2 nain hlfx unbj suth sutm thti tah1 faa1
+  stab_site tnml tcms shao wuhn vesl syog vndp pie1 monp gold gol2
+# Set parameters to estimate in stabilization
+  pos_org  xrot yrot zrot xtran ytran ztran scale
+#  no rotation if regional stabilzation
+# Set height ratios
+cnd_hgtv 10 10 2.0 2.0
+ # Iterations and editing
+  stab_ite 4 0.8 4.
+-------------------------------------------------------------------------------
+
+ EXPERIMENT LIST from glb.srt
+     #  Name                            SCALE Diag PPM  Forw Chi2 Back Chi2 Status
+     1 glbf/h2206221200_arkh.glx     1.000000   0.000     0.069    -1.000   USED        
+     2 glbf/h2206221200_net1.glx     1.000000   0.000     0.321    -1.000   USED        
+     3 glbf/h2206221200_net2.glx     1.000000   0.000     0.548    -1.000   USED        
+     4 glbf/h2206221200_pgsb.glx     1.000000   0.000     0.281    -1.000   USED        
+     5 glbf/h2206221200_sval.glx     1.000000   0.000     0.140    -1.000   USED        
+
+ SUMMARY POSITION ESTIMATES FROM GLOBK Ver 5.34        
+    Long.       Lat.        dE adj.   dN adj.   dE +-     dN +-   RHO        dH adj.   dH +-  SITE
+    (deg)      (deg)         (mm)      (mm)      (mm)      (mm)               (mm)      (mm)
+  338.04451   64.13879     -47.65      1.32      3.93      3.71 -0.327        4.63      9.83 REYK_JPS 
+  334.33724   37.74775       3.18     -8.86      9.21      6.22  0.162        3.70     20.14 PDEL_4PS 
+  313.95223   60.71527      -1.62      3.33      2.85      2.61 -0.274       -2.68      6.95 QAQ1_6PS*
+  307.32225   47.59524      -3.10      3.62      2.95      3.82 -0.333        9.78      7.90 STJO_7PS*
+  302.09867  -63.32108       5.78      8.24      2.92      3.52 -0.115      -26.94      7.78 OHI2_7PS 
+  294.59236  -24.72745       8.37     -5.91      5.14      5.53 -0.157       28.79     14.57 UNSA_9PS*
+  293.16738   54.83209       0.06      0.04      2.63      2.83  0.078        2.57      7.82 SCH2_3PS*
+  288.46794  -37.33870    -657.43    153.20      4.32      4.45 -0.145      187.98      9.98 ANTC_3PS 
+  285.91906    4.64008       4.48      5.84      5.75      4.44 -0.171       48.93     15.48 BOGT_JPS 
+  284.23768   20.01206       8.51     -8.55      4.55      3.93 -0.080       -4.83     16.10 SCUB_5PS*
+  273.75101   12.14894      -0.10    -71.67      5.03      4.30  0.028       -0.37     15.32 MANA_721 
+  268.42510   41.77159      -2.40      5.30      5.62      5.45 -0.098       -8.37     25.79 NLIB_4PS 
+  265.91127   58.75908      -3.89      1.89      1.58      1.93  0.171       -5.67      5.46 CHUR_7PS*
+  255.98500   30.68051      -4.89      4.35      3.62      3.22  0.021       -6.80      9.84 MDO1_5PS 
+  243.11075   35.42516       5.00      1.19      2.74      2.54  0.163       -1.82      8.12 GOLD_5GU*
+  224.77788   60.75051      -5.90      1.89      2.34      2.32  0.299      -12.92      5.67 WHIT_7DN*
+  210.39354  -17.57706      -3.49     -0.64      4.65      4.00  0.299        4.85     12.14 THTI_3PS*
+  204.54365   19.80136      -6.75      3.62      4.16      3.57  0.195        5.29     11.76 MKEA_609*
+  200.33506   22.12627       3.36     -3.39      5.10      3.49  0.144        5.00     11.80 KOKB_4PS*
+  183.38288  -43.73547       4.92     -0.01      3.41      3.20 -0.007       -7.78      9.51 CHTI_3PS*
+  172.65469  -43.70273      -4.14      1.30      2.48      2.64  0.036      -12.52      8.73 MQZG_LPS*
+  166.66934  -77.83835      -0.79      1.37      2.17      2.41 -0.074       -7.82      7.87 MCM4_4PS*
+  164.28734  -20.55869      -0.51      7.91      2.97      2.67  0.009       -8.58      8.59 KOUC_6PS 
+  153.97865   24.29010       2.32      1.10      3.78      3.29  0.133       -4.65     11.19 MCIL_4PS*
+  147.43874  -42.80470       2.77      2.39      1.66      1.78  0.073        0.49      5.53 HOB2_5PS*
+  146.99319   -6.67370       7.85     -0.57      3.26      2.79  0.057       -9.98     10.14 LAE1_4PS 
+  144.86836   13.58933      15.82     -1.98      3.40      2.85 -0.029       -2.03     11.17 GUAM_4PS 
+  133.88552  -23.67011      -1.68     -2.70      2.51      2.34  0.024       -3.08      8.06 ALIC_2PS*
+  133.80984  -31.86666      -1.15      1.90      2.17      2.13 -0.031        5.20      6.10 CEDU_3PS 
+  131.13275  -12.84370      -1.20     -1.59      3.10      2.73 -0.088        5.43      9.32 DARW_6PS*
+  120.98735   24.79795       1.30     -2.37      3.74      3.57  0.009        5.57     13.29 TNML_5PS*
+  115.89249   39.60860       7.13     -2.24      3.65      3.66 -0.054       -1.11      9.10 BJFS_5PS 
+  115.34698  -29.04658       1.16      1.78      2.47      2.37 -0.128        6.91      6.06 YARR_3PS 
+  104.31619   52.21902      -3.41      1.43      2.97      3.70 -0.005      -15.46      8.01 IRKJ_2PS 
+   96.83398  -12.18834      -4.64      0.59      3.83      2.66 -0.092      -17.90      9.99 COCO_7PS*
+   91.10403   29.65733       1.02      3.08      3.26      3.27 -0.040       -0.89      9.86 LHAZ_8PS 
+   77.97261  -68.57732       2.74     -0.24      2.80      2.74 -0.002        1.55      8.46 DAV1_5PS*
+   74.69427   42.67977      -1.98     -2.59      2.45      2.75 -0.082        6.18      5.50 POL2_4PS*
+   72.37025   -7.26968       1.47      0.11      3.88      2.89 -0.125      -17.59      9.43 DGAR_5PS*
+   70.25552  -49.35147      -1.58     -4.91      3.07      2.95 -0.078        4.23      8.28 KERG_5PS*
+   39.58374  -69.00696      -3.11      1.54      3.21      3.15  0.007       -2.23      8.24 SYOG_6PS*
+   34.76314   30.59761       2.69     -2.41      3.00      3.12 -0.125        2.20      8.12 RAMO_3PS 
+   34.54294   49.60262       0.08     -0.37      3.14      3.46 -0.124       20.35      8.43 POLV_2PS 
+   30.73788   -0.60147       5.74     -1.35      2.75      2.70 -0.134       -8.47      7.69 MBAR_3PS*
+   25.01373   76.50854     -27.07    -39.19      4.09      4.26 -0.434      134.38     12.89 HOPS_GPS 
+   21.72403   79.77053     -16.68     -6.01      4.11      3.93 -0.383       15.90     13.89 ESOX_GPS 
+   21.06025   67.87758       0.32      2.74      2.73      2.76 -0.169       -1.14      5.62 KIR0_2PS 
+   20.81047  -32.38021      -0.86      1.09      2.99      2.79 -0.044        3.73      7.47 SUTH_3PS*
+   19.00140   74.50330      10.00     -1.53      3.80      3.75 -0.538       48.52      8.96 BJOS_GPS 
+   18.93965   69.66272      -6.28      1.13      3.85      4.14 -0.576        3.31      8.52 TRO1_6PS*
+   17.25853   60.59515       3.90      1.61      2.92      3.13 -0.136        3.64      7.11 MAR6_2PS 
+   17.08944  -22.57492      -4.17      1.53      3.29      3.19 -0.137       14.99      8.44 WIND_3PS 
+   16.71392   77.92177      16.48     24.59      3.83      3.43 -0.476      -27.70     10.13 SVEA_GPS 
+   15.39733   78.22883       3.13      8.08      3.76      3.23 -0.495       14.25      9.27 LYRS_GPS 
+   14.98979   36.87585       0.89     -0.73      2.86      2.90 -0.250        4.59      6.80 NOT1_3PS*
+   13.62074   78.06098      -2.80     13.09      3.88      3.38 -0.441       -8.88     10.67 ESIS_GPS 
+   12.87891   49.14420      -1.09      1.30      3.42      3.47 -0.139        4.19      8.64 WTZR_3PS 
+   12.38159   61.42322       5.73      6.95      3.04      3.27 -0.109        5.64      7.89 TRYS_GPS 
+   11.92552   57.39530       0.69      1.81      2.67      2.66 -0.207        4.58      5.31 ONSA_2PS 
+   11.86532   78.92956      -7.42      1.46      3.70      2.89 -0.498       24.39      8.20 NYA1_2PS*
+   11.86509   78.92959      -6.96      0.81      3.69      2.89 -0.501       22.82      8.19 NYAL_5PS*
+    9.67213    0.35391       1.97     -2.25      2.73      2.63 -0.223        5.96      6.55 NKLG_2PS*
+    6.60451   52.91461       0.57      3.18      2.93      2.90 -0.143        5.79      6.51 WSRT_3PS 
+    5.26655   60.28875      63.78     30.56      3.40      3.63 -0.079       55.20      9.41 BRGS_GPS 
+POS STATISTICS: For   32 RefSites WRMS ENU   3.70   2.34   9.51  mm    NRMS ENU   1.29   0.83   1.19 combined_fix.gdl
+POS MEANS: For   32 RefSites: East  -0.73 +-   0.65 North   0.14 +-   0.41 Up   0.37 +-   1.68 mm combined_fix.gdl
+
+ PARAMETER ESTIMATES FROM GLOBK Vers 5.34        
+  #      PARAMETER                            Estimate       Adjustment     Sigma
+Int. REYK_JPS  2587384.19706 -1043033.51882  5716564.06465   -0.01975   -0.00129    0.00848 2010.001
+    1. REYK_JPS X coordinate  (m)          2587383.93370     -0.01703      0.00446
+    2. REYK_JPS Y coordinate  (m)         -1043033.57942     -0.04451      0.00404
+    3. REYK_JPS Z coordinate  (m)          5716564.17515      0.00474      0.00947
+Unc. REYK_JPS  2587383.93370 -1043033.57942  5716564.17515   -0.01975   -0.00129    0.00848 2022.473  0.0045  0.0040  0.0095
+Apr. REYK_JPS  2587383.93370 -1043033.57942  5716564.17515   -0.01975   -0.00129    0.00848 2022.473  0.0045  0.0040  0.0095  -1.0000 -1.0000 -1.0000
+Loc.   REYK_JPS N coordinate  (m)          7139897.14746      0.00132      0.00371
+Loc.   REYK_JPS E coordinate  (m)         16413892.49099     -0.04765      0.00393
+Loc.   REYK_JPS U coordinate  (m)               93.01600      0.00463      0.00983
+     NE,NU,EU position correlations         -0.3275       0.3130      -0.2621
+pbo. REYK_JPS STJO_GPS          2022 06 22 11 59 59752.4998   2587383.93370 -1043033.57942  5716564.17515 0.00446 0.00404 0.00947 -0.107  0.465 -0.523 |    64.1387873461  338.0445102604   93.01600     33.3    81.0    0.00983 |   7139897.14746 16413892.49099   93.01600 0.00371 0.00393 0.00983 -0.327  0.313 -0.262
+
+Int. PDEL_4PS  4551595.93314 -2186893.04018  3883410.90022   -0.00505    0.01612    0.01156 2010.001
+    4. PDEL_4PS X coordinate  (m)          4551595.87904      0.00889      0.01541
+    5. PDEL_4PS Y coordinate  (m)         -2186892.83987     -0.00075      0.01157
+    6. PDEL_4PS Z coordinate  (m)          3883411.03963     -0.00477      0.01257
+Unc. PDEL_4PS  4551595.87904 -2186892.83987  3883411.03963   -0.00505    0.01612    0.01156 2022.473  0.0154  0.0116  0.0126
+Apr. PDEL_4PS  4551595.87904 -2186892.83987  3883411.03963   -0.00505    0.01612    0.01156 2022.473  0.0154  0.0116  0.0126  -1.0000 -1.0000 -1.0000
+Loc.   PDEL_4PS N coordinate  (m)          4202060.52122     -0.00886      0.00622
+Loc.   PDEL_4PS E coordinate  (m)         29428435.56636      0.00318      0.00921
+Loc.   PDEL_4PS U coordinate  (m)              110.59787      0.00370      0.02014
+     NE,NU,EU position correlations          0.1622      -0.1407      -0.0587
+pbo. PDEL_4PS UNSA_GPS          2022 06 22 11 59 59752.4998   4551595.87904 -2186892.83987  3883411.03963 0.01541 0.01157 0.01257 -0.491  0.806 -0.510 |    37.7477519101  334.3372389423  110.59787     55.9   104.7    0.02014 |   4202060.52122 29428435.56636  110.59787 0.00622 0.00921 0.02014  0.162 -0.141 -0.059
+
+Int. QAQ1_6PS  2170942.01597 -2251829.99232  5539988.40795   -0.01909   -0.00415    0.00954 2010.001
+    7. QAQ1_6PS X coordinate  (m)          2170941.77378     -0.00409      0.00267
+    8. QAQ1_6PS Y coordinate  (m)         -2251830.04217      0.00191      0.00348
+    9. QAQ1_6PS Z coordinate  (m)          5539988.52624     -0.00070      0.00663
+Unc. QAQ1_6PS  2170941.77378 -2251830.04217  5539988.52624   -0.01909   -0.00415    0.00954 2022.473  0.0027  0.0035  0.0066
+Apr. QAQ1_6PS  2170941.77378 -2251830.04217  5539988.52624   -0.01909   -0.00415    0.00954 2022.473  0.0027  0.0035  0.0066  -1.0000 -1.0000 -1.0000
+Loc.   QAQ1_6PS N coordinate  (m)          6758792.45048      0.00333      0.00261
+Loc.   QAQ1_6PS E coordinate  (m)         17094849.23457     -0.00162      0.00285
+Loc.   QAQ1_6PS U coordinate  (m)              110.49242     -0.00268      0.00695
+     NE,NU,EU position correlations         -0.2742       0.3645      -0.4339
+pbo. QAQ1_6PS ANTC_GPS          2022 06 22 11 59 59752.4998   2170941.77378 -2251830.04217  5539988.52624 0.00267 0.00348 0.00663 -0.155  0.217 -0.701 |    60.7152656046  313.9522317788  110.49242     23.5    52.3    0.00695 |   6758792.45048 17094849.23457  110.49242 0.00261 0.00285 0.00695 -0.274  0.364 -0.434
+
+Int. STJO_7PS  2612631.00065 -3426807.04037  4686757.91710   -0.01780   -0.00107    0.00847 2010.001
+   10. STJO_7PS X coordinate  (m)          2612630.77858     -0.00007      0.00356
+   11. STJO_7PS Y coordinate  (m)         -3426807.05874     -0.00502      0.00458
+   12. STJO_7PS Z coordinate  (m)          4686758.03239      0.00965      0.00722
+Unc. STJO_7PS  2612630.77858 -3426807.05874  4686758.03239   -0.01780   -0.00107    0.00847 2022.473  0.0036  0.0046  0.0072
+Apr. STJO_7PS  2612630.77858 -3426807.05874  4686758.03239   -0.01780   -0.00107    0.00847 2022.473  0.0036  0.0046  0.0072  -1.0000 -1.0000 -1.0000
+Loc.   STJO_7PS N coordinate  (m)          5298278.09926      0.00362      0.00382
+Loc.   STJO_7PS E coordinate  (m)         23070560.36036     -0.00310      0.00295
+Loc.   STJO_7PS U coordinate  (m)              152.83814      0.00978      0.00790
+     NE,NU,EU position correlations         -0.3335       0.3855      -0.3078
+pbo. STJO_7PS SCUB_GPS          2022 06 22 11 59 59752.4998   2612630.77858 -3426807.05874  4686758.03239 0.00356 0.00458 0.00722 -0.445  0.298 -0.694 |    47.5952419608  307.3222469661  152.83814     34.3    39.3    0.00790 |   5298278.09926 23070560.36036  152.83814 0.00382 0.00295 0.00790 -0.333  0.386 -0.308
+
+Int. OHI2_7PS  1525811.96203 -2432478.22072 -5676165.56100    0.01830   -0.00096    0.00149 2010.001
+   13. OHI2_7PS X coordinate  (m)          1525812.19261      0.00234      0.00328
+   14. OHI2_7PS Y coordinate  (m)         -2432478.22555      0.00715      0.00393
+   15. OHI2_7PS Z coordinate  (m)         -5676165.51465      0.02776      0.00744
+Unc. OHI2_7PS  1525812.19261 -2432478.22555 -5676165.51465    0.01830   -0.00096    0.00149 2022.473  0.0033  0.0039  0.0074
+Apr. OHI2_7PS  1525812.19261 -2432478.22555 -5676165.51465    0.01830   -0.00096    0.00149 2022.473  0.0033  0.0039  0.0074  -1.0000 -1.0000 -1.0000
+Loc.   OHI2_7PS N coordinate  (m)         -7048870.32341      0.00824      0.00352
+Loc.   OHI2_7PS E coordinate  (m)         15099535.58096      0.00578      0.00292
+Loc.   OHI2_7PS U coordinate  (m)               32.47659     -0.02694      0.00778
+     NE,NU,EU position correlations         -0.1152      -0.2068       0.0662
+pbo. OHI2_7PS NLIB_GPS          2022 06 22 11 59 59752.4998   1525812.19261 -2432478.22555 -5676165.51465 0.00328 0.00393 0.00744 -0.307 -0.414  0.431 |   -63.3210794730  302.0986727224   32.47659     31.7    58.3    0.00778 |  -7048870.32341 15099535.58096   32.47659 0.00352 0.00292 0.00778 -0.115 -0.207  0.066
+
+Int. UNSA_9PS  2412830.41119 -5271936.75157 -2652208.97717    0.00628   -0.00334    0.01081 2010.001
+   16. UNSA_9PS X coordinate  (m)          2412830.50700      0.01749      0.00717
+   17. UNSA_9PS Y coordinate  (m)         -5271936.81132     -0.01809      0.01271
+   18. UNSA_9PS Z coordinate  (m)         -2652208.85969     -0.01735      0.00751
+Unc. UNSA_9PS  2412830.50700 -5271936.81132 -2652208.85969    0.00628   -0.00334    0.01081 2022.473  0.0072  0.0127  0.0075
+Apr. UNSA_9PS  2412830.50700 -5271936.81132 -2652208.85969    0.00628   -0.00334    0.01081 2022.473  0.0072  0.0127  0.0075  -1.0000 -1.0000 -1.0000
+Loc.   UNSA_9PS N coordinate  (m)         -2752647.65774     -0.00591      0.00553
+Loc.   UNSA_9PS E coordinate  (m)         29787229.75604      0.00837      0.00514
+Loc.   UNSA_9PS U coordinate  (m)             1257.82036      0.02879      0.01457
+     NE,NU,EU position correlations         -0.1566       0.0918      -0.0250
+pbo. UNSA_9PS MDO1_GPS          2022 06 22 11 59 59752.4998   2412830.50700 -5271936.81132 -2652208.85969 0.00717 0.01271 0.00751 -0.639 -0.549  0.594 |   -24.7274546275  294.5923569668 1257.82036     49.7    50.9    0.01457 |  -2752647.65774 29787229.75604 1257.82036 0.00553 0.00514 0.01457 -0.157  0.092 -0.025
+
+Int. SCH2_3PS  1448636.68782 -3385243.73247  5191047.11055   -0.01586   -0.00650    0.01349 2010.001
+   19. SCH2_3PS X coordinate  (m)          1448636.49064      0.00063      0.00302
+   20. SCH2_3PS Y coordinate  (m)         -3385243.81486     -0.00132      0.00514
+   21. SCH2_3PS Z coordinate  (m)          5191047.28092      0.00212      0.00636
+Unc. SCH2_3PS  1448636.49064 -3385243.81486  5191047.28092   -0.01586   -0.00650    0.01349 2022.473  0.0030  0.0051  0.0064
+Apr. SCH2_3PS  1448636.49064 -3385243.81486  5191047.28092   -0.01586   -0.00650    0.01349 2022.473  0.0030  0.0051  0.0064  -1.0000 -1.0000 -1.0000
+Loc.   SCH2_3PS N coordinate  (m)          6103880.43864      0.00004      0.00283
+Loc.   SCH2_3PS E coordinate  (m)         18797181.51045      0.00006      0.00263
+Loc.   SCH2_3PS U coordinate  (m)              498.43401      0.00257      0.00782
+     NE,NU,EU position correlations          0.0780      -0.1358      -0.0901
+pbo. SCH2_3PS WHIT_GPS          2022 06 22 11 59 59752.4998   1448636.49064 -3385243.81486  5191047.28092 0.00302 0.00514 0.00636 -0.438  0.477 -0.747 |    54.8320909047  293.1673790598  498.43401     25.4    41.0    0.00782 |   6103880.43864 18797181.51045  498.43401 0.00283 0.00263 0.00782  0.078 -0.136 -0.090
+
+Int. ANTC_3PS  1608538.91731 -4816370.04655 -3847798.30685    0.01332   -0.00732    0.00363 2010.001
+   22. ANTC_3PS X coordinate  (m)          1608538.53663     -0.54681      0.00486
+   23. ANTC_3PS Y coordinate  (m)         -4816370.57598     -0.43813      0.00783
+   24. ANTC_3PS Z coordinate  (m)         -3847798.25300      0.00857      0.00730
+Unc. ANTC_3PS  1608538.53663 -4816370.57598 -3847798.25300    0.01332   -0.00732    0.00363 2022.473  0.0049  0.0078  0.0073
+Apr. ANTC_3PS  1608538.53663 -4816370.57598 -3847798.25300    0.01332   -0.00732    0.00363 2022.473  0.0049  0.0078  0.0073  -1.0000 -1.0000 -1.0000
+Loc.   ANTC_3PS N coordinate  (m)         -4156524.85138      0.15320      0.00445
+Loc.   ANTC_3PS E coordinate  (m)         25530779.61310     -0.65743      0.00432
+Loc.   ANTC_3PS U coordinate  (m)              745.61187      0.18798      0.00998
+     NE,NU,EU position correlations         -0.1454      -0.0997       0.0603
+pbo. ANTC_3PS MKEA_GPS          2022 06 22 11 59 59752.4998   1608538.53663 -4816370.57598 -3847798.25300 0.00486 0.00783 0.00730 -0.384 -0.455  0.637 |   -37.3386980282  288.4679362998  745.61187     40.0    48.8    0.00998 |  -4156524.85138 25530779.61310  745.61187 0.00445 0.00432 0.00998 -0.145 -0.100  0.060
+
