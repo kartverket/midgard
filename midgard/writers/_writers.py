@@ -208,14 +208,13 @@ def get_value_by_keys(dict_: Dict[str, Any], keys: Tuple[str], format_=None, uni
     def _get_value(field, unit):
         if unit:
             field = field * getattr(Unit, unit)
-        
         return f"{field:>{format_}}" if format_ else field
     
     field = dict_.copy()
     for key in keys:
         field = field[key]
-    
-    if type(field) is list:
+
+    if type(field) is list or type(field) is np.ndarray:
         value = list()
         for f in field:
             value.append(_get_value(f, unit))
