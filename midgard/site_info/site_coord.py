@@ -443,7 +443,7 @@ class SiteCoordHistorySsc(SiteInfoHistoryBase):
     def _process_history(
                 self, 
                 source_data: Dict,
-    ) -> Dict[Tuple[datetime, datetime], "SiteCoordSinex"]:
+    ) -> Dict[Tuple[datetime, datetime], "SiteCoordSsc"]:
         """Process site coordinate history from SINEX file
 
         Args:
