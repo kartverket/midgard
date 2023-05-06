@@ -67,6 +67,9 @@ class MatPlotExt:
     | plot_to            | <console|file>   | Plot figure on console or file                                        |
     | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                         |
     |                    | scatter>         |                                                                       |
+    | plot_type_2nd      | <bar|plot|       | Choose either "bar", "plot" or "scatter" type of 2nd plot y_array     |
+    |                    | scatter|None>    | plot. This can be used in case if y_arrays ndim=2 to distinguish      |
+    |                    |                  | between a 'plot' or 'scatter' plot.                                   |
     | projection         | <type>           | Projection type of plot (e.g. 'polar')                                |
     | reg_line           | <True|False>     | Regression line flag                                                  |
     | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
@@ -126,6 +129,7 @@ class MatPlotExt:
             "linestyle": "solid",
             "plot_to": "console",
             "plot_type": "scatter",
+            "plot_type_2nd": None,
             "projection": None,
             "reg_line": False,
             "sharex": True,
@@ -365,6 +369,9 @@ class MatPlotExt:
         | plot_to            | <console|file>   | Plot figure on console or file                                          |
         | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                           |
         |                    | scatter>         |                                                                         |
+        | plot_type_2nd      | <bar|plot|       | Choose either "bar", "plot" or "scatter" type of 2nd plot y_array plot. |
+        |                    | scatter|none>    | This can be used in case if y_arrays ndim=2 to distinguish between a    |
+        |                    |                  | 'plot' or 'scatter' plot.                                               |
         | projection         | <type>           | Projection type of plot (e.g. 'polar')                                  |
         | reg_line           | <True|False>     | Regression line flag                                                    |
         | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
@@ -594,6 +601,9 @@ class MatPlotExt:
         | plot_to            | <console|file>   | Plot figure on console or file                                          |
         | plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                           |
         |                    | scatter>         |                                                                         |
+        | plot_type_2nd      | <bar|plot|       | Choose either "bar", "plot" or "scatter" type of 2nd plot y_array plot. |
+        |                    | scatter|none>    | This can be used in case if y_arrays ndim=2 to distinguish between a    |
+        |                    |                  | 'plot' or 'scatter' plot.                                               |
         | reg_line           | <True|False>     | Regression line flag                                                    |
         | sharex             | <True|False>     | Share x-axis                                                            |
         | sharey             | <True|False>     | Share y-axis                                                            |
@@ -665,7 +675,16 @@ class MatPlotExt:
         for ax, y_array, ylabel, color, y_unit, subtitle in zip(axes, y_arrays, ylabels, colors, y_units, subtitles):
 
             if y_array.ndim == 2:
+
                 for row in range(0, y_array.shape[0]):
+
+                    # Use another plot type for 2nd plot
+                    current_options = self.options.copy()
+                    if options["plot_type_2nd"]:
+                       if row == 1:
+                            self.options["plot_type"] = self.options["plot_type_2nd"]
+
+                    # Plot subplot row 
                     self.plot_subplot_row(
                             ax, 
                             x_array, 
@@ -679,7 +698,11 @@ class MatPlotExt:
                             color=color[row],
                             subtitle=subtitle,
                             options=self.options, 
-                    )                                     
+                    ) 
+
+                    # Reset options
+                    self.options = current_options
+                                                        
 
             else:
                 self.plot_subplot_row(
