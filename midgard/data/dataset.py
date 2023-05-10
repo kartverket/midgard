@@ -273,14 +273,14 @@ class Dataset(collection.Collection):
             idx = np.logical_and(idx, field_idx)
         return idx
 
-    def unique(self, field, maintain_order=False, **filters) -> np.array:
+    def unique(self, field, sort=True, **filters) -> np.array:
         """List unique values of a given field
 
         Args:
-            field (str):             Name of dataset field (with potential subfields)
-            maintain_order (bool):   Set to True to get elements of the result in the same order as they
-                                     originally appear in the given field. By default numpy will sort the output.
-            filters (kwargs):        additional arguments to filter the given field
+            field (str):        Name of dataset field (with potential subfields)
+            sort (bool):        Set to False to get elements of the result in the same order as they
+                                originally appear in the given field. By default numpy will sort the output.
+            filters (kwargs):   additional arguments to filter the given field
 
         Returns:
             Returns a list of unique values for of the given field.
@@ -290,7 +290,8 @@ class Dataset(collection.Collection):
             # convert to np.ndarray and find unique index (np.unique does not work on immutable arrays like TimeArray)
             _, indicies = np.unique(np.asarray(self[field][idx]), return_index=True)
             unique_idx = np.zeros(np.sum(idx), dtype=bool)
-            if maintain_order:
+            if not sort:
+                # Restore original order
                 indicies = np.sort(indicies)
             unique_idx[indicies] = True
             return self[field][idx][unique_idx]
@@ -319,7 +320,8 @@ class Dataset(collection.Collection):
 
             _, indicies = np.unique(concat_field, return_index=True)
 
-            if maintain_order:
+            if not sort:
+                # Restore original order
                 indicies = np.sort(indicies)
             return concat_field[indicies]
 
