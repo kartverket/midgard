@@ -112,6 +112,8 @@ class CasedConfigParser(ConfigParser):
 class Configuration:
     """Represents a Configuration"""
 
+    FILE_WIDTH = 200
+
     def __init__(self, name: str) -> None:
         """Initialize a Configuration
 
@@ -163,7 +165,7 @@ class Configuration:
         if cfg._update_count > update_count_before:
             cfg.write_to_file(file_path, **as_str_args)
 
-    def write_to_file(self, file_path: Union[str, pathlib.Path], **as_str_args: Any) -> None:
+    def write_to_file(self, file_path: Union[str, pathlib.Path], width=None, **as_str_args: Any) -> None:
         """Write the configuration to a file
 
         In addition to the file path, arguments can be specified and will be passed on to the as_str() function. See
@@ -173,8 +175,12 @@ class Configuration:
         """
         file_path = pathlib.Path(file_path)
         file_path.parent.mkdir(parents=True, exist_ok=True)
+        if width is None:
+            # Use a default width when writing to file to make sure the file width does not change from one
+            # execution to another. This will make it easier to compare file with for instance `diff`.
+            width = self.FILE_WIDTH 
         with open(file_path, mode="w") as fid:
-            fid.write(self.as_str(**as_str_args) + "\n")
+            fid.write(self.as_str(width=width, **as_str_args) + "\n")
 
     @property
     def section_names(self) -> List[str]:
