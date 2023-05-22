@@ -153,14 +153,14 @@ class GamitOrgParser(ChainParser):
         Returns:
             Midgard Dataset containing the following information
 
-        | Field                    | Type              | Description                                                   |
-        | :----------------------- | :---------------- | :------------------------------------------------------------ |
-        | site_pos                 | Position          | x, y and z station coordinates                                |
-        | site_pos_x_sigma         | numpy.ndarray     | Standard deviation for x station coordinate                   |
-        | site_pos_y_sigma         | numpy.ndarray     | Standard deviation for y station coordinate                   |
-        | site_pos_z_sigma         | numpy.ndarray     | Standard deviation for z station coordinate                   |
-        | station                  | numpy.ndarray     | Station name list                                             |
-        | time                     | Time              | Parameter time given as TimeTable object                      |
+        | Field            | Type          | Description |
+        | :--------------- | :------------ | :------------------------------------------ |
+        | site_pos         | Position      | x, y and z station coordinates              |
+        | site_pos_x_sigma | numpy.ndarray | Standard deviation for x station coordinate |
+        | site_pos_y_sigma | numpy.ndarray | Standard deviation for y station coordinate |
+        | site_pos_z_sigma | numpy.ndarray | Standard deviation for z station coordinate |
+        | station          | numpy.ndarray | Station name list                           |
+        | time             | Time          | Parameter time given as TimeTable object    |
         """
         num_stations = len(self.meta["station"])
         dset = dataset.Dataset(num_obs=num_stations)
