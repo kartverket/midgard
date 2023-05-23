@@ -195,11 +195,9 @@ class GipsyStacovParser(ChainParser):
             "site_pos",
             time=dset.time,
             system="trs",
-            val=np.squeeze(
-                    np.vstack(
+            val=np.vstack(
                         (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
-                    ).T
-            ),
+            ).T
         )
 
         # Extract correlation coefficients of each station coordinate solution
