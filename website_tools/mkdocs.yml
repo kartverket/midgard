@@ -1,4 +1,4 @@
-site_name: Midgard v1.2.1
+site_name: Midgard v1.2.2
 theme: flatly
 site_dir: ../docs
 nav:
@@ -13,7 +13,6 @@ nav:
         - midgard.dev: api/midgard-dev.md
         - midgard.files: api/midgard-files.md
         - midgard.gnss: api/midgard-gnss.md
-        - midgard.ionosphere: api/midgard-ionosphere.md
         - midgard.math: api/midgard-math.md
         - midgard.parsers: api/midgard-parsers.md
         - midgard.plot: api/midgard-plot.md

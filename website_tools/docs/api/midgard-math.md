@@ -43,7 +43,7 @@ Signature: `() -> None`
 
 
 ### constant (Constant)
-`constant = Constant('/home/kirann/miniconda3/lib/python3.9/site-packages/midgard/math/constant.txt')`
+`constant = Constant('/home/kirann/miniconda3/envs/where/lib/python3.10/site-packages/midgard/math/constant.txt')`
 
 
 ## midgard.math.ellipsoid

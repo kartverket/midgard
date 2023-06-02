@@ -488,16 +488,6 @@ Signature: `(log_level: Optional[str] = None, prefix: str = '')`
 
 Abstract class that can be specialized to create new loggers
 
-### **all**()
-
-Full name: `midgard.dev.log.all`
-
-Signature: `(log_text: str, *, level: str = 'all') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
-
 ### **blank**()
 
 Full name: `midgard.dev.log.blank`
@@ -505,36 +495,6 @@ Full name: `midgard.dev.log.blank`
 Signature: `() -> None`
 
 Log blank line
-
-### **debug**()
-
-Full name: `midgard.dev.log.debug`
-
-Signature: `(log_text: str, *, level: str = 'debug') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
-
-### **error**()
-
-Full name: `midgard.dev.log.error`
-
-Signature: `(log_text: str, *, level: str = 'error') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
-
-### **fatal**()
-
-Full name: `midgard.dev.log.fatal`
-
-Signature: `(log_text: str, *, level: str = 'fatal') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
 
 ### **file_init**
 
@@ -554,16 +514,6 @@ Log to a file, the log files can be rotated so that older files are kept
                     is not specified, then existing logging file is overwritten from newer ones.            
 
 
-### **info**()
-
-Full name: `midgard.dev.log.info`
-
-Signature: `(log_text: str, *, level: str = 'info') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
-
 ### **init**
 
 Full name: `midgard.dev.log.init`
@@ -580,16 +530,6 @@ Signature: `(log_text: str, level: str) -> None`
 
 Log text at the given level
 
-### **none**()
-
-Full name: `midgard.dev.log.none`
-
-Signature: `(log_text: str, *, level: str = 'none') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
-
 ### **print_file**()
 
 Full name: `midgard.dev.log.print_file`
@@ -597,16 +537,6 @@ Full name: `midgard.dev.log.print_file`
 Signature: `(log_path: Union[str, pathlib.Path], log_level: str = 'info', print_func: Callable[[str], NoneType] = <built-in function print>) -> None`
 
 Print a log file with colors, stripping away any item below log_level
-
-### **warn**()
-
-Full name: `midgard.dev.log.warn`
-
-Signature: `(log_text: str, *, level: str = 'warn') -> None`
-
-partial(func, *args, **keywords) - new function with partial application
-of the given arguments and keywords.
-
 
 ## midgard.dev.plugins
 Set up a plug-in architecture for Midgard
@@ -1103,7 +1033,7 @@ logger is used to report the timing. See `Timer.__init__` for more details.
 
 Full name: `midgard.dev.timer.AccumulatedTimer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7f6bf7042550>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7f174b56be20>, level='info')) -> None`
 
 
 
@@ -1111,7 +1041,7 @@ Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Cal
 
 Full name: `midgard.dev.timer.Timer`
 
-Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7f6bf7042550>, level='info')) -> None`
+Signature: `(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(<function log at 0x7f174b56be20>, level='info')) -> None`
 
 Class for timing running time of functions and code blocks.
 

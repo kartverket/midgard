@@ -194,30 +194,68 @@ Return:
     GNSS frequency in [Hz]
 
 
-## midgard.gnss.rec_velocity_est
+## midgard.gnss.klobuchar
+Klobuchar model for computing the ionospheric time-delay correction.
+
+**Description:**
+
+Compute the ionospheric time-delay correction for the single-frequency by
+broadcast model (klobuchar model).  GPS and Beidu satellite navigation systems
+use this model. The implementation is based on original paper of Klobuchar
+(1987). The Klobuchar model is also described in Figure 20-4 in IS-GPS-200J.
 
 
-### E_OMGA (float)
-`E_OMGA = 7.2921151467e-05`
+**References:**
+
+- IS-GPS-200J (2018): "Global positioning systems directorate systems engineering & integration interface
+    specification IS-GPS-200, Navstar GPS space Segment/Navigation user segment interfaces, 25. April 2018
+
+- Klobuchar, J.A. (1987): "Ionospheric Time-Delay Algorithm for Single-Frequency GPS Users", IEEE Transactions
+    on Aerospace and Electronic Systems, Vol. AES-23, No. 3, May 1987, https://scinapse.io/papers/2058160370
+
+- Sanz Subirana, J., Juan Zornoza, J.M. and Hernandez-Pajares, M. (2013): "GNSS data processing - Volume I:
+    Fundamentals and Algorithms", TM-23/1, European Space Agency, May 2013
 
 
-### epilog (str)
-`epilog = '\n**EXAMPLE**\n    rec_velocity_est.py \n    args:\n    NONE\n               \n**COPYRIGHT**\n    | Copyright 2019, by the Geodetic Institute, NMA\n    | All rights reserved\n\n**AUTHORS**\n    | Mohammed Ouassou \n    | Geodetic Institute, NMA\n    | Kartverksveien 21, N-3511\n    | Hønefoss, Norway\n  \n'`
+
+### **klobuchar**()
+
+Full name: `midgard.gnss.klobuchar.klobuchar`
+
+Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7f174b56be20>, level='debug'))`
+
+Compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model)
+
+GPS and  BeiDou satellite navigation systems use this model. The implementation is based on original paper of
+Klobuchar, J.A. Ionospheric Time-Delay Algorithm for Single-Frequency GPS Users
+https://scinapse.io/papers/2058160370
+
+**Args:**
+
+- `time`:       GPST
+- `ion_coeffs`: iono model parameters {a0,a1,a2,a3,b0,b1,b2,b3} as vector
+- `rec_pos`:    receiver position {lat,lon,h} [rad, rad, m] as vector
+- `az`:         azimuth angle [rad]
+- `el`:         elevation angle [rad]
+- `system`:     GNSS system
+- `freq_l1`:    L1 frequency of given GNSS in [Hz]
+- `freq`:       Frequency in [Hz] for which ionospheric delay should be determined.
+- `logger`:     Function that logs
+
+**Returns:**
+
+- `iono_delay`:    computed path delay for given frequency [m]
+- `L1_variance`:   corresponding variance [m^2]
+
+TODO: freq_L1 should be determined in klobuchar routine and argument be replaced by system. constants needed in
+      Midgard.
 
 
-### lambda_E1 (float)
-`lambda_E1 = 0.19029367279836487`
+### **main**()
 
+Full name: `midgard.gnss.klobuchar.main`
 
-### prolog (str)
-`prolog = '\n**PROGRAM**\n    rec_velocity_est.py\n      \n**PURPOSE**\n   "GNSS Receiver velocity estimation by Doppler measurements\n    \n    Doppler shift, affecting  the frequency of the signal received from  a GNSS satellite, is related to the user-satellite relative motion \n    and is useful to study  the receiver  motion.  Using measurements from at least four simultaneous Doppler measurements, Least Square (LS) \n    or Kalman filter (KF) estimation techniques can be employed to obtain an estimate of the four unknown dx=(Vx, Vy, Vz, rate(cdt) ).\n    \n    FACTS:\n        F.1 The design matrix  H of the Doppler based velocity model is the same as the pseudorange  case. Constellation geometry influences the \n            velocity accuracy according to DOP.\n        F.2 The measurement errors is composed of systematic errors (orbital errors, atmosphere, and so forth) and the measurement noise. \n            Noting that the Doppler is the time derivative of the carrier phase, the systematic Doppler errors are the time derivative of the \n            carrier phase errors and changing slowly with time. The magnitude is at the level of millimeters per seconds. \n        F.3 Geometry factors influences the estimation process.    \n        F.4 The implementation is based on the paper of Mark Petovello (GNSS solutions).\n    \n    VALIDATION:\n        V.1 CNES software package SPRING is used to validate the implemented SPV.\n        V.2 Solution validation is based on Chi-square test and GDOP values on epoch-by-epoch basis\n   \n**USAGE**\n'`
-
-
-### **spvDoppler**
-
-Full name: `midgard.gnss.rec_velocity_est.spvDoppler`
-
-Signature: `(z, H, x, dx, Qx)`
+Signature: `()`
 
 
 

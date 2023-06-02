@@ -822,24 +822,26 @@ A parser for reading station information in Bernese STA format
 
 
 The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key and a list with 
-dictionaries. These dictionaries have date period as key and following entries:
+station information dictionaries with following entries:
 
-| Key                          | Type  |Description                                                         |
-|------------------------------|-------|--------------------------------------------------------------------|
-| antenna_serial_number        | str   | Antenna serial number                                              |
-| antenna_serial_number_short  | str   | 6 last digits of antennna serial number                            |
-| antenna_type                 | str   | Antenna type                                                       |
-| domes                        | str   | Domes number                                                       |
-| description                  | str   | Description normally with station name and country code            |
-| eccentricity_east            | float | East component of eccentricity in [m]                              |
-| eccentricity_north           | float | North component of eccentricity in [m]                             |
-| eccentricity_up              | float | Up component of eccentricity in [m]                                |
-| flag                         | str   | Flag number                                                        |
-| radome                       | str   | Antenna radome type                                                |
-| receiver_serial_number       | str   | Receiver serial number                                             |
-| receiver_serial_number_short | str   | 6 last digits of receiver serial number                            |
-| receiver_type                | str   | Receiver type                                                      |
-| remark                       | str   | Remark                                                             |
+| Key                          | Type     |Description                                                         |
+|------------------------------|----------|--------------------------------------------------------------------|
+| antenna_serial_number        | str      | Antenna serial number                                              |
+| antenna_serial_number_short  | str      | 6 last digits of antennna serial number                            |
+| antenna_type                 | str      | Antenna type                                                       |
+| date_from                    | datetime | Start date where station information is valid                      |
+| date_to                      | datetime | End date of station information                                    | 
+| domes                        | str      | Domes number                                                       |
+| description                  | str      | Description normally with station name and country code            |
+| eccentricity_east            | float    | East component of eccentricity in [m]                              |
+| eccentricity_north           | float    | North component of eccentricity in [m]                             |
+| eccentricity_up              | float    | Up component of eccentricity in [m]                                |
+| flag                         | str      | Flag number                                                        |
+| radome                       | str      | Antenna radome type                                                |
+| receiver_serial_number       | str      | Receiver serial number                                             |
+| receiver_serial_number_short | str      | 6 last digits of receiver serial number                            |
+| receiver_type                | str      | Receiver type                                                      |
+| remark                       | str      | Remark                                                             |
 
 and **meta**-data:
 
@@ -877,13 +879,13 @@ A parser for reading troposphere files in Bernese TRP format
 Following **data** can be available after reading troposphere files in Bernese TRP file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | TODO                 |                                                                                      |
 
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | TODO                 |                                                                                      |
 | \__data_path__       | File path                                                                            |
 | \__params__          | np.genfromtxt parameters                                                             |
@@ -930,7 +932,7 @@ parser_name (String):         Name of the parser (as needed to call parsers.pars
 
 
 ### UNIT_DEF (dict)
-`UNIT_DEF = {'gradients_ew': UnitField(from_='millimeter', to_='meter'), 'gradients_ns': UnitField(from_='millimeter', to_='meter'), 'height_geoid': UnitField(from_='meter', to_='meter'), 'humidity': UnitField(from_='', to_=''), 'iwv': UnitField(from_='kilogram/meter**2', to_='kilogram/meter**2'), 'pressure': UnitField(from_='hectopascal', to_='pascal'), 'sigma_gradients_ew': UnitField(from_='millimeter', to_='meter'), 'sigma_gradients_ns': UnitField(from_='millimeter', to_='meter'), 'sigma_ztd': UnitField(from_='millimeter', to_='meter'), 'temperature': UnitField(from_='kelvin', to_='kelvin'), 'ztd': UnitField(from_='millimeter', to_='meter'), 'zwd': UnitField(from_='millimeter', to_='meter')}`
+`UNIT_DEF = {'height_geoid': UnitField(from_='meter', to_='meter'), 'humidity': UnitField(from_='', to_=''), 'iwv': UnitField(from_='kilogram/meter**2', to_='kilogram/meter**2'), 'pressure': UnitField(from_='hectopascal', to_='pascal'), 'temperature': UnitField(from_='kelvin', to_='kelvin'), 'trop_gradient_east': UnitField(from_='millimeter', to_='meter'), 'trop_gradient_east_sigma': UnitField(from_='millimeter', to_='meter'), 'trop_gradient_north': UnitField(from_='millimeter', to_='meter'), 'trop_gradient_north_sigma': UnitField(from_='millimeter', to_='meter'), 'trop_zenith_total': UnitField(from_='millimeter', to_='meter'), 'trop_zenith_total_sigma': UnitField(from_='millimeter', to_='meter'), 'trop_zenith_wet': UnitField(from_='millimeter', to_='meter')}`
 
 
 ### **UnitField**
@@ -998,6 +1000,171 @@ A parser for reading Galileo constellation info from a web page
 See https://www.gsc-europa.eu/system-status/Constellation-Information for an example
 
 
+## midgard.parsers.gamit_org
+A parser for reading Gamit ORG files
+
+**Example:**
+
+    from midgard import parsers
+
+    # Parse data
+    parser = parsers.parse_file(parser_name="gamit_org", file_path=file_path)
+
+    # Get Dataset with parsed data
+    dset = parser.as_dataset()
+
+**Description:**
+
+Reads the output file of Gamit.
+
+Example header from wich the time information is read from the .org file
+
+---------------------------------------------------------
+ GLOBK Ver 5.34, Global solution
+---------------------------------------------------------
+
+ Solution commenced with: 2022/ 6/22  0: 0    (2022.4712)
+ Solution ended with    : 2022/ 6/22 23:59    (2022.4740)
+ Solution refers to     : 2022/ 6/22 11:59    (2022.4726) [Seconds tag  45.000]
+ Satellite IC epoch     : 2022/ 6/22 12: 0  0.00
+
+
+Example lines to be read from the .org file
+
+    REYK_JPS X coordinate  (m)          2587383.93370     -0.01703      0.00446
+
+    REYK_JPS Y coordinate  (m)         -1043033.57942     -0.04451      0.00404
+
+    REYK_JPS Z coordinate  (m)          5716564.17515      0.00474      0.00947
+
+
+### **GamitOrgParser**
+
+Full name: `midgard.parsers.gamit_org.GamitOrgParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+
+A parser for reading gamit org file
+
+**Attributes:**
+
+data (Dict):                  The (observation) data read from file.
+file_path (Path):             Path to the datafile that will be read.
+meta (Dict):                  Metainformation read from file.
+parser_name (String):         Name of the parser (as needed to call parsers.parse_...).
+system (String):              GNSS identifier.
+
+Methods:
+    as_dataset()                  Return the parsed data as a Midgard Dataset
+    parse()                       Parse data
+    setup_parser()                Set up information needed for the parser
+
+    _parse_time()                 Parse a line of time information
+    _parse_station()              Parse a line of station information
+
+
+## midgard.parsers.gipsy_stacov
+A parser for reading NASA JPL Gipsy `stacov` format file
+
+`stacov` format file includes Gipsy estimates and covariance information. 
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='gipsy_stacov', file_path='stacov_final')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in Gipsy `stacov` format.
+
+
+
+### **GipsyStacovParser**
+
+Full name: `midgard.parsers.gipsy_stacov.GipsyStacovParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+
+A parser for reading Gipsy `stacov` format file
+
+Following **data** are available after reading Gipsy `stacov` output file:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| correlation          | Correlation values                                                                   |
+| correlation_index1   | Correlation index (1st column)                                                       |
+| correlation_index2   | Correlation index (2nd column)                                                       |
+| estimate             | Parameter estimate at the given time                                                 |
+| estimate_index       | Estimate index                                                                       |
+| parameter            | Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."     |
+|                      | without spaces.                                                                      |
+| row                  | Row number of correlations                                                           |
+| station              | Station name.                                                                        |    
+| sigma                | Standard deviation of the parameter.                                                 |
+| time_past_j2000      | Time given in GPS seconds past J2000, whereby GipsyX uses following definition:      |
+|                      | J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.                          |
+
+
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
+
+
+## midgard.parsers.gipsy_sum
+A parser for reading Gipsy summary output file (*.sum)
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='gipsy_sum', file_path='gipsy_sum')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in Gipsy summary output format.
+
+
+
+### **GipsySummary**
+
+Full name: `midgard.parsers.gipsy_sum.GipsySummary`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+
+A parser for reading Gipsy summary output file (*.sum)
+
+Gipsy summary file **data** are grouped as follows:
+
+| Key                   | Description                                                                          |
+| :-------------------- | :----------------------------------------------------------------------------------- |
+| date                  | Processing date                                                                      |
+| residual              | Dictionary with residual summary information                                         |
+| station               | Station name                                                                         |
+
+**residual** entries are:
+
+| Key                   | Description                                                                          |
+| :-------------------- | :----------------------------------------------------------------------------------- |
+| code_obs_num          | Number of used pseudo-range observations                                             |
+| code_outlier_num      | Number of rejected pseudo-range observations                                         |
+| code_residual_rms     | RMS of residuals from used pseudo-range observations in [m]                          |
+| phase_obs_num         | Number of used phase observations                                                    |
+| phase_outlier_num     | Number of rejected phase observations                                                |
+| phase_residual_rms    | RMS of residuals from used phase observations in [m]                                 |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
+
+
 ## midgard.parsers.gipsy_tdp
 A parser for reading NASA JPL Gipsy time dependent parameter (TDP) file
 
@@ -1013,6 +1180,20 @@ Reads data from files in Gipsy time dependent parameter (TDP) format.
 
 
 
+### **DatasetField**
+
+Full name: `midgard.parsers.gipsy_tdp.DatasetField`
+
+Signature: `(name=None, dtype=None)`
+
+A convenience class for defining a dataset field properties
+
+**Args:**
+
+name  (str):             Dataset field name
+dtype (str):             Dataset data type
+
+
 ### **GipsyTdpParser**
 
 Full name: `midgard.parsers.gipsy_tdp.GipsyTdpParser`
@@ -1025,7 +1206,7 @@ Following **data** are available after reading Gipsy TDP output file:
 
 | Key                  | Description                                                                          |
 |----------------------|--------------------------------------------------------------------------------------|
-| apriori_value        | Nominal value. This field contains the last value used by the model.                 |
+| apriori              | Nominal value. This field contains the last value used by the model.                 |
 | name                 | Parameter name.                                                                      |
 | sigma                | The sigma associated with the value of the parameter. A negative value indicates it  |
 |                      | should be used for interpolation by the file reader read_time_variation in           |
@@ -1224,58 +1405,58 @@ Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None
 
 A parser for reading GipsyX summary file
 
-    GipsyX summary file **data** are grouped as follows:
+GipsyX summary file **data** are grouped as follows:
 
-    | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
-    | position              | Dictionary with position summary information                                         |
-    | residual              | Dictionary with residual summary information                                         |
-    | station               | Station name                                                                         |
+| Key                   | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| position              | Dictionary with position summary information                                         |
+| residual              | Dictionary with residual summary information                                         |
+| station               | Station name                                                                         |
 
-    **position** entries are:
+**position** entries are:
 
-    | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
-    | pos_x                 | X-coordinate of station position solution                                            |
-    | pos_y                 | Y-coordinate of station position solution                                            |
-    | pos_z                 | Z-coordinate of station position solution                                            |
-    | pos_vs_ref_x          | X-coordinate of difference between solution and reference of station coordinate      |
-    | pos_vs_ref_y          | Y-coordinate of difference between solution and reference of station coordinate      |
-    | pos_vs_ref_z          | Z-coordinate of difference between solution and reference of station coordinate      |
-    | pos_vs_ref_e          | East-coordinate of difference between solution and reference of station coordinate   |
-    | pos_vs_ref_n          | North-coordinate of difference between solution and reference of station coordinate  |
-    | pos_vs_ref_v          | Vertical-coordinate of difference between solution and reference of station          |
-    |                       | coordinate                                                                           |
-
-
-    **residual** entries are:
-
-    | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
-    | code_max              | Maximal residual of used pseudo-range observations                                   |
-    | code_min              | Minimal residual of used pseudo-range observations                                   |
-    | code_num              | Number of used pseudo-range observations                                             |
-    | code_rms              | RMS of residuals from used pseudo-range observations                                 |
-    | code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
-    | code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
-    | code_outlier_num      | Number of rejected pseudo-range observations                                         |
-    | code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
-    | phase_max             | Maximal residual of used phase observations                                          |
-    | phase_min             | Minimal residual of used phase observations                                          |
-    | phase_num             | Number of used phase observations                                                    |
-    | phase_rms             | RMS of residuals from used phase observations                                        |
-    | phase_outlier_max     | Maximal residual of rejected phase observations                                      |
-    | phase_outlier_min     | Minimal residual of rejected phase observations                                      |
-    | phase_outlier_num     | Number of rejected phase observations                                                |
-    | phase_outlier_rms     | RMS of residuals from rejected phase observations                                    |
+| Key                   | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| pos_x                 | X-coordinate of station position solution                                            |
+| pos_y                 | Y-coordinate of station position solution                                            |
+| pos_z                 | Z-coordinate of station position solution                                            |
+| pos_vs_ref_x          | X-coordinate of difference between solution and reference of station coordinate      |
+| pos_vs_ref_y          | Y-coordinate of difference between solution and reference of station coordinate      |
+| pos_vs_ref_z          | Z-coordinate of difference between solution and reference of station coordinate      |
+| pos_vs_ref_e          | East-coordinate of difference between solution and reference of station coordinate   |
+| pos_vs_ref_n          | North-coordinate of difference between solution and reference of station coordinate  |
+| pos_vs_ref_v          | Vertical-coordinate of difference between solution and reference of station          |
+|                       | coordinate                                                                           |
 
 
-    and **meta**-data:
-summary, tdp,
-    | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+**residual** entries are:
+
+| Key                   | Description                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------|
+| code_obs_num          | Number of used pseudo-range observations                                             |
+| code_residual_max     | Maximal residual of used pseudo-range observations                                   |
+| code_residual_min     | Minimal residual of used pseudo-range observations                                   |
+| code_residual_rms     | RMS of residuals from used pseudo-range observations                                 |
+| code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
+| code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
+| code_outlier_num      | Number of rejected pseudo-range observations                                         |
+| code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
+| phase_obs_num         | Number of used phase observations                                                    |
+| phase_residual_min    | Minimal residual of used phase observations                                          |
+| phase_residual_max    | Maximal residual of used phase observations                                          |
+| phase_residual_rms    | RMS of residuals from used phase observations                                        |
+| phase_outlier_max     | Maximal residual of rejected phase observations                                      |
+| phase_outlier_min     | Minimal residual of rejected phase observations                                      |
+| phase_outlier_num     | Number of rejected phase observations                                                |
+| phase_outlier_rms     | RMS of residuals from rejected phase observations                                    |
+
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_tdp
@@ -2090,7 +2271,7 @@ Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None
 A parser for reading site related information from SINEX format
 
 site - Site dictionary, whereby keys are the site identifiers and values are a site entry
-       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id', 'site_receiver', 
+       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id', 'site_receiver',
        'solution_epoch' and 'solution_estimate'. The site dictionary has following structure:
 
           self.site[site] = { 'site_antenna':          [],  # SITE/ANTENNA SINEX block information
@@ -2162,11 +2343,11 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
                                     'constraint':         constraint,
                                     'estimate':           estimate,
                                     'estimate_std':       estimate_std,
-                                    'ref_frame':          ref_frame }  # Note: ref_frame taken from 
+                                    'ref_frame':          ref_frame }  # Note: ref_frame taken from
                                                                        #   FILE/COMMENT block, if exists.
 
        The counter 'ii' ranges from 0 to n and depends on how many antenna type, receiver type,
-       antenna monument and station coordinate changes were done at each site. If the time is defined as 
+       antenna monument and station coordinate changes were done at each site. If the time is defined as
        00:000:00000 in the SINEX file, then the value is saved as 'None' in the Sinex class.
 
 
@@ -2261,6 +2442,13 @@ Depending on the Spring CSV following dataset fields can be available:
 
 ## midgard.parsers.ssc_site
 A parser for reading data from TRF files in SSC format
+
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='ssc_site', file_path='ssc_site')
+    data = p.as_dict()
 
 **Description:**
 

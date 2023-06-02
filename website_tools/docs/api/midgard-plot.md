@@ -23,6 +23,9 @@ Following *options** can be selected:
 
 | Option             | Value            | Description                                                           |
 |--------------------|------------------|-----------------------------------------------------------------------|
+| bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                              |
+| bar_text_offset    | <num>            | Define text offset for text of bar plots                              |
+| bar_zeroline       | <True|False>     | Plot zero line at a bar plot                                          |
 | colorbar           | <True|False>     | Plot color bar                                                        |
 | colorbar_label     | <text>           | Color bar label                                                       |
 | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis,    |
@@ -31,6 +34,7 @@ Following *options** can be selected:
 | ecapsize           | <num>            | Cap size of error bar                                                 |
 | ecapthick          | <num>            | Cap thick of error bar                                                |
 | ecolor             | <name>           | Color of error bar                                                    |
+| edgecolor          | <name>           | Edge color of bars of bar plots                                       |
 | elinewidth         | <num>            | Line width of error bar                                               |
 | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
 | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
@@ -48,8 +52,11 @@ Following *options** can be selected:
 | marker             | <'.'|'-'>        | Marker type                                                           |
 |                    |                  | if in one scatter subplot several plots should be plotted.            |
 | plot_to            | <console|file>   | Plot figure on console or file                                        |
-| plot_type          | <scatter|plot|   | Choose either "scatter", "plot" or "bar" type                         |
-|                    | bar>             |                                                                       |
+| plot_type          | <bar|plot|       | Choose either "bar", "plot" or "scatter" type                         |
+|                    | scatter>         |                                                                       |
+| plot_type_2nd      | <bar|plot|       | Choose either "bar", "plot" or "scatter" type of 2nd plot y_array     |
+|                    | scatter|None>    | plot. This can be used in case if y_arrays ndim=2 to distinguish      |
+|                    |                  | between a 'plot' or 'scatter' plot.                                   |
 | projection         | <type>           | Projection type of plot (e.g. 'polar')                                |
 | reg_line           | <True|False>     | Regression line flag                                                  |
 | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
@@ -72,6 +79,8 @@ Following *options** can be selected:
 
 ## midgard.plot.matplotlib_extension
 Matplotlib extension library
+
+NOTE: THIS LIBRARY SHOULD NOT BE USED ANYMORE. IT SHOULD BE REPLACED BY MATPLOTEXT.
 
 **Description:**
 
