@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v1.2.1</title>
+        <title>midgard.parsers - Midgard v1.2.2</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -75,10 +75,6 @@
                                     
 <li>
     <a href="../midgard-gnss/" class="dropdown-item">midgard.gnss</a>
-</li>
-                                    
-<li>
-    <a href="../midgard-ionosphere/" class="dropdown-item">midgard.ionosphere</a>
 </li>
                                     
 <li>
@@ -209,6 +205,22 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersgalileo_constellation_html" class="nav-link">midgard.parsers.galileo_constellation_html</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersgamit_org" class="nav-link">midgard.parsers.gamit_org</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#globk-ver-534-global-solution" class="nav-link">GLOBK Ver 5.34, Global solution</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsy_stacov" class="nav-link">midgard.parsers.gipsy_stacov</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsy_sum" class="nav-link">midgard.parsers.gipsy_sum</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -1538,7 +1550,7 @@ parsed.</p>
 <p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any])</code></p>
 <p>A parser for reading station information in Bernese STA format</p>
 <p>The parsed data are saved in variable <strong>data</strong> as a dictionay with 4-digit station name as key and a list with 
-dictionaries. These dictionaries have date period as key and following entries:</p>
+station information dictionaries with following entries:</p>
 <table>
 <thead>
 <tr>
@@ -1562,6 +1574,16 @@ dictionaries. These dictionaries have date period as key and following entries:<
 <td>antenna_type</td>
 <td>str</td>
 <td>Antenna type</td>
+</tr>
+<tr>
+<td>date_from</td>
+<td>datetime</td>
+<td>Start date where station information is valid</td>
+</tr>
+<tr>
+<td>date_to</td>
+<td>datetime</td>
+<td>End date of station information</td>
 </tr>
 <tr>
 <td>domes</td>
@@ -1656,14 +1678,14 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th align="left">Key</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>TODO</td>
-<td></td>
+<td align="left">TODO</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -1671,26 +1693,26 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th align="left">Key</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>TODO</td>
-<td></td>
+<td align="left">TODO</td>
+<td align="left"></td>
 </tr>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td align="left">__data_path__</td>
+<td align="left">File path</td>
 </tr>
 <tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
+<td align="left">__params__</td>
+<td align="left">np.genfromtxt parameters</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td align="left">__parser_name__</td>
+<td align="left">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -1720,7 +1742,7 @@ file_path (Path):             Path to the datafile that will be read.
 meta (Dict):                  Metainformation read from file.
 parser_name (String):         Name of the parser (as needed to call parsers.parse_...).</p>
 <h3 id="unit_def-dict">UNIT_DEF (dict)</h3>
-<p><code>UNIT_DEF = {'gradients_ew': UnitField(from_='millimeter', to_='meter'), 'gradients_ns': UnitField(from_='millimeter', to_='meter'), 'height_geoid': UnitField(from_='meter', to_='meter'), 'humidity': UnitField(from_='', to_=''), 'iwv': UnitField(from_='kilogram/meter**2', to_='kilogram/meter**2'), 'pressure': UnitField(from_='hectopascal', to_='pascal'), 'sigma_gradients_ew': UnitField(from_='millimeter', to_='meter'), 'sigma_gradients_ns': UnitField(from_='millimeter', to_='meter'), 'sigma_ztd': UnitField(from_='millimeter', to_='meter'), 'temperature': UnitField(from_='kelvin', to_='kelvin'), 'ztd': UnitField(from_='millimeter', to_='meter'), 'zwd': UnitField(from_='millimeter', to_='meter')}</code></p>
+<p><code>UNIT_DEF = {'height_geoid': UnitField(from_='meter', to_='meter'), 'humidity': UnitField(from_='', to_=''), 'iwv': UnitField(from_='kilogram/meter**2', to_='kilogram/meter**2'), 'pressure': UnitField(from_='hectopascal', to_='pascal'), 'temperature': UnitField(from_='kelvin', to_='kelvin'), 'trop_gradient_east': UnitField(from_='millimeter', to_='meter'), 'trop_gradient_east_sigma': UnitField(from_='millimeter', to_='meter'), 'trop_gradient_north': UnitField(from_='millimeter', to_='meter'), 'trop_gradient_north_sigma': UnitField(from_='millimeter', to_='meter'), 'trop_zenith_total': UnitField(from_='millimeter', to_='meter'), 'trop_zenith_total_sigma': UnitField(from_='millimeter', to_='meter'), 'trop_zenith_wet': UnitField(from_='millimeter', to_='meter')}</code></p>
 <h3 id="unitfield"><strong>UnitField</strong></h3>
 <p>Full name: <code>midgard.parsers.cost.UnitField</code></p>
 <p>Signature: <code>(from_=None, to_=None)</code></p>
@@ -1770,6 +1792,232 @@ dictionary are represented by the CSV colum values.</p>
 <p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, url: Optional[str] = None) -&gt; None</code></p>
 <p>A parser for reading Galileo constellation info from a web page</p>
 <p>See https://www.gsc-europa.eu/system-status/Constellation-Information for an example</p>
+<h2 id="midgardparsersgamit_org">midgard.parsers.gamit_org</h2>
+<p>A parser for reading Gamit ORG files</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+
+# Parse data
+parser = parsers.parse_file(parser_name="gamit_org", file_path=file_path)
+
+# Get Dataset with parsed data
+dset = parser.as_dataset()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads the output file of Gamit.</p>
+<p>Example header from wich the time information is read from the .org file</p>
+<hr />
+<h2 id="globk-ver-534-global-solution">GLOBK Ver 5.34, Global solution</h2>
+<p>Solution commenced with: 2022/ 6/22  0: 0    (2022.4712)
+ Solution ended with    : 2022/ 6/22 23:59    (2022.4740)
+ Solution refers to     : 2022/ 6/22 11:59    (2022.4726) [Seconds tag  45.000]
+ Satellite IC epoch     : 2022/ 6/22 12: 0  0.00</p>
+<p>Example lines to be read from the .org file</p>
+<pre><code>REYK_JPS X coordinate  (m)          2587383.93370     -0.01703      0.00446
+
+REYK_JPS Y coordinate  (m)         -1043033.57942     -0.04451      0.00404
+
+REYK_JPS Z coordinate  (m)          5716564.17515      0.00474      0.00947
+</code></pre>
+<h3 id="gamitorgparser"><strong>GamitOrgParser</strong></h3>
+<p>Full name: <code>midgard.parsers.gamit_org.GamitOrgParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>A parser for reading gamit org file</p>
+<p><strong>Attributes:</strong></p>
+<p>data (Dict):                  The (observation) data read from file.
+file_path (Path):             Path to the datafile that will be read.
+meta (Dict):                  Metainformation read from file.
+parser_name (String):         Name of the parser (as needed to call parsers.parse_...).
+system (String):              GNSS identifier.</p>
+<p>Methods:
+    as_dataset()                  Return the parsed data as a Midgard Dataset
+    parse()                       Parse data
+    setup_parser()                Set up information needed for the parser</p>
+<pre><code>_parse_time()                 Parse a line of time information
+_parse_station()              Parse a line of station information
+</code></pre>
+<h2 id="midgardparsersgipsy_stacov">midgard.parsers.gipsy_stacov</h2>
+<p>A parser for reading NASA JPL Gipsy <code>stacov</code> format file</p>
+<p><code>stacov</code> format file includes Gipsy estimates and covariance information. </p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='gipsy_stacov', file_path='stacov_final')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Gipsy <code>stacov</code> format.</p>
+<h3 id="gipsystacovparser"><strong>GipsyStacovParser</strong></h3>
+<p>Full name: <code>midgard.parsers.gipsy_stacov.GipsyStacovParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>A parser for reading Gipsy <code>stacov</code> format file</p>
+<p>Following <strong>data</strong> are available after reading Gipsy <code>stacov</code> output file:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>correlation</td>
+<td>Correlation values</td>
+</tr>
+<tr>
+<td>correlation_index1</td>
+<td>Correlation index (1st column)</td>
+</tr>
+<tr>
+<td>correlation_index2</td>
+<td>Correlation index (2nd column)</td>
+</tr>
+<tr>
+<td>estimate</td>
+<td>Parameter estimate at the given time</td>
+</tr>
+<tr>
+<td>estimate_index</td>
+<td>Estimate index</td>
+</tr>
+<tr>
+<td>parameter</td>
+<td>Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
+</tr>
+<tr>
+<td></td>
+<td>without spaces.</td>
+</tr>
+<tr>
+<td>row</td>
+<td>Row number of correlations</td>
+</tr>
+<tr>
+<td>station</td>
+<td>Station name.</td>
+</tr>
+<tr>
+<td>sigma</td>
+<td>Standard deviation of the parameter.</td>
+</tr>
+<tr>
+<td>time_past_j2000</td>
+<td>Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
+</tr>
+<tr>
+<td></td>
+<td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersgipsy_sum">midgard.parsers.gipsy_sum</h2>
+<p>A parser for reading Gipsy summary output file (*.sum)</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='gipsy_sum', file_path='gipsy_sum')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Gipsy summary output format.</p>
+<h3 id="gipsysummary"><strong>GipsySummary</strong></h3>
+<p>Full name: <code>midgard.parsers.gipsy_sum.GipsySummary</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>A parser for reading Gipsy summary output file (*.sum)</p>
+<p>Gipsy summary file <strong>data</strong> are grouped as follows:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Key</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">date</td>
+<td align="left">Processing date</td>
+</tr>
+<tr>
+<td align="left">residual</td>
+<td align="left">Dictionary with residual summary information</td>
+</tr>
+<tr>
+<td align="left">station</td>
+<td align="left">Station name</td>
+</tr>
+</tbody>
+</table>
+<p><strong>residual</strong> entries are:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Key</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">code_obs_num</td>
+<td align="left">Number of used pseudo-range observations</td>
+</tr>
+<tr>
+<td align="left">code_outlier_num</td>
+<td align="left">Number of rejected pseudo-range observations</td>
+</tr>
+<tr>
+<td align="left">code_residual_rms</td>
+<td align="left">RMS of residuals from used pseudo-range observations in [m]</td>
+</tr>
+<tr>
+<td align="left">phase_obs_num</td>
+<td align="left">Number of used phase observations</td>
+</tr>
+<tr>
+<td align="left">phase_outlier_num</td>
+<td align="left">Number of rejected phase observations</td>
+</tr>
+<tr>
+<td align="left">phase_residual_rms</td>
+<td align="left">RMS of residuals from used phase observations in [m]</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Key</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">__data_path__</td>
+<td align="left">File path</td>
+</tr>
+<tr>
+<td align="left">__parser_name__</td>
+<td align="left">Parser name</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardparsersgipsy_tdp">midgard.parsers.gipsy_tdp</h2>
 <p>A parser for reading NASA JPL Gipsy time dependent parameter (TDP) file</p>
 <p><strong>Example:</strong></p>
@@ -1779,6 +2027,13 @@ data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
 <p>Reads data from files in Gipsy time dependent parameter (TDP) format.</p>
+<h3 id="datasetfield"><strong>DatasetField</strong></h3>
+<p>Full name: <code>midgard.parsers.gipsy_tdp.DatasetField</code></p>
+<p>Signature: <code>(name=None, dtype=None)</code></p>
+<p>A convenience class for defining a dataset field properties</p>
+<p><strong>Args:</strong></p>
+<p>name  (str):             Dataset field name
+dtype (str):             Dataset data type</p>
 <h3 id="gipsytdpparser"><strong>GipsyTdpParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsy_tdp.GipsyTdpParser</code></p>
 <p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
@@ -1793,7 +2048,7 @@ data = p.as_dict()
 </thead>
 <tbody>
 <tr>
-<td>apriori_value</td>
+<td>apriori</td>
 <td>Nominal value. This field contains the last value used by the model.</td>
 </tr>
 <tr>
@@ -2158,59 +2413,174 @@ data = p.as_dict()
 <p>Full name: <code>midgard.parsers.gipsyx_summary.GipsyxSummary</code></p>
 <p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX summary file</p>
-<pre><code>GipsyX summary file **data** are grouped as follows:
-
-| Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| position              | Dictionary with position summary information                                         |
-| residual              | Dictionary with residual summary information                                         |
-| station               | Station name                                                                         |
-
-**position** entries are:
-
-| Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| pos_x                 | X-coordinate of station position solution                                            |
-| pos_y                 | Y-coordinate of station position solution                                            |
-| pos_z                 | Z-coordinate of station position solution                                            |
-| pos_vs_ref_x          | X-coordinate of difference between solution and reference of station coordinate      |
-| pos_vs_ref_y          | Y-coordinate of difference between solution and reference of station coordinate      |
-| pos_vs_ref_z          | Z-coordinate of difference between solution and reference of station coordinate      |
-| pos_vs_ref_e          | East-coordinate of difference between solution and reference of station coordinate   |
-| pos_vs_ref_n          | North-coordinate of difference between solution and reference of station coordinate  |
-| pos_vs_ref_v          | Vertical-coordinate of difference between solution and reference of station          |
-|                       | coordinate                                                                           |
-
-
-**residual** entries are:
-
-| Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| code_max              | Maximal residual of used pseudo-range observations                                   |
-| code_min              | Minimal residual of used pseudo-range observations                                   |
-| code_num              | Number of used pseudo-range observations                                             |
-| code_rms              | RMS of residuals from used pseudo-range observations                                 |
-| code_outlier_max      | Maximal residual of rejected pseudo-range observations                               |
-| code_outlier_min      | Minimal residual of rejected pseudo-range observations                               |
-| code_outlier_num      | Number of rejected pseudo-range observations                                         |
-| code_outlier_rms      | RMS of residuals from rejected pseudo-range observations                             |
-| phase_max             | Maximal residual of used phase observations                                          |
-| phase_min             | Minimal residual of used phase observations                                          |
-| phase_num             | Number of used phase observations                                                    |
-| phase_rms             | RMS of residuals from used phase observations                                        |
-| phase_outlier_max     | Maximal residual of rejected phase observations                                      |
-| phase_outlier_min     | Minimal residual of rejected phase observations                                      |
-| phase_outlier_num     | Number of rejected phase observations                                                |
-| phase_outlier_rms     | RMS of residuals from rejected phase observations                                    |
-
-
-and **meta**-data:
-</code></pre>
-<p>summary, tdp,
-    | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | __data_path__       | File path                                                                            |
-    | __parser_name__     | Parser name                                                                          |</p>
+<p>GipsyX summary file <strong>data</strong> are grouped as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>position</td>
+<td>Dictionary with position summary information</td>
+</tr>
+<tr>
+<td>residual</td>
+<td>Dictionary with residual summary information</td>
+</tr>
+<tr>
+<td>station</td>
+<td>Station name</td>
+</tr>
+</tbody>
+</table>
+<p><strong>position</strong> entries are:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pos_x</td>
+<td>X-coordinate of station position solution</td>
+</tr>
+<tr>
+<td>pos_y</td>
+<td>Y-coordinate of station position solution</td>
+</tr>
+<tr>
+<td>pos_z</td>
+<td>Z-coordinate of station position solution</td>
+</tr>
+<tr>
+<td>pos_vs_ref_x</td>
+<td>X-coordinate of difference between solution and reference of station coordinate</td>
+</tr>
+<tr>
+<td>pos_vs_ref_y</td>
+<td>Y-coordinate of difference between solution and reference of station coordinate</td>
+</tr>
+<tr>
+<td>pos_vs_ref_z</td>
+<td>Z-coordinate of difference between solution and reference of station coordinate</td>
+</tr>
+<tr>
+<td>pos_vs_ref_e</td>
+<td>East-coordinate of difference between solution and reference of station coordinate</td>
+</tr>
+<tr>
+<td>pos_vs_ref_n</td>
+<td>North-coordinate of difference between solution and reference of station coordinate</td>
+</tr>
+<tr>
+<td>pos_vs_ref_v</td>
+<td>Vertical-coordinate of difference between solution and reference of station</td>
+</tr>
+<tr>
+<td></td>
+<td>coordinate</td>
+</tr>
+</tbody>
+</table>
+<p><strong>residual</strong> entries are:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code_obs_num</td>
+<td>Number of used pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_residual_max</td>
+<td>Maximal residual of used pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_residual_min</td>
+<td>Minimal residual of used pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_residual_rms</td>
+<td>RMS of residuals from used pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_outlier_max</td>
+<td>Maximal residual of rejected pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_outlier_min</td>
+<td>Minimal residual of rejected pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_outlier_num</td>
+<td>Number of rejected pseudo-range observations</td>
+</tr>
+<tr>
+<td>code_outlier_rms</td>
+<td>RMS of residuals from rejected pseudo-range observations</td>
+</tr>
+<tr>
+<td>phase_obs_num</td>
+<td>Number of used phase observations</td>
+</tr>
+<tr>
+<td>phase_residual_min</td>
+<td>Minimal residual of used phase observations</td>
+</tr>
+<tr>
+<td>phase_residual_max</td>
+<td>Maximal residual of used phase observations</td>
+</tr>
+<tr>
+<td>phase_residual_rms</td>
+<td>RMS of residuals from used phase observations</td>
+</tr>
+<tr>
+<td>phase_outlier_max</td>
+<td>Maximal residual of rejected phase observations</td>
+</tr>
+<tr>
+<td>phase_outlier_min</td>
+<td>Minimal residual of rejected phase observations</td>
+</tr>
+<tr>
+<td>phase_outlier_num</td>
+<td>Number of rejected phase observations</td>
+</tr>
+<tr>
+<td>phase_outlier_rms</td>
+<td>RMS of residuals from rejected phase observations</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardparsersgipsyx_tdp">midgard.parsers.gipsyx_tdp</h2>
 <p>A parser for reading NASA JPL GipsyX time dependent parameter (TDP) file</p>
 <p><strong>Example:</strong></p>
@@ -2220,7 +2590,7 @@ data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
 <p>Reads data from files in GipsyX time dependent parameter (TDP) format.</p>
-<h3 id="datasetfield"><strong>DatasetField</strong></h3>
+<h3 id="datasetfield_1"><strong>DatasetField</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsyx_tdp.DatasetField</code></p>
 <p>Signature: <code>(name=None, category=None, dtype=None)</code></p>
 <p>A convenience class for defining a dataset field properties</p>
@@ -2967,7 +3337,7 @@ SOLUTION/ESTIMATE dictionary.</p>
 <p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
 <p>A parser for reading site related information from SINEX format</p>
 <p>site - Site dictionary, whereby keys are the site identifiers and values are a site entry
-       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id', 'site_receiver', 
+       dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id', 'site_receiver',
        'solution_epoch' and 'solution_estimate'. The site dictionary has following structure:</p>
 <pre><code>      self.site[site] = { 'site_antenna':          [],  # SITE/ANTENNA SINEX block information
                           'site_eccentricity':     [],  # SITE/ECCENTRICITY block information
@@ -3038,11 +3408,11 @@ SOLUTION/ESTIMATE dictionary.</p>
                                 'constraint':         constraint,
                                 'estimate':           estimate,
                                 'estimate_std':       estimate_std,
-                                'ref_frame':          ref_frame }  # Note: ref_frame taken from 
+                                'ref_frame':          ref_frame }  # Note: ref_frame taken from
                                                                    #   FILE/COMMENT block, if exists.
 
    The counter 'ii' ranges from 0 to n and depends on how many antenna type, receiver type,
-   antenna monument and station coordinate changes were done at each site. If the time is defined as 
+   antenna monument and station coordinate changes were done at each site. If the time is defined as
    00:000:00000 in the SINEX file, then the value is saved as 'None' in the Sinex class.
 </code></pre>
 <h2 id="midgardparserssinex_tro">midgard.parsers.sinex_tro</h2>
@@ -3141,6 +3511,11 @@ dictionary are represented by the Spring CSV colum values.</p>
 </table>
 <h2 id="midgardparsersssc_site">midgard.parsers.ssc_site</h2>
 <p>A parser for reading data from TRF files in SSC format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='ssc_site', file_path='ssc_site')
+data = p.as_dict()
+</code></pre>
 <p><strong>Description:</strong></p>
 <p>Reads station positions and velocities from TRF files in SSC format. The velocity model is a simple linear offset
 based on the reference epoch.</p>

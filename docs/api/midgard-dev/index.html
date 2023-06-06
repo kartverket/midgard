@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v1.2.1</title>
+        <title>midgard.dev - Midgard v1.2.2</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -75,10 +75,6 @@
                                     
 <li>
     <a href="../midgard-gnss/" class="dropdown-item">midgard.gnss</a>
-</li>
-                                    
-<li>
-    <a href="../midgard-ionosphere/" class="dropdown-item">midgard.ionosphere</a>
 </li>
                                     
 <li>
@@ -468,30 +464,10 @@ INFO  [My prefix] Calculating the inverse of a  5x3  matrix
 <p>Full name: <code>midgard.dev.log.Logger</code></p>
 <p>Signature: <code>(log_level: Optional[str] = None, prefix: str = '')</code></p>
 <p>Abstract class that can be specialized to create new loggers</p>
-<h3 id="all"><strong>all</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.all</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'all') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
 <h3 id="blank"><strong>blank</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.blank</code></p>
 <p>Signature: <code>() -&gt; None</code></p>
 <p>Log blank line</p>
-<h3 id="debug"><strong>debug</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.debug</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'debug') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
-<h3 id="error"><strong>error</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.error</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'error') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
-<h3 id="fatal"><strong>fatal</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.fatal</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'fatal') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
 <h3 id="file_init"><strong>file_init</strong></h3>
 <p>Full name: <code>midgard.dev.log.file_init</code></p>
 <p>Signature: <code>(file_path: Union[str, pathlib.Path], log_level: Optional[str] = None, prefix: str = '', rotation: Optional[int] = None) -&gt; None</code></p>
@@ -505,11 +481,6 @@ of the given arguments and keywords.</p>
                     log files, they will be moved to files with extension .0, .1 and so on. If the argument
                     is not specified, then existing logging file is overwritten from newer ones.            </li>
 </ul>
-<h3 id="info"><strong>info</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.info</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'info') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
 <h3 id="init"><strong>init</strong></h3>
 <p>Full name: <code>midgard.dev.log.init</code></p>
 <p>Signature: <code>(log_level: Optional[str] = None, prefix: str = '', use_command_line: bool = True) -&gt; None</code></p>
@@ -518,20 +489,10 @@ of the given arguments and keywords.</p>
 <p>Full name: <code>midgard.dev.log.log</code></p>
 <p>Signature: <code>(log_text: str, level: str) -&gt; None</code></p>
 <p>Log text at the given level</p>
-<h3 id="none"><strong>none</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.none</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'none') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
 <h3 id="print_file"><strong>print_file</strong>()</h3>
 <p>Full name: <code>midgard.dev.log.print_file</code></p>
 <p>Signature: <code>(log_path: Union[str, pathlib.Path], log_level: str = 'info', print_func: Callable[[str], NoneType] = &lt;built-in function print&gt;) -&gt; None</code></p>
 <p>Print a log file with colors, stripping away any item below log_level</p>
-<h3 id="warn"><strong>warn</strong>()</h3>
-<p>Full name: <code>midgard.dev.log.warn</code></p>
-<p>Signature: <code>(log_text: str, *, level: str = 'warn') -&gt; None</code></p>
-<p>partial(func, <em>args, </em>*keywords) - new function with partial application
-of the given arguments and keywords.</p>
 <h2 id="midgarddevplugins">midgard.dev.plugins</h2>
 <p>Set up a plug-in architecture for Midgard</p>
 <p><strong>Description:</strong></p>
@@ -876,10 +837,10 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f6bf7042550&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f174b56be20&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f6bf7042550&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f174b56be20&gt;, level='info')) -&gt; None</code></p>
 <p>Class for timing running time of functions and code blocks.</p>
 <h2 id="midgarddevutil">midgard.dev.util</h2>
 <p>Midgard library module with utility functions for easier script development</p>

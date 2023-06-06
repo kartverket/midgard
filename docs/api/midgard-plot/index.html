@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.2.1</title>
+        <title>midgard.plot - Midgard v1.2.2</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -75,10 +75,6 @@
                                     
 <li>
     <a href="../midgard-gnss/" class="dropdown-item">midgard.gnss</a>
-</li>
-                                    
-<li>
-    <a href="../midgard-ionosphere/" class="dropdown-item">midgard.ionosphere</a>
 </li>
                                     
 <li>
@@ -175,6 +171,21 @@
 </thead>
 <tbody>
 <tr>
+<td>bar_text</td>
+<td>&lt;True</td>
+<td>False&gt;</td>
+</tr>
+<tr>
+<td>bar_text_offset</td>
+<td><num></td>
+<td>Define text offset for text of bar plots</td>
+</tr>
+<tr>
+<td>bar_zeroline</td>
+<td>&lt;True</td>
+<td>False&gt;</td>
+</tr>
+<tr>
 <td>colorbar</td>
 <td>&lt;True</td>
 <td>False&gt;</td>
@@ -213,6 +224,11 @@
 <td>ecolor</td>
 <td><name></td>
 <td>Color of error bar</td>
+</tr>
+<tr>
+<td>edgecolor</td>
+<td><name></td>
+<td>Edge color of bars of bar plots</td>
 </tr>
 <tr>
 <td>elinewidth</td>
@@ -301,13 +317,28 @@
 </tr>
 <tr>
 <td>plot_type</td>
-<td>&lt;scatter</td>
+<td>&lt;bar</td>
 <td>plot</td>
 </tr>
 <tr>
 <td></td>
-<td>bar&gt;</td>
+<td>scatter&gt;</td>
 <td></td>
+</tr>
+<tr>
+<td>plot_type_2nd</td>
+<td>&lt;bar</td>
+<td>plot</td>
+</tr>
+<tr>
+<td></td>
+<td>scatter</td>
+<td>None&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>between a 'plot' or 'scatter' plot.</td>
 </tr>
 <tr>
 <td>projection</td>
@@ -403,6 +434,7 @@
 </table>
 <h2 id="midgardplotmatplotlib_extension">midgard.plot.matplotlib_extension</h2>
 <p>Matplotlib extension library</p>
+<p>NOTE: THIS LIBRARY SHOULD NOT BE USED ANYMORE. IT SHOULD BE REPLACED BY MATPLOTEXT.</p>
 <p><strong>Description:</strong></p>
 <p>Wrapper functions around matplotlib subroutines are defined in this library.</p>
 <h3 id="get_statistic"><strong>get_statistic</strong>()</h3>

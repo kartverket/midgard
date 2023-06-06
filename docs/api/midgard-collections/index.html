@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.collections - Midgard v1.2.1</title>
+        <title>midgard.collections - Midgard v1.2.2</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.1</a>
+                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -75,10 +75,6 @@
                                     
 <li>
     <a href="../midgard-gnss/" class="dropdown-item">midgard.gnss</a>
-</li>
-                                    
-<li>
-    <a href="../midgard-ionosphere/" class="dropdown-item">midgard.ionosphere</a>
 </li>
                                     
 <li>
@@ -461,7 +457,7 @@ raise an UnknownEnumError and list the available enumerations.</p>
 <p>import numpy as np
 from midgard.collections import plate_motion_models</p>
 <h1 id="get-list-with-available-plate-models">Get list with available plate models</h1>
-<p>models = </p>
+<p>models = plate_motion_models.models()</p>
 <h1 id="get-platemotionmodel-instance-for-a-given-tectonic-name">Get PlateMotionModel instance for a given tectonic name</h1>
 <p>model = plate_motion_models.get("itrf2014")</p>
 <h1 id="get-rotationpole-object-for-eurasian-tectonic-plate">Get RotationPole object for Eurasian tectonic plate</h1>
