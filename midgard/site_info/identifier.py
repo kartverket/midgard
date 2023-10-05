@@ -36,7 +36,9 @@ from typing import Any, Dict, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
+from midgard.site_info.gnsseu.api import GnssEuApi
 from midgard.site_info._site_info import SiteInfoBase, ModuleBase
+from midgard.site_info import convert_to_utc
 
 class Identifier(ModuleBase):
     """Main class for converting identifier information from various sources into unified classes"""
@@ -223,7 +225,7 @@ class IdentifierSsc(SiteInfoBase):
         Returns:
             DOMES number
         """
-        return self._info["domes"]+self._info["marker"]
+        return self._info["site_num"]+self._info["antenna_num"]
     
     @property
     def name(self) -> str:
@@ -244,3 +246,202 @@ class IdentifierSsc(SiteInfoBase):
         """
         # Tectonic plate name is not available in SSC file.
         return None 
+
+@Identifier.register_source
+class IdentifierGnssEu(SiteInfoBase):
+    """ Identifier class handling gnssEu API identifier station information
+    """
+
+    source = "gnsseu"
+    fields = dict()
+
+
+    def __init__(self, station: str, source_data: Any = None, source_path: str = None) -> None:
+        """Initialize history information object from input data
+
+        Args:
+            station:      Station name.
+            source_data:  Source data with site information. Structure of data is specific to information type
+                          and source type
+            source_path:  Source path of site information. Only intended for information purposes.
+        """
+        self.station = station.lower()
+        self.source_path = source_path
+        self._info = self._process(source_data)
+
+    def _process(
+                self,
+                source_data: Dict,
+    ) -> "IdentifierGnssEu":
+        """Read identifier information from gnssEu API
+
+        Args:
+            source_data:  api object for gnsseu
+
+        Returns:
+            IdentifierSestation object
+        """
+        raw_info = dict()
+
+        # Get identifier information
+        if isinstance(source_data, GnssEuApi):
+            # source_data is an Api object. Use api function to query database
+            try:
+                raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
+                if not raw_info:
+                    raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}.")
+                if len(raw_info) > 1:
+                    raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                station_data = raw_info[0]
+            except ConnectionError as err:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+        elif isinstance(source_data, dict):
+            # source data is a dictionary. Use the keys to look up station data
+            # This is a more efficient way to look up information when all data already has been queried from
+            # the database through the api.get_sitelog_all function.
+            sta = self.station.upper()
+            try:
+                raw_info = source_data[sta[0:4]]
+                if len(raw_info) > 1:
+                    if len(sta) == 9:
+                        station_data = raw_info[sta]
+                    else:
+                        raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                else:
+                    # Only one key in dictionary
+                    station_data = raw_info[list(raw_info.keys())[0]]
+            except KeyError:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+
+        if not "sitelog" in station_data:
+            raise MissingDataError(f"No sitelog information is available for station {self.station.upper()!r} in source {self.source!r}.")
+
+        try:
+            agency = station_data["sitelog"]["siteOwner"]["agency"]["agencyName"]
+        except TypeError:
+            # siteOwner is often None
+            agency = None
+
+        # Get site information
+        raw_info = {
+            "agency": agency,
+            "domes": station_data["sitelog"]["siteForm"]["domes"],
+            "city": station_data["sitelog"]["location"]["location"],
+            "country": station_data["sitelog"]["location"]["country"],
+            "country_code": station_data["sitelog"]["location"]["countryCode"],
+            "monument_depth": station_data["sitelog"]["siteForm"]["foundationDepthVal"],
+            "monument_foundation": station_data["sitelog"]["siteForm"]["foundation"],
+            "monument_type": station_data["sitelog"]["siteForm"]["monumentDesc"],
+            "name": station_data["sitelog"]["siteForm"]["siteName"],
+            "date_installed": station_data["sitelog"]["siteForm"]["dateInstalled"],
+            "date_removed": station_data["sitelog"]["siteForm"]["dateRemoved"],
+            "tectonic_plate": station_data["sitelog"]["location"]["tectonicPlate"],
+        }
+
+        return raw_info
+
+
+    @property
+    def agency(self) -> str:
+        """ Get agency name
+
+        Returns:
+            Agency name
+        """
+        return self._info["agency"]
+
+    @property
+    def country(self) -> str:
+        """ Get country of site
+
+        Returns:
+            Country name
+        """
+        return self._info["country"]
+
+    @property
+    def country_code(self) -> str:
+        """ Get country code of site
+
+        Returns:
+            Country code
+        """
+        return self._info["country_code"]
+
+    @property
+    def city(self) -> str:
+        """ Get city name
+
+        Returns:
+            City name
+        """
+        return None
+
+    @property
+    def domes(self) -> str:
+        """ Get DOMES number
+
+        Returns:
+            DOMES number
+        """
+        return self._info["domes"]
+
+    @property
+    def monument_depth(self) -> float:
+        """ Get monument depth
+
+        Returns:
+            Monument depth
+        """
+        return float(self._info["monument_depth"])
+
+    @property
+    def monument_foundation(self) -> str:
+        """ Get monument foundation
+
+        Returns:
+            Monument foundation
+        """
+        return self._info["monument_foundation"].lower()
+
+    @property
+    def monument_type(self) -> str:
+        """ Get monument type
+
+        Returns:
+            Monument type
+        """
+        return self._info["monument_type"].lower()
+
+    @property
+    def name(self) -> str:
+        """ Get site name
+
+        Returns:
+            Site name
+        """
+        return self._info["name"]
+
+    @property
+    def status(self) -> str:
+        """ Get site status
+
+        Returns:
+            Site status
+        """
+        if self._info["date_installed"] is not None and self._info["date_removed"] is None:
+            return "operational"
+        if self._info["date_installed"] is not None and self._info["date_removed"] is not None:
+            return "closed"
+        if self._info["date_installed"] is None:
+            return "temporary"
+        return
+
+    @property
+    def tectonic_plate(self) -> str:
+        """ Get tectonic plate name
+
+        Returns:
+            Tectonic plate name
+        """
+        return self._info["tectonic_plate"]

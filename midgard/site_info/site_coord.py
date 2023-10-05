@@ -50,7 +50,9 @@ import numpy as np
 from midgard.data.position import Position
 from midgard.data.time import Time
 from midgard.dev.exceptions import MissingDataError
+from midgard.site_info.gnsseu.api import GnssEuApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
+from midgard.site_info import convert_to_utc
 
 class SiteCoord(ModuleBase):
     """Main class for converting site coordinates from various sources into unified classes"""
@@ -768,4 +770,49 @@ class SiteCoordSsc(SiteInfoBase):
         self._info["sigma_VY"] = vel_sigma[1]
         self._info["sigma_VZ"] = vel_sigma[2]
 
+@SiteCoord.register_source
+class SiteCoordHistoryGnssEu(SiteInfoHistoryBase):
+
+    source = "gnsseu"
+
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "SiteCoordGnssEu"]:
+        """Read site coordinate history from gnssEu API
+
+        Args:
+            source_data:    api object for gnsseu
+
+        Returns:
+            Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordGnssEu objects.
+        """
+        if isinstance(source_data, GnssEuApi):
+            # source_data is an Api object. Use api function to query database
+            try:
+                raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
+                if not raw_info:
+                    raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}.")
+                if len(raw_info) > 1:
+                    raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                station_data = raw_info[0]
+            except ConnectionError as err:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+        elif isinstance(source_data, dict):
+            # source data is a dictionary. Use the keys to look up station data
+            # This is a more efficient way to look up information when all data already has been queried from
+            # the database through the api.get_sitelog_all function.
+            sta = self.station.upper()
+            try:
+                raw_info = source_data[sta[0:4]]
+                if len(raw_info) > 1:
+                    if len(sta) == 9:
+                        station_data = raw_info[sta]
+                    else:
+                        raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                else:
+                    # Only one key in dictionary
+                    station_data = raw_info[list(raw_info.keys())[0]]
+            except KeyError:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+
+        # Station is defined but the api does not contain precise coordinates
+        return None
 

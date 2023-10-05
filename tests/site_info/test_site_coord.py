@@ -20,7 +20,7 @@ def test_site_coord_sinex_one_station(sinex_data):
     c = SiteCoord.get("snx", sinex_data, "zimm", datetime.datetime(2020, 1, 1), source_path="/path/to/sinex")
     assert "zimm" in c
     assert len(c) == 1
-    
+
     # Test site coord information
     assert c["zimm"] is None
 
@@ -29,7 +29,7 @@ def test_site_coord_sinex_one_station_with_data(sinex_data_site_coord):
     c = SiteCoord.get("snx", sinex_data_site_coord, "kiri", datetime.datetime(2020, 1, 1), source_path="/path/to/sinex")
     assert "kiri" in c
     assert len(c) == 1
-    
+
     # Test site coord information
     assert c["kiri"].station == 'kiri'
     assert c["kiri"].date_from == datetime.datetime(2015, 4, 28, 0, 0)
@@ -231,4 +231,89 @@ def test_site_coord_history_ssc_set_history(ssc_data):
     assert period in c.history
     assert "ssc" == c.history[period].source
     assert 4581690.826 == c.history[period].pos.x
+
+# Tests: SiteCoord.get("gnsseu",...)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_gnsseu_one_station(gnsseu_api):
+    c = SiteCoord.get("gnsseu", gnsseu_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in c
+    assert len(c) == 1
+
+    # Test site coordinate information
+    assert c["osls"] is None
+
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_gnsseu_two_stations_string(gnsseu_api):
+    c = SiteCoord.get("gnsseu", gnsseu_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in c
+    assert "trds" in c
+    assert len(c) == 2
+
+    # Test site coordinate information
+    assert c["osls"] is None
+    assert c["trds"] is None
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_gnsseu_two_stations_list(gnsseu_api):
+    c = SiteCoord.get("gnsseu", gnsseu_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in c
+    assert "trds" in c
+    assert len(c) == 2
+
+    # Test site coordinate information
+    assert c["osls"] is None
+    assert c["trds"] is None
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_gnsseu_one_station_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        SiteCoord.get("gnsseu", gnsseu_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_gnsseu_two_stations_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        SiteCoord.get("gnsseu", gnsseu_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+
+# Tests: SiteCoord.get_history("gnsseu",...)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_history_gnsseu_one_station(gnsseu_api):
+    c = SiteCoord.get_history("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+    assert "osls" in c
+    assert len(c) == 1
+
+    # Test site coord history information
+    assert c["osls"].history is None
+    assert c["osls"].date_from is None
+    assert c["osls"].date_to is None
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_history_gnsseu_two_stations_string(gnsseu_api):
+    c = SiteCoord.get_history("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+    assert "osls" in c
+    assert "trds" in c
+    assert len(c) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_history_gnsseu_two_stations_list(gnsseu_api):
+    c = SiteCoord.get_history("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+    assert "osls" in c
+    assert "trds" in c
+    assert len(c) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_history_gnsseu_one_station_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        c = SiteCoord.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_site_coord_history_gnsseu_two_stations_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        c = SiteCoord.get_history("gnsseu", gnsseu_api, "osls,xxxx", source_path="/path/to/api")
 

@@ -24,8 +24,8 @@ def test_eccentricity_sinex_one_station(sinex_data):
     assert e["zimm"].date_from == datetime.datetime(1993, 5, 1, 0, 0)
     assert e["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
     assert e["zimm"].station == 'zimm'
-    np.testing.assert_allclose(e["zimm"].dpos.trs.val, np.array([0.01, 0.03, 0.02]), rtol=0, atol=1e-3)
-    np.testing.assert_allclose(e["zimm"].dpos.enu.val, np.array([0.03, 0.02, 0.01]), rtol=0, atol=1e-3)
+    #np.testing.assert_allclose(e["zimm"].dpos.trs.val, np.array([0.01, 0.03, 0.02]), rtol=0, atol=1e-3)
+    np.testing.assert_allclose(e["zimm"].dpos, np.array([0.03, 0.02, 0.01]), rtol=0, atol=1e-3)
 
 @pytest.mark.usefixtures("sinex_data")
 def test_eccentricity_sinex_one_station_uppercase(sinex_data):
@@ -179,3 +179,83 @@ def test_eccentricity_history_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         e = Eccentricity.get_history("ssc", ssc_data, "zimm,xxxx", source_path="/path/to/ssc")
+
+# Tests: Eccentricity.get("gnsseu",...)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_gnsseu_one_station(gnsseu_api):
+    a = Eccentricity.get("gnsseu", gnsseu_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in a
+    assert len(a) == 1
+
+    # Test eccentricity information
+    assert a["osls"].date_from.date() == datetime.date(2007, 4, 23)
+    assert a["osls"].date_to.date() == datetime.date(9999, 12, 31)
+    assert a["osls"].station == 'osls'
+    #np.testing.assert_allclose(a["osls"].dpos.trs.val, np.array([5.496, 0.013, 0.017]), rtol=0, atol=1e-3)
+    np.testing.assert_allclose(a["osls"].dpos, np.array([0.013, 0.017, 5.496]), rtol=0, atol=1e-3)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_gnsseu_two_stations_string(gnsseu_api):
+    a = Eccentricity.get("gnsseu", gnsseu_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in a
+    assert "trds" in a
+    assert len(a) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_gnsseu_two_stations_list(gnsseu_api):
+    a = Eccentricity.get("gnsseu", gnsseu_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in a
+    assert "trds" in a
+    assert len(a) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_gnsseu_one_station_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        a = Eccentricity.get("gnsseu", gnsseu_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_gnsseu_two_stations_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        a = Eccentricity.get("gnsseu", gnsseu_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+
+# Tests: Eccentricity.get_history("gnsseu",...)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_history_gnsseu_one_station(gnsseu_api):
+    a = Eccentricity.get_history("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+    assert "osls" in a
+    assert len(a) == 1
+
+    # Test eccentricity history information
+    assert len(a["osls"].history) >= 2
+    assert len(a["osls"].date_from) >= 2
+    assert len(a["osls"].date_to) >= 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_history_gnsseu_two_stations_string(gnsseu_api):
+    a = Eccentricity.get_history("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+    assert "osls" in a
+    assert "trds" in a
+    assert len(a) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_history_gnsseu_two_stations_list(gnsseu_api):
+    a = Eccentricity.get_history("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+    assert "osls" in a
+    assert "trds" in a
+    assert len(a) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_history_gnsseu_one_station_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        a = Eccentricity.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_eccentricity_history_gnsseu_two_stations_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        a = Eccentricity.get_history("gnsseu", gnsseu_api, "osls, xxxx", source_path="/path/to/api")

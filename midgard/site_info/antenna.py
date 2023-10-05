@@ -45,7 +45,9 @@ from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
+from midgard.site_info.gnsseu.api import GnssEuApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
+from midgard.site_info import convert_to_utc
 
 class Antenna(ModuleBase):
     """Main class for converting antenna information from various sources into unified classes"""
@@ -167,3 +169,142 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
             return None
         else:
             raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
+
+
+@Antenna.register_source
+class AntennaHistoryGnssEu(SiteInfoHistoryBase):
+
+    source = "gnsseu"
+
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "AntennaGnssEu"]:
+        """Read antenna site history from seStation API
+
+        Args:
+            source_data:    api object for gnsseu
+
+        Returns:
+            Dictionary with (date_from, date_to) tuple as key. The values are AntennaGnssEu objects.
+        """
+        # Get antenna history information
+        if isinstance(source_data, GnssEuApi):
+            # source_data is an Api object. Use api function to query database
+            try:
+                raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
+                if not raw_info:
+                    raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}.")
+                if len(raw_info) > 1:
+                    raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                station_data = raw_info[0]
+            except ConnectionError as err:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+        elif isinstance(source_data, dict):
+            # source data is a dictionary. Use the keys to look up station data
+            # This is a more efficient way to look up information when all data already has been queried from
+            # the database through the api.get_sitelog_all function.
+            sta = self.station.upper()
+            try:
+                raw_info = source_data[sta[0:4]]
+                if len(raw_info) > 1:
+                    if len(sta) == 9:
+                        station_data = raw_info[sta]
+                    else:
+                        raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                else:
+                    # Only one key in dictionary
+                    station_data = raw_info[list(raw_info.keys())[0]]
+            except KeyError:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+
+        if not "sitelog" in station_data:
+            raise MissingDataError(f"No sitelog information is available for station {self.station.upper()!r} in source {self.source!r}.")
+
+        # Create list of antenna history
+        history = dict()
+        for antenna_info in station_data["sitelog"]["antennas"]:
+            # Add Antenna object to history information
+            antenna = AntennaGnssEu(self.station, antenna_info)
+            interval = (antenna.date_from, antenna.date_to)
+            history[interval] = antenna
+
+        return history
+
+
+class AntennaGnssEu(SiteInfoBase):
+    """ Antenna class handling GnssEu API antenna station information
+    """
+
+    source = "gnsseu"
+    fields = dict(
+        serial_number="serialNumber",
+    )
+
+    @property
+    def calibration(self) -> bool:
+        """ Get information if individual antenna calibration file exists
+
+        Returns:
+            True if individual antenna calibration file exits otherwise False
+        """
+        # No calibration information found in api sitelog
+        return False
+
+    @property
+    def date_from(self) -> datetime:
+        """ Get antenna installation date from seStation API site information attribute
+
+        Returns:
+            Antenna installation date
+        """
+        if self._info["dateInstalled"] is not None:
+            return convert_to_utc(datetime.fromisoformat(self._info["dateInstalled"]))
+        else:
+            return datetime.min
+
+    @property
+    def date_to(self) -> datetime:
+        """ Get antenna removing date from seStation API site information attribute
+
+        Returns:
+            Antenna removing date
+        """
+        if self._info["dateRemoved"] is not None:
+            return convert_to_utc(datetime.fromisoformat(self._info["dateRemoved"]))
+        else:
+            return datetime.max
+
+    @property
+    def radome_serial_number(self) -> str:
+        """ Get radome serial number
+
+        Returns:
+            Radome serial number
+        """
+        return self._info["radomeSerialNumber"]
+
+    @property
+    def radome_type(self) -> str:
+        """ Get radome type
+
+        Returns:
+            Radome type
+        """
+        return self._info["antennaRadomeType"] if self._info["antennaRadomeType"] != "NONE" else ""
+
+    @property
+    def reference_point(self) -> str:
+        """ Get antenna reference point
+
+        Returns:
+            Antenna reference point
+        """
+        return self._info["referencePoint"]
+
+    @property
+    def type(self) -> str:
+        """ Get antenna type
+
+        Returns:
+            Antenna type
+        """
+        return self._info["antenna"]
+

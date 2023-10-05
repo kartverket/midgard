@@ -179,3 +179,87 @@ def test_receiver_history_ssc_two_stations_error(ssc_data):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
         r = Receiver.get_history("ssc", ssc_data, "gras,xxxx", source_path="/path/to/ssc")
+
+
+# Tests: Receiver.get("gnsseu",...)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_gnsseu_one_station(gnsseu_api):
+    r = Receiver.get("gnsseu", gnsseu_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in r
+    assert len(r) == 1
+    
+    # Test receiver information
+    assert r["osls"].station == 'osls'
+    assert r["osls"].date_from.date() == datetime.date(2019, 10, 31)
+    assert r["osls"].date_to.date() == datetime.date(2020, 1, 30)
+    assert r["osls"].type == 'TRIMBLE NETR9'
+    assert r["osls"].serial_number == '5420R48529'
+    assert r["osls"].firmware == '5.43'
+    assert r["osls"].elevation_mask == 0
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_gnsseu_two_stations_string(gnsseu_api):
+    r = Receiver.get("gnsseu", gnsseu_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in r
+    assert "trds" in r
+    assert len(r) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_gnsseu_two_stations_list(gnsseu_api):
+    r = Receiver.get("gnsseu", gnsseu_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+    assert "osls" in r
+    assert "trds" in r
+    assert len(r) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_gnsseu_one_station_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        r = Receiver.get("gnsseu", gnsseu_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_gnsseu_two_stations_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        r = Receiver.get("gnsseu", gnsseu_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+
+# Tests: Receiver.get_history("gnsseu",...)
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_history_gnsseu_one_station(gnsseu_api):
+    r = Receiver.get_history("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+    assert "osls" in r
+    assert len(r) == 1
+
+    # Test receiver history information
+    assert len(r["osls"].history) >= 16
+    assert len(r["osls"].date_from) >= 16
+    assert len(r["osls"].date_to) >= 16
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_history_gnsseu_two_stations_string(gnsseu_api):
+    r = Receiver.get_history("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+    assert "osls" in r
+    assert "trds" in r
+    assert len(r) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_history_gnsseu_two_stations_list(gnsseu_api):
+    r = Receiver.get_history("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+    assert "osls" in r
+    assert "trds" in r
+    assert len(r) == 2
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_history_gnsseu_one_station_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        r = Receiver.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+
+@pytest.mark.usefixtures("gnsseu_api")
+def test_receiver_history_gnsseu_two_stations_error(gnsseu_api):
+    # Station xxxx does not exist
+    with pytest.raises(MissingDataError):
+        r = Receiver.get_history("gnsseu", gnsseu_api, "osls, xxxx", source_path="/path/to/api")
+

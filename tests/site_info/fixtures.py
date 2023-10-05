@@ -1,6 +1,8 @@
 import datetime
 import pytest
 
+from midgard.site_info.gnsseu.api import GnssEuApi
+
 @pytest.fixture
 def sinex_data():
     """ Dictionary with the same structure as returned from a sinex_site parser
@@ -1105,3 +1107,8 @@ def ssc_data():
            'sigma_VZ': 0.0001}}}
 
     return data
+
+@pytest.fixture
+def gnsseu_api():
+    gnsseu_api_url = "https://gnss-metadata.eu/site/api-json"
+    return GnssEuApi(url=gnsseu_api_url)

@@ -45,7 +45,9 @@ from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
+from midgard.site_info.gnsseu.api import GnssEuApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
+from midgard.site_info import convert_to_utc
 
 class Eccentricity(ModuleBase):
     """Main class for converting eccentricity information from various sources into unified classes"""
@@ -248,3 +250,139 @@ class EccentricityHistorySsc(SiteInfoHistoryBase):
             return None
         else:
             raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
+
+
+@Eccentricity.register_source
+class EccentricityHistoryGnssEu(SiteInfoHistoryBase):
+
+    source = "gnsseu"
+
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "EccentricityGnssEu"]:
+        """Read eccentricity site history from gnssEu API
+
+        Args:
+            source_data:    api object for gnsseu
+
+        Returns:
+            Dictionary with (date_from, date_to) tuple as key. The values are EccentricityGnssEu objects.
+        """
+        # Get eccentricity history information
+        if isinstance(source_data, GnssEuApi):
+            # source_data is an Api object. Use api function to query database
+            try:
+                raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
+                if not raw_info:
+                    raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}.")
+                if len(raw_info) > 1:
+                    raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                station_data = raw_info[0]
+            except ConnectionError as err:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+        elif isinstance(source_data, dict):
+            # source data is a dictionary. Use the keys to look up station data
+            # This is a more efficient way to look up information when all data already has been queried from
+            # the database through the api.get_sitelog_all function.
+            sta = self.station.upper()
+            try:
+                raw_info = source_data[sta[0:4]]
+                if len(raw_info) > 1:
+                    if len(sta) == 9:
+                        station_data = raw_info[sta]
+                    else:
+                        raise ValueError(f"Station {self.station.upper()!r} is not unique in source {self.source!r}. Use full station name.")
+                else:
+                    # Only one key in dictionary
+                    station_data = raw_info[list(raw_info.keys())[0]]
+            except KeyError:
+                raise MissingDataError(f"Station {self.station.upper()!r} unknown in source {self.source!r}. Error: {err}")
+
+        if not "sitelog" in station_data:
+            raise MissingDataError(f"No sitelog information is available for station {self.station.upper()!r} in source {self.source!r}.")
+
+
+        # Create list of eccentricity history
+        history = dict()
+        for eccentricity_info in station_data["sitelog"]["antennas"]:
+            eccentricity = EccentricityGnssEu(self.station, eccentricity_info)
+            interval = (eccentricity.date_from, eccentricity.date_to)
+            history[interval] = eccentricity
+
+        return history
+
+
+class EccentricityGnssEu(SiteInfoBase):
+    """ Eccentricity class handling gnssEu API eccentricity station information
+    """
+
+    source = "gnsseu"
+    fields = dict()
+
+    @property
+    def date_from(self) -> datetime:
+        """ Get eccentricity installation date from gnssEu API site information attribute
+
+        Returns:
+            Eccentricity installation date
+        """
+        if self._info["dateInstalled"]:
+            return convert_to_utc(datetime.fromisoformat(self._info["dateInstalled"]))
+        else:
+            return datetime.min
+
+    @property
+    def date_to(self) -> datetime:
+        """ Get eccentricity removing date from gnssEu API site information attribute
+
+        Returns:
+            Eccentricity removing date
+        """
+        if self._info["dateRemoved"]:
+            return convert_to_utc(datetime.fromisoformat(self._info["dateRemoved"]))
+        else:
+            return datetime.max
+
+    @property
+    def dpos(self) -> List:
+        """ Get eccentricity from gnssEu API site information attribute
+
+        Returns:
+            Eccentricity [meter, meter, meter]
+        """
+        return [self._info["markerARP"]["east"], self._info["markerARP"]["north"], self._info["markerARP"]["up"]]
+
+    @property
+    def vector_type(self)-> str:
+        """ Get type of eccentricity vector for property dpos
+
+        Returns:
+            Eccentricity vector type
+        """
+        return "ENU"
+
+    @property
+    def east(self) -> float:
+        """ Get the east component of the eccentricity vector
+
+            Returns:
+                East [meter]
+        """
+        return self._info["markerARP"]["east"]
+
+    @property
+    def north(self) -> float:
+        """ Get the north component of the eccentricity vector
+
+            Returns:
+                North [meter]
+        """
+        return self._info["markerARP"]["north"]
+
+    @property
+    def up(self) -> float:
+        """ Get the up component of the eccentricity vector
+
+            Returns:
+                Up [meter]
+        """
+        return self._info["markerARP"]["up"]
+
