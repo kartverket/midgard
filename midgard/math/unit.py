@@ -474,5 +474,6 @@ class Unit(metaclass=_convert_units):
 
 
 # Read extra units defined specially for Midgard
-with importlib_resources.path("midgard.math", "unit.txt") as unit_path:
+source = importlib_resources.files("midgard.math").joinpath("unit.txt")
+with importlib_resources.as_file(source) as unit_path:
     Unit._ureg.load_definitions(unit_path)

@@ -53,7 +53,8 @@ class Constant:
     def __init__(self) -> None:
         # Read constants from file
         package, _, name = __name__.rpartition(".")
-        with importlib_resources.path(package, f"{name}.txt") as path:
+        source = importlib_resources.files(package).joinpath(f"{name}.txt")
+        with importlib_resources.as_file(source) as path:
             self.update_from_file(path)
 
         # Set default source

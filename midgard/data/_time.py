@@ -36,7 +36,8 @@ np_float = TypeVar("np_float", float, np.ndarray)
 
 def read_tai_utc():
     package, _, _ = __name__.rpartition(".")
-    with importlib_resources.path(package, "_taiutc.txt") as path:
+    source = importlib_resources.files(package).joinpath("_taiutc.txt")
+    with importlib_resources.as_file(source) as path:
         return np.genfromtxt(
             path,
             names=["start", "end", "offset", "ref_epoch", "factor"],
