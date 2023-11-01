@@ -90,9 +90,12 @@ class BerneseSlrPltParser(LineParser):
         for idx, sat_prn in enumerate(self.data["sat_prn"]):
             if sat_prn == "":
                 continue  # Ignore empty lines
-            for key in ["station", "domes", "epoch", "residual", "azi", "ele"]:
+            for key in ["station", "domes"]:
                 dict_.setdefault(sat_prn, {}).setdefault(key, []).append(
                     self.data[key][idx]
                 )
-
+            for key in ["epoch", "residual", "azi", "ele"]:
+                dict_.setdefault(sat_prn, {}).setdefault(key, []).append(
+                    float(self.data[key][idx])
+                )
         return dict_
