@@ -154,6 +154,14 @@ def dset_full():
     return _dset
 
 @pytest.fixture
+def dset_time_group():
+    _dset = dataset.Dataset(5)
+    _dset.add_time("time", val=[datetime(2015, 1, i) for i in range(5, 10)], scale="utc", fmt="datetime")
+    _dset.add_time("group.time1", val=[datetime(2015, 1, i) for i in range(10, 15)], scale="tt", fmt="datetime")
+    _dset.add_time("group.time2", val=[54200+i for i in range(10, 15)], scale="tai", fmt="mjd", write_level="analysis")
+    return _dset
+
+@pytest.fixture
 def dset_one_obs():
     """Contains all available fieldstypes, but with only one observation.
 
@@ -379,7 +387,7 @@ def test_merge(dset1, dset2):
         test_field(field, dset1.num_obs)
 
 
-@pytest.mark.parametrize("dset", (dset_empty, dset_float, dset_full, dset_no_collection), indirect=True)
+@pytest.mark.parametrize("dset", (dset_empty, dset_float, dset_full, dset_no_collection, dset_time_group), indirect=True)
 def test_read_write(dset):
     """Test data equality after write and then read"""
     file_name = "test.hdf5"
@@ -403,6 +411,23 @@ def test_read_write(dset):
         print(f"Testing {field_name}")
         new_field = dset_new._fields[field_name]
         test_field(field, new_field)
+
+    os.remove(file_name)
+
+
+def test_read_write_write_level():
+    """Test data equality after write and then read"""
+    file_name = "test.hdf5"
+    dset = dataset.Dataset(2)
+    dset.add_text("text", val=["hello", "goodbye"], write_level="operational")
+    dset.add_text("textagain", val=["hello again", "goodbye again"], write_level="analysis")
+
+    dset.write(file_name, write_level="operational")
+    dset_new = dataset.Dataset.read(file_name)
+
+    assert "text" in dset_new.fields
+    assert np.char.equal(dset.text, dset_new.text).all()
+    assert "textagain" not in dset_new.fields
 
     os.remove(file_name)
 
