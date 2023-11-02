@@ -680,7 +680,7 @@ class MatPlotExt:
 
                     # Use another plot type for 2nd plot
                     current_options = self.options.copy()
-                    if options["plot_type_2nd"]:
+                    if "plot_type_2nd" in options.keys():
                        if row == 1:
                             self.options["plot_type"] = self.options["plot_type_2nd"]
 
