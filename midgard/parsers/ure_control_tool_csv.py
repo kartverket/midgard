@@ -55,14 +55,15 @@ class UreControlToolCsvParser(CsvParser):
         
         TODO: Exists better solution would be, e.g. to take into account these already by reading step csv_.read_data?
         """
-        if "IOD" in self.data["IOD"]:
-        
-            # Get index of additional header lines 
-            idx = self.data["IOD"]=="IOD"
+        if "IOD" in self.data.keys():
+            if "IOD" in self.data["IOD"]:
             
-            # Keep only field lines, which are not header lines [~idx]
-            for field in self.data.keys():
-                self.data[field] = self.data[field][~idx]
+                # Get index of additional header lines 
+                idx = self.data["IOD"]=="IOD"
+                
+                # Keep only field lines, which are not header lines [~idx]
+                for field in self.data.keys():
+                    self.data[field] = self.data[field][~idx]
 
 
     def as_dataset(self) -> "Dataset":
@@ -137,17 +138,24 @@ class UreControlToolCsvParser(CsvParser):
              'dR(m)',
         ]
         
-        # Initialize dataset        
+        # Initialize dataset    
         dset = dataset.Dataset(num_obs=len(self.data["SVID"]))
         dset.meta.update(self.meta)
 
-        # Add time             
-        dset.add_time(
-            "time",
-            val=[
+        # Add time  
+        if "YY/MM/DD HH:MM:SS" in self.data.keys():
+            dates = [
                 dateutil.parser.parse(self.data["YY/MM/DD HH:MM:SS"][i])
                 for i in range(0, dset.num_obs)
-            ],
+            ]
+        elif "YYYY/MM/DD" in self.data.keys() and "HH:MM:SS" in self.data.keys():
+            dates = [
+                dateutil.parser.parse(f"{self.data['YYYY/MM/DD'][i]} {self.data['HH:MM:SS'][i]}")
+                for i in range(0, dset.num_obs)
+            ]        
+        dset.add_time(
+            "time",
+            val=dates,
             scale="gps",
             fmt="datetime",
             write_level="operational",
