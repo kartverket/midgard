@@ -101,7 +101,11 @@ class Logger(abc.ABC):
     @classmethod
     def get_color(cls, level: LogLevel) -> str:
         """Get color string for the given log level"""
-        return enums.get_value("log_color", level.name, default="")
+        try:
+            return enums.get_value("log_color", level.name, default="").value
+        except AttributeError:
+            return ""
+
 
     @abc.abstractmethod
     def blank(self) -> None:
