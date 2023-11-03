@@ -376,6 +376,15 @@ def test_parser_terrapos_residual():
     assert "G01" in parser["satellite"]
     assert "G" in parser["system"]
 
+    
+def test_parser_ure_control_tool_csv():
+    """Test that parsing_ure_control_tool_csv gives expected output"""
+    parser = get_parser("ure_control_tool_csv").as_dict()
+
+    assert len(parser) == 17
+    assert "SVID" in parser
+    assert "G01" in parser["SVID"][0]
+
 
 def test_parser_vlbi_source_names():
     """Test that parsing vlbi_source_names gives expected output"""
