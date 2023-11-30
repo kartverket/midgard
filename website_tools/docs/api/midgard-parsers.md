@@ -795,6 +795,52 @@ and **meta**-data:
 | \__parser_name__     | Parser name                                                                          |
 
 
+## midgard.parsers.bernese_slr_plt
+A parser for reading Bernese SLR PLT file
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_slr_plt', file_path='SLR_20232580.PLT')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in Bernese PLT format.
+
+
+
+### **BerneseSlrPltParser**
+
+Full name: `midgard.parsers.bernese_slr_plt.BerneseSlrPltParser`
+
+Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+
+A parser for reading Bernese SLR PLT file
+
+Following **data** are available after reading Bernese PLT file:
+
+| Parameter          | Description                                                                    |
+|--------------------|--------------------------------------------------------------------------------|
+| station            | 4-digit station identifier                                                     |
+| domes              | domes number, e.g.  50107M001                                                  |
+| sat_prn            | satellite, e.g. E18
+| epoch              | mjd of observation                                                             |
+| residual           | observation residual (mm)                                                      |
+| azi                | azimuth (deg)                                                                  |
+| ele                | elevation (deg)
+
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+|----------------------|--------------------------------------------------------------------------------------|
+| \__data_path__       | File path                                                                            |
+| \__params__          | np.genfromtxt parameters                                                             |
+| \__parser_name__     | Parser name                                                                          |
+
+
+
 ## midgard.parsers.bernese_sta
 A parser for reading station information in Bernese STA format
 
