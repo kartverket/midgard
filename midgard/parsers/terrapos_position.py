@@ -157,16 +157,21 @@ class TerraposPositionParser(LineParser):
         
         for field in float_fields:        
             dset.add_float(field, val=self.data[field])
+            
+        
 
         # Add time field
-        dset.add_time(
-            "time",
-            val=Time(
+        time = Time(
                 val=self.data["gpsweek"], 
                 val2=self.data["gpssec"], 
                 scale="gps", 
                 fmt="gps_ws",
-            )
+        )
+        dset.add_time(
+            "time",
+            val= time.gps.datetime, # TODO: Note: Conversion to datetime are necessary. Otherwise it can lead to an error by use of dset.as_dataframe() function.
+            scale="gps",
+            fmt="datetime",
         )
         
         # Add position field
