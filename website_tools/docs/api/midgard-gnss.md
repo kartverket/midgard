@@ -222,7 +222,7 @@ use this model. The implementation is based on original paper of Klobuchar
 
 Full name: `midgard.gnss.klobuchar.klobuchar`
 
-Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7f174b56be20>, level='debug'))`
+Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7f04e3d4fe20>, level='debug'))`
 
 Compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model)
 

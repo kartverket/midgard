@@ -46,15 +46,15 @@ Use enumerations in your code:
 
 Full name: `midgard.collections.enums.BeidouFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **BeidouFrequency**
 
 Full name: `midgard.collections.enums.BeidouFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 BeiDou frequencies in Hz
 
@@ -62,7 +62,7 @@ BeiDou frequencies in Hz
 
 Full name: `midgard.collections.enums.ExitStatus`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Exit status definition
 
@@ -70,7 +70,7 @@ Exit status definition
 
 Full name: `midgard.collections.enums.GPSFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 GPS frequencies in Hz
 
@@ -78,15 +78,15 @@ GPS frequencies in Hz
 
 Full name: `midgard.collections.enums.GalileoFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **GalileoFrequency**
 
 Full name: `midgard.collections.enums.GalileoFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Galileo frequencies in Hz
 
@@ -94,15 +94,15 @@ Galileo frequencies in Hz
 
 Full name: `midgard.collections.enums.GlonassFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **Gnss3DigitIdToId**
 
 Full name: `midgard.collections.enums.Gnss3DigitIdToId`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
@@ -110,7 +110,7 @@ RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.GnssIdTo3DigitId`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
@@ -118,7 +118,7 @@ RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
 Full name: `midgard.collections.enums.GnssIdToName`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS identifier to GNSS name
 
@@ -126,7 +126,7 @@ RINEX GNSS identifier to GNSS name
 
 Full name: `midgard.collections.enums.GnssIdToReferenceSystem`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
@@ -134,7 +134,7 @@ RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
 Full name: `midgard.collections.enums.GnssNameToId`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 GNSS name to RINEX GNSS identifier
 
@@ -142,23 +142,23 @@ GNSS name to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.GpsFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **IrnssFreqNum2Freq**
 
 Full name: `midgard.collections.enums.IrnssFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **IrnssFrequency**
 
 Full name: `midgard.collections.enums.IrnssFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 IRNSS frequencies in Hz
 
@@ -166,7 +166,7 @@ IRNSS frequencies in Hz
 
 Full name: `midgard.collections.enums.LogColor`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Colors used when logging
 
@@ -174,7 +174,7 @@ Colors used when logging
 
 Full name: `midgard.collections.enums.LogLevel`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Levels used when deciding how much log output to show
 
@@ -190,15 +190,15 @@ Dummy class used as a marker for a argument not given, used instead of None beca
 
 Full name: `midgard.collections.enums.QzssFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **QzssFrequency**
 
 Full name: `midgard.collections.enums.QzssFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 QZSS frequencies in Hz
 
@@ -206,7 +206,7 @@ QZSS frequencies in Hz
 
 Full name: `midgard.collections.enums.RefSysNameToEpsg`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Reference system name to EPSG code
 
@@ -214,15 +214,15 @@ Reference system name to EPSG code
 
 Full name: `midgard.collections.enums.SbasFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **SbasFrequency**
 
 Full name: `midgard.collections.enums.SbasFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 SBAS frequencies in Hz
 
@@ -230,7 +230,7 @@ SBAS frequencies in Hz
 
 Full name: `midgard.collections.enums.WriteLevel`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Levels used when deciding which fields of a dataset and other information to write to disk
 
@@ -251,7 +251,7 @@ Names of available enums.
 
 Full name: `midgard.collections.enums.exit_status`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Exit status definition
 
@@ -259,7 +259,7 @@ Exit status definition
 
 Full name: `midgard.collections.enums.get_enum`
 
-Signature: `(name: str) -> enum.EnumMeta`
+Signature: `(name: str) -> enum.EnumType`
 
 Return a named Enumeration
 
@@ -300,7 +300,7 @@ Value of enumeration with the given name.
 
 Full name: `midgard.collections.enums.gnss_3digit_id_to_id`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
@@ -308,7 +308,7 @@ RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.gnss_freq_C`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 BeiDou frequencies in Hz
 
@@ -316,7 +316,7 @@ BeiDou frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_E`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Galileo frequencies in Hz
 
@@ -324,7 +324,7 @@ Galileo frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_G`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 GPS frequencies in Hz
 
@@ -332,7 +332,7 @@ GPS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_I`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 IRNSS frequencies in Hz
 
@@ -340,7 +340,7 @@ IRNSS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_J`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 QZSS frequencies in Hz
 
@@ -348,7 +348,7 @@ QZSS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_S`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 SBAS frequencies in Hz
 
@@ -356,7 +356,7 @@ SBAS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_id_to_3digit_id`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
@@ -364,7 +364,7 @@ RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
 Full name: `midgard.collections.enums.gnss_id_to_name`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS identifier to GNSS name
 
@@ -372,7 +372,7 @@ RINEX GNSS identifier to GNSS name
 
 Full name: `midgard.collections.enums.gnss_id_to_reference_system`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
@@ -380,7 +380,7 @@ RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
 Full name: `midgard.collections.enums.gnss_name_to_id`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 GNSS name to RINEX GNSS identifier
 
@@ -388,57 +388,57 @@ GNSS name to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.gnss_num2freq_C`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **gnss_num2freq_E**
 
 Full name: `midgard.collections.enums.gnss_num2freq_E`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **gnss_num2freq_G**
 
 Full name: `midgard.collections.enums.gnss_num2freq_G`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **gnss_num2freq_I**
 
 Full name: `midgard.collections.enums.gnss_num2freq_I`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **gnss_num2freq_J**
 
 Full name: `midgard.collections.enums.gnss_num2freq_J`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **gnss_num2freq_R**
 
 Full name: `midgard.collections.enums.gnss_num2freq_R`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **gnss_num2freq_S**
 
 Full name: `midgard.collections.enums.gnss_num2freq_S`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
-An enumeration.
+
 
 ### **has_value**()
 
@@ -462,7 +462,7 @@ True if Enumeration defines value, False otherwise
 
 Full name: `midgard.collections.enums.log_color`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Colors used when logging
 
@@ -470,7 +470,7 @@ Colors used when logging
 
 Full name: `midgard.collections.enums.log_level`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Levels used when deciding how much log output to show
 
@@ -478,7 +478,7 @@ Levels used when deciding how much log output to show
 
 Full name: `midgard.collections.enums.ref_sys_name_to_epsg`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Reference system name to EPSG code
 
@@ -486,7 +486,7 @@ Reference system name to EPSG code
 
 Full name: `midgard.collections.enums.register_enum`
 
-Signature: `(name: str) -> Callable[[enum.EnumMeta], enum.EnumMeta]`
+Signature: `(name: str) -> Callable[[enum.EnumType], enum.EnumType]`
 
 Register a named Enumeration
 
@@ -505,7 +505,7 @@ Decorator that registers an Enumeration.
 
 Full name: `midgard.collections.enums.write_level`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1)`
+Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
 
 Levels used when deciding which fields of a dataset and other information to write to disk
 

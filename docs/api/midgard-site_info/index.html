@@ -8,22 +8,19 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.site_info - Midgard v1.2.2</title>
+        <title>midgard.site_info - Midgard v1.3.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
+                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -148,6 +145,24 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#midgardsite_infognsseu" class="nav-link">midgard.site_info.gnsseu</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardsite_infognsseuapi" class="nav-link">midgard.site_info.gnsseu.api</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#get-instance-of-gnsseuapi-class-with-api-methods-based-on-default-url" class="nav-link">Get instance of GnssEuApi class with API methods based on default URL</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#get-instance-of-gnsseuapi-class-with-api-methods-based-on-defined-url" class="nav-link">Get instance of GnssEuApi class with API methods based on defined URL</a>
+              <ul class="nav flex-column">
             <li class="nav-item" data-level="2"><a href="#midgardsite_infoidentifier" class="nav-link">midgard.site_info.identifier</a>
               <ul class="nav flex-column">
               </ul>
@@ -172,6 +187,17 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="midgardsite_info">midgard.site_info</h1>
+<p>Common function used by site_info classes</p>
+<h3 id="convert_to_utc"><strong>convert_to_utc</strong>()</h3>
+<p>Full name: <code>midgard.site_info.convert_to_utc</code></p>
+<p>Signature: <code>(time: datetime.datetime) -&gt; datetime.datetime</code></p>
+<p>Convert datetime object to UTC</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>time</code>: Time zone aware datetime object</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Time zone unaware datetime object related to UTC</p>
 <h2 id="midgardsite_info_site_info">midgard.site_info._site_info</h2>
 <p>Base classes for site information.</p>
 <p><strong>Description:</strong></p>
@@ -234,6 +260,13 @@ Antenna.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Full name: <code>midgard.site_info.antenna.Antenna</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting antenna information from various sources into unified classes</p>
+<h3 id="antennagnsseu"><strong>AntennaGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaGnssEu</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Antenna class handling GnssEu API antenna station information</p>
+<h3 id="antennahistorygnsseu"><strong>AntennaHistoryGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaHistoryGnssEu</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="antennahistorysinex"><strong>AntennaHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.AntennaHistorySinex</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
@@ -282,6 +315,13 @@ Eccentricity.get_history("snx", all_stations, source_data, source_path=p.file_pa
 <p>Full name: <code>midgard.site_info.eccentricity.Eccentricity</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting eccentricity information from various sources into unified classes</p>
+<h3 id="eccentricitygnsseu"><strong>EccentricityGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.eccentricity.EccentricityGnssEu</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Eccentricity class handling gnssEu API eccentricity station information</p>
+<h3 id="eccentricityhistorygnsseu"><strong>EccentricityHistoryGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.eccentricity.EccentricityHistoryGnssEu</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="eccentricityhistorysinex"><strong>EccentricityHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.eccentricity.EccentricityHistorySinex</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
@@ -292,6 +332,21 @@ Eccentricity.get_history("snx", all_stations, source_data, source_path=p.file_pa
 <p>Full name: <code>midgard.site_info.eccentricity.EccentricitySinex</code></p>
 <p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
 <p>Eccentricity class handling SINEX file eccentricity station information</p>
+<h2 id="midgardsite_infognsseu">midgard.site_info.gnsseu</h2>
+<h2 id="midgardsite_infognsseuapi">midgard.site_info.gnsseu.api</h2>
+<p>Python wrapper around the gnss-metadata.eu API</p>
+<p><strong>Description:</strong></p>
+<h3 id="creates-functions-automatically-based-on-the-services-listed-on-the-swagger-help-page-referred-to-by-url">Creates functions automatically based on the services listed on the Swagger help page referred to by URL.</h3>
+<p><strong>Example:</strong>
+from åsgard import gnsseu</p>
+<h1 id="get-instance-of-gnsseuapi-class-with-api-methods-based-on-default-url">Get instance of GnssEuApi class with API methods based on default URL</h1>
+<p>api = gnsseu.api.GnssEuApi()</p>
+<h1 id="get-instance-of-gnsseuapi-class-with-api-methods-based-on-defined-url">Get instance of GnssEuApi class with API methods based on defined URL</h1>
+<p>api = gnsseu.api.GnssEuApi(url=""https://gnss-metadata.eu/site/api-json")</p>
+<h3 id="gnsseuapi"><strong>GnssEuApi</strong></h3>
+<p>Full name: <code>midgard.site_info.gnsseu.api.GnssEuApi</code></p>
+<p>Signature: <code>(url: str = 'https://gnss-metadata.eu/site/api-json') -&gt; None</code></p>
+<p>A wrapper around the gnss-metadata.eu API</p>
 <h2 id="midgardsite_infoidentifier">midgard.site_info.identifier</h2>
 <p>Identifier information classes</p>
 <p><strong>Description:</strong>
@@ -321,6 +376,10 @@ Identifier.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_pa
 <p>Full name: <code>midgard.site_info.identifier.Identifier</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting identifier information from various sources into unified classes</p>
+<h3 id="identifiergnsseu"><strong>IdentifierGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.identifier.IdentifierGnssEu</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<p>Identifier class handling gnssEu API identifier station information</p>
 <h3 id="identifiersinex"><strong>IdentifierSinex</strong></h3>
 <p>Full name: <code>midgard.site_info.identifier.IdentifierSinex</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
@@ -367,6 +426,13 @@ Receiver.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Full name: <code>midgard.site_info.receiver.Receiver</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting receiver information from various sources into unified classes</p>
+<h3 id="receivergnsseu"><strong>ReceiverGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.receiver.ReceiverGnssEu</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Receiver class handling gnssEu API receiver station information</p>
+<h3 id="receiverhistorygnsseu"><strong>ReceiverHistoryGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.receiver.ReceiverHistoryGnssEu</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="receiverhistorysinex"><strong>ReceiverHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.ReceiverHistorySinex</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
@@ -415,6 +481,9 @@ SiteCoord.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Full name: <code>midgard.site_info.site_coord.SiteCoord</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting site coordinates from various sources into unified classes</p>
+<h3 id="sitecoordhistorygnsseu"><strong>SiteCoordHistoryGnssEu</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistoryGnssEu</code></p>
+<p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="sitecoordhistorysinex"><strong>SiteCoordHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistorySinex</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
@@ -462,12 +531,14 @@ SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+        <script src="../../js/jquery-3.6.0.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
