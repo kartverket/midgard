@@ -36,6 +36,10 @@ class MatPlotExt:
 
     | Option             | Value            | Description                                                           |
     |--------------------|------------------|-----------------------------------------------------------------------|
+    | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)                |
+    | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line  |
+    | axhline_width      | <num>            | Line width of horizontal line                                         |
+    | axhline_color      | <name>           | Color of horizontal line                                              |
     | bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                              |
     | bar_text_offset    | <num>            | Define text offset for text of bar plots                              |
     | bar_zeroline       | <True|False>     | Plot zero line at a bar plot                                          |
@@ -59,6 +63,7 @@ class MatPlotExt:
     | histogram_binwidth | <num>            | Histogram bin width                                                   |
     | histogram_size     | <num>            | Histogram y-axis size                                                 |
     | legend             | <True|False>     | Plot legend                                                           |
+    | legend_bbox_bottom | (num, num)       | Placement of legend, if legend location 'bottom' is chosen            |
     | legend_location    | <right, bottom>  | Legend location                                                       |
     | legend_ncol        | <num>            | The number of legend columns                                          |
     | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                     |
@@ -101,6 +106,9 @@ class MatPlotExt:
         # Default plotting options
         self.options = {
             "alpha": 1,
+            "axhline_y": None,
+            "axhline_width": 2,
+            "axhline_color": "red",  
             "bar_text": False,
             "bar_text_offset": 0,
             "bar_zeroline": False,
@@ -124,6 +132,7 @@ class MatPlotExt:
             "marker": ".",
             "markersize": 9,
             "legend": False,
+            "legend_bbox_bottom": (0.5, -0.3),
             "legend_location": None,
             "legend_ncol": 1,
             "linestyle": "solid",
@@ -348,6 +357,9 @@ class MatPlotExt:
     
         | Option             | Value            | Description                                                             |
         |--------------------|------------------|-------------------------------------------------------------------------|
+        | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line    |
+        | axhline_width      | <num>            | Line width of horizontal line                                           |
+        | axhline_color      | <name>           | Color of horizontal line                                                |
         | colorbar           | <True|False>     | Plot color bar based on labels                                          |
         | colorbar_label     | <text>           | Color bar label                                                         |
         | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
@@ -361,6 +373,7 @@ class MatPlotExt:
         | histogram_binwidth | <num>            | Histogram bin width                                                     |
         | histogram_size     | <num>            | Histogram y-axis size                                                   |
         | legend             | <True|False>     | Plot legend                                                             |
+        | legend_bbox_bottom | (num, num)       | Placement of legend, if legend location 'bottom' is chosen              |
         | legend_location    | <right, bottom>  | Legend location                                                         |
         | legend_ncol        | <num>            | The number of legend columns                                            |
         | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                       |
@@ -499,6 +512,9 @@ class MatPlotExt:
         if self.options["projection"] == "polar":
             ax.set_theta_zero_location("N")  # sets 0(deg) to North
             ax.set_theta_direction(-1)  # sets plot clockwise
+
+        if self.options["axhline_y"]:
+            plt.axhline(y=self.options["axhline_y"], linewidth=self.options["axhline_width"], color=self.options["axhline_color"])
     
         # Plot legend
         if events:
@@ -1088,7 +1104,11 @@ class MatPlotExt:
     
         # General definition of legend location
         legend_loc = {
-            "bottom": {"bbox_to_anchor": (0.5, -0.3), "borderaxespad": 0.0, "loc": "upper center"},
+            "bottom": {
+                    "bbox_to_anchor": self.options["legend_bbox_bottom"], 
+                    "borderaxespad": 0.0, 
+                    "loc": "upper center",
+            },
             "right": {"bbox_to_anchor": (1.04, 1), "borderaxespad": 0.0, "loc": "upper left"},
         }
     
