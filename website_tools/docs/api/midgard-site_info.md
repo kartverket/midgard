@@ -1,4 +1,23 @@
 # midgard.site_info
+Common function used by site_info classes
+
+
+
+### **convert_to_utc**()
+
+Full name: `midgard.site_info.convert_to_utc`
+
+Signature: `(time: datetime.datetime) -> datetime.datetime`
+
+Convert datetime object to UTC
+
+**Args:**
+
+- `time`: Time zone aware datetime object
+
+**Returns:**
+
+Time zone unaware datetime object related to UTC
 
 
 ## midgard.site_info._site_info
@@ -95,6 +114,23 @@ Signature: `()`
 
 Main class for converting antenna information from various sources into unified classes
 
+### **AntennaGnssEu**
+
+Full name: `midgard.site_info.antenna.AntennaGnssEu`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Antenna class handling GnssEu API antenna station information
+
+
+### **AntennaHistoryGnssEu**
+
+Full name: `midgard.site_info.antenna.AntennaHistoryGnssEu`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+
+
 ### **AntennaHistorySinex**
 
 Full name: `midgard.site_info.antenna.AntennaHistorySinex`
@@ -167,6 +203,23 @@ Signature: `()`
 
 Main class for converting eccentricity information from various sources into unified classes
 
+### **EccentricityGnssEu**
+
+Full name: `midgard.site_info.eccentricity.EccentricityGnssEu`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Eccentricity class handling gnssEu API eccentricity station information
+
+
+### **EccentricityHistoryGnssEu**
+
+Full name: `midgard.site_info.eccentricity.EccentricityHistoryGnssEu`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+
+
 ### **EccentricityHistorySinex**
 
 Full name: `midgard.site_info.eccentricity.EccentricityHistorySinex`
@@ -190,6 +243,35 @@ Full name: `midgard.site_info.eccentricity.EccentricitySinex`
 Signature: `(station: str, site_info: Dict[str, Any]) -> None`
 
 Eccentricity class handling SINEX file eccentricity station information
+
+
+## midgard.site_info.gnsseu
+
+
+## midgard.site_info.gnsseu.api
+Python wrapper around the gnss-metadata.eu API
+
+**Description:**
+###Creates functions automatically based on the services listed on the Swagger help page referred to by URL.
+
+**Example:**
+from åsgard import gnsseu
+
+# Get instance of GnssEuApi class with API methods based on default URL
+api = gnsseu.api.GnssEuApi()
+
+# Get instance of GnssEuApi class with API methods based on defined URL
+api = gnsseu.api.GnssEuApi(url=""https://gnss-metadata.eu/site/api-json")
+
+
+
+### **GnssEuApi**
+
+Full name: `midgard.site_info.gnsseu.api.GnssEuApi`
+
+Signature: `(url: str = 'https://gnss-metadata.eu/site/api-json') -> None`
+
+A wrapper around the gnss-metadata.eu API
 
 
 ## midgard.site_info.identifier
@@ -229,6 +311,15 @@ Full name: `midgard.site_info.identifier.Identifier`
 Signature: `()`
 
 Main class for converting identifier information from various sources into unified classes
+
+### **IdentifierGnssEu**
+
+Full name: `midgard.site_info.identifier.IdentifierGnssEu`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+Identifier class handling gnssEu API identifier station information
+
 
 ### **IdentifierSinex**
 
@@ -294,6 +385,23 @@ Full name: `midgard.site_info.receiver.Receiver`
 Signature: `()`
 
 Main class for converting receiver information from various sources into unified classes
+
+### **ReceiverGnssEu**
+
+Full name: `midgard.site_info.receiver.ReceiverGnssEu`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Receiver class handling gnssEu API receiver station information
+
+
+### **ReceiverHistoryGnssEu**
+
+Full name: `midgard.site_info.receiver.ReceiverHistoryGnssEu`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+
 
 ### **ReceiverHistorySinex**
 
@@ -366,6 +474,14 @@ Full name: `midgard.site_info.site_coord.SiteCoord`
 Signature: `()`
 
 Main class for converting site coordinates from various sources into unified classes
+
+### **SiteCoordHistoryGnssEu**
+
+Full name: `midgard.site_info.site_coord.SiteCoordHistoryGnssEu`
+
+Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
+
+
 
 ### **SiteCoordHistorySinex**
 

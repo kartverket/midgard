@@ -8,22 +8,19 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Testing - Midgard v1.2.2</title>
+        <title>Testing - Midgard v1.3.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
+                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -145,7 +142,7 @@
 
 <h1 id="testing">Testing</h1>
 <p>It will be shortly described how the source code testing is done in Midgard. <code>pytest</code> is used by Midgard for testing the library modules. </p>
-<p>All module tests of Midgard are located in directory <strong>./midgard/tests</strong>. The <strong>tests</strong> directory mirrors the official directory structure under <strong>./midgard/midgard</strong>. For example the test for the modul <strong>./midgard/midgard/math/interpolation.py</strong> can be found under <strong>./midgard/tests/math/test_interpolation.py</strong>. In Midgard the test files follow the naming convention <strong>test_&lt;module name>.py</strong> (e.g. <strong>test_interpolation.py</strong>). Information about how to write <code>pytest</code> tests can be found under <a href="https://pytest.org/">https://pytest.org/</a>. </p>
+<p>All module tests of Midgard are located in directory <strong>./midgard/tests</strong>. The <strong>tests</strong> directory mirrors the official directory structure under <strong>./midgard/midgard</strong>. For example the test for the modul <strong>./midgard/midgard/math/interpolation.py</strong> can be found under <strong>./midgard/tests/math/test_interpolation.py</strong>. In Midgard the test files follow the naming convention <strong>test_&lt;module name&gt;.py</strong> (e.g. <strong>test_interpolation.py</strong>). Information about how to write <code>pytest</code> tests can be found under <a href="https://pytest.org/">https://pytest.org/</a>. </p>
 <p>The written test can be excecuted as follows:</p>
 <ul>
 <li>All Midgard tests can be excecuted by calling <code>make test</code> in main directory <strong>./midgard</strong>.</li>
@@ -160,12 +157,14 @@
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+        <script src="../../js/jquery-3.6.0.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

@@ -8,22 +8,19 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.dev - Midgard v1.2.2</title>
+        <title>midgard.dev - Midgard v1.3.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
+                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -406,30 +403,30 @@ name_patterns (List):  Name mangling patterns (see above).</p>
 <table>
 <thead>
 <tr>
-<th align="left">Level</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Level</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><strong>debug</strong></td>
-<td align="left">Debug messages</td>
+<td style="text-align: left;"><strong>debug</strong></td>
+<td style="text-align: left;">Debug messages</td>
 </tr>
 <tr>
-<td align="left"><strong>info</strong></td>
-<td align="left">Information messages</td>
+<td style="text-align: left;"><strong>info</strong></td>
+<td style="text-align: left;">Information messages</td>
 </tr>
 <tr>
-<td align="left"><strong>warn</strong></td>
-<td align="left">Warning messages</td>
+<td style="text-align: left;"><strong>warn</strong></td>
+<td style="text-align: left;">Warning messages</td>
 </tr>
 <tr>
-<td align="left"><strong>error</strong></td>
-<td align="left">Error messages</td>
+<td style="text-align: left;"><strong>error</strong></td>
+<td style="text-align: left;">Error messages</td>
 </tr>
 <tr>
-<td align="left"><strong>fatal</strong></td>
-<td align="left">Fatal error messages</td>
+<td style="text-align: left;"><strong>fatal</strong></td>
+<td style="text-align: left;">Fatal error messages</td>
 </tr>
 </tbody>
 </table>
@@ -837,10 +834,10 @@ optional parameters, including the text to report when the timer ends and which
 logger is used to report the timing. See <code>Timer.__init__</code> for more details.</p>
 <h3 id="accumulatedtimer"><strong>AccumulatedTimer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.AccumulatedTimer</code></p>
-<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f174b56be20&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f04e3d4fe20&gt;, level='info')) -&gt; None</code></p>
 <h3 id="timer"><strong>Timer</strong></h3>
 <p>Full name: <code>midgard.dev.timer.Timer</code></p>
-<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f174b56be20&gt;, level='info')) -&gt; None</code></p>
+<p>Signature: <code>(text: str = 'Elapsed time:', fmt: str = '.4f', logger: Optional[Callable[[str], NoneType]] = functools.partial(&lt;function log at 0x7f04e3d4fe20&gt;, level='info')) -&gt; None</code></p>
 <p>Class for timing running time of functions and code blocks.</p>
 <h2 id="midgarddevutil">midgard.dev.util</h2>
 <p>Midgard library module with utility functions for easier script development</p>
@@ -982,12 +979,14 @@ string (separated by =). If there are several occurences of the option, the firs
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+        <script src="../../js/jquery-3.6.0.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

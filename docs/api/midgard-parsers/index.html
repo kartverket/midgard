@@ -8,22 +8,19 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v1.2.2</title>
+        <title>midgard.parsers - Midgard v1.3.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/docco.min.css">
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
     </head>
 
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.2.2</a>
+                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -185,6 +182,10 @@
               </ul>
             </li>
             <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_prc" class="nav-link">midgard.parsers.bernese_prc</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_slr_plt" class="nav-link">midgard.parsers.bernese_slr_plt</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -1535,6 +1536,81 @@ related data are saved in a dictionary with following keys:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="midgardparsersbernese_slr_plt">midgard.parsers.bernese_slr_plt</h2>
+<p>A parser for reading Bernese SLR PLT file</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_slr_plt', file_path='SLR_20232580.PLT')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in Bernese PLT format.</p>
+<h3 id="berneseslrpltparser"><strong>BerneseSlrPltParser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_slr_plt.BerneseSlrPltParser</code></p>
+<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>A parser for reading Bernese SLR PLT file</p>
+<p>Following <strong>data</strong> are available after reading Bernese PLT file:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>station</td>
+<td>4-digit station identifier</td>
+</tr>
+<tr>
+<td>domes</td>
+<td>domes number, e.g.  50107M001</td>
+</tr>
+<tr>
+<td>sat_prn</td>
+<td>satellite, e.g. E18</td>
+</tr>
+<tr>
+<td>epoch</td>
+<td>mjd of observation</td>
+</tr>
+<tr>
+<td>residual</td>
+<td>observation residual (mm)</td>
+</tr>
+<tr>
+<td>azi</td>
+<td>azimuth (deg)</td>
+</tr>
+<tr>
+<td>ele</td>
+<td>elevation (deg)</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__data_path__</td>
+<td>File path</td>
+</tr>
+<tr>
+<td>__params__</td>
+<td>np.genfromtxt parameters</td>
+</tr>
+<tr>
+<td>__parser_name__</td>
+<td>Parser name</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardparsersbernese_sta">midgard.parsers.bernese_sta</h2>
 <p>A parser for reading station information in Bernese STA format</p>
 <p><strong>Example:</strong></p>
@@ -1678,14 +1754,14 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th align="left">Key</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">TODO</td>
-<td align="left"></td>
+<td style="text-align: left;">TODO</td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
@@ -1693,26 +1769,26 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th align="left">Key</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">TODO</td>
-<td align="left"></td>
+<td style="text-align: left;">TODO</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td align="left">__data_path__</td>
-<td align="left">File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td align="left">__params__</td>
-<td align="left">np.genfromtxt parameters</td>
+<td style="text-align: left;">__params__</td>
+<td style="text-align: left;">np.genfromtxt parameters</td>
 </tr>
 <tr>
-<td align="left">__parser_name__</td>
-<td align="left">Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -1945,22 +2021,22 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th align="left">Key</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">date</td>
-<td align="left">Processing date</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">Processing date</td>
 </tr>
 <tr>
-<td align="left">residual</td>
-<td align="left">Dictionary with residual summary information</td>
+<td style="text-align: left;">residual</td>
+<td style="text-align: left;">Dictionary with residual summary information</td>
 </tr>
 <tr>
-<td align="left">station</td>
-<td align="left">Station name</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">Station name</td>
 </tr>
 </tbody>
 </table>
@@ -1968,34 +2044,34 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th align="left">Key</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">code_obs_num</td>
-<td align="left">Number of used pseudo-range observations</td>
+<td style="text-align: left;">code_obs_num</td>
+<td style="text-align: left;">Number of used pseudo-range observations</td>
 </tr>
 <tr>
-<td align="left">code_outlier_num</td>
-<td align="left">Number of rejected pseudo-range observations</td>
+<td style="text-align: left;">code_outlier_num</td>
+<td style="text-align: left;">Number of rejected pseudo-range observations</td>
 </tr>
 <tr>
-<td align="left">code_residual_rms</td>
-<td align="left">RMS of residuals from used pseudo-range observations in [m]</td>
+<td style="text-align: left;">code_residual_rms</td>
+<td style="text-align: left;">RMS of residuals from used pseudo-range observations in [m]</td>
 </tr>
 <tr>
-<td align="left">phase_obs_num</td>
-<td align="left">Number of used phase observations</td>
+<td style="text-align: left;">phase_obs_num</td>
+<td style="text-align: left;">Number of used phase observations</td>
 </tr>
 <tr>
-<td align="left">phase_outlier_num</td>
-<td align="left">Number of rejected phase observations</td>
+<td style="text-align: left;">phase_outlier_num</td>
+<td style="text-align: left;">Number of rejected phase observations</td>
 </tr>
 <tr>
-<td align="left">phase_residual_rms</td>
-<td align="left">RMS of residuals from used phase observations in [m]</td>
+<td style="text-align: left;">phase_residual_rms</td>
+<td style="text-align: left;">RMS of residuals from used phase observations in [m]</td>
 </tr>
 </tbody>
 </table>
@@ -2003,18 +2079,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th align="left">Key</th>
-<th align="left">Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">__data_path__</td>
-<td align="left">File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td align="left">__parser_name__</td>
-<td align="left">Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -3860,12 +3936,14 @@ not read (TODO).</p>
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+        <script src="../../js/jquery-3.6.0.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
