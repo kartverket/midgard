@@ -62,13 +62,14 @@ class GnssreflAllRh(LineParser):
             Dict:  Parameters needed by np.genfromtxt to parse the input file.
         """
 
-	# % year,doy, RH(m), Month, day, azimuth(deg),freq, satNu, LSP amp,pk2noise,UTC(hr)  
+	# % year,doy, RH(m), Month, day, azimuth(deg),freq, satNu, LSP amp,pk2noise,UTC(hr)
+        # % (1), (2), (3),   (4),   (5),  (6),        (7),   (8),  (9),     (10),    (11)  
 	# 2021     9   4.888  1  9  225.3    1    2   9.51   3.23  10.08
 	# 2021     9   5.018  1  9  181.3    1   15   7.79   2.84  15.67
 	# 2021     9   5.123  1  9  185.4    1   16   6.27   3.01   0.68
         #----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7
         return dict(
-            skip_header=1,
+            skip_header=2,
             names=(
                 "year",
                 "doy",
