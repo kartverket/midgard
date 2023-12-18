@@ -95,7 +95,7 @@ class ApiWaterLevelNorwayParser(Parser):
             longitude:       Longitude of position in [deg] 
             from_date:       Starting date of data period
             to_date:         Ending date of data period
-            reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn1954
+            reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn2000
         """
         super().__init__(file_path, encoding)
         if not self.file_path.exists() or self.file_path.stat().st_size == 0:
@@ -119,12 +119,12 @@ class ApiWaterLevelNorwayParser(Parser):
             from_date:       Starting date of data period
             to_date:         Ending date of data period
             url:             URL to download from, if None use self.URL instead.
-            reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn1954
+            reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn2000
         """
         reference_level_def = {
             "chart_datum": "cd",
             "mean_sea_level": "msl",
-            "nn1954": "nn1954",
+            "nn2000": "nn2000",
             
         }
 
