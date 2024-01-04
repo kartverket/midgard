@@ -200,11 +200,14 @@ class GipsyxGdcovParser(ChainParser):
             "site_pos",
             time=dset.time,
             system="trs",
-            val=np.squeeze(
-                    np.vstack(
+            #val=np.squeeze(
+            #        np.vstack(
+            #            (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
+            #        ).T
+            #)
+            val=np.vstack(
                         (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
-                    ).T
-            )
+            ).T
         )
 
         if "correlation" in self.data.keys():
