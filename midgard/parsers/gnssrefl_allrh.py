@@ -40,7 +40,7 @@ class GnssreflAllRh(LineParser):
     | azimuth                   | Azimuth in [deg]                                                                |
     | frequency                 | GNSS frequency identifier                                                       |
     | peak2noise                | Peak to noise                                                                   |
-    | reflection_height         | Reflection height in [m]                                                        |
+    | reflector_height          | Reflector height in [m]                                                         |
     | satellite                 | Satellite number                                                                |
     | time                      | Time as datetime object                                                         |
 
@@ -73,7 +73,7 @@ class GnssreflAllRh(LineParser):
             names=(
                 "year",
                 "doy",
-                "reflection_height",
+                "reflector_height",
                 "month",
                 "day",
                 "azimuth",
@@ -119,7 +119,7 @@ class GnssreflAllRh(LineParser):
            | frequency             | numpy.array       | GNSS frequency identifier                                    |
            | peak2noise            | numpy.array       | Peak to noise                                                |
            | satellite             | numpy.array       | Satellite number                                             |
-           | reflection_height     | numpy.array       | Reflection height in [m]                                     |
+           | reflector_height      | numpy.array       | Reflector height in [m]                                      |
            | time                  | Time              | Time                                                         |
                
         """
@@ -145,7 +145,7 @@ class GnssreflAllRh(LineParser):
                 "amplitude": None,
                 "azimuth": "radian",
                 "peak2noise": None, 
-                "reflection_height": "meter", 
+                "reflector_height": "meter", 
         }
 
         # Initialize dataset
