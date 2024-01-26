@@ -254,3 +254,82 @@ def delta_acr2trs_posvel(acr: "AcrPosVelDelta") -> "TrsPosVelDelta":
     a2t = acr.ref_pos.acr2trs
     acr2trs = np.block([[a2t, np.zeros(a2t.shape)], [np.zeros(a2t.shape), a2t]])
     return np.squeeze(acr2trs @ acr.mat)
+
+#TODO: Should structure be improved?
+def sigma_trs2enu(
+        R: np.ndarray, 
+        sx: float, 
+        sy: float,
+        sz: float,
+        cxy: float=0.0,
+        cxz: float=0.0,
+        cyz: float=0.0,
+) -> Tuple[float]:
+    """Transformation of the covariance information of geocentric coordinates to topocentric coordinates 
+
+    The tranformation matrix looks like
+
+           |        -sin(lon)              cos(lon)            0      |
+       R = | -sin(lat) * cos(lon)    -sin(lat) * sin(lon)   cos(lat)  |
+           |  cos(lat) * cos(lon)     cos(lat) * sin(lon)   sin(lat)  |
+        
+       with
+          lon - longitude
+          lat - latitude
+                              
+    Transformation of the covariance information of the geocentric coordinates to the topocentric coordinates are based 
+    on the propagation of uncertainty:
+
+       C_t = R * C_g * R^T 
+
+       with 
+          C_t - covariance matrix of topocentric coordinates:
+
+                         |      se^2        ren * se * sn   reu * se * su |   | se^2  cen   ceu  |
+                   C_t = | ren * se * sn         sn^2       rnu * sn * su | = | cen   sn^2  cnu  |
+                         | reu * se * su    rnu * sn * su        su^2     |   | ceu   cnu   su^2 |
+
+                   with standard deviation se, sn and su of the east, north and up
+                   coordinates and correlation r between the coordinates
+
+          C_g - covariance matrix of geocentric coordinates:
+
+                         |      sx^2        rxy * sx * sy   rxz * sx * sz |   | sx^2  cxy   cxz  |
+                   C_g = | rxy * sx * sy         sy^2       ryz * sy * sz | = | cxy   sy^2  cyz  |
+                         | rxz * sx * sz    ryz * sy * sz        sz^2     |   | cxz   cyz   sz^2 |
+
+                   with standard deviation sx, sy and sz of the x, y and 
+                   coordinates and correlation r between the coordinates
+
+          R^T - transposed rotation matrix
+
+    Args:
+        R:              Rotation matrix from geocentric to topocentric coordinate system 
+        sx,sy,sz:       Standard deviation of geocentric coordinates
+        cxy,cxz,cyz:    Correlation coefficients of geocentric coordinates
+
+    Returns:
+       Standard deviation of topocentric coordinates 
+    """
+    # Change dimension of rotation matrix
+    if R.ndim == 3:
+        R = np.squeeze(R)
+
+    # Define covariance matrix of the geocentric coordinates
+    C_g    = np.array([
+            [sx**2,cxy*sx*sy,cxz*sx*sz],
+            [cxy*sx*sy,sy**2,cyz*sy*sz],
+            [cxz*sx*sz,cyz*sy*sz,sz**2],
+    ])
+
+    # Calculate covariance matrix of the topocentric coordinates
+    C_t = np.dot(np.dot(R,C_g),R.T)
+
+    # Calculate the standard deviation of the topocentric coordinates
+    se = C_t[0,0]**0.5
+    sn = C_t[1,1]**0.5
+    su = C_t[2,2]**0.5
+
+    return se,sn,su
+
+
