@@ -6,6 +6,7 @@ Description:
 """
 # Standard library imports
 from functools import lru_cache
+from typing import Tuple
 
 # Third party imports
 import numpy as np
