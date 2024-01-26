@@ -45,7 +45,14 @@ class CsvParser(Parser):
         # Note: C engine does not except regular expression for the separator option 'sep'. Disadvantage is that the
         #       Python engine is slower than the C engine by reading CSV files.
         df = pd.read_csv(
-            self.file_path, engine="python", index_col=False, sep="[\;,\,]", comment="#", skip_blank_lines=True
+                self.file_path,
+                comment="#",  
+                engine="python", 
+                index_col=False, 
+                sep="[\;,\,]", 
+                na_values="nan",
+                skip_blank_lines=True, 
+                skipinitialspace=True,
         )
         df = df.dropna(axis="columns", how="all")  # drop 'NaN' columns
         self.data = {k: np.array(v) for k, v in df.to_dict(orient="list").items()}
