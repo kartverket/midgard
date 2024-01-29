@@ -6,7 +6,7 @@ Description:
 """
 # Standard library imports
 from functools import lru_cache
-from typing import Tuple
+from typing import Tuple, Union
 
 # Third party imports
 import numpy as np
@@ -259,12 +259,12 @@ def delta_acr2trs_posvel(acr: "AcrPosVelDelta") -> "TrsPosVelDelta":
 #TODO: Should structure be improved?
 def sigma_trs2enu(
         R: np.ndarray, 
-        sx: float, 
-        sy: float,
-        sz: float,
-        cxy: float=0.0,
-        cxz: float=0.0,
-        cyz: float=0.0,
+        sx: np.ndarray, 
+        sy: np.ndarray,
+        sz: np.ndarray,
+        cxy: Union[np.ndarray, None]=None,
+        cxz: Union[np.ndarray, None]=None,
+        cyz: Union[np.ndarray, None]=None,
 ) -> Tuple[float]:
     """Transformation of the covariance information of geocentric coordinates to topocentric coordinates 
 
@@ -312,24 +312,45 @@ def sigma_trs2enu(
     Returns:
        Standard deviation of topocentric coordinates 
     """
+    if sx.size == 1:
+        sx = np.array([sx])
+        sy = np.array([sy])
+        sz = np.array([sz])
+        if cxy is not None:
+            cxy = np.array([cxy])
+            cxz = np.array([cxz])
+            cyz = np.array([cyz])
+
+    num_obs = sx.size
+    se = np.zeros(num_obs)
+    sn = np.zeros(num_obs)
+    su = np.zeros(num_obs)
+
+    if cxy is None:
+        cxy = np.zeros(num_obs)
+        cxz = np.zeros(num_obs)
+        cyz = np.zeros(num_obs)
+
     # Change dimension of rotation matrix
     if R.ndim == 3:
         R = np.squeeze(R)
 
-    # Define covariance matrix of the geocentric coordinates
-    C_g    = np.array([
-            [sx**2,cxy*sx*sy,cxz*sx*sz],
-            [cxy*sx*sy,sy**2,cyz*sy*sz],
-            [cxz*sx*sz,cyz*sy*sz,sz**2],
-    ])
+    for idx in range(0, num_obs):
 
-    # Calculate covariance matrix of the topocentric coordinates
-    C_t = np.dot(np.dot(R,C_g),R.T)
+        # Define covariance matrix of the geocentric coordinates
+        C_g    = np.array([
+                [sx[idx]**2,cxy[idx]*sx[idx]*sy[idx],cxz[idx]*sx[idx]*sz[idx]],
+                [cxy[idx]*sx[idx]*sy[idx],sy[idx]**2,cyz[idx]*sy[idx]*sz[idx]],
+                [cxz[idx]*sx[idx]*sz[idx],cyz[idx]*sy[idx]*sz[idx],sz[idx]**2],
+        ])
 
-    # Calculate the standard deviation of the topocentric coordinates
-    se = C_t[0,0]**0.5
-    sn = C_t[1,1]**0.5
-    su = C_t[2,2]**0.5
+        # Calculate covariance matrix of the topocentric coordinates
+        C_t = np.dot(np.dot(R,C_g),R.T)
+
+        # Calculate the standard deviation of the topocentric coordinates
+        se[idx] = C_t[0,0]**0.5
+        sn[idx] = C_t[1,1]**0.5
+        su[idx] = C_t[2,2]**0.5
 
     return se,sn,su
 
