@@ -189,6 +189,6 @@ class TerraposPositionParser(LineParser):
         
         # Add text field
         if self.station:
-            dset.add_text("station", val=np.repeat(self.station, dset.num_obs)[:, None])
+            dset.add_text("station", val=np.repeat(self.station, dset.num_obs))
         
         return dset
