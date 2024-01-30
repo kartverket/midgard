@@ -951,7 +951,7 @@ class MatPlotExt:
         # Set x-axis and y-axis limits, ticks and tick labels
         if not self.options["xlim"] == "auto":
             if isinstance(self.options["xlim"], list):
-                ax.set_xlim(self.options["xlim"][0], self.options["xlim"][1])
+                ax.set_xlim(float(self.options["xlim"][0]), float(self.options["xlim"][1]))
             elif self.options["xlim"] == "fit_to_data":
                 if isinstance(x_array, np.ndarray):
                     if x_array.ndim == 0:
@@ -959,7 +959,7 @@ class MatPlotExt:
                 ax.set_xlim([min(x_array), max(x_array)])
                    
         if self.options["ylim"]:
-            ax.set_ylim(self.options["ylim"][0], self.options["ylim"][1])
+            ax.set_ylim(float(self.options["ylim"][0]), float(self.options["ylim"][1]))
     
         if self.options["xticks"]:
             ax.set_xticks(self.options["xticks"])

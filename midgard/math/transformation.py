@@ -6,6 +6,7 @@ Description:
 """
 # Standard library imports
 from functools import lru_cache
+from typing import Tuple, Union
 
 # Third party imports
 import numpy as np
@@ -254,3 +255,103 @@ def delta_acr2trs_posvel(acr: "AcrPosVelDelta") -> "TrsPosVelDelta":
     a2t = acr.ref_pos.acr2trs
     acr2trs = np.block([[a2t, np.zeros(a2t.shape)], [np.zeros(a2t.shape), a2t]])
     return np.squeeze(acr2trs @ acr.mat)
+
+#TODO: Should structure be improved?
+def sigma_trs2enu(
+        R: np.ndarray, 
+        sx: np.ndarray, 
+        sy: np.ndarray,
+        sz: np.ndarray,
+        cxy: Union[np.ndarray, None]=None,
+        cxz: Union[np.ndarray, None]=None,
+        cyz: Union[np.ndarray, None]=None,
+) -> Tuple[float]:
+    """Transformation of the covariance information of geocentric coordinates to topocentric coordinates 
+
+    The tranformation matrix looks like
+
+           |        -sin(lon)              cos(lon)            0      |
+       R = | -sin(lat) * cos(lon)    -sin(lat) * sin(lon)   cos(lat)  |
+           |  cos(lat) * cos(lon)     cos(lat) * sin(lon)   sin(lat)  |
+        
+       with
+          lon - longitude
+          lat - latitude
+                              
+    Transformation of the covariance information of the geocentric coordinates to the topocentric coordinates are based 
+    on the propagation of uncertainty:
+
+       C_t = R * C_g * R^T 
+
+       with 
+          C_t - covariance matrix of topocentric coordinates:
+
+                         |      se^2        ren * se * sn   reu * se * su |   | se^2  cen   ceu  |
+                   C_t = | ren * se * sn         sn^2       rnu * sn * su | = | cen   sn^2  cnu  |
+                         | reu * se * su    rnu * sn * su        su^2     |   | ceu   cnu   su^2 |
+
+                   with standard deviation se, sn and su of the east, north and up
+                   coordinates and correlation r between the coordinates
+
+          C_g - covariance matrix of geocentric coordinates:
+
+                         |      sx^2        rxy * sx * sy   rxz * sx * sz |   | sx^2  cxy   cxz  |
+                   C_g = | rxy * sx * sy         sy^2       ryz * sy * sz | = | cxy   sy^2  cyz  |
+                         | rxz * sx * sz    ryz * sy * sz        sz^2     |   | cxz   cyz   sz^2 |
+
+                   with standard deviation sx, sy and sz of the x, y and 
+                   coordinates and correlation r between the coordinates
+
+          R^T - transposed rotation matrix
+
+    Args:
+        R:              Rotation matrix from geocentric to topocentric coordinate system 
+        sx,sy,sz:       Standard deviation of geocentric coordinates
+        cxy,cxz,cyz:    Correlation coefficients of geocentric coordinates
+
+    Returns:
+       Standard deviation of topocentric coordinates 
+    """
+    if sx.size == 1:
+        sx = np.array([sx])
+        sy = np.array([sy])
+        sz = np.array([sz])
+        if cxy is not None:
+            cxy = np.array([cxy])
+            cxz = np.array([cxz])
+            cyz = np.array([cyz])
+
+    num_obs = sx.size
+    se = np.zeros(num_obs)
+    sn = np.zeros(num_obs)
+    su = np.zeros(num_obs)
+
+    if cxy is None:
+        cxy = np.zeros(num_obs)
+        cxz = np.zeros(num_obs)
+        cyz = np.zeros(num_obs)
+
+    # Change dimension of rotation matrix
+    if R.ndim == 3:
+        R = np.squeeze(R)
+
+    for idx in range(0, num_obs):
+
+        # Define covariance matrix of the geocentric coordinates
+        C_g    = np.array([
+                [sx[idx]**2,cxy[idx]*sx[idx]*sy[idx],cxz[idx]*sx[idx]*sz[idx]],
+                [cxy[idx]*sx[idx]*sy[idx],sy[idx]**2,cyz[idx]*sy[idx]*sz[idx]],
+                [cxz[idx]*sx[idx]*sz[idx],cyz[idx]*sy[idx]*sz[idx],sz[idx]**2],
+        ])
+
+        # Calculate covariance matrix of the topocentric coordinates
+        C_t = np.dot(np.dot(R,C_g),R.T)
+
+        # Calculate the standard deviation of the topocentric coordinates
+        se[idx] = C_t[0,0]**0.5
+        sn[idx] = C_t[1,1]**0.5
+        su[idx] = C_t[2,2]**0.5
+
+    return se,sn,su
+
+
