@@ -181,11 +181,11 @@ def test_receiver_history_ssc_two_stations_error(ssc_data):
         r = Receiver.get_history("ssc", ssc_data, "gras,xxxx", source_path="/path/to/ssc")
 
 
-# Tests: Receiver.get("gnsseu",...)
+# Tests: Receiver.get("m3g",...)
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_gnsseu_one_station(gnsseu_api):
-    r = Receiver.get("gnsseu", gnsseu_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_m3g_one_station(m3g_api):
+    r = Receiver.get("m3g", m3g_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "osls" in r
     assert len(r) == 1
     
@@ -198,37 +198,37 @@ def test_receiver_gnsseu_one_station(gnsseu_api):
     assert r["osls"].firmware == '5.43'
     assert r["osls"].elevation_mask == 0
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_gnsseu_two_stations_string(gnsseu_api):
-    r = Receiver.get("gnsseu", gnsseu_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_m3g_two_stations_string(m3g_api):
+    r = Receiver.get("m3g", m3g_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "osls" in r
     assert "trds" in r
     assert len(r) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_gnsseu_two_stations_list(gnsseu_api):
-    r = Receiver.get("gnsseu", gnsseu_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_m3g_two_stations_list(m3g_api):
+    r = Receiver.get("m3g", m3g_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "osls" in r
     assert "trds" in r
     assert len(r) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        r = Receiver.get("gnsseu", gnsseu_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+        r = Receiver.get("m3g", m3g_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        r = Receiver.get("gnsseu", gnsseu_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+        r = Receiver.get("m3g", m3g_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
 
-# Tests: Receiver.get_history("gnsseu",...)
+# Tests: Receiver.get_history("m3g",...)
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_history_gnsseu_one_station(gnsseu_api):
-    r = Receiver.get_history("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_history_m3g_one_station(m3g_api):
+    r = Receiver.get_history("m3g", m3g_api, "osls", source_path="/path/to/api")
     assert "osls" in r
     assert len(r) == 1
 
@@ -237,29 +237,29 @@ def test_receiver_history_gnsseu_one_station(gnsseu_api):
     assert len(r["osls"].date_from) >= 16
     assert len(r["osls"].date_to) >= 16
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_history_gnsseu_two_stations_string(gnsseu_api):
-    r = Receiver.get_history("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_history_m3g_two_stations_string(m3g_api):
+    r = Receiver.get_history("m3g", m3g_api, "osls, trds", source_path="/path/to/api")
     assert "osls" in r
     assert "trds" in r
     assert len(r) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_history_gnsseu_two_stations_list(gnsseu_api):
-    r = Receiver.get_history("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_history_m3g_two_stations_list(m3g_api):
+    r = Receiver.get_history("m3g", m3g_api, ["osls", "trds"], source_path="/path/to/api")
     assert "osls" in r
     assert "trds" in r
     assert len(r) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_history_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_history_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        r = Receiver.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+        r = Receiver.get_history("m3g", m3g_api, "xxxx", source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_receiver_history_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_receiver_history_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        r = Receiver.get_history("gnsseu", gnsseu_api, "osls, xxxx", source_path="/path/to/api")
+        r = Receiver.get_history("m3g", m3g_api, "osls, xxxx", source_path="/path/to/api")
 

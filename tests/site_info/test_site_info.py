@@ -168,72 +168,72 @@ def test_site_info_history_ssc_two_stations_string_error(ssc_data):
         si = site_info.SiteInfo.get_history("ssc", ssc_data, "xxxx, borr", source_path="path/to/ssc")
 
 
-# Tests: SiteInfo.get_history("gnsseu",...)
+# Tests: SiteInfo.get_history("m3g",...)
 
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_history_gnsseu_one_station(gnsseu_api):
-    a = site_info.SiteInfo.get_history("gnsseu", gnsseu_api, "aake", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_history_m3g_one_station(m3g_api):
+    a = site_info.SiteInfo.get_history("m3g", m3g_api, "aake", source_path="/path/to/api")
     assert "aake" in a
     assert len(a) == 1
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_history_gnsseu_two_stations_string(gnsseu_api):
-    a = site_info.SiteInfo.get_history("gnsseu", gnsseu_api, "aake, nyal", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_history_m3g_two_stations_string(m3g_api):
+    a = site_info.SiteInfo.get_history("m3g", m3g_api, "aake, nyal", source_path="/path/to/api")
     assert "aake" in a
     assert "nyal" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_history_gnsseu_two_stations_list(gnsseu_api):
-    a = site_info.SiteInfo.get_history("gnsseu", gnsseu_api, ["aake", "nyal"], source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_history_m3g_two_stations_list(m3g_api):
+    a = site_info.SiteInfo.get_history("m3g", m3g_api, ["aake", "nyal"], source_path="/path/to/api")
     assert "aake" in a
     assert "nyal" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_history_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_history_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = site_info.SiteInfo.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+        a = site_info.SiteInfo.get_history("m3g", m3g_api, "xxxx", source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_history_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_history_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = site_info.SiteInfo.get_history("gnsseu", gnsseu_api, "aake, xxxx", source_path="/path/to/api")
+        a = site_info.SiteInfo.get_history("m3g", m3g_api, "aake, xxxx", source_path="/path/to/api")
 
 
-# Tests: SiteInfo.get("gnsseu",...)
+# Tests: SiteInfo.get("m3g",...)
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_gnsseu_one_station(gnsseu_api):
-    a = site_info.SiteInfo.get("gnsseu", gnsseu_api, "aake", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_m3g_one_station(m3g_api):
+    a = site_info.SiteInfo.get("m3g", m3g_api, "aake", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "aake" in a
     assert len(a) == 1
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_gnsseu_two_stations_string(gnsseu_api):
-    a = site_info.SiteInfo.get("gnsseu", gnsseu_api, "aake, nyal", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_m3g_two_stations_string(m3g_api):
+    a = site_info.SiteInfo.get("m3g", m3g_api, "aake, nyal", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "aake" in a
     assert "nyal" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_gnsseu_two_stations_list(gnsseu_api):
-    a = site_info.SiteInfo.get("gnsseu", gnsseu_api, ["aake", "nyal"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_m3g_two_stations_list(m3g_api):
+    a = site_info.SiteInfo.get("m3g", m3g_api, ["aake", "nyal"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "aake" in a
     assert "nyal" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = site_info.SiteInfo.get("gnsseu", gnsseu_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+        a = site_info.SiteInfo.get("m3g", m3g_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_info_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_info_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = site_info.SiteInfo.get("gnsseu", gnsseu_api, "aake, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+        a = site_info.SiteInfo.get("m3g", m3g_api, "aake, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")

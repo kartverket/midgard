@@ -36,7 +36,7 @@ from typing import Any, Dict, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
-from midgard.site_info.gnsseu.api import GnssEuApi
+from midgard.site_info.m3g.api import M3gApi
 from midgard.site_info._site_info import SiteInfoBase, ModuleBase
 from midgard.site_info import convert_to_utc
 
@@ -248,11 +248,11 @@ class IdentifierSsc(SiteInfoBase):
         return None 
 
 @Identifier.register_source
-class IdentifierGnssEu(SiteInfoBase):
+class IdentifierM3g(SiteInfoBase):
     """ Identifier class handling gnssEu API identifier station information
     """
 
-    source = "gnsseu"
+    source = "m3g"
     fields = dict()
 
 
@@ -272,11 +272,11 @@ class IdentifierGnssEu(SiteInfoBase):
     def _process(
                 self,
                 source_data: Dict,
-    ) -> "IdentifierGnssEu":
+    ) -> "IdentifierM3g":
         """Read identifier information from gnssEu API
 
         Args:
-            source_data:  api object for gnsseu
+            source_data:  api object for m3g
 
         Returns:
             IdentifierSestation object
@@ -284,7 +284,7 @@ class IdentifierGnssEu(SiteInfoBase):
         raw_info = dict()
 
         # Get identifier information
-        if isinstance(source_data, GnssEuApi):
+        if isinstance(source_data, M3gApi):
             # source_data is an Api object. Use api function to query database
             try:
                 raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})

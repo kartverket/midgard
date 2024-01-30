@@ -2,6 +2,9 @@
 
 """
 
+# Make m3g functions available in package
+from midgard.site_info import m3g  # noqa
+
 # Standard library imports
 from datetime import datetime
 import pytz

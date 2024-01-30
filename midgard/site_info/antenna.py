@@ -45,7 +45,7 @@ from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
-from midgard.site_info.gnsseu.api import GnssEuApi
+from midgard.site_info.m3g.api import M3gApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 from midgard.site_info import convert_to_utc
 
@@ -172,21 +172,21 @@ class AntennaHistorySsc(SiteInfoHistoryBase):
 
 
 @Antenna.register_source
-class AntennaHistoryGnssEu(SiteInfoHistoryBase):
+class AntennaHistoryM3g(SiteInfoHistoryBase):
 
-    source = "gnsseu"
+    source = "m3g"
 
-    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "AntennaGnssEu"]:
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "AntennaM3g"]:
         """Read antenna site history from seStation API
 
         Args:
-            source_data:    api object for gnsseu
+            source_data:    api object for m3g
 
         Returns:
-            Dictionary with (date_from, date_to) tuple as key. The values are AntennaGnssEu objects.
+            Dictionary with (date_from, date_to) tuple as key. The values are AntennaM3g objects.
         """
         # Get antenna history information
-        if isinstance(source_data, GnssEuApi):
+        if isinstance(source_data, M3gApi):
             # source_data is an Api object. Use api function to query database
             try:
                 raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
@@ -222,18 +222,18 @@ class AntennaHistoryGnssEu(SiteInfoHistoryBase):
         history = dict()
         for antenna_info in station_data["sitelog"]["antennas"]:
             # Add Antenna object to history information
-            antenna = AntennaGnssEu(self.station, antenna_info)
+            antenna = AntennaM3g(self.station, antenna_info)
             interval = (antenna.date_from, antenna.date_to)
             history[interval] = antenna
 
         return history
 
 
-class AntennaGnssEu(SiteInfoBase):
-    """ Antenna class handling GnssEu API antenna station information
+class AntennaM3g(SiteInfoBase):
+    """ Antenna class handling M3g API antenna station information
     """
 
-    source = "gnsseu"
+    source = "m3g"
     fields = dict(
         serial_number="serialNumber",
     )
@@ -256,7 +256,7 @@ class AntennaGnssEu(SiteInfoBase):
             Antenna installation date
         """
         if self._info["dateInstalled"] is not None:
-            return convert_to_utc(datetime.fromisoformat(self._info["dateInstalled"]))
+            return convert_to_utc(datetime.fromisoformat(self._info["dateInstalled"].replace("Z", ""))) #TODO: is the replacement of "Z" ok?
         else:
             return datetime.min
 
@@ -268,7 +268,7 @@ class AntennaGnssEu(SiteInfoBase):
             Antenna removing date
         """
         if self._info["dateRemoved"] is not None:
-            return convert_to_utc(datetime.fromisoformat(self._info["dateRemoved"]))
+            return convert_to_utc(datetime.fromisoformat(self._info["dateRemoved"].replace("Z", ""))) #TODO: is the replacement of "Z" ok?
         else:
             return datetime.max
 

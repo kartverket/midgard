@@ -164,9 +164,9 @@ def test_identifier_history_ssc_two_stations_error(ssc_data):
 
 
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_gnsseu_one_station(gnsseu_api):
-    a = Identifier.get("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_m3g_one_station(m3g_api):
+    a = Identifier.get("m3g", m3g_api, "osls", source_path="/path/to/api")
     assert "osls" in a
     assert len(a) == 1
 
@@ -182,62 +182,62 @@ def test_identifier_gnsseu_one_station(gnsseu_api):
     assert a["osls"].status == 'operational'
     assert a["osls"].tectonic_plate == 'EURASIAN'
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_gnsseu_two_stations_string(gnsseu_api):
-    a = Identifier.get("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_m3g_two_stations_string(m3g_api):
+    a = Identifier.get("m3g", m3g_api, "osls, trds", source_path="/path/to/api")
     assert "osls" in a
     assert "trds" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_gnsseu_two_stations_list(gnsseu_api):
-    a = Identifier.get("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_m3g_two_stations_list(m3g_api):
+    a = Identifier.get("m3g", m3g_api, ["osls", "trds"], source_path="/path/to/api")
     assert "osls" in a
     assert "trds" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = Identifier.get("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+        a = Identifier.get("m3g", m3g_api, "xxxx", source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = Identifier.get("gnsseu", gnsseu_api, "osls, xxxx", source_path="/path/to/api")
+        a = Identifier.get("m3g", m3g_api, "osls, xxxx", source_path="/path/to/api")
 
-# Tests: Identifier.get_history("gnsseu",...)
+# Tests: Identifier.get_history("m3g",...)
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_history_gnsseu_one_station(gnsseu_api):
-    a = Identifier.get_history("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_history_m3g_one_station(m3g_api):
+    a = Identifier.get_history("m3g", m3g_api, "osls", source_path="/path/to/api")
     assert "osls" in a
     assert len(a) == 1
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_history_gnsseu_two_stations_string(gnsseu_api):
-    a = Identifier.get_history("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_history_m3g_two_stations_string(m3g_api):
+    a = Identifier.get_history("m3g", m3g_api, "osls, trds", source_path="/path/to/api")
     assert "osls" in a
     assert "trds" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_history_gnsseu_two_stations_list(gnsseu_api):
-    a = Identifier.get_history("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_history_m3g_two_stations_list(m3g_api):
+    a = Identifier.get_history("m3g", m3g_api, ["osls", "trds"], source_path="/path/to/api")
     assert "osls" in a
     assert "trds" in a
     assert len(a) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_history_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_history_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = Identifier.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+        a = Identifier.get_history("m3g", m3g_api, "xxxx", source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_identifier_history_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_identifier_history_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        a = Identifier.get_history("gnsseu", gnsseu_api, "osls, xxxx", source_path="/path/to/api")
+        a = Identifier.get_history("m3g", m3g_api, "osls, xxxx", source_path="/path/to/api")

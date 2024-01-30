@@ -232,11 +232,11 @@ def test_site_coord_history_ssc_set_history(ssc_data):
     assert "ssc" == c.history[period].source
     assert 4581690.826 == c.history[period].pos.x
 
-# Tests: SiteCoord.get("gnsseu",...)
+# Tests: SiteCoord.get("m3g",...)
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_gnsseu_one_station(gnsseu_api):
-    c = SiteCoord.get("gnsseu", gnsseu_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_m3g_one_station(m3g_api):
+    c = SiteCoord.get("m3g", m3g_api, "osls", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "osls" in c
     assert len(c) == 1
 
@@ -244,9 +244,9 @@ def test_site_coord_gnsseu_one_station(gnsseu_api):
     assert c["osls"] is None
 
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_gnsseu_two_stations_string(gnsseu_api):
-    c = SiteCoord.get("gnsseu", gnsseu_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_m3g_two_stations_string(m3g_api):
+    c = SiteCoord.get("m3g", m3g_api, "osls, trds", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "osls" in c
     assert "trds" in c
     assert len(c) == 2
@@ -255,9 +255,9 @@ def test_site_coord_gnsseu_two_stations_string(gnsseu_api):
     assert c["osls"] is None
     assert c["trds"] is None
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_gnsseu_two_stations_list(gnsseu_api):
-    c = SiteCoord.get("gnsseu", gnsseu_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_m3g_two_stations_list(m3g_api):
+    c = SiteCoord.get("m3g", m3g_api, ["osls", "trds"], datetime.datetime(2020, 1, 1), source_path="/path/to/api")
     assert "osls" in c
     assert "trds" in c
     assert len(c) == 2
@@ -266,23 +266,23 @@ def test_site_coord_gnsseu_two_stations_list(gnsseu_api):
     assert c["osls"] is None
     assert c["trds"] is None
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        SiteCoord.get("gnsseu", gnsseu_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+        SiteCoord.get("m3g", m3g_api, "xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        SiteCoord.get("gnsseu", gnsseu_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
+        SiteCoord.get("m3g", m3g_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
 
-# Tests: SiteCoord.get_history("gnsseu",...)
+# Tests: SiteCoord.get_history("m3g",...)
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_history_gnsseu_one_station(gnsseu_api):
-    c = SiteCoord.get_history("gnsseu", gnsseu_api, "osls", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_history_m3g_one_station(m3g_api):
+    c = SiteCoord.get_history("m3g", m3g_api, "osls", source_path="/path/to/api")
     assert "osls" in c
     assert len(c) == 1
 
@@ -291,29 +291,29 @@ def test_site_coord_history_gnsseu_one_station(gnsseu_api):
     assert c["osls"].date_from is None
     assert c["osls"].date_to is None
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_history_gnsseu_two_stations_string(gnsseu_api):
-    c = SiteCoord.get_history("gnsseu", gnsseu_api, "osls, trds", source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_history_m3g_two_stations_string(m3g_api):
+    c = SiteCoord.get_history("m3g", m3g_api, "osls, trds", source_path="/path/to/api")
     assert "osls" in c
     assert "trds" in c
     assert len(c) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_history_gnsseu_two_stations_list(gnsseu_api):
-    c = SiteCoord.get_history("gnsseu", gnsseu_api, ["osls", "trds"], source_path="/path/to/api")
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_history_m3g_two_stations_list(m3g_api):
+    c = SiteCoord.get_history("m3g", m3g_api, ["osls", "trds"], source_path="/path/to/api")
     assert "osls" in c
     assert "trds" in c
     assert len(c) == 2
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_history_gnsseu_one_station_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_history_m3g_one_station_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        c = SiteCoord.get_history("gnsseu", gnsseu_api, "xxxx", source_path="/path/to/api")
+        c = SiteCoord.get_history("m3g", m3g_api, "xxxx", source_path="/path/to/api")
 
-@pytest.mark.usefixtures("gnsseu_api")
-def test_site_coord_history_gnsseu_two_stations_error(gnsseu_api):
+@pytest.mark.usefixtures("m3g_api")
+def test_site_coord_history_m3g_two_stations_error(m3g_api):
     # Station xxxx does not exist
     with pytest.raises(MissingDataError):
-        c = SiteCoord.get_history("gnsseu", gnsseu_api, "osls,xxxx", source_path="/path/to/api")
+        c = SiteCoord.get_history("m3g", m3g_api, "osls,xxxx", source_path="/path/to/api")
 

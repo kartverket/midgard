@@ -4,7 +4,7 @@ Description:
 ------------
 This module is divided into three different types of classes:
 
-    1. Main class SiteCoord provides basic functionality to the user. See exampless
+    1. Main class SiteCoord provides basic functionality to the user. See examples
     2. Site coordinate source type classes:
         - There is one class for each source type.
         - A class with all relevant site coordinate information for a point in time.
@@ -50,7 +50,7 @@ import numpy as np
 from midgard.data.position import Position
 from midgard.data.time import Time
 from midgard.dev.exceptions import MissingDataError
-from midgard.site_info.gnsseu.api import GnssEuApi
+from midgard.site_info.m3g.api import M3gApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 from midgard.site_info import convert_to_utc
 
@@ -771,20 +771,20 @@ class SiteCoordSsc(SiteInfoBase):
         self._info["sigma_VZ"] = vel_sigma[2]
 
 @SiteCoord.register_source
-class SiteCoordHistoryGnssEu(SiteInfoHistoryBase):
+class SiteCoordHistoryM3g(SiteInfoHistoryBase):
 
-    source = "gnsseu"
+    source = "m3g"
 
-    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "SiteCoordGnssEu"]:
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "SiteCoordM3g"]:
         """Read site coordinate history from gnssEu API
 
         Args:
-            source_data:    api object for gnsseu
+            source_data:    api object for m3g
 
         Returns:
-            Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordGnssEu objects.
+            Dictionary with (date_from, date_to) tuple as key. The values are SiteCoordM3g objects.
         """
-        if isinstance(source_data, GnssEuApi):
+        if isinstance(source_data, M3gApi):
             # source_data is an Api object. Use api function to query database
             try:
                 raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})

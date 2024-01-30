@@ -45,7 +45,7 @@ from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
-from midgard.site_info.gnsseu.api import GnssEuApi
+from midgard.site_info.m3g.api import M3gApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 from midgard.site_info import convert_to_utc
 
@@ -253,21 +253,21 @@ class EccentricityHistorySsc(SiteInfoHistoryBase):
 
 
 @Eccentricity.register_source
-class EccentricityHistoryGnssEu(SiteInfoHistoryBase):
+class EccentricityHistoryM3g(SiteInfoHistoryBase):
 
-    source = "gnsseu"
+    source = "m3g"
 
-    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "EccentricityGnssEu"]:
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "EccentricityM3g"]:
         """Read eccentricity site history from gnssEu API
 
         Args:
-            source_data:    api object for gnsseu
+            source_data:    api object for m3g
 
         Returns:
-            Dictionary with (date_from, date_to) tuple as key. The values are EccentricityGnssEu objects.
+            Dictionary with (date_from, date_to) tuple as key. The values are EccentricityM3g objects.
         """
         # Get eccentricity history information
-        if isinstance(source_data, GnssEuApi):
+        if isinstance(source_data, M3gApi):
             # source_data is an Api object. Use api function to query database
             try:
                 raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
@@ -303,18 +303,18 @@ class EccentricityHistoryGnssEu(SiteInfoHistoryBase):
         # Create list of eccentricity history
         history = dict()
         for eccentricity_info in station_data["sitelog"]["antennas"]:
-            eccentricity = EccentricityGnssEu(self.station, eccentricity_info)
+            eccentricity = EccentricityM3g(self.station, eccentricity_info)
             interval = (eccentricity.date_from, eccentricity.date_to)
             history[interval] = eccentricity
 
         return history
 
 
-class EccentricityGnssEu(SiteInfoBase):
+class EccentricityM3g(SiteInfoBase):
     """ Eccentricity class handling gnssEu API eccentricity station information
     """
 
-    source = "gnsseu"
+    source = "m3g"
     fields = dict()
 
     @property

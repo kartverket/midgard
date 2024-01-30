@@ -45,7 +45,7 @@ from typing import Any, Dict, List, Tuple, Union, Callable
 
 # Midgard imports
 from midgard.dev.exceptions import MissingDataError
-from midgard.site_info.gnsseu.api import GnssEuApi
+from midgard.site_info.m3g.api import M3gApi
 from midgard.site_info._site_info import SiteInfoBase, SiteInfoHistoryBase, ModuleBase
 from midgard.site_info import convert_to_utc
 
@@ -155,21 +155,21 @@ class ReceiverHistorySsc(SiteInfoHistoryBase):
             raise MissingDataError(f"Station {self.station!r} unknown in source '{self.source_path}'.")
 
 @Receiver.register_source
-class ReceiverHistoryGnssEu(SiteInfoHistoryBase):
+class ReceiverHistoryM3g(SiteInfoHistoryBase):
 
-    source = "gnsseu"
+    source = "m3g"
 
-    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "ReceiverGnssEu"]:
+    def _process_history(self, source_data) -> Dict[Tuple[datetime, datetime], "ReceiverM3g"]:
         """Read receiver site history from gnssEu API
 
         Args:
-            source_data:    api object for gnsseu
+            source_data:    api object for m3g
 
         Returns:
-            Dictionary with (date_from, date_to) tuple as key. The values are ReceiverGnssEu objects.
+            Dictionary with (date_from, date_to) tuple as key. The values are ReceiverM3g objects.
         """
         # Get receiver history information
-        if isinstance(source_data, GnssEuApi):
+        if isinstance(source_data, M3gApi):
             # source_data is an Api object. Use api function to query database
             try:
                 raw_info = source_data.get_sitelog(filter={"id": {"like": self.station}})
@@ -204,18 +204,18 @@ class ReceiverHistoryGnssEu(SiteInfoHistoryBase):
         # Create list of receiver history
         history = OrderedDict()
         for receiver_info in station_data["sitelog"]["receivers"]:
-            receiver = ReceiverGnssEu(self.station, receiver_info)
+            receiver = ReceiverM3g(self.station, receiver_info)
             interval = (receiver.date_from, receiver.date_to)
             history[interval] = receiver
 
         return history
 
 
-class ReceiverGnssEu(SiteInfoBase):
+class ReceiverM3g(SiteInfoBase):
     """ Receiver class handling gnssEu API receiver station information
     """
 
-    source = "gnsseu"
+    source = "m3g"
     fields = dict(
         serial_number="serialNumber",
         firmware="firmwareVersion",

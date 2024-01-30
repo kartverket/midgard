@@ -1,7 +1,7 @@
 import datetime
 import pytest
 
-from midgard.site_info.gnsseu.api import GnssEuApi
+from midgard.site_info.m3g.api import M3gApi
 
 @pytest.fixture
 def sinex_data():
@@ -1109,6 +1109,6 @@ def ssc_data():
     return data
 
 @pytest.fixture
-def gnsseu_api():
-    gnsseu_api_url = "https://gnss-metadata.eu/site/api-json"
-    return GnssEuApi(url=gnsseu_api_url)
+def m3g_api():
+    m3g_api_url = "https://gnss-metadata.eu/site/api-json"
+    return M3gApi(url=m3g_api_url)
