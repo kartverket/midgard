@@ -65,8 +65,7 @@ class SscSiteParser(ChainParser):
                 True: {
                     "parser": self.parse_position,
                     "fields": {
-                        "domes": (0, 5),
-                        "marker": (5, 9),
+                        "domes": (0, 9),
                         "name": (10, 26),
                         "tech": (26, 32),
                         "site_id": (32, 37),
