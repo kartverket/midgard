@@ -325,7 +325,7 @@ class EccentricityM3g(SiteInfoBase):
             Eccentricity installation date
         """
         if self._info["dateInstalled"]:
-            return convert_to_utc(datetime.fromisoformat(self._info["dateInstalled"]))
+            return convert_to_utc(datetime.fromisoformat(self._info["dateInstalled"].replace("Z", ""))) #TODO: is the replacement of "Z" ok?
         else:
             return datetime.min
 
@@ -337,7 +337,7 @@ class EccentricityM3g(SiteInfoBase):
             Eccentricity removing date
         """
         if self._info["dateRemoved"]:
-            return convert_to_utc(datetime.fromisoformat(self._info["dateRemoved"]))
+            return convert_to_utc(datetime.fromisoformat(self._info["dateRemoved"].replace("Z", ""))) #TODO: is the replacement of "Z" ok?
         else:
             return datetime.max
 
