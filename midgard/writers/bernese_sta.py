@@ -34,7 +34,8 @@ def bernese_sta(
                          site information the value.
         rename_station:  Dictionary with official 4-digit station name as key and the alternative name as value. This 
                          information is used in the "RENAMING OF STATIONS" section in Bernese *.STA file. This can be
-                         necessary if the used 4-digit station names are not unique. 
+                         necessary if the used 4-digit station names are not unique.
+        event_path:      File path of event file with additional event 
     """
 
     # EXAMPLE:
