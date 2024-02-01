@@ -225,7 +225,7 @@ class IdentifierSsc(SiteInfoBase):
         Returns:
             DOMES number
         """
-        return self._info["site_num"]+self._info["antenna_num"]
+        return self._info["domes"]
     
     @property
     def name(self) -> str:
