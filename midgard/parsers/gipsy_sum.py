@@ -20,8 +20,7 @@ from typing import Any, Dict
 
 # Midgard imports
 from midgard.data import dataset
-from midgard.dev import log
-from midgard.dev import plugins
+from midgard.dev import log, plugins
 from midgard.math.unit import Unit
 from midgard.parsers import LineParser
 
