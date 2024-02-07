@@ -25,6 +25,7 @@ def bernese_sta(
         site_info: Dict[str, Any],
         rename_station: Dict[str, str] = dict(),
         event_path: Union[PosixPath, None] = None,
+        agency: str = "UNKNOWN",
 ) -> None:
     """Write Bernese station information file in *.STA format
 
@@ -36,6 +37,7 @@ def bernese_sta(
                          information is used in the "RENAMING OF STATIONS" section in Bernese *.STA file. This can be
                          necessary if the used 4-digit station names are not unique.
         event_path:      File path of event file with additional event 
+        agency:          Agency which uses this Bernese station information file for processing
     """
 
     # EXAMPLE:
@@ -61,7 +63,7 @@ def bernese_sta(
     with files.open(file_path, create_dirs=True, mode="wt") as fid:
         
         # Write header
-        fid.write(_get_header())
+        fid.write(_get_header(agency))
                 
         #
         # TYPE 001: RENAMING OF STATIONS
@@ -220,14 +222,17 @@ def bernese_sta(
 # AUXILIARY FUNCTIONS
 #
                 
-def _get_header() -> str:
+def _get_header(agency: str) -> str:
     """Get header
+        
+    Args:
+        agency:  Agency which uses this Bernese station information file for processing
         
     Return:
         Header as string
     """
-    
-    return (f"BERNESE V.5.4 STA FILE FOR NMA PROCESSING {datetime.now().strftime('%d-%b-%y %H:%M'):>38s}\n"
+    solution=f"BERNESE V.5.2 STA FILE FOR {agency.upper()} PROCESSING"
+    return (f"{solution:64s} {datetime.now().strftime('%d-%b-%y %H:%M'):s}\n"
             f"{'-'*80}\n\n"
             "FORMAT VERSION: 1.01\n"
             "TECHNIQUE:      GNSS\n"        
