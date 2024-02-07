@@ -6,30 +6,30 @@ Description:
 """
 # Standard library imports
 from datetime import datetime
+import itertools
 from pathlib import PosixPath
 import re
 from typing import Any, Dict, List, Tuple, Union
 
 # Midgard imports
 from midgard import parsers
-
-# Operax imports
-from operax.lib import config, log
-from operax.lib.utility import pairwise
+from midgard.dev import log, plugins
+from midgard.files import files
 
 _SECTION = "_".join(__name__.split(".")[-1:])
 
 
+@plugins.register
 def bernese_sta(
-        output_path: PosixPath, 
+        file_path: PosixPath, 
         site_info: Dict[str, Any],
-        rename_station: Dict[str, str],
-        event_path: Union[None, PosixPath] = None,
+        rename_station: Dict[str, str] = dict(),
+        event_path: Union[PosixPath, None] = None,
 ) -> None:
     """Write Bernese station information file in *.STA format
 
     Args:
-        output_path:     File path of Bernese *.STA output file
+        file_path:       File path of Bernese *.STA output file
         site_info:       Dictionary with station information, whereby station name is the key and a dictionary with 
                          site information the value.
         rename_station:  Dictionary with official 4-digit station name as key and the alternative name as value. This 
@@ -56,9 +56,9 @@ def bernese_sta(
     # ALES 10336M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ALES*                 From ALES0540.13O
     # ANDO 10333M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ANDO*                 From ANDO0540.13O
 
-    log.info(f"Write file {output_path}")
+    log.info(f"Write file {file_path}")
 
-    with config.files.open_path(output_path, create_dirs=True, mode="wt") as fid:
+    with files.open(file_path, create_dirs=True, mode="wt") as fid:
         
         # Write header
         fid.write(_get_header())
@@ -112,7 +112,7 @@ def bernese_sta(
 
             # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----
             # ARGI 10117M002        001  2008 09 25 00 00 00  2016 11 11 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     6.00       
-            for date_from , date_to in pairwise(sorted(events.keys())):
+            for date_from , date_to in _pairwise(sorted(events.keys())):
                 
                 rcv = _get_object_for_date(date_from, rcv_hist)                
                 if not rcv:
@@ -377,6 +377,21 @@ def _get_events(
                 events[date]["description"] = _replace_last(f"New {', '.join(items['property'])}", ",", " and")
                               
     return events
+    
+#TODO: Should maybe be moved to a library.    
+def _pairwise(iterable: Any) -> zip:
+    """Generate pairwise iterables, whereby the current and next iterable is returned
+    
+    Args:
+        iterable: Iterables
+        
+    Return:
+        Zip object with current and next iterable
+    """
+    current, next_ = itertools.tee(iterable)
+    next(next_, None)
+
+    return zip(current, next_)
 
 
 def _read_events_from_file(station: str, file_path: PosixPath) -> Dict[datetime, Dict[str, Any]]:
