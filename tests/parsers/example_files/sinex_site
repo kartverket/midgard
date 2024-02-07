@@ -43,7 +43,7 @@
 *CODE PT __DOMES__ T _STATION DESCRIPTION__ APPROX_LON_ APPROX_LAT_ _APP_H_
  AASC  A      M    P NMBU Ås                 10 46 54.2  59 39 37.2   133.6
  ADAC  A      M    P Adamselv                26 41 43.6  70 24 37.4    55.1
- AKRC  A      M    P                          5 11 22.0  59 15 40.2    65.1
+ AKRC  A      M    P Åkrehamn                 5 11 22.0  59 15 40.2    65.1
 -SITE/ID
 *-------------------------------------------------------------------------------
 +SITE/RECEIVER
