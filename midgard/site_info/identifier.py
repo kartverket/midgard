@@ -140,7 +140,8 @@ class IdentifierSinex(SiteInfoBase):
             Site name
         """
         description = self._info["description"].split(",") 
-        name = description[0].strip().capitalize() if description else None
+        #name = description[0].strip().capitalize() if description else None
+        name = description[0].strip() if description else None
             
         return name
     
