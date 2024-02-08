@@ -16,8 +16,6 @@ from midgard import parsers
 from midgard.dev import log, plugins
 from midgard.files import files
 
-_SECTION = "_".join(__name__.split(".")[-1:])
-
 
 @plugins.register
 def bernese_sta(
@@ -79,7 +77,7 @@ def bernese_sta(
             elif identifier.source == "snx":
                 remark = f"From {identifier.source_path.name} file"
             elif identifier.source == "m3g":
-                remark = f"From gnss-metadata.eu M3G API"
+                remark = "From gnss-metadata.eu M3G API"
             else:
                 log.fatal(f"Source {identifier.source} is not defined.")
 

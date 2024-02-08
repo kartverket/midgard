@@ -16,8 +16,6 @@ import numpy as np
 from midgard.dev import log, plugins
 from midgard.files import files
 
-_SECTION = "_".join(__name__.split(".")[-1:])
-
 @plugins.register
 def bernese_crd(
         file_path: PosixPath, 

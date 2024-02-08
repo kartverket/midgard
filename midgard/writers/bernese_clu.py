@@ -13,8 +13,6 @@ from typing import Any, Dict
 from midgard.dev import log, plugins
 from midgard.files import files
 
-_SECTION = "_".join(__name__.split(".")[-1:])
-
 @plugins.register
 def bernese_clu(
         file_path: PosixPath, 
