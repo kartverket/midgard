@@ -20,10 +20,10 @@ def gipsyx_site_info(
         file_path: PosixPath, 
         site_info: Dict[str, Any],
 ) -> None:
-    """Write Bernese station information file in *.STA format
+    """Write site information file for GipsyX
 
     Args:
-        file_path:       File path of Bernese *.STA output file
+        file_path:       File path of site information GipsyX output file
         site_info:       Dictionary with station information, whereby station name is the key and a dictionary with 
                          site information the value.
     """
