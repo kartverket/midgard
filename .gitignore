@@ -1,8 +1,13 @@
 dist
 documents
+notebooks/examples/writers
 __pycache__/
+.coverage
 .project
 .pydevproject
-.coverage
-/.pytest_cache/
 /.mypy_cache/
+/.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
