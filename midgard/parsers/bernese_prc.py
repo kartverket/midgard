@@ -36,7 +36,7 @@ class BernesePrcParser(ChainParser):
     related data are saved in a dictionary with following keys:
 
     | Key                   | Type        |Description                                                           |
-    |-----------------------|-------------|----------------------------------------------------------------------|
+    | :-------------------- | :---------- | :------------------------------------------------------------------- |
     | coord_comp_east       | List[float] | List with daily station coordinate comparison results for East       |
     |                       |             | component in [m]                                                     |
     | coord_comp_north      | List[float] | List with daily station coordinate comparison results for North      |
@@ -69,7 +69,7 @@ class BernesePrcParser(ChainParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | num_coord_files      | Number of coordinate files used for analysis                                         |
     | time                 | Date of analysis session                                                             |
     | \__data_path__       | File path                                                                            |
@@ -423,7 +423,7 @@ class BernesePrcParser(ChainParser):
         unit_millimeter = [
                 "repeatability_east", 
                 "repeatability_north", 
-                "repeatability_up"
+                "repeatability_up",
                 "residual_east", 
                 "residual_north", 
                 "residual_up",
@@ -463,13 +463,13 @@ class BernesePrcParser(ChainParser):
             Midgard Dataset where station coordinates and belonging information are stored with following fields:
 
        |  Field                  | Type          | Description                                                       |
-       |-------------------------|---------------|-------------------------------------------------------------------|
+       | :---------------------- | :------------ | :---------------------------------------------------------------- |
        | coord_comp_east_day<x>  | numpy.ndarray | Station coordinate comparison results for East component in [m]   |
-       |                         |               | for day X (X=[1|2|...|7])                                         |
+       |                         |               | for day X (X=[1,2,...,7])                                         |
        | coord_comp_north_day<x> | numpy.ndarray | Station coordinate comparison results for North component in [m]  |
-       |                         |               | for day X (X=[1|2|...|7])                                         |
+       |                         |               | for day X (X=[1,2,...,7])                                         |
        | coord_comp_up_day<x>    | numpy.ndarray | Station coordinate comparison results for Up component in [m]     |
-       |                         |               | for day X (X=[1|2|...|7])                                         |
+       |                         |               | for day X (X=[1,2,...,7])                                         |
        | coord_comp_rms_east     | numpy.ndarray | List with daily station coordinate comparison results for East    |
        |                         |               | component in [m]                                                  |
        | coord_comp_rms_north    | numpy.ndarray | List with daily station coordinate comparison results for North   |

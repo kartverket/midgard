@@ -143,19 +143,19 @@ class BerneseCrdParser(LineParser):
         Returns:
             Midgard Dataset where station coordinates and belonging information are stored with following fields:
 
-       |  Field                   | Type           | Description                                                      |
-       |--------------------------|----------------|------------------------------------------------------------------|
-       | domes                    | numpy.ndarray  | Domes number                                                     |
-       | flag                     | numpy.ndarray  | Station flag (see section 24.7.1 of Bernese GNSS software        |
-       |                          |                | version 5.2, November 2015)                                      |
-       | station                  | numpy.ndarray  | Station name                                                     |
-       | site_pos                 | PositionTable  | Station coordinates given as PositionTable object                |
+        |  Field                   | Type           | Description                                                      |
+        | :----------------------- | :------------- | :--------------------------------------------------------------- |
+        | domes                    | numpy.ndarray  | Domes number                                                     |
+        | flag                     | numpy.ndarray  | Station flag (see section 24.7.1 of Bernese GNSS software        |
+        |                          |                | version 5.2, November 2015)                                      |
+        | station                  | numpy.ndarray  | Station name                                                     |
+        | site_pos                 | PositionTable  | Station coordinates given as PositionTable object                |
 
             and following Dataset `meta` data:
 
-       |  Entry              | Type  | Description                                                                    |
-       |---------------------|-------|--------------------------------------------------------------------------------|
-       | \__data_path__      | str   | File path                                                                      |
+        |  Entry              | Type  | Description                                                                    |
+        | :------------------ | :---- | :----------------------------------------------------------------------------- |
+        | \__data_path__      | str   | File path                                                                      |
         """
              
         # Generate dataset

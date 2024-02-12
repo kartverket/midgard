@@ -207,9 +207,9 @@ class BerneseTrpPaser(LineParser):
        |                           |                | North/South direction in [m]                                    |
        | trop_zenith_dry           | numpy.ndarray  | Zenith hydrostatic/dry troposphere delay from a-priori model in |
        |                           |                | [m]                                                             |
+       | trop_zenith_total         | numpy.ndarray  | Zenith total troposphere delay in [m]                           |
        | trop_zenith_wet           | numpy.ndarray  | Zenith wet troposphere delay (estimated part) in [m]            |
        | trop_zenith_wet_sigma     | numpy.ndarray  | Standard devivation of zenith wet troposphere delay in [m]      |
-       | trop_zenith_total         | numpy.ndarray  | Zenith total troposphere delay in [m]                           |
         """
         
         skip_fields = ["to_time"]
