@@ -36,7 +36,7 @@ class GipsyxResidualParser(Parser):
     Following **data** are available after reading GipsyX residual output file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | azimuth              | Azimuth from receiver                                                                |
     | azimuth_sat          | Azimuth from satellite                                                               |
     | data_type            | Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)                                    |
@@ -53,7 +53,7 @@ class GipsyxResidualParser(Parser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | \__data_path__       | File path                                                                            |
     | \__parser_name__     | Parser name                                                                          |
     """
@@ -140,7 +140,7 @@ class GipsyxResidualParser(Parser):
 
 
        | Field               | Type              | Description                                                        |
-       |---------------------|-------------------|--------------------------------------------------------------------|
+       | :------------------ | :---------------- | :----------------------------------------------------------------- |
        | azimuth             | numpy.ndarray     | Azimuth from receiver                                              |
        | azimuth_sat         | numpy.ndarray     | Azimuth from satellite                                             |
        | data_type           | numpy.ndarray     | Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)                  |
