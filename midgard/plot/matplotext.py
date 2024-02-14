@@ -56,7 +56,6 @@ class MatPlotExt:
     | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
     | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
     | fontsize           | <num>            | Fontsize of title, axis labels and legend                             |
-    | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                   |
     | grid               | <True|False>     | Plot grid                                                             |
     | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both   |
     |                    |                  | axis on scatter plot                                                  |
@@ -80,6 +79,8 @@ class MatPlotExt:
     | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
     |                    |                  | 'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function        |
     |                    |                  | _get_statistic for more information)                                  |
+    | subtitle           | <text>           | Subtitle of subplots                                                  |
+    | subtitle_fsize     | <num>            | Fontsize of subplot title (statistical information)                   |
     | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done      |
     |                    |                  | either for x-axis, y-axis or both axis via specifying 'x', 'y' or     |
     |                    |                  | both'.                                                                |
@@ -124,7 +125,6 @@ class MatPlotExt:
             "errorbar": False,
             "figsize": (6, 8),
             "fontsize": 12,
-            "fsize_subtitle": 8,
             "grid": False,
             "histogram": "",
             "histogram_binwidth": 0.25,
@@ -144,6 +144,8 @@ class MatPlotExt:
             "sharex": True,
             "sharey": True,
             "statistic": [],
+            "subtitle": "",
+            "subtitle_fsize": 8,
             "tick_labelsize": [],
             "title": "",
             "xlabelrotation": 0, # degree
@@ -366,7 +368,6 @@ class MatPlotExt:
         |                    |                  | tab10, rainbow, hsv, plasma)                                            |
         | dpi                | <num>            | Resolution of file in dots per inch                                     |
         | figsize            | (num, num)       | Figure size given by (width, height) in inches                          |
-        | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
         | grid               | <True|False>     | Plot grid                                                               |
         | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
         |                    |                  | axis on scatter plot                                                    |
@@ -390,13 +391,16 @@ class MatPlotExt:
         | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined: 'max', |
         |                    |                  | 'mean', 'min', 'rms', 'std', 'percentile' (see function _get_statistic  |
         |                    |                  | for more information)                                                   |
+        |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
+        | subtitle           | <text>           | Subtitle of subplots                                                    |
+        | subtitle_fsize     | <num>            | Fontsize of subplot title (statistical information)                     |
         | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done either |
         |                    |                  | for x-axis, y-axis or both axis via specifying 'x', 'y' or both'.       |
         | title              | <text>           | Main title of subplots                                                  |
         | xlabelrotation     | <num>            | Define x-axis label rotation                                            |
         | xlim               | <[num, num]|     | Define x-axis limit by defining a list with [left, right] range. If     |
         |                    |  auto|           | xlim=auto, then x-axis limit is automatically chosen and if xlim=       |
-        |                    |  fit_to_data>     | fit_to_data, then x-axis limit is defined related to x-axis data.      | 
+        |                    |  fit_to_data>    | fit_to_data, then x-axis limit is defined related to x-axis data.       | 
         | xticks             | <[num, ...]>     | Define x-axis ticks by defining a list with ticks                       |
         | xticklabels        | <[text, ...]>    | Define x-axis ticks labels by defining a list with labels               |
         | ylim               | <[num, num]>     | Define y-axis limit by defining a list with [bottom, top] range         |
@@ -446,9 +450,13 @@ class MatPlotExt:
     
         # Generate scatter plot by using subplot function
         fig, ax = plt.subplots(
-            nrows=1, ncols=1, figsize=self.options["figsize"], subplot_kw={"projection": self.options["projection"]}
+                    nrows=1, 
+                    ncols=1, 
+                    figsize=self.options["figsize"], 
+                    subplot_kw={"projection": self.options["projection"]},
+                    layout="constrained",
         )
-        fig.suptitle(f"{self.options['title']}", y=1.0)
+        fig.suptitle(f"{self.options['title']}")
     
         # Get event and label colors
         if events:
@@ -477,7 +485,7 @@ class MatPlotExt:
                     self.options["histogram"] = original_histogram_option
                 else:
                     self.options["histogram"] = ""
-    
+            
             # Plot figure
             self.plot_subplot_row(
                 ax, 
@@ -490,6 +498,7 @@ class MatPlotExt:
                 x_unit=x_unit, 
                 y_unit=y_unit, 
                 color=color,
+                subtitle=[self.options["subtitle"]] if self.options["subtitle"] else [],
                 statistic_data=statistic_data
             )
     
@@ -547,16 +556,16 @@ class MatPlotExt:
                     orientation="vertical",
                     label=self.options["colorbar_label"],
             )
-    
-        # Automatically adjusts subplot params so that the subplot(s) fits in to the figure area
-        fig.tight_layout()
-    
+
         # Adjust plot axes (to place title correctly)
         if self.options["projection"] == "polar":
             fig.subplots_adjust(top=0.83)
-        else:
-            fig.subplots_adjust(top=0.92)
+        #else:
+        #    fig.subplots_adjust(top=0.92)
     
+        # Automatically adjusts subplot params so that the subplot(s) fits in to the figure area
+        fig.tight_layout()
+        
         # Save plot as file or show it on console
         if self.options["plot_to"] == "console":
             plt.show()
@@ -604,7 +613,7 @@ class MatPlotExt:
         |                    |                  | hsv, plasma)                                                            |
         | dpi                | <num>            | Resolution of file in dots per inch                                     |
         | figsize            | (num, num)       | Figure size given by (width, height) in inches                          |
-        | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                     |
+        | subtitle_fsize     | <num>            | Fontsize of subplot title (statistical information)                     |
         | grid               | <True|False>     | Plot grid                                                               |
         | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both     |
         |                    |                  | axis on scatter plot                                                    |
@@ -665,7 +674,7 @@ class MatPlotExt:
             sharey=self.options["sharey"], 
             figsize=self.options["figsize"],
         )
-        fig.suptitle(f"{self.options['title']}", y=1.0)
+        fig.suptitle(f"{self.options['title']}")
     
         # Get event and label colors
         if events:
@@ -759,12 +768,12 @@ class MatPlotExt:
         if isinstance(x_array[0], datetime):
             fig.autofmt_xdate()
     
+        ## Adjust plot axes (to place title correctly)
+        #fig.subplots_adjust(top=0.92)
+
         # Automatically adjusts subplot params so that the subplot(s) fits in to the figure area
         fig.tight_layout()
-    
-        # Adjust plot axes (to place title correctly)
-        fig.subplots_adjust(top=0.92)
-    
+        
         # Save plot as file or show it on console
         if self.options["plot_to"] == "console":
             plt.show()
@@ -810,7 +819,7 @@ class MatPlotExt:
         | edgecolor          | <name>           | Edge color of bars of bar plots                                   |
         | elinewidth         | <num>            | Line width of error bar                                           |
         | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined|
-        | fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)               |
+        | subtitle_fsize     | <num>            | Fontsize of subplot title (statistical information)               |
         | grid               | <True|False>     | Plot grid                                                         |
         | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for    |
         |                    |                  | both axis on scatter plot                                         |
@@ -951,7 +960,7 @@ class MatPlotExt:
         # Set x-axis and y-axis limits, ticks and tick labels
         if not self.options["xlim"] == "auto":
             if isinstance(self.options["xlim"], list):
-                ax.set_xlim(float(self.options["xlim"][0]), float(self.options["xlim"][1]))
+                ax.set_xlim(self.options["xlim"][0], self.options["xlim"][1])
             elif self.options["xlim"] == "fit_to_data":
                 if isinstance(x_array, np.ndarray):
                     if x_array.ndim == 0:
@@ -959,7 +968,7 @@ class MatPlotExt:
                 ax.set_xlim([min(x_array), max(x_array)])
                    
         if self.options["ylim"]:
-            ax.set_ylim(float(self.options["ylim"][0]), float(self.options["ylim"][1]))
+            ax.set_ylim(self.options["ylim"][0], self.options["ylim"][1])
     
         if self.options["xticks"]:
             ax.set_xticks(self.options["xticks"])
@@ -997,7 +1006,7 @@ class MatPlotExt:
     
         # Plot subtitle of current row
         if subtitle:
-            ax.set_title(", ".join(subtitle), fontsize=self.options["fsize_subtitle"], horizontalalignment="center")
+            ax.set_title(", ".join(subtitle), fontsize=self.options["subtitle_fsize"], horizontalalignment="center")
 
 
     #
