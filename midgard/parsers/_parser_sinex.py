@@ -422,7 +422,7 @@ class SinexParser(Parser):
         """Convert field to list
 
         Args:
-            field):  Original field with elements split by whitespace.
+            field:  Original field with elements split by whitespace.
 
         Returns:
             Field converted to list of strings.
