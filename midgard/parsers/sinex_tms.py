@@ -47,6 +47,10 @@ class SinexTmsParser(SinexParser):
     def setup_parser(self):
         return [
             self.file_reference, 
+            self.site_id,
+            self.site_receiver,
+            self.site_antenna,
+            self.site_eccentricity,
             self.timeseries_ref_coordinate, 
             self.timeseries_columns, 
             self.timeseries_data,
@@ -65,7 +69,7 @@ class SinexTmsParser(SinexParser):
         self.data.setdefault("file_reference", dict())
         for d in data:
             self.data["file_reference"].update({d[0].split()[0].lower(): d[1]})
-
+                       
     # TODO: Should original _parser_sinex.parse_lines be overwritten with following parse_line function?   
     def parse_lines(self, lines: List[bytes], fields: Tuple[SinexField, ...]) -> np.array:
         """Parse lines in a Sinex file
@@ -109,6 +113,161 @@ class SinexTmsParser(SinexParser):
     #
     # Definition of SINEX blocks to parse
     # 
+    @property
+    def site_id(self) -> SinexBlock:
+        """General information for each site containing estimated parameters.
+
+        Example:
+            +SITE/ID
+            *STATION__ PT __DOMES__ T _LONGITUDE _LATITUDE_ _HEIGHT_ __STATION DESCRIPTION
+             zimm       A 14001M004 P    7.46528   46.87708  956.400 Zimmerwald, Switzerland
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8---
+            -SITE/ID
+
+        """
+        return SinexBlock(
+            marker="SITE/ID",
+            fields=(
+                SinexField("site_code", 1, "U9"),
+                SinexField("point_code", 10, "U2"),
+                SinexField("domes", 13, "U9"),
+                SinexField("obs_code", 23, "U1"),
+                SinexField("approx_lon", 25, "f8"),
+                SinexField("approx_lat", 36, "f8"),
+                SinexField("approx_height", 47, "f8"),
+                SinexField("description", 56, "U100", "utf8"), #TODO: Define unlimited character
+            ),
+            parser=self.parse_site_id,
+        ) 
+    
+    def parse_site_id(self, data):
+        """Parse SITE/ID SINEX block"""
+        data = data[np.newaxis] if data.ndim == 0 else data
+        self.data.setdefault("site_id", list())
+        for d in data:
+            self.data["site_id"].append(
+                {n: d[n] for n in d.dtype.names}
+            )
+        
+    @property
+    def site_receiver(self) -> SinexBlock:
+        """Information about receivers used for the observations
+
+        Example:        
+            +SITE/RECEIVER
+                *STATION__ PT SOLN T __DATA_START__ __DATA_END____ DESCRIPTION_________ S/N_________________ FIRMWARE___
+                 zimm       A ---- P 1993:121:00000 1997:218:00000 TRIMBLE 4000SSE      3310A                6.12       
+                 zimm       A ---- P 1997:218:00000 0000:000:00000 TRIMBLE 4000SSI      3310A                7.25 
+                 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+
+            -SITE/RECEIVER
+        """
+        return SinexBlock(
+            marker="SITE/RECEIVER",
+            fields=(
+                SinexField("site_code", 1, "U9"),
+                SinexField("point_code", 11, "U2"),
+                SinexField("soln", 14, "U4"),
+                SinexField("obs_code", 18, "U1"),             
+                SinexField("start_time", 20, "O", "epoch_yyyy"),
+                SinexField("end_time", 35, "O", "epoch_yyyy"),
+                SinexField("receiver_type", 50, "U20"),
+                SinexField("serial_number", 71, "U20"),
+                SinexField("firmware", 92, "U11"),
+            ),
+            parser=self.parse_site_receiver,
+        )
+
+    def parse_site_receiver(self, data):
+        """Parse SITE/RECEIVER SINEX block"""
+        data = data[np.newaxis] if data.ndim == 0 else data
+        self.data.setdefault("site_receiver", list())
+        for d in data:
+            self.data["site_receiver"].append(
+                {n: d[n] for n in d.dtype.names}
+            )
+    
+    @property
+    def site_antenna(self) -> SinexBlock:
+        """Information about antennas at the sites
+        
+        Example:
+            +SITE/ANTENNA
+            *STATION__ PT SOLN T __DATA_START__ __DATA_END____ DESCRIPTION_________ S/N_________________
+             zimm       A ---- P 1993:121:00000 1998:310:00000 TRM14532.00     NONE 3311A
+             zimm       A ---- P 1998:310:00000 0000:000:00000 TRM29659.00     NONE 99390
+             0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8---
+            -SITE/ANTENNA
+        """
+        return SinexBlock(
+            marker="SITE/ANTENNA",
+            fields=(
+                SinexField("site_code", 1, "U9"),
+                SinexField("point_code", 11, "U2"),
+                SinexField("soln", 14, "U4"),
+                SinexField("obs_code", 18, "U1"),             
+                SinexField("start_time", 20, "O", "epoch_yyyy"),
+                SinexField("end_time", 35, "O", "epoch_yyyy"),
+                SinexField("antenna_type", 50, "U20"),
+                SinexField("serial_number", 71, "U20"),
+            ),
+            parser=self.parse_site_antenna,
+        )
+    
+    def parse_site_antenna(self, data):
+        """Parse SITE/ANTENNA SINEX block"""
+        data = data[np.newaxis] if data.ndim == 0 else data
+        self.data.setdefault("site_antenna", list())
+        for d in data:
+            add_dict = {
+                n: d[n] for n in d.dtype.names
+            }  # Generate dictionary with all SINEX field entries
+            add_dict["antenna_type"], add_dict["radome_type"] = d[
+                "antenna_type"
+            ].split()
+            self.data["site_antenna"].append(add_dict)
+    
+    @property
+    def site_eccentricity(self) -> SinexBlock:
+        """List of antenna eccentricities
+
+        Antenna eccentricities from the Marker to the Antenna Reference Point
+        (ARP) or to the intersection of axis.
+        
+        
+        Example:
+            +SITE/ECCENTRICITY
+            *                                                     UP______ NORTH___ EAST____
+            *STATION__ PT SOLN T __DATA_START__ __DATA_END____ AXE ARP->BENCHMARK(M)_________
+             zimm       A ---- P 1993:121:00000 2000:000:00000 UNE   0.0000   0.0000   0.0000
+             0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8---
+            -SITE/ECCENTRICITY
+        """
+        return SinexBlock(
+            marker="SITE/ECCENTRICITY",
+            fields=(
+                SinexField("site_code", 1, "U9"),
+                SinexField("point_code", 11, "U2"),
+                SinexField("soln", 14, "U4"),
+                SinexField("obs_code", 18, "U1"),             
+                SinexField("start_time", 20, "O", "epoch_yyyy"),
+                SinexField("end_time", 35, "O", "epoch_yyyy"),
+                SinexField("vector_type", 50, "U3"),
+                SinexField("vector_1", 54, "f8"),
+                SinexField("vector_2", 63, "f8"),
+                SinexField("vector_3", 72, "f8"),
+            ),
+            parser=self.parse_site_eccentricity,
+        )
+    
+    def parse_site_eccentricity(self, data):
+        """Parse SITE/ECCENTRICITY SINEX block"""
+        data = data[np.newaxis] if data.ndim == 0 else data
+        self.data.setdefault("site_eccentricity", list())
+        for d in data:
+            self.data["site_eccentricity"].append(
+                {n: d[n] for n in d.dtype.names}
+            )
+                
     @property
     def timeseries_ref_coordinate(self):
         """Custom made block describing the solution.
@@ -189,7 +348,7 @@ class SinexTmsParser(SinexParser):
         Args:
             data (numpy.array):  Input data, raw data for TIMESERIES/COLUMNS block.
         """
-        self.data["columns"] = data
+        self.data["timeseries_columns"] = data
         
         
     @property
@@ -223,14 +382,14 @@ class SinexTmsParser(SinexParser):
         Args:
             data (numpy.array):  Input data, raw data for TIMESERIES/DATA block.
         """
-        self.data.setdefault("data", dict())
+        self.data.setdefault("timeseries_data", dict())
         
         # Define column data type, which are not float
         dtype_object = ["YYYY-MM-DD"]  
         
-        for name, col in zip(self.data["columns"]["name"], data.T):           
+        for name, col in zip(self.data["timeseries_columns"]["name"], data.T):           
             dtype = object if name in dtype_object else float
-            self.data["data"][name.lower()] = col.astype(dtype)
+            self.data["timeseries_data"][name.lower()] = col.astype(dtype)
             
             
     #
@@ -254,7 +413,7 @@ class SinexTmsParser(SinexParser):
         field_str = field.decode(self.file_encoding or "utf-8")
         
         if field_str == "0000:000:00000":
-            field_str = "9999:365:99999"  # 0000:000:00000 means the current time. Therefore value set a time in 
+            field_str = "9999:364:99999"  # 0000:000:00000 means the current time. Therefore value set a time in 
                                           # the future.
         
         date = datetime.strptime(field_str[0:8], "%Y:%j")
