@@ -34,7 +34,7 @@
 +SITE/ANTENNA
 *STATION__ PT SOLN T __DATA_START__ __DATA_END____ DESCRIPTION_________ S/N_________________
  zimm       A ---- P 1993:121:00000 1998:310:00000 TRM14532.00     NONE 3311A
- zimm       A ---- P 1998:310:00000 2000:000:00000 TRM29659.00     NONE 99390
+ zimm       A ---- P 1998:310:00000 0000:000:00000 TRM29659.00     NONE 99390
 -SITE/ANTENNA
 +SITE/ECCENTRICITY
 *                                                     UP______ NORTH___ EAST____
