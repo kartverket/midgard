@@ -13,12 +13,17 @@ Description:
 Following SINEX timeseries blocks are read:
 
             FILE/REFERENCE 
+            SITE/ID
+            SITE/RECEIVER
+            SITE/ANTENNA
+            SITE/ECCENTRICITY
             TIMESERIES/REF_COORDINATE
             TIMESERIES/COLUMNS
             TIMESERIES/DATA
 """
 
 # Standard library imports
+from collections import namedtuple, OrderedDict
 from datetime import datetime, timedelta
 from typing import List, Tuple
 
@@ -27,9 +32,21 @@ import numpy as np
 
 # Midgard imports
 from midgard.data import dataset
+from midgard.data.position import Position
 from midgard.dev import plugins
 from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField
+from midgard.site_info.site_info import SiteInfo
 
+FieldDef = namedtuple(
+    "FieldDef", ["field", "unit"]
+)
+FieldDef.__new__.__defaults__ = (None,) * len(FieldDef._fields)
+FieldDef.__doc__ = """A convenience class for defining dataset fields 
+
+    Args:
+        field (str):             Dataset field name
+        unit (str):              Unit of field
+    """
 
 @plugins.register
 class SinexTmsParser(SinexParser):
@@ -426,113 +443,194 @@ class SinexTmsParser(SinexParser):
     # GENERATE DATASET
     #
     def as_dataset(self) -> "Dataset":
-        """Store SINEX timeseries entries in a dataset
+        """Store SINEX timeseries data block entries in a dataset
 
         Returns:
-            Midgard Dataset where time dependent parameter data are stored with following fields:
+            Midgard Dataset whereby following SINEX timeseries data block entries could be stored (depending on input 
+            data):
 
 
        | Field                    | Type              | Description                                                   |
        | :----------------------- | :---------------- | :------------------------------------------------------------ |
        | site_pos                 | Position          | x, y and z station coordinates                                |
-       | site_pos_xy_correlation  | numpy.ndarray     | Correlation between x and y station coordinate                |
-       | site_pos_xz_correlation  | numpy.ndarray     | Correlation between x and z station coordinate                |
-       | site_pos_yz_correlation  | numpy.ndarray     | Correlation between y and z station coordinate                |
-       | site_pos_x_sigma         | numpy.ndarray     | Standard deviation for x station coordinate                   |
-       | site_pos_y_sigma         | numpy.ndarray     | Standard deviation for y station coordinate                   |
-       | site_pos_z_sigma         | numpy.ndarray     | Standard deviation for z station coordinate                   |
-       | station                  | numpy.ndarray     | Station name list                                             |
+       | dsite_pos                | PositionDelta     | Position delta object referred to a reference position        |       
+       | site_pos_east_sigma      | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
+       | site_pos_north_sigma     | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
+       | site_pos_up_sigma        | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
+       | site_pos_en_correlation  | numpy.ndarray     | Correlation between East and North component of topocentric   |
+       |                          |                   | coordinates                                                   |
+       | site_pos_eu_correlation  | numpy.ndarray     | Correlation between East and Up component of topocentric      |
+       |                          |                   | coordinates                                                   |
+       | site_pos_nu_correlation  | numpy.ndarray     | Correlation between North and Up component of topocentric     |
+       |                          |                   | coordinates                                                   |       
+       | site_pos_xy_correlation  | numpy.ndarray     | Correlation between X- and Y-coordinate                       |
+       | site_pos_xz_correlation  | numpy.ndarray     | Correlation between X- and Z-coordinate                       |
+       | site_pos_yz_correlation  | numpy.ndarray     | Correlation between Y- and Z-coordinate                       |
+       | site_pos_x_sigma         | numpy.ndarray     | Standard deviation of geocentric X-coordinate                 |
+       | site_pos_y_sigma         | numpy.ndarray     | Standard deviation of geocentric Y-coordinate                 |
+       | site_pos_z_sigma         | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
        | time                     | Time              | Parameter time given as TimeTable object                      |
        
-       The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
-        
+       TODO: Description of meta data        
         """
-        import IPython; IPython.embed()
-        idx_x = "STA.X" == self.data["parameter"]
-        idx_y = "STA.Y" == self.data["parameter"]
-        idx_z = "STA.Z" == self.data["parameter"]
         dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
         dset.meta.update(self.meta)
-
-        # Note: GipsyX uses continuous seconds past Jan. 1, 2000 11:59:47 UTC time format in TDP files. That means,
-        #       GipsyX does not follow convention of J2000:
-        #           1.01.2000 12:00:00     TT  (TT = GipsyX(t) + 13s)
-        #           1.01.2000 11:59:27.816 TAI (TAI = TT - 32.184s)
-        #           1.01.2000 11:58:55.816 UTC (UTC = TAI + leap_seconds = TAI - 32s)
-        #           1.01.2000 11:59:08.816 GPS (GPS = TAI - 19s)
-        #
-        #       Therefore Time object initialized with TT time scale has to be corrected about 13 seconds.
-        #
-        dset.add_time(
-            "time",
-            val=Time(
-                (np.array(self.data["time_past_j2000"][idx_x]) + 13.0) * Unit.second2day + 2451545.0,
-                scale="tt",
-                fmt="jd",
-            ).gps,
-        )
-
-        dset.add_text("station", val=self.data["station"][idx_x])
-        dset.add_float("site_pos_x_sigma", val=self.data["sigma"][idx_x], unit="meter")
-        dset.add_float("site_pos_y_sigma", val=self.data["sigma"][idx_y], unit="meter")
-        dset.add_float("site_pos_z_sigma", val=self.data["sigma"][idx_z], unit="meter")
-        dset.add_position(
-            "site_pos",
-            time=dset.time,
-            system="trs",
-            #val=np.squeeze(
-            #        np.vstack(
-            #            (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
-            #        ).T
-            #)
-            val=np.vstack(
-                        (self.data["estimate"][idx_x], self.data["estimate"][idx_y], self.data["estimate"][idx_z])
-            ).T
-        )
-
-        if "correlation" in self.data.keys():
-
-            # Extract correlation coefficients of each station coordinate solution
-            #   |0          <- idx_xy = 0
-            #   |1  2       <- idx_xz = idx_xy + 0 + 1 = 1
-            #   ------
-            #    3  4  5
-            #    6  7  8 |9            <- idx_xy = idx_yz + 1 * 6 + 1 = 9
-            #   10 11 12 |13 14        <- idx_xz = idx_xy + 3 + 1 = 13
-            #            --------
-            #   15 16 17  18 19 20
-            #   21 22 23  24 25 26 |27         <- idx_xy = idx_yz + 2 * 6 + 1 = 27
-            #   28 29 30  31 32 33 |34 35      <- idx_xz = idx_xy + 6 + 1 = 34
-            #                      -------
-            #
-            #   36 37 38  39 40 41  42 43 44
-            #   45 46 47  48 49 50  51 52 53 |54        <- idx_xy = idx_yz + 3 * 6 + 1 = 54
-            #   55 56 57  58 59 60  61 62 63 |64 65     <- idx_xz = idx_xy + 9 + 1 = 64
-            #                                -------
-            #
-            #   66 67 68  69 70 71  72 73 74  75  76  77
-            #   78 79 80  81 82 83  84 85 86  87  88  89  | 90         <- idx_xy = idx_yz + 4 * 6 + 1 = 90
-            #   91 92 93  94 95 96  97 98 99  100 101 102 |103 104     <- idx_xz = idx_xy + 12 + 1 = 103
-            #                                               ---------
-            #    
-            tmp = dict()
-            addend = 0
-            idx_xy = 0
-            for ii in range(0, dset.num_obs):
-
-                idx_xz = idx_xy + addend + 1
-                idx_yz = idx_xz + 1
-                tmp.setdefault("site_pos_xy_correlation", list()).append(self.data["correlation"][idx_xy])
-                tmp.setdefault("site_pos_xz_correlation", list()).append(self.data["correlation"][idx_xz])
-                tmp.setdefault("site_pos_yz_correlation", list()).append(self.data["correlation"][idx_yz])
-                addend = addend + 3
-                idx_xy = idx_yz + (ii + 1) * 6 + 1
+        
+        # Add site_info dictionary to meta variable
+        for block in ["site_id", "site_receiver", "site_antenna", "site_eccentricity"]:
+            if block in self.data.keys():
+                dset.meta.setdefault("site_info", dict()).update({block: self.data[block]})
+        
+        # Add time field to dataset
+        time_format_def = OrderedDict({
+                "yyyy-mm-dd": "datetime",
+                "yyyy-ddd": "datetime",
+                "jd": "jd",
+                "mjd": "mjd",
+                "year": "decimalyear",
+                #TODO: gpsweek
+                #TODO: hh:mm:ss
+        })
+        
+        time_type = None
+        for type_, fmt in time_format_def.items():
+            if type_ in self.data["timeseries_data"].keys():
+                time_type = type_
+                break
+            
+        if time_type:       
+            if time_type == "yyyy-mm-dd":
+                time = [datetime.strptime(d, "%Y-%m-%d") for d in self.data["timeseries_data"][time_type]]
+            elif type_ == "yyyy-ddd":
+                time = [datetime.strptime(d, "%Y-%j") for d in self.data["timeseries_data"][time_type]]
+            else:
+                time = self.data["timeseries_data"][time_type]
+        
+            dset.add_time("time", val=time, scale="utc", fmt=time_format_def[time_type])
+                     
+        # Add position field to dataset
+        if "x" in self.data["timeseries_data"].keys():
+            dset.add_position(
+                "site_pos",
+                val=np.vstack((
+                    self.data["timeseries_data"]["x"], 
+                    self.data["timeseries_data"]["y"], 
+                    self.data["timeseries_data"]["z"]),
+                ).T,
+                system="trs",
+            )
+            
+        # Add position_delta field to dataset
+        if "east" in self.data["timeseries_data"].keys():
+            ref_pos = Position(
+                val = [ 
+                    self.data["ref_coordinate"]["ref_x"],
+                    self.data["ref_coordinate"]["ref_y"],
+                    self.data["ref_coordinate"]["ref_z"],
+                ],
+                system="trs",
+            )
+            
+            dset.add_position_delta(
+                "dsite_pos",
+                val=np.vstack((
+                    self.data["timeseries_data"]["east"], 
+                    self.data["timeseries_data"]["north"], 
+                    self.data["timeseries_data"]["up"]),
+                ).T,
+                system="enu",
+                ref_pos=ref_pos,
+            )
+            
+        # Add float field to dataset
+        field_def = {
+            "sig_x": FieldDef("site_pos_x_sigma", "meter"),
+            "sig_y": FieldDef("site_pos_y_sigma", "meter"),
+            "sig_z": FieldDef("site_pos_z_sigma", "meter"),
+            "corr_xy": FieldDef("site_pos_xy_correlation", ""),
+            "corr_xz": FieldDef("site_pos_xz_correlation", ""),
+            "corr_yz": FieldDef("site_pos_yz_correlation", ""),
+            "sig_east": FieldDef("site_pos_east_sigma", "meter"),
+            "sig_north": FieldDef("site_pos_north_sigma", "meter"),
+            "sig_up": FieldDef("site_pos_up_sigma", "meter"),
+            "corr_en": FieldDef("site_pos_en_correlation", ""),
+            "corr_eu": FieldDef("site_pos_eu_correlation", ""),
+            "corr_nu": FieldDef("site_pos_nu_correlation", ""),
+        }
+        
+        for type_, def_ in field_def.items():
+            if type_ in self.data["timeseries_data"].keys():
+                dset.add_float(def_.field, val=self.data["timeseries_data"][type_], unit=def_.unit)
                 
-            # Add correlation coefficient to dataset
-            for suffix in ["xy", "xz", "yz"]:
-                field = f"site_pos_{suffix}_correlation"
-                dset.add_float(field, tmp[field]) # unitless
+        # Add events to dataset
+        #TODO self._add_events(dset)
 
         return dset
+    
+    #
+    # AUXILIARY FUNCTIONS
+    # 
+    def _add_events(self, dset: "Dataset") -> None:
+        """Add events to Dataset
+    
+        Read site information for getting information about antenna, receiver and firmware changes. These equipment changes
+        are added as events to the Dataset.
+    
+        Args:
+            dset:       A dataset containing the data.
+    
+        """
+        date_from = min(dset.time.datetime)
+        date_to = max(dset.time.datetime)
+        import IPython; IPython.embed()
 
+        # Get station dictionary of SiteInfo instance 
+        info = SiteInfo.get_history(
+                    source="snx", 
+                    source_data={"test": dset.meta["site_info"]},
+                    stations="test",
+                    source_path=dset.meta["__data_path__"],
+        )
+        
+        
+        # Add antenna, receiver and firmware events
+        try:
+            anth = Antenna.get_history(site_info_source, source_data, station, source_path)
+            for date in anth[station].date_from:
+                if date >= date_from and date <= date_to:
+                    dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "antenna", station)
+        except NameError:
+            log.warn("Antenna module not imported.")
+            return ExitStatus.warn
             
+        except (MissingDataError, ValueError):
+            log.warn(f"Station '{station}' unknown in source '{source_path}'.")
+            return ExitStatus.warn
+        try:
+            rcvh = Receiver.get_history(site_info_source, source_data, station, source_path)
+            for date in rcvh[station].date_from:
+                if date >= date_from and date <= date_to:
+                    dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "receiver", station)
+        except NameError:
+            log.warn("Receiver module not imported.")
+            return ExitStatus.warn
+        except (MissingDataError, ValueError):
+            log.warn(f"Station '{station}' unknown in source '{source_path}'.")
+            return ExitStatus.warn
+    
+        # TODO: It seems to that this has worked before. Should be reimplemented again in sesite.receiver modulen!!!
+        #try:
+        #    for date in Receiver.get_history(site_info_source, station, source_path=source_path).firmware_installed:
+        #        dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "firmware change", station)
+        #except NameError:
+        #    log.warn("Receiver module not imported.")
+        #    return ExitStatus.warn
+        #except ValueError:
+        #    log.warn(f"Station '{station}' unknown in source '{source_path}'.")
+        #    return ExitStatus.warn
+    
+        # TODO: This is apriori framework.
+        # site_info = apriori.get("site_info", station=station, date=datetime.now())
+        # dset.meta.add_event(site_info.site_config.operational, "operational", station)
+    
+                
