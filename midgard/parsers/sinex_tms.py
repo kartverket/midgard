@@ -33,6 +33,7 @@ import numpy as np
 # Midgard imports
 from midgard.data import dataset
 from midgard.data.position import Position
+from midgard.data.time import Time
 from midgard.dev import plugins
 from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField
 from midgard.site_info.site_info import SiteInfo
@@ -403,12 +404,11 @@ class SinexTmsParser(SinexParser):
         self.data.setdefault("timeseries_data", dict())
         
         # Define column data type, which are not float
-        dtype_object = ["YYYY-MM-DD"]  
+        dtype_object = ["YYYY-MM-DD", "YYYY-DDD"]  
         
         for name, col in zip(self.data["timeseries_columns"]["name"], data.T):           
             dtype = object if name in dtype_object else float
             self.data["timeseries_data"][name.lower()] = col.astype(dtype)
-            
             
     #
     # CONVERTERS
@@ -475,6 +475,7 @@ class SinexTmsParser(SinexParser):
         """
         dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
         dset.meta.update(self.meta)
+        dset.meta["station"] = self.data["site_id"][0]["site_code"] if "site_id" in self.data.keys() else "NONE" #TODO: implement better solution, .e.g. by reading SINEX header line
         
         # Add site_info dictionary to meta variable
         for block in ["site_id", "site_receiver", "site_antenna", "site_eccentricity"]:
@@ -563,7 +564,8 @@ class SinexTmsParser(SinexParser):
                 dset.add_float(def_.field, val=self.data["timeseries_data"][type_], unit=def_.unit)
                 
         # Add events to dataset
-        #TODO self._add_events(dset)
+        if "site_antenna" in self.data.keys() or "site_receiver" in self.data.keys():
+            self._add_events(dset)
 
         return dset
     
@@ -582,55 +584,27 @@ class SinexTmsParser(SinexParser):
         """
         date_from = min(dset.time.datetime)
         date_to = max(dset.time.datetime)
-        import IPython; IPython.embed()
 
         # Get station dictionary of SiteInfo instance 
         info = SiteInfo.get_history(
                     source="snx", 
-                    source_data={"test": dset.meta["site_info"]},
-                    stations="test",
+                    source_data={dset.meta["station"].lower(): dset.meta["site_info"]},
+                    stations=dset.meta["station"],
                     source_path=dset.meta["__data_path__"],
         )
         
-        
         # Add antenna, receiver and firmware events
-        try:
-            anth = Antenna.get_history(site_info_source, source_data, station, source_path)
-            for date in anth[station].date_from:
-                if date >= date_from and date <= date_to:
-                    dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "antenna", station)
-        except NameError:
-            log.warn("Antenna module not imported.")
-            return ExitStatus.warn
-            
-        except (MissingDataError, ValueError):
-            log.warn(f"Station '{station}' unknown in source '{source_path}'.")
-            return ExitStatus.warn
-        try:
-            rcvh = Receiver.get_history(site_info_source, source_data, station, source_path)
-            for date in rcvh[station].date_from:
-                if date >= date_from and date <= date_to:
-                    dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "receiver", station)
-        except NameError:
-            log.warn("Receiver module not imported.")
-            return ExitStatus.warn
-        except (MissingDataError, ValueError):
-            log.warn(f"Station '{station}' unknown in source '{source_path}'.")
-            return ExitStatus.warn
-    
-        # TODO: It seems to that this has worked before. Should be reimplemented again in sesite.receiver modulen!!!
-        #try:
-        #    for date in Receiver.get_history(site_info_source, station, source_path=source_path).firmware_installed:
-        #        dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "firmware change", station)
-        #except NameError:
-        #    log.warn("Receiver module not imported.")
-        #    return ExitStatus.warn
-        #except ValueError:
-        #    log.warn(f"Station '{station}' unknown in source '{source_path}'.")
-        #    return ExitStatus.warn
-    
-        # TODO: This is apriori framework.
-        # site_info = apriori.get("site_info", station=station, date=datetime.now())
-        # dset.meta.add_event(site_info.site_config.operational, "operational", station)
+        anth = info[dset.meta["station"].lower()]["antenna"].history
+        for period, ant in anth.items():
+            date = ant.date_from
+            if date >= date_from and date <= date_to:
+                dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "antenna", dset.meta["station"])
+                
+        rcvh = info[dset.meta["station"].lower()]["receiver"].history
+        for period, rcv in rcvh.items():
+            date = rcv.date_from
+            if date >= date_from and date <= date_to:
+                dset.meta.add_event(Time(val=date, fmt="datetime", scale="utc"), "receiver", dset.meta["station"])
+
     
                 
