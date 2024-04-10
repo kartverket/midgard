@@ -120,6 +120,8 @@ def _rect_bivariate_spline(
     Returns:
         Interpolated value in data grid for a given position
     """
+    # Note: The data point coordinates need to be sorted by increasing order. Therefore the y- (grid_y) and z-values
+    #       (values) has to be rearranged.
     interp_spline = RectBivariateSpline(np.flip(grid_y[:,0]), grid_x[0], np.flipud(values))
     
     return interp_spline.ev(np.array(y),np.array(x))
