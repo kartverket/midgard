@@ -585,7 +585,6 @@ class Rinex2Parser(ChainParser):
 
             obs = {
                 "station": self.meta["marker_name"].lower(),  # vars['station'],
-                "site_id": self.meta["marker_name"].upper(),
                 "system": sys,
                 "satellite": sat,
                 "satnum": sat_num,
