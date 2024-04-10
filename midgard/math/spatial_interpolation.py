@@ -1,114 +1,145 @@
-"""Methods for spatial interpolation in numpy arrays
+"""Methods for spatial interpolating (2D-interpolation) in numpy arrays
 
 Description:
 ------------
 
+Different interpolation methods are decorated with `@register_interpolator` and will then become available for use as
+`kind` in `interpolate` function.
 
 
 Example:
 --------
 
-TODO
+    >>> import numpy as np
+    >>> np.set_printoptions(precision=3, suppress=True)
+    >>> x = np.linspace(-1, 1, 11)
+    >>> y = x**3 - x
+    >>> y
+    array([ 0.   ,  0.288,  0.384,  0.336,  0.192,  0.   , -0.192, -0.336,
+           -0.384, -0.288,  0.   ])
+
+    >>> x_new = np.linspace(-0.8, 0.8, 11)
+    >>> interpolate(x, y, x_new, kind='cubic')
+    array([ 0.288,  0.378,  0.369,  0.287,  0.156, -0.   , -0.156, -0.287,
+           -0.369, -0.378, -0.288])
+
+
+Developer info:
+---------------
+
+To add your own interpolators, you can simply decorate your interpolator functions with `@register_interpolator`. Your
+interpolator function should have the signature
+
+    (x: np.ndarray, y: np.ndarray) -> Callable
+
+For instance, the following would implement a terrible interpolation function that sets all values to zero:
+
+    from midgard.math.interpolation import register_interpolator
+
+    @register_interpolator
+    def zero(x: np.ndarray, y: np.ndarray) -> Callable:
+
+        def _zero(x_new: np.ndarray) -> np.ndarray:
+            return np.zeros(y.shape)
+
+        return _zero
+
+This function would then be available as an interpolator. For instance, one could do
+
+    >>> interpolate(x, y, x_new, kind='zero')  # doctest: +SKIP
+    array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 
 """
-
+# Standard library imports
+from typing import Any, Callable, Dict, List
 
 # Third party imports
 import numpy as np
-from scipy.interpolate import griddata, RectBivariateSpline
+import scipy.interpolate 
+
+# Midgard imports
+from midgard.dev import exceptions
 
 
-def interpolate_for_position(
-                    grid_x: np.ndarray, 
-                    grid_y: np.ndarray, 
-                    values: np.ndarray, 
-                    x: float,
-                    y: float, 
-                    method: str="RectBivariateSpline",
-) -> float:
-    """Interpolation in grid with size (n, m) for a given position
-    
-    Interpolation is either based on scipy.interpolate.RectBivariateSpline or scipy.interpolate.griddata module. 
-    
+# Dictionary of Enumerations. Populated by the @register_enum-decorators.
+_INTERPOLATORS: Dict[str, Callable] = dict()
+
+
+def register_interpolator(func: Callable) -> Callable:
+    """Register an interpolation function
+
+    This function should be used as a @register_interpolator-decorator
+
+    Args:
+        func: Function that will be registered as an interpolator.
+
+    Returns:
+        Same function.
+    """
+    name = func.__name__
+    _INTERPOLATORS[name] = func
+    return func
+
+
+def interpolators() -> List[str]:
+    """Return a list of available interpolators
+
+    Returns:
+        Names of available interpolators.
+    """
+    return sorted(_INTERPOLATORS)
+
+
+def interpolate(
+        grid_x: np.ndarray, 
+        grid_y: np.ndarray, 
+        values: np.ndarray, 
+        x: float,
+        y: float,
+        kind: str, 
+        **kwargs: Any,
+) -> np.ndarray:
+    """Interpolate values from one x-array to another
+
+    See `interpolators()` for a list of valid interpolators.
+
     Args:
         grid_x: (n,m) Array with x-positions for each grid point 
         grid_y: (n,m) Array with y-positions for each grid point 
         values: (n,m) Array with data values for each grid point
         x:            x-position
         y:            y-position
-        method: Method of interpolation:
-                    RectBivariateSpline:  Based on scipy.interpolate.RectBivariateSpline module.
-                    griddata:             Based on scipy.interpolate.griddata module (slow, but more accurate).
-                    
+        kind:         Name of interpolator to use.
+        kwargs:       Keyword arguments passed on to the interp1d-interpolator.
+
     Returns:
-        Interpolated value in data grid for a given position
+        Array of interpolated y-values.
     """
+    interpolator = _get_interpolator(kind)(grid_x, grid_y, values, x, y, **kwargs)
+    return interpolator
 
-    if grid_x.shape != grid_y.shape or grid_x.shape != values.shape:
-        raise ValueError(f"Invalid number of dimensions of array with x-positions {grid_x.shape}, y-positions "
-                         f"{grid_y.shape} and/or values {values.shape}.")
 
-    if x < grid_x[0][0] or x > grid_x[0][-1]:
-        raise ValueError(f"Given x-position {x:.3f} exceeds grid x-position boundaries [left: {grid_x[0][0]:.3f}, right: {grid_x[0][-1]:.3f}]")
-
-    if y < grid_y[-1][0] or y > grid_y[0][0]:
-        raise ValueError(f"Given y-position {y:.3f} exceeds grid y-position boundaries [top: {grid_y[-1][0]:.3f}, bottom: {grid_y[0][0]:.3f}]")    
-
-    if method == "RectBivariateSpline":
-        interpolated_val = _rect_bivariate_spline(grid_x, grid_y, values, x, y)
-    
-    elif method == "griddata":
-        interpolated_val = _griddata(grid_x, grid_y, values, x, y)
-    else:
-        raise ValueError(f"Interpolation method {method} is unknown.")
-        
-    return interpolated_val
-    
-    
-def _griddata(
+#
+# INTERPOLATORS
+# 
+@register_interpolator
+def griddata(
         grid_x: np.ndarray, 
         grid_y: np.ndarray, 
         values: np.ndarray, 
         x: float,
         y: float, 
-        method: str="linear",
+        **kwargs: Any,
 ) -> float:
-    """Interpolation in grid with size (n, m) for a given position
+    """Griddata interpolation through the given points
+
+    Interpolation is based on scipy.interpolate.griddata module.
     
-    Interpolation is based on scipy.interpolate.griddata module. More information about this module can be found under:
-        https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html
-    
-    Args:
-        grid_x: (n,m) Array with x-positions for each grid point 
-        grid_y: (n,m) Array with y-positions for each grid point 
-        values: (n,m) Array with data values for each grid point
-        x:            x-position
-        y:            y-position
-        method: Method of interpolation:
+    The 'method' argument can e.g. be chosen as additional griddata keyword argument 'kwargs'. Following interpolation
+    methods can be chosen via the 'method' argument:
                     linear:  tessellate the input point set to N-D simplices, and interpolate linearly on each simplex
                     nearest: value of data point closest to the point of interpolation
-                    cubic:   value determined from a piecewise cubic
-                    
-    Returns:
-        Interpolated value in data grid for a given position
-    """
-    grid_points = np.array([grid_x.flatten(), grid_y.flatten()]).T
-    
-    return griddata(grid_points, values.flatten(), (x, y), method=method)
-    
-    
-def _rect_bivariate_spline(
-        grid_x: np.ndarray, 
-        grid_y: np.ndarray, 
-        values: np.ndarray, 
-        x: float,
-        y: float, 
-) -> float:
-    """Interpolation in grid with size (n, m) for a given position
-    
-    Interpolation is based on scipy.interpolate.RectBivariateSpline module. More information about this module can be
-    found under:
-        https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RectBivariateSpline.html
+                    cubic:   value determined from a piecewise cubic 
     
     Args:
         grid_x: (n,m) Array with x-positions for each grid point 
@@ -116,12 +147,106 @@ def _rect_bivariate_spline(
         values: (n,m) Array with data values for each grid point
         x:            x-position
         y:            y-position
-                    
+        kwargs:       Keyword arguments passed on to the griddata-interpolator.
+
+    Returns:
+        Interpolated value in data grid for a given position
+    """
+    method = kwargs["method"] if "method" in kwargs.keys() else "linear"
+    
+    grid_points = np.array([grid_x.flatten(), grid_y.flatten()]).T
+    
+    return scipy.interpolate.griddata(grid_points, values.flatten(), (x, y), method=method)
+    
+    
+@register_interpolator
+def rect_bivariate_spline(
+        grid_x: np.ndarray, 
+        grid_y: np.ndarray, 
+        values: np.ndarray, 
+        x: float,
+        y: float, 
+        **kwargs: Any,
+) -> float:
+    """RectBivariateSpline interpolation through the given points
+
+    Interpolation is based on scipy.interpolate.RectBivariateSpline module.
+    
+    Args:
+        grid_x: (n,m) Array with x-positions for each grid point 
+        grid_y: (n,m) Array with y-positions for each grid point 
+        values: (n,m) Array with data values for each grid point
+        x:            x-position
+        y:            y-position
+        kwargs:       Keyword arguments passed on to the RectBivariateSpline-interpolator.
+
     Returns:
         Interpolated value in data grid for a given position
     """
     # Note: The data point coordinates need to be sorted by increasing order. Therefore the y- (grid_y) and z-values
     #       (values) has to be rearranged.
-    interp_spline = RectBivariateSpline(np.flip(grid_y[:,0]), grid_x[0], np.flipud(values))
+    interp = scipy.interpolate.RectBivariateSpline(np.flip(grid_y[:,0]), grid_x[0], np.flipud(values))
     
-    return interp_spline.ev(np.array(y),np.array(x))
+    return interp.ev(np.array(y),np.array(x))
+    
+    
+@register_interpolator
+def regular_grid_interpolator(
+        grid_x: np.ndarray, 
+        grid_y: np.ndarray, 
+        values: np.ndarray, 
+        x: float,
+        y: float, 
+        **kwargs: Any,
+) -> float:
+    """RegularGridInterpolator interpolation through the given points
+
+    Interpolation is based on scipy.interpolate.RegularGridInterpolator module.
+    
+    Args:
+        grid_x: (n,m) Array with x-positions for each grid point 
+        grid_y: (n,m) Array with y-positions for each grid point 
+        values: (n,m) Array with data values for each grid point
+        x:            x-position
+        y:            y-position
+        kwargs:       Keyword arguments passed on to the RegularGridInterpolator-interpolator.
+
+    Returns:
+        Interpolated value in data grid for a given position
+    """
+    interp = scipy.interpolate.RegularGridInterpolator((np.flip(grid_y[:,0]), grid_x[0]), np.flipud(values))
+    if type(x) == float or type(x) == np.float64:
+        x = np.array([x])
+        y = np.array([y])
+    points = list(map(lambda coord: list(coord), zip(y,x)))
+
+    return interp(points)
+    
+       
+#
+# AUXILIARY FUNCTIONS
+#    
+def _get_interpolator(name: str) -> Callable:
+    """Return an interpolation function
+
+    Interpolation functions are registered by the @register_interpolator-decorator. The name-parameter corresponds to
+    the function name of the interpolator.
+
+    Args:
+        name:  Name of interpolator.
+
+    Returns:
+        Interpolation function with the given name.
+    """
+    try:
+        return _INTERPOLATORS[name]
+    except KeyError:
+        interpolator_list = ", ".join(interpolators())
+        raise exceptions.UnknownPluginError(
+            f"Interpolator '{name}' is not defined. Available interpolators are {interpolator_list}."
+        ) from None
+    
+
+
+
+
