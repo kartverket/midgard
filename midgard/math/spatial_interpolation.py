@@ -10,18 +10,22 @@ Different interpolation methods are decorated with `@register_interpolator` and 
 Example:
 --------
 
-    >>> import numpy as np
-    >>> np.set_printoptions(precision=3, suppress=True)
-    >>> x = np.linspace(-1, 1, 11)
-    >>> y = x**3 - x
-    >>> y
-    array([ 0.   ,  0.288,  0.384,  0.336,  0.192,  0.   , -0.192, -0.336,
-           -0.384, -0.288,  0.   ])
+import numpy as np
+from midgard.math import spatial_interpolation
 
-    >>> x_new = np.linspace(-0.8, 0.8, 11)
-    >>> interpolate(x, y, x_new, kind='cubic')
-    array([ 0.288,  0.378,  0.369,  0.287,  0.156, -0.   , -0.156, -0.287,
-           -0.369, -0.378, -0.288])
+# Generate grid input data
+x = np.arange(-5.01, 5.01, 0.25)
+y = np.arange(-5.01, 5.01, 0.25)
+grid_x, grid_y = np.meshgrid(x, y)
+values = np.sin(xx**2+yy**2)
+
+# Define data points for interplation
+xnew = np.arange(-5.01, 5.01, 1e-2)
+ynew = np.arange(-5.01, 5.01, 1e-2)
+
+# Interpolate for given data points
+values_new = spatial_interpolation.interpolate(grid_x, grid_y, values, xnew, ynew, kind="griddata")
+
 
 
 Developer info:
@@ -30,28 +34,16 @@ Developer info:
 To add your own interpolators, you can simply decorate your interpolator functions with `@register_interpolator`. Your
 interpolator function should have the signature
 
-    (x: np.ndarray, y: np.ndarray) -> Callable
-
-For instance, the following would implement a terrible interpolation function that sets all values to zero:
-
-    from midgard.math.interpolation import register_interpolator
-
-    @register_interpolator
-    def zero(x: np.ndarray, y: np.ndarray) -> Callable:
-
-        def _zero(x_new: np.ndarray) -> np.ndarray:
-            return np.zeros(y.shape)
-
-        return _zero
-
-This function would then be available as an interpolator. For instance, one could do
-
-    >>> interpolate(x, y, x_new, kind='zero')  # doctest: +SKIP
-    array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+    (   grid_x: np.ndarray, 
+        grid_y: np.ndarray, 
+        values: np.ndarray, 
+        x: Union[float, np.ndarray],
+        y: Union[float, np.ndarray],
+    ) -> np.ndarray
 
 """
 # Standard library imports
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Union
 
 # Third party imports
 import numpy as np
@@ -94,8 +86,8 @@ def interpolate(
         grid_x: np.ndarray, 
         grid_y: np.ndarray, 
         values: np.ndarray, 
-        x: float,
-        y: float,
+        x: Union[float, np.ndarray],
+        y: Union[float, np.ndarray],
         kind: str, 
         **kwargs: Any,
 ) -> np.ndarray:
@@ -127,10 +119,10 @@ def griddata(
         grid_x: np.ndarray, 
         grid_y: np.ndarray, 
         values: np.ndarray, 
-        x: float,
-        y: float, 
+        x: Union[float, np.ndarray],
+        y: Union[float, np.ndarray],
         **kwargs: Any,
-) -> float:
+) -> np.ndarray:
     """Griddata interpolation through the given points
 
     Interpolation is based on scipy.interpolate.griddata module.
@@ -164,10 +156,10 @@ def rect_bivariate_spline(
         grid_x: np.ndarray, 
         grid_y: np.ndarray, 
         values: np.ndarray, 
-        x: float,
-        y: float, 
+        x: Union[float, np.ndarray],
+        y: Union[float, np.ndarray], 
         **kwargs: Any,
-) -> float:
+) -> np.ndarray:
     """RectBivariateSpline interpolation through the given points
 
     Interpolation is based on scipy.interpolate.RectBivariateSpline module.
@@ -195,10 +187,10 @@ def regular_grid_interpolator(
         grid_x: np.ndarray, 
         grid_y: np.ndarray, 
         values: np.ndarray, 
-        x: float,
-        y: float, 
+        x: Union[float, np.ndarray],
+        y: Union[float, np.ndarray], 
         **kwargs: Any,
-) -> float:
+) -> np.ndarray:
     """RegularGridInterpolator interpolation through the given points
 
     Interpolation is based on scipy.interpolate.RegularGridInterpolator module.
