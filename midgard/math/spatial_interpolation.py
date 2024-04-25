@@ -107,6 +107,17 @@ def interpolate(
     Returns:
         Array of interpolated y-values.
     """
+    # Check if data points for interpolation are in the boundary of the grid
+    if not (
+        x >= np.min(grid_x)
+        and x <= np.max(grid_x)
+        and y >= np.min(grid_y)
+        and y <= np.max(grid_y)
+    ):
+        raise ValueError(
+            f"Given data points for interpolation (x: {x}, y: {y}) exceeds grid boundaries (x_min: {np.min(grid_x)}, x_max: {np.max(grid_x)}, y_min: {np.min(grid_y)}, y_max: {np.max(grid_y)})"
+        )
+
     interpolator = _get_interpolator(kind)(grid_x, grid_y, values, x, y, **kwargs)
     return interpolator
 
@@ -145,7 +156,6 @@ def griddata(
         Interpolated value in data grid for a given position
     """
     method = kwargs["method"] if "method" in kwargs.keys() else "linear"
-    
     grid_points = np.array([grid_x.flatten(), grid_y.flatten()]).T
     
     return scipy.interpolate.griddata(grid_points, values.flatten(), (x, y), method=method)
