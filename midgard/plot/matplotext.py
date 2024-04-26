@@ -555,13 +555,6 @@ class MatPlotExt:
                     orientation="vertical",
                     label=self.options["colorbar_label"],
             )
-
-        # Adjust plot axes (to place title correctly)
-        if self.options["projection"] == "polar":
-            fig.subplots_adjust(top=0.83)
-        #else:
-        #    fig.subplots_adjust(top=0.92)
-    
         
         # Save plot as file or show it on console
         if self.options["plot_to"] == "console":
@@ -765,12 +758,6 @@ class MatPlotExt:
         # Rotates and right aligns the x labels, and moves the bottom of the axes up to make room for them
         if isinstance(x_array[0], datetime):
             fig.autofmt_xdate()
-    
-        ## Adjust plot axes (to place title correctly)
-        #fig.subplots_adjust(top=0.92)
-
-        # Automatically adjusts subplot params so that the subplot(s) fits in to the figure area
-        #fig.tight_layout()
         
         # Save plot as file or show it on console
         if self.options["plot_to"] == "console":
