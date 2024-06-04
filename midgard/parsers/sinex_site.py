@@ -159,7 +159,7 @@ class SinexSiteParser(SinexParser):
             }  # Generate dictionary with all SINEX field entries
             add_dict["antenna_type"], add_dict["radome_type"] = d[
                 "antenna_type"
-            ].split()
+            ].rsplit(" ", maxsplit=1)
             self.data.setdefault(site_key, dict())
             self.data[site_key].setdefault("site_antenna", list())
             self.data[site_key]["site_antenna"].append(add_dict)
