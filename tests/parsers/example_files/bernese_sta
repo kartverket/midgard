@@ -9,36 +9,46 @@ TYPE 001: RENAMING OF STATIONS
 
 STATION NAME          FLG          FROM                   TO         OLD STATION NAME      REMARK
 ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************
-ADAC 10337M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ADAC*                 From ADAC0540.13O
-ALES 10336M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ALES*                 From ALES0540.13O
-ANDO 10333M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ANDO*                 From ANDO0540.13O
-ARGI 10117M002        001  2008 09 25 00 00 00                       ARGI*                 argi_20161112.log
+ADAC                  001  1980 01 06 00 00 00  2099 12 31 00 00 00  ADAC*                 From ADAC0540.13O
+AKRC                  001  1980 01 06 00 00 00  2099 12 31 00 00 00  AKRC*                 From AKRC0540.13O
+ALES                  001  1980 01 06 00 00 00  2099 12 31 00 00 00  ALES*                 From ALES0540.13O
+ALRT                  001  1980 01 06 00 00 00  2099 12 31 00 00 00  ALRT*                 From ALRT0540.13O
 
 
 TYPE 002: STATION INFORMATION
 -----------------------------
 
-STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP      DESCRIPTION             REMARK
-****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  **********************  ************************
-ARGI 10117M002        001  2008 09 25 00 00 00  2016 11 11 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     6.00       
-ARGI 10117M002        001  2016 11 11 00 00 00  2017 04 19 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     9.20       
-ARGI 10117M002        001  2017 04 19 00 00 00  2099 12 31 00 00 00  TRIMBLE NETR9                   5548R50598  850598  TRM57971.00     TZGD            1551009151    9151    0.0000    0.0000    0.0054  Argir, Torshavn, FO     5.22       
-
+STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP     AZIMUTH  LONG NAME  DESCRIPTION             REMARK
+****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************
+ALRT                  001  2002 07 16 00 00 00  2011 05 20 15 45 00  ASHTECH UZ-12         ZR520                    520  ASH701945D_M    NONE  CR520020903           999999    0.0000    0.0000    0.1000     0.0  ALRT00CAN  Alert (Ellesmere Islan  IGS.SNX
+ALRT                  001  2011 05 20 15 51 00  2099 12 31 00 00 00  ASHTECH UZ-12         UC220                    220  ASH701945D_M    NONE  CR520020903           999999    0.0000    0.0000    0.1000     0.0  ALRT00CAN  Alert (Ellesmere Islan  IGS.SNX
+ARTU                  001  1999 08 05 00 00 00  2018 09 06 05 00 00  ASHTECH Z-XII3                              999999  ASH700936D_M    DOME  CR13077               999999    0.0000    0.0000    0.0796     0.0  ARTU00RUS  Arti, Russian Federati  IGS.SNX
+ARTU                  001  2018 09 06 09 30 00  2099 12 31 00 00 00  JAVAD TRE_G3TH DELTA                        999999  ASH700936D_M    DOME  CR13077               999999    0.0000    0.0000    0.0796     0.0  ARTU00RUS  Arti, Russian Federati  IGS.SNX
+BOR1                  001  1994 01 10 00 00 00  1999 05 31 00 00 00  ROGUE SNR-8000        00196                    196  AOAD/M_T        NONE  00271                 999999    0.0000    0.0000    0.0621     0.0  BOR100POL  Borowiec, PL            2.8
+BOR1                  001  1999 05 31 00 00 00  1999 08 27 00 00 00  ROGUE SNR-8000        00196                    196  AOAD/M_T        NONE  418                   999999    0.0000    0.0000    0.0624     0.0  BOR100POL  Borowiec, PL            2.8
+BOR1                  001  1999 08 27 00 00 00  2002 03 06 00 00 00  ROGUE SNR-8000        T196                     196  AOAD/M_T        NONE  418                   999999    0.0000    0.0000    0.0624     0.0  BOR100POL  Borowiec, PL            3.2.32.9
+BOR1                  001  2002 03 06 00 00 00  2007 07 08 00 00 00  ROGUE SNR-8000        T196                     196  AOAD/M_T        NONE  418                   999999    0.0000    0.0000    0.0624     0.0  BOR100POL  Borowiec, PL            3.2.32.11
+BOR1                  001  2007 07 08 00 00 00  2008 03 06 00 00 00  TRIMBLE NETRS         4623116529            116529  AOAD/M_T        NONE  418                   999999    0.0000    0.0000    0.0624     0.0  BOR100POL  Borowiec, PL            1.1-3
+BOR1                  001  2008 03 06 00 00 00  2016 10 05 00 00 00  TRIMBLE NETRS         4623116529            116529  AOAD/M_T        NONE  418                   999999    0.0000    0.0000    0.0624     0.0  BOR100POL  Borowiec, PL            1.2-0  Apr 26 2007
+BOR1                  001  2016 10 05 00 00 00  2099 12 31 00 00 00  TRIMBLE NETR9         5420R48510             48510  TRM59800.00     NONE  418                   999999    0.0000    0.0000    0.0622     0.0  BOR100POL  Borowiec, PL            5.14
 
 TYPE 003: HANDLING OF STATION PROBLEMS
 --------------------------------------
 
 STATION NAME          FLG          FROM                   TO         REMARK
 ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************
-STAS 10330M001        001  2007 05 02 00 00 00  2007 06 30 00 00 00  DEFEKT ANTENNE
-KAUS 10346M001        001  2010 06 14 00 00 00  2010 09 05 00 00 00  ANTENNEBYTTE, TID UTEN KALIB.
-HFS4 10325M003        001  2010 01 01 00 00 00  2010 03 23 00 00 00  FEIL ANTENNE F\D8RSTE UKER
-ALES 10336M001        001  1997 01 01 00 00 00  1999 12 31 23 59 59  Unknown radom and antenna mount
+BRGS                  001  2000 01 01 00 00 00  2007 04 27 00 00 00  VILL ANTENNE
+KYRC                  001  2007 11 20 00 00 00  2008 12 20 00 00 00  HYDEHOPP
+STAS                  001  2007 05 02 00 00 00  2007 06 30 00 00 00  DEFEKT ANTENNE
+METS                  001  2010 08 01 00 00 00  2010 09 27 00 00 00  ANTENNEBYTTE, IKKE OMREGNET.
+KAUS                  001  2010 06 14 00 00 00  2010 09 05 00 00 00  ANTENNEBYTTE, TID UTEN KALIB.
+BJUC                  001  2011 08 01 00 00 00  2011 08 10 00 00 00  BYGGEARBEID
+
 
 
 TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
 -----------------------------------------------------
-                                        RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY
+                                            RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY
 STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP
 ****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****
 
@@ -50,16 +60,6 @@ STATION NAME          FLG  FROM                 TO                   MARKER TYPE
 ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************
 
 
-
-
-TYPE/FLAG  DESCRIPTION
---------------------------------------------------------------------------------
-
-001 001: RENAME STATION IN ALL PROGRAMS. NEW NAME IS USED FOR ALL FLAGS BELOW
-001 002: RENAME STATION RXOBV3. WILDCARDS ALLOWED. NEW NAME IS USED FOR ALL FLAGS BELOW
-001 003: RENAME STATION IN ADDNEQ. NEW NAME IS USED FOR ALL FLAGS BELOW
-
-002 001: STATION INFORMATION RECORD
 
 003 001: EXCLUDE STATION IN ALL PROGRAMS
 003 003: EXCLUDE STATION IN ADDNEQ (PREELIMINATION)
