@@ -1,11 +1,11 @@
-"""A parser for reading station information in Bernese STA format
+"""A parser for reading station information in Bernese STA format in Bernese v5.4 format
 
 
 Example:
 --------
 
     from midgard import parsers
-    p = parsers.parse_file(parser_name='bernese_sta', file_path='NKG.STA')
+    p = parsers.parse_file(parser_name='bernese_sta_v52', file_path='NKG.STA')
     data = p.as_dict()
 
 Description:
@@ -28,14 +28,14 @@ from midgard.parsers import ChainParser, ParserDef
 
 @plugins.register
 class BerneseStaParser(ChainParser):
-    """A parser for reading station information in Bernese STA format
+    """A parser for reading station information in Bernese STA format in Bernese v5.4 format
 
 
     The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key and a list with 
     station information dictionaries with following entries:
 
-    | Key                          | Type     |Description                                                         |
-    |------------------------------|----------|--------------------------------------------------------------------|
+    | Key                          | Type     | Description                                                        |
+    | :--------------------------- | :------- | :----------------------------------------------------------------- |
     | antenna_serial_number        | str      | Antenna serial number                                              |
     | antenna_serial_number_short  | str      | 6 last digits of antennna serial number                            |
     | antenna_type                 | str      | Antenna type                                                       |
@@ -95,15 +95,15 @@ class BerneseStaParser(ChainParser):
         # TYPE 002: STATION INFORMATION
         # -----------------------------
         #
-        # STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP      DESCRIPTION             REMARK
-        # ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  **********************  ************************
-        # ARGI 10117M002        001  2008 09 25 00 00 00  2016 11 11 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     6.00       
-        # ARGI 10117M002        001  2016 11 11 00 00 00  2017 04 19 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     9.20       
-        # ARGI 10117M002        001  2017 04 19 00 00 00  2099 12 31 00 00 00  TRIMBLE NETR9                   5548R50598  850598  TRM57971.00     TZGD            1551009151    9151    0.0000    0.0000    0.0054  Argir, Torshavn, FO     5.22       
-        # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5---
+        # STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP     AZIMUTH  LONG NAME  DESCRIPTION             REMARK
+        # ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************
+        # ALRT                  001  2002 07 16 00 00 00  2011 05 20 15 45 00  ASHTECH UZ-12         ZR520                    520  ASH701945D_M    NONE  CR520020903           999999    0.0000    0.0000    0.1000     0.0  ALRT00CAN  Alert (Ellesmere Islan  IGS.SNX
+        # ALRT                  001  2011 05 20 15 51 00  2099 12 31 00 00 00  ASHTECH UZ-12         UC220                    220  ASH701945D_M    NONE  CR520020903           999999    0.0000    0.0000    0.1000     0.0  ALRT00CAN  Alert (Ellesmere Islan  IGS.SNX
+        # ARTU                  001  1999 08 05 00 00 00  2018 09 06 05 00 00  ASHTECH Z-XII3                              999999  ASH700936D_M    DOME  CR13077               999999    0.0000    0.0000    0.0796     0.0  ARTU00RUS  Arti, Russian Federati  IGS.SNX      
+        # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7
         station_information_parser = ParserDef(
             end_marker=lambda _l, _ln, next_line: next_line.strip().startswith("TYPE 003: HANDLING OF STATION PROBLEMS"),
-            label=lambda line, _ln: bool(re.match("\w\w\w\w ", line)),
+            label=lambda line, _ln: bool(re.match(r"\w\w\w\w ", line)),
             parser_def={
                 True: {   
                     "parser": self._station_information,
@@ -123,8 +123,10 @@ class BerneseStaParser(ChainParser):
                         "eccentricity_north": (172, 181),
                         "eccentricity_east": (182, 191),
                         "eccentricity_up": (192, 201),
-                        "description": (202, 225),
-                        "remark": (226, None),
+                        "azimuth": (202, 209),
+                        "long_name": (210, 220),
+                        "description": (221, 244),
+                        "remark": (245, None),
                     },
                 },
             },
