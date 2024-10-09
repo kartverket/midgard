@@ -44,6 +44,9 @@ class MissingSectionError(MidgardException):
     pass
 
 
+class MissingSiteInfoError(MidgardException):
+    pass
+
 class ParserError(MidgardException):
     pass
 
