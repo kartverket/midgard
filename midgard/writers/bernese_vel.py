@@ -56,7 +56,8 @@ def bernese_vel(
     #
     plate_def = {
         "african": "AFRC",
-        "anatolian": "TODO", # what is the correct abbreviation for this plate?
+        "amurian": "AMUR", #TODO: Is the abbreviation correct?
+        "anatolian": "EURA", #TODO: What is the correct abbreviation for this plate?
         "antarctic": "ANTA",
         "antarctica": "ANTA",
         "arabian": "ARAB",
