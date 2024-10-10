@@ -131,18 +131,18 @@ def gipsyx_site_info(
                 "site_coord" in site_info[station]
             ):
                 if site_info[station]["site_coord"].history:
-                    for date, pos in site_info[station]["site_coord"].history.items():
+                    for date, crd in site_info[station]["site_coord"].history.items():
                         fid.write(
                             "{station:6}{id_:7}{date_from:21}{x:17.9e}{y:23.9e}{z:23.9e}{vx:23.9e}{vy:23.9e}{vz:23.9e}\n".format(
                                 station=station.upper(),
                                 id_="STATE",
                                 date_from=date[0].strftime("%Y-%m-%d %H:%M:%S"),
-                                x=pos.pos.trs.x,
-                                y=pos.pos.trs.y,
-                                z=pos.pos.trs.z,
-                                vx=pos.vel[0], 
-                                vy=pos.vel[1], 
-                                vz=pos.vel[2], 
+                                x=crd.pos.trs.x,
+                                y=crd.pos.trs.y,
+                                z=crd.pos.trs.z,
+                                vx=crd.vel[0], 
+                                vy=crd.vel[1], 
+                                vz=crd.vel[2], 
                             )
                         )
 
