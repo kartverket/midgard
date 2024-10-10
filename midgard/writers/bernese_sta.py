@@ -143,8 +143,8 @@ def bernese_sta(
                         rcv_serial_short=re.sub("[^0-9]", "", rcv.serial_number)[-6:],
                         ant=ant.type,
                         radome=ant.radome_type if ant.radome_type else "NONE",
-                        ant_serial="999999", #TODO: Should be changed if individual antenna calibration is available. (ant.serial_number)
-                        ant_serial_short="999999",#TODO: Should be changed if individual antenna calibration is available. (re.sub("[^0-9]", "", ant.serial_number)[-6:])
+                        ant_serial=ant.serial_number,
+                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-6:] if ant.calibration else "999999",
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,
