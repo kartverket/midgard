@@ -63,7 +63,7 @@ from midgard.parsers import Parser
 class ApiWaterLevelNorwayParser(Parser):
     """A parser for reading water level data from open Norwegian water level API
 
-    See https://api.sehavniva.no/tideapi_no.html for an example
+    See https://vannstand.kartverket.no/tideapi_no.html for an example
 
     Following **data** are available after water level data:
 
@@ -83,7 +83,7 @@ class ApiWaterLevelNorwayParser(Parser):
     | __url__             | URL of water level API                                                                |
     """
 
-    URL = "https://api.sehavniva.no/tideapi.php"
+    URL = "https://vannstand.kartverket.no/tideapi.php"
 
     def __init__(
             self, 
