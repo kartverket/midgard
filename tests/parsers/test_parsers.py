@@ -111,14 +111,23 @@ def test_parser_bernese_crd():
     """Test that parsing bernese_crd gives expected output"""
     parser = get_parser("bernese_crd").as_dict()
 
-    assert len(parser) == 5
+    assert len(parser) == 3
     assert "aasc" in parser
     assert "domes" in parser["aasc"]
-
-
+    
 def test_parser_bernese_sta():
     """Test that parsing bernese_sta gives expected output"""
     parser = get_parser("bernese_sta").as_dict()
+
+    assert len(parser) == 3
+    assert "alrt" in parser
+    assert "date_from" in parser["alrt"][0]
+    assert "ASHTECH UZ-12" == parser["alrt"][0]["receiver_type"]
+    assert "ALRT00CAN" == parser["alrt"][0]["long_name"]
+
+def test_parser_bernese_sta_v52():
+    """Test that parsing bernese_sta_v52 gives expected output"""
+    parser = get_parser("bernese_sta_v52").as_dict()
 
     assert len(parser) == 1
     assert "argi" in parser
@@ -217,7 +226,7 @@ def test_parser_gipsyx_residual():
 
     assert len(parser) == 10
     assert "time_past_j2000" in parser
-    assert 375969900.0 in parser["time_past_j2000"]
+    assert 757339200.0 in parser["time_past_j2000"]
 
 
 def test_parser_gipsyx_summary():
@@ -334,10 +343,10 @@ def test_parser_sinex_site():
     parser = get_parser("sinex_site").as_dict()
 
     assert len(parser) == 3
-    assert "aasc" in parser
-    assert "site_id" in parser["aasc"]
-    assert "site_code" in parser["aasc"]["site_id"]
-    assert "AASC" in parser["aasc"]["site_id"]["site_code"]
+    assert "brux" in parser
+    assert "site_id" in parser["brux"]
+    assert "site_code" in parser["brux"]["site_id"]
+    assert "brux" in parser["brux"]["site_id"]["site_code"]
 
 
 def test_parser_spring_csv():
@@ -353,9 +362,9 @@ def test_parser_ssc_site():
     """Test that parsing ssc_site gives expected output"""
     parser = get_parser("ssc_site").as_dict()
 
-    assert len(parser) == 4
-    assert "toul" in parser
-    assert "site_id" in parser["toul"]
+    assert len(parser) == 3
+    assert "brux" in parser
+    assert "site_id" in parser["brux"]
 
 
 def test_parser_terrapos_position():
