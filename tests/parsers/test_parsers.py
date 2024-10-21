@@ -248,6 +248,33 @@ def test_parser_gipsyx_tdp():
     assert 375969900.0 in parser["time_past_j2000"]
 
 
+def test_parser_gnssrefl_allrh():
+    """Test that parsing gnssrefl_allrh gives expected output"""
+    parser = get_parser("gnssrefl_allrh").as_dict()
+    
+    assert len(parser) == 7
+    assert "satellite" in parser
+    assert 15.0 == parser["satellite"][0]
+  
+
+def test_parser_gnssrefl_snr():
+    """Test that parsing gnssrefl_snr gives expected output"""
+    parser = get_parser("gnssrefl_snr", example_path="./example_files/stat2740.24.snr66").as_dict()
+    
+    assert len(parser) == 12
+    assert "satellite" in parser
+    assert 314.0 == parser["satellite"][0]
+     
+
+def test_parser_gnssrefl_txt():
+    """Test that parsing gnssrefl_txt gives expected output"""
+    parser = get_parser("gnssrefl_txt").as_dict()
+    
+    assert len(parser) == 14
+    assert "satellite" in parser
+    assert 2.0 == parser["satellite"][0]
+
+
 def test_parser_glab_output():
     """Test that parsing glab_output gives expected output"""
     parser = get_parser("glab_output").as_dict()
