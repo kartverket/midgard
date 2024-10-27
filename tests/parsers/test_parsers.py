@@ -266,13 +266,22 @@ def test_parser_gnssrefl_snr():
     assert 314.0 == parser["satellite"][0]
      
 
-def test_parser_gnssrefl_txt():
-    """Test that parsing gnssrefl_txt gives expected output"""
-    parser = get_parser("gnssrefl_txt").as_dict()
+def test_parser_gnssrefl_gnssir_txt():
+    """Test that parsing gnssrefl_txt gives expected output for 'gnssir' output file"""
+    parser = get_parser("gnssrefl_txt", example_path="./example_files/gnssrefl_gnssir_txt").as_dict()
     
     assert len(parser) == 14
     assert "satellite" in parser
     assert 2.0 == parser["satellite"][0]
+
+
+def test_parser_gnssrefl_subdaily_txt():
+    """Test that parsing gnssrefl_txt gives expected output for 'subdaily' output file"""
+    parser = get_parser("gnssrefl_txt", example_path="./example_files/gnssrefl_subdaily_txt").as_dict()
+    
+    assert len(parser) == 19
+    assert "satellite" in parser
+    assert 10.0 == parser["satellite"][0]
 
 
 def test_parser_glab_output():
