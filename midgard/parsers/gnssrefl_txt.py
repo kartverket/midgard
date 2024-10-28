@@ -46,14 +46,14 @@ class GnssreflTxt(LineParser):
     | elevation_min             | Minimal elevation [deg]                                                         |
     | elevation_rate            | Elevation rate [rad/hour]                                                       |
     | frequency                 | GNSS frequency identifier                                                       |
+    | interfreq_bias_correction | Interfrequency bias correction in [m] (Note: Information added to data.)        |
     | number_of_observation     | Number of SNR observation                                                       |
     | peak2noise                | Peak to noise (maximal amplitude/noise)                                         |
     | reflector_height          | Reflector height in [m]                                                         |
     | reflector_height_with_    | Reflector height with interfrequency corrections in [m]                         |
     |  interfreq_corr           |                                                                                 |
-    | reflector_height_with_    | Reflector height with time varying height corrections (RHDOT) in [m]            |
+    | reflector_height_with_    | Reflector height with time varying height corrections (RHDOT) in [m]            | 
     |  rhdot_corr               |                                                                                 |
-    | rhdot_correction          | Time varying height corrections (RHDOT) in [m]                                  |
     | refraction_model          | Defining used refraction model                                                  |
     |                           |    0: No refraction correction applied                                          |
     |                           |    1: Standard Bennett refraction correction                                    |
@@ -62,6 +62,7 @@ class GnssreflTxt(LineParser):
     |                           |    4: Ulich refraction correction, time-varying                                 |
     |                           |    5: NITE refraction correction (Peng et al.)                                  |
     |                           |    6: MPF refraction correction, Wiliams and Nievinski                          |
+    | rhdot_correction          | Time varying height corrections (RHDOT) in [m]                                  |
     | rising_satellite          | Rising satellite is set to 1 and setting satellite to -1                        | 
     | satellite                 | Satellite number                                                                |
     | satellite_arc_length      | Satellite arc length in [min]                                                   |
@@ -189,7 +190,10 @@ class GnssreflTxt(LineParser):
     def setup_postprocessors(self) -> List[Callable[[], None]]:
         """List steps necessary for postprocessing
         """
-        return [self._add_time_field]
+        return [
+            self._add_time_field,
+            self._add_interfreq_bias_correction_field,
+        ]
 
     def _add_time_field(self) -> None:
         """Add time parameter to data and delete 'year', 'doy', 'hour_utc' and 'mjd'
@@ -202,6 +206,12 @@ class GnssreflTxt(LineParser):
         for key in ["year", "doy", "hour_utc", "hour", "minute", "mjd", "second"]:
             if key in self.data.keys():
                 del self.data[key]
+                
+    def _add_interfreq_bias_correction_field(self) -> None:
+        """Add interfrequency bias correction field to data
+        """
+        if "reflector_height_with_interfreq_corr" in self.data.keys():
+            self.data["interfreq_bias_correction"] = self.data["reflector_height_with_interfreq_corr"] - self.data["reflector_height_with_rhdot_corr"] 
 
 
     #
@@ -213,34 +223,31 @@ class GnssreflTxt(LineParser):
         Returns:
             Midgard Dataset where data can be stored with following fields:
    
-           | Field                  | Type              | Description                                                  |
-           | :--------------------- | :---------------- | :----------------------------------------------------------- |
-           | amplitude              | numpy.array       | Amplitude                                                    |
-           | azimuth                | numpy.array       | Azimuth in [rad]                                             |
-           | elevation_max          | numpy.array       | Maximal elevation [rad]                                      |
-           | elevation_min          | numpy.array       | Minimal elevation [rad]                                      |
-           | elevation_rate         | numpy.array       | Elevation rate [rad/s]                                       |        
-           | frequency              | numpy.array       | GNSS frequency identifier                                    |
-           | number_of_observation  | numpy.array       | Number of SNR observation                                    |
-           | peak2noise             | numpy.array       | Peak to noise (maximal amplitude/noise)                      |
-           | reflector_height       | numpy.array       | Reflector height in [m]                                      |
-           | reflector_height_with_ | numpy.array       | Reflector height with interfrequency corrections in [m]      |
-           |  interfreq_corr        |                   |                                                              |
-           | reflector_height_with_ | numpy.array       | Reflector height with time varying height corrections (RHDOT)|
-           |  rhdot_corr            |                   | in [m]                                                       |
-           | rhdot_correction       | numpy.array       | Time varying height corrections (RHDOT) in [m]               |
-           | refraction_model       | numpy.array       | Defining used refraction model:                              |
-           |                        |                   |    0: No refraction correction applied                       |
-           |                        |                   |    1: Standard Bennett refraction correction                 |
-           |                        |                   |    2: Standard Bennett refraction correction, time-varying   |
-           |                        |                   |    3: Ulich refraction correction                            |
-           |                        |                   |    4: Ulich refraction correction, time-varying              |
-           |                        |                   |    5: NITE refraction correction (Peng et al.)               |
-           |                        |                   |    6: MPF refraction correction, Wiliams and Nievinski       |
-           | rising_satellite       | numpy.array       | Rising satellite if True and setting satellite if False      |
-           | satellite              | numpy.array       | Satellite number                                             |
-           | satellite_arc_length   | numpy.array       | Satellite arc length in [s]                                  |
-           | time                   | Time              | Time                                                         |
+           | Field                     | Type          | Description                                                  |
+           | :------------------------ | :------------ | :----------------------------------------------------------- |
+           | amplitude                 | numpy.array   | Amplitude                                                    |
+           | azimuth                   | numpy.array   | Azimuth in [rad]                                             |
+           | elevation_max             | numpy.array   | Maximal elevation [rad]                                      |
+           | elevation_min             | numpy.array   | Minimal elevation [rad]                                      |
+           | elevation_rate            | numpy.array   | Elevation rate [rad/s]                                       |        
+           | frequency                 | numpy.array   | GNSS frequency identifier                                    |
+           | interfreq_bias_correction | numpy.array   | Interfrequency bias correction in [m]                        |
+           | number_of_observation     | numpy.array   | Number of SNR observation                                    |
+           | peak2noise                | numpy.array   | Peak to noise (maximal amplitude/noise)                      |
+           | reflector_height          | numpy.array   | Reflector height with correction applied in [m]              |
+           | refraction_model          | numpy.array   | Defining used refraction model:                              |
+           |                           |               |    0: No refraction correction applied                       |
+           |                           |               |    1: Standard Bennett refraction correction                 |
+           |                           |               |    2: Standard Bennett refraction correction, time-varying   |
+           |                           |               |    3: Ulich refraction correction                            |
+           |                           |               |    4: Ulich refraction correction, time-varying              |
+           |                           |               |    5: NITE refraction correction (Peng et al.)               |
+           |                           |               |    6: MPF refraction correction, Wiliams and Nievinski       |
+           | rhdot_correction          | numpy.array   | Time varying height corrections (RHDOT) in [m]               |
+           | rising_satellite          | numpy.array   | Rising satellite if True and setting satellite if False      |
+           | satellite                 | numpy.array   | Satellite number                                             |
+           | satellite_arc_length      | numpy.array   | Satellite arc length in [s]                                  |
+           | time                      | Time          | Time                                                         |
                
         """
         
@@ -268,17 +275,18 @@ class GnssreflTxt(LineParser):
                 "elevation_rate": "radian/second",
                 "elevation_max": "radian",
                 "elevation_min": "radian",
+                "interfreq_bias_correction": "meter",
                 "number_of_values": None,
                 "peak2noise": None, 
                 "use_gpt2": None,
                 "reflector_height": "meter",
-                "reflector_height_with_interfreq_corr": "meter",
-                "reflector_height_with_rhdot_corr": "meter",
-                "rhdot_correction": "meter",
+                "reflector_height_with_interfreq_corr": "meter", # Not added to dataset, but unit information is needed.
+                "reflector_height_with_rhdot_corr": "meter", # Not added to dataset, but unit information is needed.
                 "refraction_model": None,
+                "rhdot_correction": "meter",
                 "satellite_arc_length": "second",           
         }
-
+        
         # Initialize dataset
         dset = dataset.Dataset()
         if not self.data:
@@ -341,6 +349,10 @@ class GnssreflTxt(LineParser):
         
         # Add float fields
         for field in float_fields.keys():
+            # Skip fields:
+            if field in ["reflector_height_with_interfreq_corr", "reflector_height_with_rhdot_corr"]:
+                continue
+                
             if field not in self.data.keys():
                 #log.warn(f"Field '{field}' does not exist in file {self.meta['__data_path__']}.")
                 continue
@@ -349,6 +361,11 @@ class GnssreflTxt(LineParser):
                 value = self.data[field] * Unit.deg2rad
             elif field == "elevation_rate":
                 value = self.data[field] * Unit.hour2second
+            elif field == "reflector_height": # Change field values depending on which corrections are available
+                if "reflector_height_with_interfreq_corr" in self.data.keys():
+                    value = self.data["reflector_height_with_interfreq_corr"]
+                elif "reflector_height_with_rhdot_corr" in self.data.keys():
+                    value = self.data["reflector_height_with_rhdot_corr"] 
             elif field == "satellite_arc_length":
                 value = self.data[field] * Unit.minute2second
             else:
