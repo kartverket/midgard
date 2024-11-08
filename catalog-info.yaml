@@ -9,29 +9,3 @@ spec:
   type: "library"
   lifecycle: "production"
   owner: "geodesi_devops"
----
-apiVersion: "backstage.io/v1alpha1"
-kind: "Group"
-metadata:
-  name: "security_champion_midgard"
-  title: "Security Champion midgard"
-spec:
-  type: "security_champion"
-  parent: "geodesi_security_champions"
-  members:
-  - "annsilje"
-  children:
-  - "resource:midgard"
----
-apiVersion: "backstage.io/v1alpha1"
-kind: "Resource"
-metadata:
-  name: "midgard"
-  links:
-  - url: "https://github.com/kartverket/midgard"
-    title: "midgard på GitHub"
-spec:
-  type: "repo"
-  owner: "security_champion_midgard"
-  dependencyOf:
-  - "component:midgard"
