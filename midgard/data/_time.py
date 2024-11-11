@@ -215,6 +215,9 @@ class TimeBase(np.ndarray):
     def __lt__(self, other):
         return self.jd < other.jd
 
+    def __gt__(self, other):
+        return self.jd > other.jd
+
     @lru_cache()
     def to_scale(self, scale: str) -> "TimeBase":
         """Convert to a different scale

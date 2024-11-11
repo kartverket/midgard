@@ -206,3 +206,18 @@ def test_slice(t):
             print(f"t.{scale}[0:2] == 2 OK")
             assert len(new_time_from_fmt[0:2]) == 2
             print(f"t.{scale}.{fmt}[0:2] == 2 OK")
+
+
+def test_math():
+    pass
+    #TODO
+    # test1 time + timedelta -> time
+    # test2 timedelta + time -> time
+    # test3 time - timedelta -> time
+    # test4 timedelta - time -> time
+    # test5 time - time -> timedelta
+    # test6 time + time -> Error
+    # test7 timedelta + timedelta -> timedelta
+    # test8 timedelta - timedelta -> timedelta (negavtive values?)
+    # test9 time > time -> True/False
+    # test10 time < time -> True/False
