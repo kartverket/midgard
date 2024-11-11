@@ -7,6 +7,7 @@ import numpy as np
 
 # Midgard imports
 from midgard.data import time
+from statsmodels.stats.rates import _std_2poisson_power
 
 
 @pytest.fixture()
@@ -208,16 +209,53 @@ def test_slice(t):
             print(f"t.{scale}.{fmt}[0:2] == 2 OK")
 
 
-def test_math():
-    pass
-    #TODO
+def test_math_s():
+    _t1 = time.Time(val=datetime(2009, 11, 2), scale="utc", fmt="datetime")
+    _t2 = time.Time(val=datetime(2011, 5, 5), scale="utc", fmt="datetime")
+    _td1 = time.TimeDelta(val=timedelta(seconds=30), scale="utc", fmt="timedelta")
+    _td2 = time.TimeDelta(val=timedelta(days=10), scale="utc", fmt="timedelta")
+
     # test1 time + timedelta -> time
+    new_t = _t1 + _td1
+    assert new_t.datetime == datetime(2009, 11, 2, 0, 0, 30)
+    assert new_t.cls_name == "TimeArray"
+
     # test2 timedelta + time -> time
+    new_t = _td1 + _t1
+    assert new_t.datetime == datetime(2009, 11, 2, 0, 0, 30)
+    assert new_t.cls_name == "TimeArray"
+
     # test3 time - timedelta -> time
+    new_t = _t1 - _td1
+    assert new_t.datetime == datetime(2009, 11, 1, 23, 59, 30)
+    assert new_t.cls_name == "TimeArray"
+
     # test4 timedelta - time -> time
+    with pytest.raises(TypeError):
+        new_t = _td1 - _t1
+
+
     # test5 time - time -> timedelta
+    new_td = _t1 - _t2
+    assert (new_td.timedelta == timedelta(days=-549))
+    assert new_td.cls_name == "TimeDeltaArray"
+
     # test6 time + time -> Error
+    with pytest.raises(TypeError):
+        new_t = _t1 + _t2
+
     # test7 timedelta + timedelta -> timedelta
+    new_td = _td1 + _td2
+    assert new_td.timedelta == timedelta(days=10, seconds=30)
+    assert new_td.cls_name == "TimeDeltaArray"
+
     # test8 timedelta - timedelta -> timedelta (negavtive values?)
+    new_td = _td1 - _td2
+    assert new_td.timedelta == timedelta(days=-10, seconds=30)
+    assert new_td.cls_name == "TimeDeltaArray"
+
     # test9 time > time -> True/False
+    assert (_t1 > _t2) == False
+
     # test10 time < time -> True/False
+    assert (_t1 < _t2) == True

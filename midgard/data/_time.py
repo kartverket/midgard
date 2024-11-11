@@ -213,9 +213,17 @@ class TimeBase(np.ndarray):
                 self.jd2.flags.writeable = False
 
     def __lt__(self, other):
+        """ self < other """
+        if self.scale != other.scale:
+            return NotImplemented
+
         return self.jd < other.jd
 
     def __gt__(self, other):
+        """ self > other """
+        if self.scale != other.scale:
+            return NotImplemented
+
         return self.jd > other.jd
 
     @lru_cache()
@@ -536,7 +544,8 @@ class TimeArray(TimeBase):
     @classmethod
     def now(cls, scale="utc", fmt="datetime") -> "TimeArray":
         """Create a new time representing now"""
-        jd1, jd2 = cls._formats()["datetime"].to_jds(datetime.now(), scale=scale)
+        from datetime import timezone # local import - Only in use here
+        jd1, jd2 = cls._formats()["datetime"].to_jds(datetime.now(timezone.utc).replace(tzinfo=None), scale=scale)
         return cls._cls_scale("utc").from_jds(jd1, jd2, fmt=fmt).to_scale(scale)
 
     @classmethod
@@ -814,8 +823,8 @@ class TimeDeltaArray(TimeBase):
 
         if isinstance(other, TimeDeltaArray):
             # timedelta + timedelta -> timedelta
-            jd1 = self.jd1 + other.jd2
-            jd2 = self.jd1 + other.jd2
+            jd1 = self.jd1 + other.jd1
+            jd2 = self.jd2 + other.jd2
             return self.from_jds(jd1, jd2, fmt=self.fmt)
 
         elif isinstance(other, TimeArray):
@@ -833,14 +842,12 @@ class TimeDeltaArray(TimeBase):
 
         if isinstance(other, TimeArray):
             # timedelta - time -> time
-            jd1 = self.jd1 - other.jd1
-            jd2 = self.jd2 - other.jd2
-            return other.from_jds(jd1, jd2, fmt=other.fmt)
+            return NotImplemented
 
         elif isinstance(other, TimeDeltaArray):
             # timedelta - timedelta -> timedelta
             jd1 = self.jd1 - other.jd1
-            jd2 = self.jd1 - other.jd2
+            jd2 = self.jd2 - other.jd2
             return self.from_jds(jd1, jd2, fmt=self.fmt)
 
         return NotImplemented
