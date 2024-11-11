@@ -116,7 +116,7 @@ class SinexTmsParser(SinexParser):
             for i, f in enumerate(fields, start=1)
             if f.converter
         }
-        
+          
         return np.genfromtxt(
             lines,
             names=names,
@@ -125,6 +125,7 @@ class SinexTmsParser(SinexParser):
             usecols=usecols,
             converters=converters,
             autostrip=True,
+            ndmin=1, # Minimum dimension of array
             encoding=self.file_encoding or "bytes",  # TODO: Use None instead
         )
 
@@ -346,7 +347,7 @@ class SinexTmsParser(SinexParser):
                  7 SIG_Y                m                    Standard deviation of geocentric Y-coordinate
                  8 SIG_Z                m                    Standard deviation of geocentric Z-coordinate
             -TIMESERIES/COLUMNS
-            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----7----+----8
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0
                       
         """
         return SinexBlock(
@@ -383,7 +384,7 @@ class SinexTmsParser(SinexParser):
              2023-05-23    2023.39041  4331296.8147   567556.2087  4633134.1452    0.0008    0.0003    0.0010      0.0078      0.0015      0.0026    0.0003    0.0009    0.0009
              2023-05-24    2023.39315  4331296.8121   567556.2097  4633134.1462    0.0010    0.0004    0.0012      0.0091      0.0040      0.0017    0.0004    0.0011    0.0011
            -TIMESERIES/DATA
-            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----7----+----8
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0
                       
         """
         return SinexBlock(
@@ -498,7 +499,7 @@ class SinexTmsParser(SinexParser):
             if type_ in self.data["timeseries_data"].keys():
                 time_type = type_
                 break
-            
+  
         if time_type:       
             if time_type == "yyyy-mm-dd":
                 time = [datetime.strptime(d, "%Y-%m-%d") for d in self.data["timeseries_data"][time_type]]

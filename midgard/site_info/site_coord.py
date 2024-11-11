@@ -328,6 +328,18 @@ class SiteCoordSinex(SiteInfoBase):
         return data
 
     @property
+    def vel_model(self) -> np.ndarray:
+        """ Get site velocity model 
+
+        Site velocity model information is not given directly by SINEX file. Therefore the velocity model information
+        has to be set.
+
+        Returns:
+            Site velocity model
+        """
+        return self._info["VELX"]["vel_model"] if "vel_model" in self._info["VELX"] else None
+
+    @property
     def vel_sigma(self) -> np.ndarray:
         """ Get standard deviation of site velocity from SINEX file
 
@@ -425,6 +437,15 @@ class SiteCoordSinex(SiteInfoBase):
         self._info.setdefault("VELY", dict()).update(estimate=vel[1])
         self._info.setdefault("VELZ", dict()).update(estimate=vel[2])
 
+    def set_vel_model(self, vel_model: str) -> None:
+        """ Set site velocity model in site information attribute
+
+        Args:
+            vel_model: Site velocity model
+        """
+        self._info.setdefault("VELX", dict()).update(vel_model=vel_model)
+        self._info.setdefault("VELY", dict()).update(vel_model=vel_model)
+        self._info.setdefault("VELZ", dict()).update(vel_model=vel_model)
 
     def set_vel_sigma(self, vel_sigma: Union[List[float], np.ndarray]) -> None:
         """ Set standard deviation of site velocity in site information attribute
@@ -675,6 +696,18 @@ class SiteCoordSsc(SiteInfoBase):
             ])
 
     @property
+    def vel_model(self) -> np.ndarray:
+        """ Get site velocity model 
+
+        Site velocity model information is not given directly by SSC file. Therefore the velocity model information
+        has to be set.
+
+        Returns:
+            Site velocity model
+        """
+        return self._info["vel_model"] if "vel_model" in self._info else None
+
+    @property
     def vel_sigma(self) -> np.ndarray:
         """ Get standard deviation of site velocity from SSC file
 
@@ -759,6 +792,13 @@ class SiteCoordSsc(SiteInfoBase):
         self._info["VELY"] = vel[1]
         self._info["VELZ"] = vel[2]
 
+    def set_vel_model(self, vel_model: str) -> None:
+        """ Set site velocity model in site information attribute
+
+        Args:
+            vel_model: Site velocity model
+        """
+        self._info["vel_model"] = vel_model
 
     def set_vel_sigma(self, vel_sigma: Union[List[float], np.ndarray]) -> None:
         """ Set standard deviation of site velocity in site information attribute

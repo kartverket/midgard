@@ -227,21 +227,24 @@ class TimeseriesBlocks:
         self.fid.write(f" {'INPUT':<18} {self.input:<60}\n")
         self.fid.write(f" {'VERSION NUMBER':<18} {self.version:<60}\n")
         self.fid.write("-FILE/REFERENCE\n")
+        
 
     def timeseries_ref_coordinate(self):
         """
         Write the TIMESERIES/REF_COORDINATE block
-        """
+        """    
+        ref_pos = self._get_ref_pos()
         self.fid.write("+TIMESERIES/REF_COORDINATE\n")
         self.fid.write("*STATION__ PT SOLN T __REF_EPOCH___ __REF_X______ __REF_Y______ __REF_Z______ SYSTEM\n")
         self.fid.write(f" {self.station.upper():<9s}  A ---- P "
                        f"{Time(self.dset.meta['reference_epoch'], scale='utc', fmt='datetime').yyyydddsssss} "
-                       f"{self.dset.dsite_pos.ref_pos.trs.x:13.4f} "
-                       f"{self.dset.dsite_pos.ref_pos.trs.y:13.4f} "
-                       f"{self.dset.dsite_pos.ref_pos.trs.z:13.4f} "
+                       f"{ref_pos.trs.x:13.4f} "
+                       f"{ref_pos.trs.y:13.4f} "
+                       f"{ref_pos.trs.z:13.4f} "
                        f"{self.dset.meta['reference_frame']:>6}\n"
-	)
+	    )
         self.fid.write("-TIMESERIES/REF_COORDINATE\n")
+
 
     def timeseries_columns(self):
         """
@@ -252,6 +255,7 @@ class TimeseriesBlocks:
         for idx, name in enumerate(self.data_field_types.keys()):
             self.fid.write(f" {idx+1:5d} {name:<20s} {DATA_TYPES[name].unit:<20s} {DATA_TYPES[name].description}\n")
         self.fid.write("-TIMESERIES/COLUMNS\n")
+
 
     def timeseries_data(self):
         """
@@ -305,6 +309,16 @@ class TimeseriesBlocks:
             if field.split(".")[0] in fields:  # Check first field entry
                 data_field_types[type_] = field
         return data_field_types
+    
+    
+    def _get_ref_pos(self) -> "Position":
+        """Get reference coordinate position for the given station
+        
+        Returns:
+            Reference coordinate position as Position object
+        """
+        idx = self.dset.filter(station=self.station)
+        return self.dset.dsite_pos.ref_pos[idx][0]
 
 
 

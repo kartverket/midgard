@@ -204,11 +204,17 @@ class GipsyxTdpParser(LineParser):
             if parameter in field.keys():
 
                 idx = name == self.data["name"]
-
+                
                 if category == "Satellite":
-                    sys = enums.get_value("gnss_3digit_id_to_id", identifier[0:3])
-                    dset.system[idx] = sys
-                    dset.satellite[idx] = sys + identifier[3:5]
+                    if identifier.startswith("GPS"):
+                        sys = enums.get_value("gnss_3digit_id_to_id", identifier[0:3])
+                        satellite_id = identifier[3:5]
+                    else:
+                        sys = identifier[0:1]
+                        satellite_id = identifier[1:4]
+                    dset.system[idx] = sys 
+                    dset.satellite[idx] = sys + satellite_id
+                    
 
                 # Loop over 'apriori', 'value' and 'sigma' solutions, which are saved in separated Dataset collections
                 for collection in collections:

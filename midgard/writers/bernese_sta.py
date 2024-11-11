@@ -24,6 +24,7 @@ def bernese_sta(
         rename_station: Dict[str, str] = dict(),
         event_path: Union[PosixPath, None] = None,
         agency: str = "UNKNOWN",
+        skip_firmware: bool = False,
 ) -> None:
     """Write Bernese station information file in *.STA format
 
@@ -36,6 +37,7 @@ def bernese_sta(
                          necessary if the used 4-digit station names are not unique.
         event_path:      File path of event file with additional event 
         agency:          Agency which uses this Bernese station information file for processing
+        skip_firmware:   Skip firmware changes by generating "TYPE 002: STATION INFORMATION" block
     """
 
     # EXAMPLE:
@@ -104,7 +106,7 @@ def bernese_sta(
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  **********************  ************************\n")
         for sta in sorted(site_info.keys()):
                         
-            events = _get_events(site_info, sta)
+            events = _get_events(site_info, sta, skip_firmware=skip_firmware)
             identifier = site_info[sta]['identifier']
             ant_hist= site_info[sta]["antenna"].history
             ecc_hist = site_info[sta]["eccentricity"].history
@@ -130,7 +132,7 @@ def bernese_sta(
                     continue
                 
                 fid.write(
-                    "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {rcv:20s}{rcv_serial:>22s}{rcv_serial_short:>8s}  {ant:15s} {radome:4s}{ant_serial:>22s}{ant_serial_short:>8s}{north:>10.4f}{east:>10.4f}{up:>10.4f}  {description:22}  {remark}\n".format(
+                    "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {rcv:20.20s}{rcv_serial:>22.22s}{rcv_serial_short:>8.8s}  {ant:15.15s} {radome:4.4s}{ant_serial:>22.22s}{ant_serial_short:>8.8s}{north:>10.4f}{east:>10.4f}{up:>10.4f}  {description:22.22}  {remark}\n".format(
                         station=sta.upper(),
                         domes="" if identifier.domes is None else identifier.domes,
                         flag="001",
@@ -141,8 +143,8 @@ def bernese_sta(
                         rcv_serial_short=re.sub("[^0-9]", "", rcv.serial_number)[-6:],
                         ant=ant.type,
                         radome=ant.radome_type if ant.radome_type else "NONE",
-                        ant_serial="999999", #TODO: Should be changed if individual antenna calibration is available. (ant.serial_number)
-                        ant_serial_short="999999",#TODO: Should be changed if individual antenna calibration is available. (re.sub("[^0-9]", "", ant.serial_number)[-6:])
+                        ant_serial=ant.serial_number,
+                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-6:] if ant.calibration else "999999",
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,

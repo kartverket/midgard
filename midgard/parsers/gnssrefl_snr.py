@@ -1,16 +1,16 @@
-"""A parser for reading GNSSREFL reflector height timeseries files
+"""A parser for reading GNSSREFL SNR files
 
 Example:
 --------
 
     from midgard import parsers
-    p = parsers.parse_file(parser_name='gnssrefl_allrh', file_path='tgde_allRH.txt')
+    p = parsers.parse_file(parser_name='gnssrefl_snr', file_path='ande2740.24.snr66')
     data = p.as_dict()
 
 Description:
 ------------
 
-Reads data from files in GNSSREFL reflector height timeseries format
+Reads data from files in GNSSREFL SNR format
 
 """
 # Standard library imports
@@ -29,27 +29,32 @@ from midgard.parsers import LineParser
 
 
 @plugins.register
-class GnssreflAllRh(LineParser):
-    """A parser for reading GNSSREFL reflector height timeseries files
-
+class GnssreflSnr(LineParser):
+    """A parser for reading GNSSREFL SNR files
+    
     Following **data** are available after reading the file:
 
     | Parameter                 | Description                                                                     |
     | :------------------------ | :------------------------------------------------------------------------------ |
-    | amplitude                 | Amplitude                                                                       |
     | azimuth                   | Azimuth in [deg]                                                                |
-    | frequency                 | GNSS frequency identifier                                                       |
-    | peak2noise                | Peak to noise                                                                   |
-    | reflector_height          | Reflector height in [m]                                                         |
+    | elevation                 | Elevation in [deg]                                                              |
+    | elevation_rate            | Elevation angle rate of change [deg/s]                                          |
+    | seconds_of_day            | Seconds of day (GPS time)                                                       |
     | satellite                 | Satellite number                                                                |
+    | S1                        | SNR observation data on L1                                                      |
+    | S2                        | SNR observation data on L2                                                      |
+    | S5                        | SNR observation data on L5                                                      |
+    | S6                        | SNR observation data on L6                                                      |
+    | S7                        | SNR observation data on L7                                                      |   
+    | S8                        | SNR observation data on L8                                                      | 
     | time                      | Time as datetime object                                                         |
-
+    
     and **meta**-data:
 
     | Key                  | Description                                                                          |
     | :------------------- | :----------------------------------------------------------------------------------- |
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | __data_path__        | File path                                                                            |
+    | __parser_name__      | Parser name                                                                          |
 
     """
 
@@ -62,26 +67,23 @@ class GnssreflAllRh(LineParser):
             Dict:  Parameters needed by np.genfromtxt to parse the input file.
         """
 
-        # % year,doy, RH(m), Month, day, azimuth(deg),freq, satNu, LSP amp,pk2noise,UTC(hr)
-        # % (1), (2), (3),   (4),   (5),  (6),        (7),   (8),  (9),     (10),    (11)  
-        # 2021     9   4.888  1  9  225.3    1    2   9.51   3.23  10.08
-        # 2021     9   5.018  1  9  181.3    1   15   7.79   2.84  15.67
-        # 2021     9   5.123  1  9  185.4    1   16   6.27   3.01   0.68
-        #----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7
+        # 314   10.7907  345.5731       0.0 -0.004728  32.12   0.00  41.75   0.00  41.81   0.00
+        # 326   27.0452  315.3763       0.0  0.004863  45.62   0.00  47.56   0.00   0.00   0.00
+        # 327   24.5786   78.4961       0.0 -0.006435  43.06   0.00  46.12   0.00   0.00   0.00
+        # ----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7-----
         return dict(
-            skip_header=2,
             names=(
-                "year",
-                "doy",
-                "reflector_height",
-                "month",
-                "day",
-                "azimuth",
-                "frequency",
                 "satellite",
-                "amplitude",
-                "peak2noise",
-                "hour",
+                "elevation",
+                "azimuth",
+                "seconds_of_day",
+                "elevation_rate",
+                "S6",
+                "S1",
+                "S2",
+                "S5",
+                "S7",
+                "S8",
             ),
             dtype=("f8", "f8", "f8", "f8", "f8", "f8", "f8", "f8", "f8", "f8", "f8"),
         )
@@ -95,11 +97,18 @@ class GnssreflAllRh(LineParser):
         return [self._add_time_field]
 
     def _add_time_field(self) -> None:
-        """Add time parameter to data and delete 'year', 'doy', 'month', 'day' and 'hour' field
+        """Add time parameter based on file name and seconds of day
         """
-        self.data["time"] = [datetime(int(yyyy), int(mm), int(dd)) + timedelta(hours=hh) for yyyy, mm, dd, hh in zip(self.data["year"], self.data["month"], self.data["day"], self.data["hour"])]
-        for key in ["year", "doy", "month", "day", "hour"]:
-            del self.data[key]
+        
+        # Extract date based on file name
+        doy, year = self.file_path.stem.split(".")
+        doy = doy[4:7]
+        
+        # 1980 is the border to decide if year should in 1900 or 2000 century. 
+        year = f"19{year}" if int(year) > 80 else f"20{year }"
+        
+        time = datetime.strptime(f"{year}-{doy}", "%Y-%j")
+        self.data["time"] = [ time + timedelta(seconds=s) for s in self.data["seconds_of_day"] ]
 
 
     #
@@ -111,41 +120,32 @@ class GnssreflAllRh(LineParser):
         Returns:
             Midgard Dataset where timeseries data are stored with following fields:
 
-    
            | Field                 | Type              | Description                                                  |
            | :-------------------- | :---------------- | :----------------------------------------------------------- |
-           | amplitude             | numpy.array       | Amplitude                                                    |
-           | azimuth               | numpy.array       | Azimuth in [rad]                                             |
-           | frequency             | numpy.array       | GNSS frequency identifier                                    |
-           | peak2noise            | numpy.array       | Peak to noise                                                |
+           | azimuth               | numpy.array       | Azimuth in [deg]                                             |
+           | elevation             | numpy.array       | Elevation in [deg]                                           |
+           | elevation_rate        | numpy.array       | Elevation angle rate of change [deg/s]                       |
+           | seconds_of_day        | numpy.array       | Seconds of day (GPS time)                                    |
            | satellite             | numpy.array       | Satellite number                                             |
-           | reflector_height      | numpy.array       | Reflector height in [m]                                      |
-           | time                  | Time              | Time                                                         |
-               
+           | S1                    | numpy.array       | SNR observation data on L1                                   |
+           | S2                    | numpy.array       | SNR observation data on L2                                   |
+           | S5                    | numpy.array       | SNR observation data on L5                                   |
+           | S6                    | numpy.array       | SNR observation data on L6                                   |
+           | S7                    | numpy.array       | SNR observation data on L7                                   |   
+           | S8                    | numpy.array       | SNR observation data on L8                                   | 
+           | time                  | Time              | Time                                                         |               
         """
         
-        freq_def = {
-            1: "L1",     # G
-            2: "L2",     # G
-            5: "L5",     # G
-            20: "L2C",   # G
-            101: "L1",   # R
-            102: "L2",   # R
-            201: "E1",   # E 
-            205: "E5a",  # E
-            206: "E6",   # E
-            207: "E5b",  # E
-            208: "E5",   # E
-            302: "B1_2", # C
-            306: "B3",   # C
-            307: "B2b",  # C
-        }
-
         float_fields = {
-                "amplitude": None,
                 "azimuth": "radian",
-                "peak2noise": None, 
-                "reflector_height": "meter", 
+                "elevation": "radian",
+                "elevation_rate": "radian/second",
+                "S1": None,
+                "S2": None,
+                "S5": None,
+                "S6": None,
+                "S7": None,
+                "S8": None,
         }
 
         # Initialize dataset
@@ -185,18 +185,12 @@ class GnssreflAllRh(LineParser):
                 val=satellite, 
                 write_level="operational",
         )
-
-        dset.add_text(
-                name="frequency", 
-                val=[freq_def[v] for v in self.data["frequency"]], 
-                write_level="operational",
-        ) 
-        
+      
         # Add time field
         dset.add_time(
                 name="time", 
                 val=self.data["time"], 
-                scale="utc", 
+                scale="gps", 
                 fmt="datetime", 
                 write_level="operational",
         )
@@ -207,7 +201,7 @@ class GnssreflAllRh(LineParser):
                 log.warn(f"Field '{field}' does not exist in file {self.meta['__data_path__']}.")
                 continue
             
-            value = np.deg2rad(self.data[field]) if field == "azimuth" else self.data[field]
+            value = np.deg2rad(self.data[field]) if field in ["azimuth", "elevation", "elevation_rate"] else self.data[field]
             unit = "" if float_fields[field] is None else float_fields[field]
             
             dset.add_float(name=field, val=value, unit=unit, write_level="operational")

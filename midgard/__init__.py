@@ -42,6 +42,7 @@ _AUTHORS = [
     _Author("Ingrid Fausk", "ingrid.fausk@kartverket.no", _date.min, _date.max),
     _Author("Ann-Silje Kirkvik", "ann-silje.kirkvik@kartverket.no", _date.min, _date.max),
     _Author("Mohammed Ouassou", "mohammed.ouassou@kartverket.no", _date(2018, 9, 1), _date.max),
+    _Author("Ove Christian Dahl Omang", "ove.christian.dahl.omang@kartverket.no", _date(2024, 4, 18), _date.max),
     _Author("Hans Sverre Smalø", "hans.sverre.smalo@kartverket.no", _date(2018, 12, 1), _date.max),
     _Author("Geir Arne Hjelle", "geirarne@gmail.com", _date(2019, 2, 1), _date.max),
     # Hall of Fame

@@ -1,0 +1,66 @@
+BERNESE V.5.2 STA FILE FOR EPN PROCESSING                        02-Jun-20 08:42
+--------------------------------------------------------------------------------
+
+FORMAT VERSION: 1.01
+TECHNIQUE:      GNSS
+
+TYPE 001: RENAMING OF STATIONS
+------------------------------
+
+STATION NAME          FLG          FROM                   TO         OLD STATION NAME      REMARK
+****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************
+ADAC 10337M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ADAC*                 From ADAC0540.13O
+ALES 10336M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ALES*                 From ALES0540.13O
+ANDO 10333M001        001  1980 01 06 00 00 00  2099 12 31 00 00 00  ANDO*                 From ANDO0540.13O
+ARGI 10117M002        001  2008 09 25 00 00 00                       ARGI*                 argi_20161112.log
+
+
+TYPE 002: STATION INFORMATION
+-----------------------------
+
+STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP      DESCRIPTION             REMARK
+****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  **********************  ************************
+ARGI 10117M002        001  2008 09 25 00 00 00  2016 11 11 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     6.00       
+ARGI 10117M002        001  2016 11 11 00 00 00  2017 04 19 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     9.20       
+ARGI 10117M002        001  2017 04 19 00 00 00  2099 12 31 00 00 00  TRIMBLE NETR9                   5548R50598  850598  TRM57971.00     TZGD            1551009151    9151    0.0000    0.0000    0.0054  Argir, Torshavn, FO     5.22       
+
+
+TYPE 003: HANDLING OF STATION PROBLEMS
+--------------------------------------
+
+STATION NAME          FLG          FROM                   TO         REMARK
+****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************
+STAS 10330M001        001  2007 05 02 00 00 00  2007 06 30 00 00 00  DEFEKT ANTENNE
+KAUS 10346M001        001  2010 06 14 00 00 00  2010 09 05 00 00 00  ANTENNEBYTTE, TID UTEN KALIB.
+HFS4 10325M003        001  2010 01 01 00 00 00  2010 03 23 00 00 00  FEIL ANTENNE F\D8RSTE UKER
+ALES 10336M001        001  1997 01 01 00 00 00  1999 12 31 23 59 59  Unknown radom and antenna mount
+
+
+TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
+-----------------------------------------------------
+                                        RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY
+STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP
+****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****
+
+
+TYPE 005: HANDLING STATION TYPES
+--------------------------------
+
+STATION NAME          FLG  FROM                 TO                   MARKER TYPE           REMARK
+****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************
+
+
+
+
+TYPE/FLAG  DESCRIPTION
+--------------------------------------------------------------------------------
+
+001 001: RENAME STATION IN ALL PROGRAMS. NEW NAME IS USED FOR ALL FLAGS BELOW
+001 002: RENAME STATION RXOBV3. WILDCARDS ALLOWED. NEW NAME IS USED FOR ALL FLAGS BELOW
+001 003: RENAME STATION IN ADDNEQ. NEW NAME IS USED FOR ALL FLAGS BELOW
+
+002 001: STATION INFORMATION RECORD
+
+003 001: EXCLUDE STATION IN ALL PROGRAMS
+003 003: EXCLUDE STATION IN ADDNEQ (PREELIMINATION)
+003 011: STATION NOT BE USED FOR FIXING OR CONSTRAINING

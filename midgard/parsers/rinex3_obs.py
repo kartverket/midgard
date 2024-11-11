@@ -635,7 +635,6 @@ class Rinex3Parser(ChainParser):
 
         obs = {
             "station": self.meta["marker_name"].lower(),  # vars['station'],
-            "site_id": self.meta["marker_name"].upper(),
             "system": sys,
             "satellite": line["sat"],
             "satnum": line["sat"][1:3],
@@ -804,9 +803,10 @@ class Rinex3Parser(ChainParser):
             dset (Dataset): The Dataset where GNSS observation are stored with following fields:
 
        |  Field               | Type              | Description                                                           |
-       |----------------------|-------------------|-----------------------------------------------------------------------|
-       | <observation type>   | numpy.ndarray     | GNSS observation type data (e.g. C1C, C2W, L1C, L2W, ...) given       |
-       |                      |                   | in meters                                                             |
+       | :------------------- | :---------------- | :-------------------------------------------------------------------- |
+       | <observation type>   | numpy.ndarray     | GNSS observation type data (e.g. C1C, C2W, L1C, L2W, ...) given for   |
+       |                      |                   | loss of lock indicator (lli), pseudo-range and carrier phase          |
+       |                      |                   | observation (obs) and signal-to-noise-ratio (snr)                     |
        | epoch_flag           | numpy.ndarray     | Epoch flag                                                            |
        | rcv_clk_offset       | numpy.ndarray     | Receiver clock offset in seconds given for each epoch                 |
        | satellite            | numpy.ndarray     | Satellite PRN number together with GNSS identifier (e.g. G07)         |
@@ -820,7 +820,7 @@ class Rinex3Parser(ChainParser):
              and following Dataset `meta` data:
 
        |  Entry              | Type  | Description                                                                        |
-       |---------------------|-------|------------------------------------------------------------------------------------|
+       | :------------------ | :---- | :--------------------------------------------------------------------------------- |
        | agency              | str   | Name of agency from observer                                                       |
        | antenna_east        | float | East component of vector between marker and antenna reference point in meters      |
        | antenna_height      | float | Height component of vector between marker and antenna reference point in meters    |

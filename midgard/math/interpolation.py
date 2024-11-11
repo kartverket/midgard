@@ -4,7 +4,7 @@ Description:
 ------------
 
 Different interpolation methods are decorated with `@register_interpolator` and will then become available for use as
-`kind` in `interpolate` and `moving_window`.
+`kind` in `interpolate` function.
 
 
 Example:
@@ -91,27 +91,6 @@ def interpolators() -> List[str]:
     return sorted(_INTERPOLATORS)
 
 
-def get_interpolator(name: str) -> Callable:
-    """Return an interpolation function
-
-    Interpolation functions are registered by the @register_interpolator-decorator. The name-parameter corresponds to
-    the function name of the interpolator.
-
-    Args:
-        name:  Name of interpolator.
-
-    Returns:
-        Interpolation function with the given name.
-    """
-    try:
-        return _INTERPOLATORS[name]
-    except KeyError:
-        interpolator_list = ", ".join(interpolators())
-        raise exceptions.UnknownPluginError(
-            f"Interpolator '{name}' is not defined. Available interpolators are {interpolator_list}."
-        ) from None
-
-
 def interpolate(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, **ipargs: Any) -> np.ndarray:
     """Interpolate values from one x-array to another
 
@@ -127,7 +106,7 @@ def interpolate(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, *, kind: str, *
     Returns:
         Array of interpolated y-values.
     """
-    interpolator = get_interpolator(kind)(x, y, **ipargs)
+    interpolator = _get_interpolator(kind)(x, y, **ipargs)
     return interpolator(x_new)
 
 
@@ -149,13 +128,16 @@ def interpolate_with_derivative(
     Returns:
         Tuple with array of interpolated y-values and array of derivatives.
     """
-    interpolator = get_interpolator(kind)(x, y, **ipargs)
+    interpolator = _get_interpolator(kind)(x, y, **ipargs)
     y_new = interpolator(x_new)
     y_dot = scipy.misc.derivative(interpolator, x_new, dx=dx)
 
     return y_new, y_dot
 
 
+#
+# INTERPOLATORS
+#
 @register_interpolator
 def lagrange(
     x: np.ndarray, y: np.ndarray, *, window: int = 10, bounds_error: bool = True, assume_sorted: bool = False
@@ -337,3 +319,27 @@ def barycentric_interpolator(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Cal
     if y.ndim < 1:
         raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
     return scipy.interpolate.BarycentricInterpolator(x, y, **ipargs)
+    
+
+#
+# AUXILIARY FUNCTIONS
+#        
+def _get_interpolator(name: str) -> Callable:
+    """Return an interpolation function
+
+    Interpolation functions are registered by the @register_interpolator-decorator. The name-parameter corresponds to
+    the function name of the interpolator.
+
+    Args:
+        name:  Name of interpolator.
+
+    Returns:
+        Interpolation function with the given name.
+    """
+    try:
+        return _INTERPOLATORS[name]
+    except KeyError:
+        interpolator_list = ", ".join(interpolators())
+        raise exceptions.UnknownPluginError(
+            f"Interpolator '{name}' is not defined. Available interpolators are {interpolator_list}."
+        ) from None
