@@ -7,7 +7,6 @@ import numpy as np
 
 # Midgard imports
 from midgard.data import time
-from statsmodels.stats.rates import _std_2poisson_power
 
 
 @pytest.fixture()
@@ -215,47 +214,52 @@ def test_math_s():
     _td1 = time.TimeDelta(val=timedelta(seconds=30), scale="utc", fmt="timedelta")
     _td2 = time.TimeDelta(val=timedelta(days=10), scale="utc", fmt="timedelta")
 
-    # test1 time + timedelta -> time
+    # Test1 time + timedelta -> time
     new_t = _t1 + _td1
     assert new_t.datetime == datetime(2009, 11, 2, 0, 0, 30)
     assert new_t.cls_name == "TimeArray"
 
-    # test2 timedelta + time -> time
+    # Test2 timedelta + time -> time
     new_t = _td1 + _t1
     assert new_t.datetime == datetime(2009, 11, 2, 0, 0, 30)
     assert new_t.cls_name == "TimeArray"
 
-    # test3 time - timedelta -> time
+    # Test3 time - timedelta -> time
     new_t = _t1 - _td1
     assert new_t.datetime == datetime(2009, 11, 1, 23, 59, 30)
     assert new_t.cls_name == "TimeArray"
 
-    # test4 timedelta - time -> time
+    # Test4 timedelta - time -> error
     with pytest.raises(TypeError):
         new_t = _td1 - _t1
 
-
-    # test5 time - time -> timedelta
+    # Test5 time - time -> timedelta
     new_td = _t1 - _t2
     assert (new_td.timedelta == timedelta(days=-549))
     assert new_td.cls_name == "TimeDeltaArray"
 
-    # test6 time + time -> Error
+    # Test6 time + time -> Error
     with pytest.raises(TypeError):
         new_t = _t1 + _t2
 
-    # test7 timedelta + timedelta -> timedelta
+    # Test7 timedelta + timedelta -> timedelta
     new_td = _td1 + _td2
     assert new_td.timedelta == timedelta(days=10, seconds=30)
     assert new_td.cls_name == "TimeDeltaArray"
 
-    # test8 timedelta - timedelta -> timedelta (negavtive values?)
+    # Test8 timedelta - timedelta -> timedelta
     new_td = _td1 - _td2
     assert new_td.timedelta == timedelta(days=-10, seconds=30)
     assert new_td.cls_name == "TimeDeltaArray"
 
-    # test9 time > time -> True/False
+    # Test9 time > time -> Bool
     assert (_t1 > _t2) == False
 
-    # test10 time < time -> True/False
+    # Test10 time < time -> Bool
     assert (_t1 < _t2) == True
+
+    # Test11 timedelta > timedelta -> Bool
+    assert (_td1 > _td2) == False
+
+    # Test12 timedelta < timedelta -> Bool
+    assert (_td1 < _td2) == True
