@@ -16,8 +16,7 @@ Reads data from files in GipsyX summary output format.
 
 # Midgard imports
 from midgard.data import dataset
-from midgard.dev import log
-from midgard.dev import plugins
+from midgard.dev import log, plugins
 from midgard.files import files
 from midgard.parsers import Parser
 
