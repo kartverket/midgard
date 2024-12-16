@@ -135,6 +135,9 @@ class GipsyxTdpParser(LineParser):
 
         field = {
             "Clk Bias": DatasetField(None, None, "float"),  # can be either receiver or satellite clock bias
+            "Clk ConstellationBias Beidou2": DatasetField("clock_bias_constellation_bds2", None, "float"),
+            "Clk ConstellationBias Beidou3": DatasetField("clock_bias_constellation_bds3", None, "float"),
+            "Clk ConstellationBias Galileo": DatasetField("clock_bias_constellation_gal", None, "float"),
             "Antennas Antenna1 MapCenterOffset All Z": DatasetField("satellite_ant_pco", "Satellite", "position"),
             "State Pos Z": DatasetField("site_posvel", "Station", "posvel"),
             "Source": DatasetField("source_id", "Source", "float"),
@@ -295,7 +298,7 @@ class GipsyxTdpParser(LineParser):
                         ).T
 
             else:
-                log.fatal(f"Parameter {parameter} is not defined.")
+                log.fatal(f"Parameter '{parameter}' is not defined.")
 
         dset.subset(keep_idx)  # Remove unnecessary entries (e.g. '.X' and '.Y' )
 
