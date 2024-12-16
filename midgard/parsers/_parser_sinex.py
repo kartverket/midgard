@@ -1041,7 +1041,7 @@ class SinexParser(Parser):
         return SinexBlock(
             marker="SOLUTION/NORMAL_EQUATION_VECTOR",
             fields=(
-                SinexField("param_idx", 1, "i5"),
+                SinexField("param_idx", 1, "i8"),
                 SinexField("param_type", 7, "U6"),
                 SinexField("site_code", 14, "U4"),
                 SinexField("point code", 19, "U2"),
