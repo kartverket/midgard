@@ -116,7 +116,7 @@ class GipsyxGdcovParser(ChainParser):
         self.data.setdefault("sigma", list()).append(float(line["sigma"]))
 
         station, parameter = line["name"].split(".", maxsplit=1)
-        self.data.setdefault("station", list()).append(station)
+        self.data.setdefault("station", list()).append(station.lower())
         self.data.setdefault("parameter", list()).append(parameter)
 
     def _parse_correlation(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
