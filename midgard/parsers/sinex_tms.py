@@ -92,6 +92,9 @@ class SinexTmsParser(SinexParser):
     # TODO: Should original _parser_sinex.parse_lines be overwritten with following parse_line function?   
     def parse_lines(self, lines: List[bytes], fields: Tuple[SinexField, ...]) -> np.array:
         """Parse lines in a Sinex file
+        
+        If SinexField "converter" is set to "list", then np.genfromtxt reads automatically line without specifying
+        column names or data types.
 
         Args:
             lines:   Lines to parse.
@@ -107,16 +110,23 @@ class SinexTmsParser(SinexParser):
                 max_char = len(line)      
         
         # Set up for np.genfromtxt to parse the Sinex block
-        delimiter = np.diff(np.array([0] + [f.start_col for f in fields] + [max_char]))  # Length of each field
-        names = [f.name for f in fields if f.dtype]  # Names, only fields with dtype set
-        usecols = [i for i, f in enumerate(fields, start=1) if f.dtype]  # Skip 0th and fields without dtype
-        dtype = [f.dtype for f in fields if f.dtype]  # Types of fields
-        converters = {
-            i: getattr(self, "_convert_{}".format(f.converter))  # Converters
-            for i, f in enumerate(fields, start=1)
-            if f.converter
-        }
-          
+        if fields[0].converter == "list": # parse line without field definition as list
+            delimiter = None # consecutive whitespace 
+            names = None
+            usecols = None
+            dtype = None
+            converters = None
+        else:
+            delimiter = np.diff(np.array([0] + [f.start_col for f in fields] + [max_char]))  # Length of each field  
+            names = [f.name for f in fields if f.dtype]  # Names, only fields with dtype set
+            usecols = [i for i, f in enumerate(fields, start=1) if f.dtype]  # Skip 0th and fields without dtype
+            dtype = [f.dtype for f in fields if f.dtype]  # Types of fields
+            converters = {
+                i: getattr(self, "_convert_{}".format(f.converter))  # Converters
+                for i, f in enumerate(fields, start=1)
+                if f.converter
+            }
+        
         return np.genfromtxt(
             lines,
             names=names,
@@ -405,10 +415,13 @@ class SinexTmsParser(SinexParser):
         self.data.setdefault("timeseries_data", dict())
         
         # Define column data type, which are not float
-        dtype_object = ["YYYY-MM-DD", "YYYY-DDD"]  
+        dtype_str = ["YYYY-MM-DD", "YYYY-DDD"]  
+        
+        # Conversion from np.void to np.ndarray array
+        data = np.array(data.tolist()) 
         
         for name, col in zip(self.data["timeseries_columns"]["name"], data.T):           
-            dtype = object if name in dtype_object else float
+            dtype = str if name in dtype_str else float
             self.data["timeseries_data"][name.lower()] = col.astype(dtype)
             
     #
