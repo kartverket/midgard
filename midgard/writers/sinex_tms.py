@@ -11,6 +11,7 @@ from typing import List, Union
 
 # Midgard imports
 from midgard.dev import log, plugins
+from midgard.data.position import Position
 from midgard.data.time import Time
 from midgard.files import files
 
@@ -237,7 +238,7 @@ class TimeseriesBlocks:
         self.fid.write("+TIMESERIES/REF_COORDINATE\n")
         self.fid.write("*STATION__ PT SOLN T __REF_EPOCH___ __REF_X______ __REF_Y______ __REF_Z______ SYSTEM\n")
         self.fid.write(f" {self.station.upper():<9s}  A ---- P "
-                       f"{Time(self.dset.meta['reference_epoch'], scale='utc', fmt='datetime').yyyydddsssss} "
+                       f"{Time(datetime.fromisoformat(self.dset.meta['reference_epoch']), scale='utc', fmt='datetime').yyyydddsssss} "
                        f"{ref_pos.trs.x:13.4f} "
                        f"{ref_pos.trs.y:13.4f} "
                        f"{ref_pos.trs.z:13.4f} "
@@ -318,7 +319,12 @@ class TimeseriesBlocks:
             Reference coordinate position as Position object
         """
         idx = self.dset.filter(station=self.station)
-        return self.dset.dsite_pos.ref_pos[idx][0]
+        if self.dset.dsite_pos.ref_pos[idx].shape[0] == 1: # only one reference station coordinate entry are given
+            ref_pos = Position(self.dset.dsite_pos.ref_pos[idx][0], system="trs")
+        else: 
+            ref_pos = self.dset.dsite_pos.ref_pos[idx][0]
+
+        return ref_pos
 
 
 
