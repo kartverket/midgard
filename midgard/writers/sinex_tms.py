@@ -190,7 +190,7 @@ class TimeseriesBlocks:
 
     def header_line(self):
         """Mandatory header line"""
-        version = 1.00
+        version = "1.00"
         now = Time(datetime.now(), scale="utc", fmt="datetime").yyyydddsssss
         start = self.dset.time.min.yyyydddsssss
         end = self.dset.time.max.yyyydddsssss
@@ -198,7 +198,7 @@ class TimeseriesBlocks:
         obs_code = "P"
         solution = self.station.upper()
         
-        self.fid.write(f"%=TMS {version} {self.file_agency:<3s} {now} {self.data_agency:<3s} {start} {end} "
+        self.fid.write(f"%=TMS {version:4s} {self.file_agency:<3s} {now} {self.data_agency:<3s} {start} {end} "
                        f"{obs_code:<1s} {solution}\n")
 
     def end_line(self):
@@ -279,14 +279,11 @@ class TimeseriesBlocks:
 
         # Write data
         idx_sta = self.dset.filter(station=self.station)
-        for idx, time in enumerate(self.dset.time[idx_sta]):
+        for time in sorted(self.dset.time.utc.datetime[idx_sta]):
+            idx = time == self.dset.time.utc.datetime[idx_sta]
             line = " "
             for name, field in self.data_field_types.items():
-                #if DATA_TYPES[name].format: 
-                line += f"{{:{DATA_TYPES[name].format}}}".format(attrgetter(field)(self.dset)[idx_sta][idx])
-                #else:
-                #    line += f"{attrgetter(field)(self.dset)[idx_sta][idx]} "
-
+                line += f"{{:{DATA_TYPES[name].format}}}".format(attrgetter(field)(self.dset)[idx_sta][idx][0])
             self.fid.write(f"{line}\n")
         self.fid.write("-TIMESERIES/DATA\n")
 
