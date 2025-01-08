@@ -88,6 +88,7 @@ class SinexTmsParser(SinexParser):
         self.data.setdefault("file_reference", dict())
         for d in data:
             self.data["file_reference"].update({d[0].split()[0].lower(): d[1]})
+
                        
     # TODO: Should original _parser_sinex.parse_lines be overwritten with following parse_line function?   
     def parse_lines(self, lines: List[bytes], fields: Tuple[SinexField, ...]) -> np.array:
@@ -109,7 +110,7 @@ class SinexTmsParser(SinexParser):
             if len(line) > max_char:
                 max_char = len(line)      
         
-        # Set up for np.genfromtxt to parse the Sinex block
+        # Set up for np.genfromtxt to parse the Sinex block  #TODO: Could it be also handled via a converter function?
         if fields[0].converter == "list": # parse line without field definition as list
             delimiter = None # consecutive whitespace 
             names = None
@@ -135,13 +136,86 @@ class SinexTmsParser(SinexParser):
             usecols=usecols,
             converters=converters,
             autostrip=True,
-            ndmin=1, # Minimum dimension of array
             encoding=self.file_encoding or "bytes",  # TODO: Use None instead
         )
 
 
     #
-    # Definition of SINEX blocks to parse
+    # CONVERTERS
+    #
+    def _convert_yyyydddsssss(self, field: bytes) -> datetime:
+        """Convert epoch field to ISO format
+
+        The epoch is given in YYYY:DDD:SSSSS format with::
+
+            YY    = 4-digits of the year,
+            DDD   = 3-digits day of year,
+            SSSSS = 5-digits seconds of day.
+
+        Args:
+            field:  Original field with time epoch in YYYY:DDD:SSSSS format.
+
+        Returns:
+            Field converted to ISO format.
+        """
+        field_str = field.decode(self.file_encoding or "utf-8")
+
+        if field_str == "0000:000:00000":
+            field_str = "9999:364:99999"  # 0000:000:00000 means the current time. Therefore value set a time in 
+                                          # the future.
+
+        date = datetime.strptime(field_str[:8], "%Y:%j")
+        time = timedelta(seconds=int(field_str[9:]))
+
+        return (date + time).isoformat()
+
+    #
+    # HEADER
+    #
+    @property
+    def header_fields(self) -> Tuple[SinexField, ...]:
+        """Fields in header line of Sinex file
+
+        The header line is the first line of the file, and not a proper Sinex
+        block. It must start with the 5 characters `%=TMS`.
+
+        Example:
+            %=SNX 2.02 IGN 15:314:37740 IGN 00:000:00000 00:000:00000 R   142 2 S
+            %=TMS  1.0 NMA 2025:008:36155 NMA 2023:152:43185 2023:156:43185 P 0ABI
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8---
+        """
+        return (
+            SinexField("snx_version", 5, "f8"),
+            SinexField("create_agency", 10, "U3"),
+            SinexField("create_epoch", 14, "O", "yyyydddsssss"),
+            SinexField("data_agency", 29, "U3"),
+            SinexField("start_epoch", 33, "O", "yyyydddsssss"),
+            SinexField("end_epoch", 48, "O", "yyyydddsssss"),
+            SinexField("obs_code", 63, "U1"),
+            SinexField("solution_contents", 65, "U30"), #TODO: This should be improved to '*'.
+        )
+
+    def parse_header_line(self, header_line: bytes) -> None:
+        """Parse header of Sinex file
+
+        Header information is stored in `self.meta`.
+
+        Args:
+            header_line:  First line of Sinex file.
+        """
+        if not header_line.startswith(b"%=TMS"):
+            log.warn(
+                f"The file '{self.file_path}' does not contain a valid SINEX header: {header_line.decode().strip()!r}"
+            )
+            return
+
+        # Add header information to self.meta
+        header_data = self.parse_lines([header_line], self.header_fields)
+        self.meta.update({n: header_data[n][()] for n in header_data.dtype.names})
+
+
+    #
+    # SINEX BLOCK
     # 
     @property
     def site_id(self) -> SinexBlock:
@@ -198,8 +272,8 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 18, "U1"),             
-                SinexField("start_time", 20, "O", "epoch_yyyy"),
-                SinexField("end_time", 35, "O", "epoch_yyyy"),
+                SinexField("start_time", 20, "O", "yyyydddsssss"),
+                SinexField("end_time", 35, "O", "yyyydddsssss"),
                 SinexField("receiver_type", 50, "U20"),
                 SinexField("serial_number", 71, "U20"),
                 SinexField("firmware", 92, "U11"),
@@ -235,8 +309,8 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 18, "U1"),             
-                SinexField("start_time", 20, "O", "epoch_yyyy"),
-                SinexField("end_time", 35, "O", "epoch_yyyy"),
+                SinexField("start_time", 20, "O", "yyyydddsssss"),
+                SinexField("end_time", 35, "O", "yyyydddsssss"),
                 SinexField("antenna_type", 50, "U20"),
                 SinexField("serial_number", 71, "U20"),
             ),
@@ -279,8 +353,8 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 18, "U1"),             
-                SinexField("start_time", 20, "O", "epoch_yyyy"),
-                SinexField("end_time", 35, "O", "epoch_yyyy"),
+                SinexField("start_time", 20, "O", "yyyydddsssss"),
+                SinexField("end_time", 35, "O", "yyyydddsssss"),
                 SinexField("vector_type", 50, "U3"),
                 SinexField("vector_1", 54, "f8"),
                 SinexField("vector_2", 63, "f8"),
@@ -319,7 +393,7 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 19, "U1"),
-                SinexField("epoch", 21, "O", "epoch_yyyy"), #TODO
+                SinexField("epoch", 21, "O", "yyyydddsssss"),
                 SinexField("ref_x", 35, "f8"),
                 SinexField("ref_y", 49, "f8"),
                 SinexField("ref_z", 64, "f8"),
@@ -419,39 +493,15 @@ class SinexTmsParser(SinexParser):
         
         # Conversion from np.void to np.ndarray array
         data = np.array(data.tolist()) 
+
+        # Add dimension to one-dimension arrays
+        if data.ndim == 1:
+            data = np.array([data])
         
         for name, col in zip(self.data["timeseries_columns"]["name"], data.T):           
             dtype = str if name in dtype_str else float
             self.data["timeseries_data"][name.lower()] = col.astype(dtype)
-            
-    #
-    # CONVERTERS
-    #            
-    def _convert_epoch_yyyy(self, field: bytes) -> datetime:
-        """Convert epoch field starting with yyyy to datetime value
-
-        The epoch is given in YYYY:DDD:SSSSS format with::
-
-            YYYY    = 4-digit year,
-            DDD   = 3-digit day of year,
-            SSSSS = 5-digit seconds of day.
-
-        Args:
-            field:  Original field with time epoch in YYYY:DDD:SSSSS format.
-
-        Returns:
-            Field converted to datetime object.
-        """
-        field_str = field.decode(self.file_encoding or "utf-8")
-        
-        if field_str == "0000:000:00000":
-            field_str = "9999:364:99999"  # 0000:000:00000 means the current time. Therefore value set a time in 
-                                          # the future.
-        
-        date = datetime.strptime(field_str[0:8], "%Y:%j")
-        time = timedelta(seconds=int(field_str[9:]))
-        return date + time
-    
+                
     
     #
     # GENERATE DATASET
@@ -467,7 +517,7 @@ class SinexTmsParser(SinexParser):
        | Field                    | Type              | Description                                                   |
        | :----------------------- | :---------------- | :------------------------------------------------------------ |
        | site_pos                 | Position          | x, y and z station coordinates                                |
-       | dsite_pos                | PositionDelta     | Position delta object referred to a reference position        |       
+       | dsite_pos                | PositionDelta     | Position delta object referred to a reference position        |
        | site_pos_east_sigma      | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
        | site_pos_north_sigma     | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
        | site_pos_up_sigma        | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
@@ -476,20 +526,21 @@ class SinexTmsParser(SinexParser):
        | site_pos_eu_correlation  | numpy.ndarray     | Correlation between East and Up component of topocentric      |
        |                          |                   | coordinates                                                   |
        | site_pos_nu_correlation  | numpy.ndarray     | Correlation between North and Up component of topocentric     |
-       |                          |                   | coordinates                                                   |       
+       |                          |                   | coordinates                                                   | 
        | site_pos_xy_correlation  | numpy.ndarray     | Correlation between X- and Y-coordinate                       |
        | site_pos_xz_correlation  | numpy.ndarray     | Correlation between X- and Z-coordinate                       |
        | site_pos_yz_correlation  | numpy.ndarray     | Correlation between Y- and Z-coordinate                       |
        | site_pos_x_sigma         | numpy.ndarray     | Standard deviation of geocentric X-coordinate                 |
        | site_pos_y_sigma         | numpy.ndarray     | Standard deviation of geocentric Y-coordinate                 |
        | site_pos_z_sigma         | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
+       | station                  | numpy.ndarray     | Station name                                                  |
        | time                     | Time              | Parameter time given as TimeTable object                      |
        
        TODO: Description of meta data        
         """
         dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
         dset.meta.update(self.meta)
-        dset.meta["station"] = self.data["site_id"][0]["site_code"] if "site_id" in self.data.keys() else "NONE" #TODO: implement better solution, .e.g. by reading SINEX header line
+        dset.meta["station"] = self.meta["solution_contents"].lower() if "solution_contents" in self.meta.keys() else "none"
         
         # Add site_info dictionary to meta variable
         for block in ["site_id", "site_receiver", "site_antenna", "site_eccentricity"]:
@@ -528,31 +579,50 @@ class SinexTmsParser(SinexParser):
             dset.add_position(
                 "site_pos",
                 val=np.vstack((
-                    self.data["timeseries_data"]["x"], 
-                    self.data["timeseries_data"]["y"], 
-                    self.data["timeseries_data"]["z"]),
+                            self.data["timeseries_data"]["x"], 
+                            self.data["timeseries_data"]["y"], 
+                            self.data["timeseries_data"]["z"]),
                 ).T,
+                #val=np.squeeze(
+                #        np.vstack((
+                #            self.data["timeseries_data"]["x"], 
+                #            self.data["timeseries_data"]["y"], 
+                #            self.data["timeseries_data"]["z"]),
+                #        ).T
+                #),
                 system="trs",
             )
             
         # Add position_delta field to dataset
         if "east" in self.data["timeseries_data"].keys():
+
             ref_pos = Position(
-                val = [ 
-                    self.data["ref_coordinate"]["ref_x"],
-                    self.data["ref_coordinate"]["ref_y"],
-                    self.data["ref_coordinate"]["ref_z"],
-                ],
+                val = np.repeat(
+                        np.array([ 
+                            self.data["ref_coordinate"]["ref_x"],
+                            self.data["ref_coordinate"]["ref_y"],
+                            self.data["ref_coordinate"]["ref_z"],
+                        ])[None, :],
+                        dset.num_obs,
+                        axis=0
+                ),
                 system="trs",
             )
             
             dset.add_position_delta(
                 "dsite_pos",
-                val=np.vstack((
-                    self.data["timeseries_data"]["east"], 
-                    self.data["timeseries_data"]["north"], 
-                    self.data["timeseries_data"]["up"]),
+                val= np.vstack((
+                            self.data["timeseries_data"]["east"], 
+                            self.data["timeseries_data"]["north"], 
+                            self.data["timeseries_data"]["up"]),
                 ).T,
+                #val=np.squeeze(
+                #        np.vstack((
+                #            self.data["timeseries_data"]["east"], 
+                #            self.data["timeseries_data"]["north"], 
+                #            self.data["timeseries_data"]["up"]),
+                #        ).T
+                #),
                 system="enu",
                 ref_pos=ref_pos,
             )
@@ -576,6 +646,9 @@ class SinexTmsParser(SinexParser):
         for type_, def_ in field_def.items():
             if type_ in self.data["timeseries_data"].keys():
                 dset.add_float(def_.field, val=self.data["timeseries_data"][type_], unit=def_.unit)
+
+        # Add text field to dataset
+        dset.add_text("station", val=np.repeat(dset.meta["station"].lower(), dset.num_obs, axis=0))
                 
         # Add events to dataset
         if "site_antenna" in self.data.keys() or "site_receiver" in self.data.keys():
