@@ -44,9 +44,9 @@ DATA_TYPES = {
     "EAST": DataType("m", "12.4f", "East component of topocentric site coordinates"),
     "NORTH": DataType("m", "12.4f", "North component of topocentric site coordinates"),
     "UP": DataType("m", "12.4f", "Up component of topocentric site coordinates"),
-    "SIG_EAST": DataType("m", "10.4f", "Standard deviation of topocentric East component"),
-    "SIG_NORTH": DataType("m", "10.4f", "Standard deviation of topocentric North component"),
-    "SIG_UP": DataType("m", "10.4f", "Standard deviation of topocentric Up component"),
+    "SIG_E": DataType("m", "10.4f", "Standard deviation of topocentric East component"),
+    "SIG_N": DataType("m", "10.4f", "Standard deviation of topocentric North component"),
+    "SIG_U": DataType("m", "10.4f", "Standard deviation of topocentric Up component"),
     "CORR_EN": DataType("", "10.4f", "Correlation between East and North component"),
     "CORR_EU": DataType("", "10.4f", "Correlation between East and Up component"),
     "CORR_NU": DataType("", "10.4f", "Correlation between North and Up component"),
@@ -59,16 +59,40 @@ DATA_TYPES = {
     "CORR_XY": DataType("", "10.4f", "Correlation between X- and Y-coordinate "),
     "CORR_XZ": DataType("", "10.4f", "Correlation between X- and Z-coordinate"),
     "CORR_YZ": DataType("", "10.4f", "Correlation between Y- and Z-coordinate"),
-    "NUM_OBS": DataType("", "8d", "Number of observations used by generation of daily site coordinate solution"),
-    "RES_EAST": DataType("m", "12.4f", "Residual of topocentric East component, which represent the difference "
+    "NOBS": DataType("", "8d", "Number of observations used by generation of daily site coordinate solution"),
+    "RES_E": DataType("m", "12.4f", "Residual of topocentric East component, which represent the difference "
                                         "between the East observation and the calculated model (e.g. linear trend) "),
-    "RES_NORTH": DataType("m", "12.4f", "Residual of topocentric North component, which represent the difference "
+    "RES_N": DataType("m", "12.4f", "Residual of topocentric North component, which represent the difference "
                                         "between the North observation and the calculated model (e.g. linear trend) "),
-    "RES_UP": DataType("m", "12.4f", "Residual of topocentric Up component, which represent the difference "
+    "RES_U": DataType("m", "12.4f", "Residual of topocentric Up component, which represent the difference "
                                         "between the Up observation and the calculated model (e.g. linear trend) "),
-    "MOD_EAST": DataType("m", "12.4f", "Calculated model for topocentric East component time-series data"),
-    "MOD_NORTH": DataType("m", "12.4f", "Calculated model for topocentric North component time-series data"),
-    "MOD_UP": DataType("m", "12.4f", "Calculated model for topocentric Up component time-series data"),
+    "MOD_E": DataType("m", "12.4f", "Calculated model for topocentric East component time-series data"),
+    "MOD_N": DataType("m", "12.4f", "Calculated model for topocentric North component time-series data"),
+    "MOD_U": DataType("m", "12.4f", "Calculated model for topocentric Up component time-series data"),
+
+    # GNSS specific data types
+    "NOBSC": DataType("", "7.0f", "Number of GNSS carrier-phase observations used by generation of site coordinate solution for given sampling rate period"),
+    "NOBSP": DataType("", "7.0f", "Number of GNSS pseudo_range observations used by generation of site coordinate solution for given sampling rate period"),
+    "NOUTC": DataType("", "7.0f", "Number of GNSS carrier-phase outliers by generation of site coordinate solution for given sampling rate period"),
+    "NOUTP": DataType("", "7.0f", "Number of GNSS pseudo_range outliers by generation of site coordinate solution for given sampling rate period"),
+    "PRES_C": DataType("m", "14.4f", "Post-fit GNSS carrier-phase residuals by generation of site coordinate solution for given sampling rate period"),
+    "PRES_P": DataType("m", "14.4f", "Post-fit GNSS pseudo_range residuals by generation of site coordinate solution for given sampling rate period"),
+
+    # GNSS specific parameter types
+    "RCV_CLK": DataType("m", "16.4f", "Daily average of receiver clock estimate"),
+    "TGE": DataType("m", "14.4f", "Daily average of tropospheric gradient - East component"),
+    "TGN": DataType("m", "14.4f", "Daily average of tropospheric gradient - North component"),
+    "TGTOT": DataType("m", "14.4f", "Daily average of tropospheric total gradient (East + North parts)"),
+    "TRODRY": DataType("m", "14.4f", "Daily average of tropospheric zenith dry/hydrostation delay (ZHD)"),
+    "TROTOT": DataType("m", "14.4f", "Daily average of tropospheric zenith total delay (ZTD)"),
+    "TROWET": DataType("m", "14.4f", "Daily average of tropospheric zenith wet delay (ZWD)"),
+    "SIG_RCV_CLK": DataType("m", "11.4f", "Daily average of standard deviation of receiver clock estimate"),
+    "SIG_TGE": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric gradient - East component"),
+    "SIG_TGN": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric gradient - North component"),
+    "SIG_TGTOT": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric total gradient (East + North parts)"),
+    "SIG_TRODRY": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric zenith dry/hydrostation delay (ZHD)"),
+    "SIG_TROTOT": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric zenith total delay (ZTD)"),
+    "SIG_TROWET": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric zenith wet delay (ZWD)"),
 }
 
 # Definition of data type and corresponding dataset field.
@@ -76,6 +100,8 @@ DATA_FIELD_TYPES = OrderedDict({
     "YYYY-MM-DD": "time.utc.date",
     "YEAR": "time.utc.decimalyear",
     #"STATION": "station",
+
+    # General data types
     "X": "site_pos.trs.x",
     "Y": "site_pos.trs.y",
     "Z": "site_pos.trs.z",
@@ -88,12 +114,36 @@ DATA_FIELD_TYPES = OrderedDict({
     "EAST": "dsite_pos.enu.east",
     "NORTH": "dsite_pos.enu.north",
     "UP": "dsite_pos.enu.up",
-    "SIG_EAST": "site_pos_east_sigma",
-    "SIG_NORTH": "site_pos_north_sigma",
-    "SIG_UP": "site_pos_up_sigma",
+    "SIG_E": "site_pos_east_sigma",
+    "SIG_N": "site_pos_north_sigma",
+    "SIG_U": "site_pos_up_sigma",
     "CORR_EN": "site_pos_en_correlation",
     "CORR_EU": "site_pos_eu_correlation",
     "CORR_NU": "site_pos_nu_correlation",
+
+    # GNSS specific data types
+    "NOBSC": "code_obs_num",
+    "NOBSP": "phase_obs_num",
+    "NOUTC": "code_outlier_num",
+    "NOUTP": "phase_outlier_num",
+    "PRES_C": "code_residual_rms",
+    "PRES_P": "phase_residual_rms",
+
+    # GNSS specific parameter types
+    "RCV_CLK": "receiver_clock",
+    "SIG_RCV_CLK": "receiver_clock_sigma",
+    "TGE": "trop_gradient_east",
+    "SIG_TGE": "trop_gradient_east_sigma",
+    "TGN": "trop_gradient_north",
+    "SIG_TGN": "trop_gradient_north_sigma",
+    "TGTOT": "trop_gradient_total",
+    "SIG_TGTOT": "trop_gradient_total_sigma",
+    "TRODRY": "trop_zenith_dry",
+    "SIG_TRODRY": "trop_zenith_dry_sigma",
+    "TROWET": "trop_zenith_wet",
+    "SIG_TROWET": "trop_zenith_wet_sigma",
+    "TROTOT": "trop_zenith_total",
+    "SIG_TROTOT": "trop_zenith_total_sigma",
 })
 
 

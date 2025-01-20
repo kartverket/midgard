@@ -629,18 +629,44 @@ class SinexTmsParser(SinexParser):
             
         # Add float field to dataset
         field_def = {
+
+            # General data types
+            "sig_e": FieldDef("site_pos_east_sigma", "meter"),
+            "sig_n": FieldDef("site_pos_north_sigma", "meter"),
+            "sig_u": FieldDef("site_pos_up_sigma", "meter"),
             "sig_x": FieldDef("site_pos_x_sigma", "meter"),
             "sig_y": FieldDef("site_pos_y_sigma", "meter"),
             "sig_z": FieldDef("site_pos_z_sigma", "meter"),
-            "corr_xy": FieldDef("site_pos_xy_correlation", ""),
-            "corr_xz": FieldDef("site_pos_xz_correlation", ""),
-            "corr_yz": FieldDef("site_pos_yz_correlation", ""),
-            "sig_east": FieldDef("site_pos_east_sigma", "meter"),
-            "sig_north": FieldDef("site_pos_north_sigma", "meter"),
-            "sig_up": FieldDef("site_pos_up_sigma", "meter"),
-            "corr_en": FieldDef("site_pos_en_correlation", ""),
-            "corr_eu": FieldDef("site_pos_eu_correlation", ""),
-            "corr_nu": FieldDef("site_pos_nu_correlation", ""),
+            "corr_en": FieldDef("site_pos_en_correlation", None),
+            "corr_eu": FieldDef("site_pos_eu_correlation", None),
+            "corr_nu": FieldDef("site_pos_nu_correlation", None),
+            "corr_xy": FieldDef("site_pos_xy_correlation", None),
+            "corr_xz": FieldDef("site_pos_xz_correlation", None),
+            "corr_yz": FieldDef("site_pos_yz_correlation", None),
+
+            # GNSS specific data types
+            "nobsc": FieldDef("code_obs_num", None),
+            "nobsp": FieldDef("phase_obs_num", None),
+            "noutc": FieldDef("code_outlier_num", None),
+            "noutp": FieldDef("phase_outlier_num", None),
+            "pres_c": FieldDef("code_residual_rms", "meter"),
+            "pres_p": FieldDef("phase_residual_rms", "meter"),
+
+            # GNSS specific parameter types
+            "rcv_clk": FieldDef("receiver_clock", "meter"),
+            "tge": FieldDef("trop_gradient_east", "meter"),
+            "tgn": FieldDef("trop_gradient_north", "meter"),
+            "tgtot": FieldDef("trop_gradient_total", "meter"),
+            "trodry": FieldDef("trop_zenith_dry", "meter"),
+            "trotot": FieldDef("trop_zenith_total", "meter"),
+            "tro_wet": FieldDef("trop_zenith_wet", "meter"),
+            "sig_rcv_clk": FieldDef("receiver_clock_sigma", "meter"),
+            "sig_tge": FieldDef("trop_gradient_east_sigma", "meter"),
+            "sig_tgn": FieldDef("trop_gradient_north_sigma", "meter"),
+            "sig_tgtot": FieldDef("trop_gradient_total_sigma", "meter"),
+            "sig_trodry": FieldDef("trop_zenith_dry_sigma", "meter"),
+            "sig_trotot": FieldDef("trop_zenith_total_sigma", "meter"),
+            "sig_trowet": FieldDef("trop_zenith_wet_sigma", "meter"),
         }
         
         for type_, def_ in field_def.items():
