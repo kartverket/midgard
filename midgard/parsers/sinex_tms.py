@@ -535,12 +535,27 @@ class SinexTmsParser(SinexParser):
        | site_pos_z_sigma         | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
        | station                  | numpy.ndarray     | Station name                                                  |
        | time                     | Time              | Parameter time given as TimeTable object                      |
-       
-       TODO: Description of meta data        
+
+            and following Dataset `meta` data:
+
+       |  Entry              | Type  | Description                                                                    |
+       | :------------------ | :---- | :----------------------------------------------------------------------------- |
+       | \__data_path__      | str   | File path                                                                      |
+       | \__parser_name__    | str   | Parser name                                                                    |
+       | create_agency       | str   | Agency creating the file                                                       |
+       | data_agency         | str   | Agency providing the data in SINEX TMS format                                  |
+       | end_epoch           | str   | End time of timeseries solution as date in ISO format                          |
+       |                     |       | (e.g. 2025-01-14T00:00:00)                                                     |
+       | obs_code            | str   | Observation code consistent with IERS convention                               |
+       | snx_version         | float | SINEX TMS version                                                              |
+       | start_epoch         | str   | Start time of timeseries solution as date in ISO format                        |
+       |                     |       | (e.g. 2025-01-18T00:00:00)                                                     |
+       | station             | str   | Station name                                                                   |
         """
         dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
         dset.meta.update(self.meta)
         dset.meta["station"] = self.meta["solution_contents"].lower() if "solution_contents" in self.meta.keys() else "none"
+        del dset.meta["solution_contents"]
         
         # Add site_info dictionary to meta variable
         for block in ["site_id", "site_receiver", "site_antenna", "site_eccentricity"]:
