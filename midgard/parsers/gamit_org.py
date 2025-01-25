@@ -147,13 +147,18 @@ class GamitOrgParser(ChainParser):
     #
     # WRITE DATA
     #
-    def as_dataset(self) -> "Dataset":
+    def as_dataset(self, keep_monumentation_number: bool = False) -> "Dataset":
         """Store output of GLOBK in a dataset
+
+        Args:
+            keep_monumentation_number: Keep 3-digit monumentation number given in addition to 4-digit station 
+                                       identifier (e.g. TRDS_2PS with TRDS as station name and 2PS as 
+                                       monumentation number)
 
         Returns:
             Midgard Dataset containing the following information
 
-        | Field            | Type          | Description |
+        | Field            | Type          | Description                                 |
         | :--------------- | :------------ | :------------------------------------------ |
         | site_pos         | Position      | x, y and z station coordinates              |
         | site_pos_x_sigma | numpy.ndarray | Standard deviation for x station coordinate |
@@ -189,6 +194,7 @@ class GamitOrgParser(ChainParser):
             sigma_x_array.append(sigma_x)
             sigma_y_array.append(sigma_y)
             sigma_z_array.append(sigma_z)
+            station = station if keep_monumentation_number == True else station.split("_")[0] 
             stations.append(station)
 
         # Add position information
