@@ -518,14 +518,14 @@ class SinexTmsParser(SinexParser):
        | :----------------------- | :---------------- | :------------------------------------------------------------ |
        | site_pos                 | Position          | x, y and z station coordinates                                |
        | dsite_pos                | PositionDelta     | Position delta object referred to a reference position        |
-       | site_pos_east_sigma      | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
-       | site_pos_north_sigma     | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
-       | site_pos_up_sigma        | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
-       | site_pos_en_correlation  | numpy.ndarray     | Correlation between East and North component of topocentric   |
+       | dsite_pos_east_sigma     | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
+       | dsite_pos_north_sigma    | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
+       | dsite_pos_up_sigma       | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
+       | dsite_pos_en_correlation | numpy.ndarray     | Correlation between East and North component of topocentric   |
        |                          |                   | coordinates                                                   |
-       | site_pos_eu_correlation  | numpy.ndarray     | Correlation between East and Up component of topocentric      |
+       | dsite_pos_eu_correlation | numpy.ndarray     | Correlation between East and Up component of topocentric      |
        |                          |                   | coordinates                                                   |
-       | site_pos_nu_correlation  | numpy.ndarray     | Correlation between North and Up component of topocentric     |
+       | dsite_pos_nu_correlation | numpy.ndarray     | Correlation between North and Up component of topocentric     |
        |                          |                   | coordinates                                                   | 
        | site_pos_xy_correlation  | numpy.ndarray     | Correlation between X- and Y-coordinate                       |
        | site_pos_xz_correlation  | numpy.ndarray     | Correlation between X- and Z-coordinate                       |
@@ -646,15 +646,15 @@ class SinexTmsParser(SinexParser):
         field_def = {
 
             # General data types
-            "sig_e": FieldDef("site_pos_east_sigma", "meter"),
-            "sig_n": FieldDef("site_pos_north_sigma", "meter"),
-            "sig_u": FieldDef("site_pos_up_sigma", "meter"),
+            "sig_e": FieldDef("dsite_pos_east_sigma", "meter"),
+            "sig_n": FieldDef("dsite_pos_north_sigma", "meter"),
+            "sig_u": FieldDef("dsite_pos_up_sigma", "meter"),
             "sig_x": FieldDef("site_pos_x_sigma", "meter"),
             "sig_y": FieldDef("site_pos_y_sigma", "meter"),
             "sig_z": FieldDef("site_pos_z_sigma", "meter"),
-            "corr_en": FieldDef("site_pos_en_correlation", None),
-            "corr_eu": FieldDef("site_pos_eu_correlation", None),
-            "corr_nu": FieldDef("site_pos_nu_correlation", None),
+            "corr_en": FieldDef("dsite_pos_en_correlation", None),
+            "corr_eu": FieldDef("dsite_pos_eu_correlation", None),
+            "corr_nu": FieldDef("dsite_pos_nu_correlation", None),
             "corr_xy": FieldDef("site_pos_xy_correlation", None),
             "corr_xz": FieldDef("site_pos_xz_correlation", None),
             "corr_yz": FieldDef("site_pos_yz_correlation", None),

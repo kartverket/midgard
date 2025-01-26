@@ -114,12 +114,12 @@ DATA_FIELD_TYPES = OrderedDict({
     "EAST": "dsite_pos.enu.east",
     "NORTH": "dsite_pos.enu.north",
     "UP": "dsite_pos.enu.up",
-    "SIG_E": "site_pos_east_sigma",
-    "SIG_N": "site_pos_north_sigma",
-    "SIG_U": "site_pos_up_sigma",
-    "CORR_EN": "site_pos_en_correlation",
-    "CORR_EU": "site_pos_eu_correlation",
-    "CORR_NU": "site_pos_nu_correlation",
+    "SIG_E": "dsite_pos_east_sigma",
+    "SIG_N": "dsite_pos_north_sigma",
+    "SIG_U": "dsite_pos_up_sigma",
+    "CORR_EN": "dsite_pos_en_correlation",
+    "CORR_EU": "dsite_pos_eu_correlation",
+    "CORR_NU": "dsite_pos_nu_correlation",
 
     # GNSS specific data types
     "NOBSC": "code_obs_num",
