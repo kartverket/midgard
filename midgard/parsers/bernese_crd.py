@@ -15,7 +15,7 @@ Reads data from files in Bernese CRD format.
 """
 # Standard library imports
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any, Callable, Dict, List
 
 # External library imports
 import numpy as np
@@ -105,6 +105,23 @@ class BerneseCrdParser(LineParser):
                     self.meta["epoch"] =  datetime.strptime(words[1] + words[2], "%Y-%m-%d%H:%M:%S")
                     break
 
+    #
+    # SETUP POSTPROCESSORS
+    #
+    def setup_postprocessors(self) -> List[Callable[[], None]]:
+        """List steps necessary for postprocessing
+        """
+        return [
+            self._remove_blank_entries,
+        ]
+
+    def _remove_blank_entries(self) -> None:
+        """Remove blank line entries, which are not automatically removed by np.genfromtxt
+        """
+        if "" in self.data["station"]:
+            idx = "" == self.data["station"]  # get index of blank entries
+            for key in self.data.keys():
+                self.data[key] = self.data[key][~idx]  # Keep all entries, which are not blank
 
     #
     # GET DICTIONARY
@@ -181,5 +198,5 @@ class BerneseCrdParser(LineParser):
             system="trs", 
             val=np.stack((np.array(self.data["pos_x"]), np.array(self.data["pos_y"]), np.array(self.data["pos_z"])), axis=1),
         )
-                
+              
         return dset
