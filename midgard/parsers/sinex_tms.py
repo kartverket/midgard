@@ -411,6 +411,7 @@ class SinexTmsParser(SinexParser):
         self.data.setdefault("ref_coordinate", dict())
         for type_, data in zip(data.dtype.names, data.item()):
             self.data["ref_coordinate"].update({type_: data})
+        
             
             
     @property
@@ -601,6 +602,18 @@ class SinexTmsParser(SinexParser):
        | start_epoch         | str   | Start time of timeseries solution as date in ISO format                        |
        |                     |       | (e.g. 2025-01-18T00:00:00)                                                     |
        | station             | str   | Station name                                                                   |
+
+
+          TIMESERIES/REF_COORDINATE block information
+
+       |  Entry              | Type  | Description                                                                    |
+       | :------------------ | :---- | :----------------------------------------------------------------------------- |
+       | ref_epoch           | str   | Reference epoch of reference station coordinate in ISO format                  |
+       |                     |       | yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)                                 |
+       | ref_frame           | str   | Reference frame of reference station coordinate (e.g. IGS20)                   |
+       | ref_pos_x           | float | X-coordinate of reference station coordinate in [m]                            |
+       | ref_pos_y           | float | Y-coordinate of reference station coordinate in [m]                            |
+       | ref_pos_z           | float | Z-coordinate of reference station coordinate in [m]                            |
         """
         dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
         dset.meta.update(self.meta)
@@ -611,6 +624,14 @@ class SinexTmsParser(SinexParser):
         for block in ["site_id", "site_receiver", "site_antenna", "site_eccentricity"]:
             if block in self.data.keys():
                 dset.meta.setdefault("site_info", dict()).update({block: self.data[block]})
+
+        # Add reference coordinate information to meta variable
+        if "ref_coordinate" in self.data.keys():
+            dset.meta["ref_epoch"] = self.data["ref_coordinate"]["epoch"]
+            dset.meta["ref_frame"] = self.data["ref_coordinate"]["system"]
+            dset.meta["ref_pos_x"] = self.data["ref_coordinate"]["ref_x"]
+            dset.meta["ref_pos_y"] = self.data["ref_coordinate"]["ref_y"]
+            dset.meta["ref_pos_z"] = self.data["ref_coordinate"]["ref_z"]
         
         # Add time field to dataset
         time_format_def = OrderedDict({
