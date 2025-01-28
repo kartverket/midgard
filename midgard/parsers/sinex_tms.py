@@ -640,7 +640,7 @@ class SinexTmsParser(SinexParser):
             dset.add_time("time", val=time, scale="utc", fmt=time_format_def[time_type])
                      
         # Add position field to dataset
-        if "obs.x" in self.data["timeseries_data"].keys():
+        if "x" in self.data["timeseries_data"].keys():
             dset.add_position(
                 "obs.site_pos",
                 val=np.vstack((
@@ -659,7 +659,7 @@ class SinexTmsParser(SinexParser):
             )
             
         # Add position_delta field to dataset
-        if "obs.east" in self.data["timeseries_data"].keys():
+        if "east" in self.data["timeseries_data"].keys():
 
             ref_pos = Position(
                 val = np.repeat(
