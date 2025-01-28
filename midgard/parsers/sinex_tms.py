@@ -513,28 +513,78 @@ class SinexTmsParser(SinexParser):
             Midgard Dataset whereby following SINEX timeseries data block entries could be stored (depending on input 
             data):
 
+       GENERAL DATA TYPES
 
-       | Field                    | Type              | Description                                                   |
-       | :----------------------- | :---------------- | :------------------------------------------------------------ |
-       | site_pos                 | Position          | x, y and z station coordinates                                |
-       | dsite_pos                | PositionDelta     | Position delta object referred to a reference position        |
-       | dsite_pos_east_sigma     | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
-       | dsite_pos_north_sigma    | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
-       | dsite_pos_up_sigma       | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
-       | dsite_pos_en_correlation | numpy.ndarray     | Correlation between East and North component of topocentric   |
-       |                          |                   | coordinates                                                   |
-       | dsite_pos_eu_correlation | numpy.ndarray     | Correlation between East and Up component of topocentric      |
-       |                          |                   | coordinates                                                   |
-       | dsite_pos_nu_correlation | numpy.ndarray     | Correlation between North and Up component of topocentric     |
-       |                          |                   | coordinates                                                   | 
-       | site_pos_xy_correlation  | numpy.ndarray     | Correlation between X- and Y-coordinate                       |
-       | site_pos_xz_correlation  | numpy.ndarray     | Correlation between X- and Z-coordinate                       |
-       | site_pos_yz_correlation  | numpy.ndarray     | Correlation between Y- and Z-coordinate                       |
-       | site_pos_x_sigma         | numpy.ndarray     | Standard deviation of geocentric X-coordinate                 |
-       | site_pos_y_sigma         | numpy.ndarray     | Standard deviation of geocentric Y-coordinate                 |
-       | site_pos_z_sigma         | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
-       | station                  | numpy.ndarray     | Station name                                                  |
-       | time                     | Time              | Parameter time given as TimeTable object                      |
+       | Field                        | Type              | Description                                               |
+       | :--------------------------- | :---------------- | :-------------------------------------------------------- |
+       | obs.site_pos                 | Position          | Position object with x, y and z station coordinates       |
+       | obs.dsite_pos                | PositionDelta     | Position delta object referred to a reference position    |
+       | obs.dsite_pos_east_sigma     | numpy.ndarray     | Standard deviation of topocentric East-coordinate in      |
+       |                              |                   | meter                                                     |
+       | obs.dsite_pos_north_sigma    | numpy.ndarray     | Standard deviation of topocentric North-coordinate in     |
+       |                              |                   | meter                                                     |
+       | obs.dsite_pos_up_sigma       | numpy.ndarray     | Standard deviation of topocentric Up-coordinate in meter  |
+       | obs.dsite_pos_en_correlation | numpy.ndarray     | Correlation between East and North component of           |
+       |                              |                   | topocentric coordinates                                   |
+       | obs.dsite_pos_eu_correlation | numpy.ndarray     | Correlation between East and Up component of topocentric  |
+       |                              |                   | coordinates                                               |
+       | obs.dsite_pos_nu_correlation | numpy.ndarray     | Correlation between North and Up component of topocentric |
+       |                              |                   | coordinates                                               | 
+       | obs.site_pos_xy_correlation  | numpy.ndarray     | Correlation between X- and Y-coordinate                   |
+       | obs.site_pos_xz_correlation  | numpy.ndarray     | Correlation between X- and Z-coordinate                   |
+       | obs.site_pos_yz_correlation  | numpy.ndarray     | Correlation between Y- and Z-coordinate                   |
+       | obs.site_pos_x_sigma         | numpy.ndarray     | Standard deviation of geocentric X-coordinate in meter    |
+       | obs.site_pos_y_sigma         | numpy.ndarray     | Standard deviation of geocentric Y-coordinate in meter    |
+       | obs.site_pos_z_sigma         | numpy.ndarray     | Standard deviation of geocentric Z-coordinate in meter    |
+       | station                      | numpy.ndarray     | Station name                                              |
+       | time                         | Time              | Parameter time given as TimeTable object                  |
+
+
+       GNSS SPECIFIC DATA TYPES
+
+       | Field                        | Type              | Description                                               |
+       | :--------------------------- | :---------------- | :-------------------------------------------------------- |
+       | obs.code_obs_num             | numpy.ndarray     | Number of pseudo-range observations used by generation of |
+       |                              |                   | station coordinate solution                               |
+       | obs.code_outlier_num         | numpy.ndarray     | Number of pseudo-range outliers by generation of station  |
+       |                              |                   | station coordinate solution                               |
+       | obs.code_residual_num        | numpy.ndarray     | Post-fit pseudo-range residuals by generation of station  |
+       |                              |                   | station coordinate solution in meter                      |
+       | obs.phase_obs_num            | numpy.ndarray     | Number of carrier-phase observations used by generation   |
+       |                              |                   | of station coordinate solution                            |
+       | obs.phase_outlier_num        | numpy.ndarray     | Number of carrier-phase outliers by generation of station |
+       |                              |                   | station coordinate solution                               |
+       | obs.phase_residual_num       | numpy.ndarray     | Post-fit carrier-phase residuals by generation of station |
+       |                              |                   | station coordinate solution in meter                      |
+
+       GNSS SPECIFIC PARAMETER TYPES
+
+       | Field                        | Type              | Description                                               |
+       | :--------------------------- | :---------------- | :-------------------------------------------------------- |
+       | obs.receiver_clock           | numpy.ndarray     | Receiver clock parameter in meter                         |
+       | obs.receiver_clock_sigma     | numpy.ndarray     | Standard deviation of receiver clock parameter in meter   |
+       | obs.trop_gradient_east       | numpy.ndarray     | Troposphere horizontal delay gradient in the East         |
+       |                              |                   | direction in meter                                        |
+       | obs.trop_gradient_east_sigma | numpy.ndarray     | Standard deviation of troposphere horizontal delay        |
+       |                              |                   | gradient in the East direction in meter                   |
+       | obs.trop_gradient_north      | numpy.ndarray     | Troposphere horizontal delay gradient in the North        |
+       |                              |                   | direction in meter                                        |
+       | obs.trop_gradient_north_sigma| numpy.ndarray     | Standard deviation of troposphere horizontal delay        |
+       |                              |                   | gradient in the North direction in meter                  |
+       | obs.trop_gradient_total      | numpy.ndarray     | Total troposphere horizontal delay gradient in meter      |
+       | obs.trop_gradient_total_sigma| numpy.ndarray     | Standard deviation of total troposphere horizontal delay  |
+       |                              |                   | gradient in meter                                         |
+       | obs.trop_zenith_dry          | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter in     |
+       |                              |                   | meter                                                     |
+       | obs.trop_zenith_dry_sigma    | numpy.ndarray     | Standard deviation of zenith hydrostatic/dry troposphere  | 
+       |                              |                   | delay parameter in meter                                  |
+       | obs.trop_zenith_total        | numpy.ndarray     | Zenith total troposphere delay parameter in meter         | 
+       | obs.trop_zenith_total_sigma  | numpy.ndarray     | Standard deviation of zenith total troposphere delay      |
+       |                              |                   | parameter in meter                                        | 
+       | obs.trop_zenith_wet          | numpy.ndarray     | Zenith wet troposphere delay parameter in meter           |
+       | obs.trop_zenith_wet_sigma    | numpy.ndarray     | Standard deviation of zenith wet troposphere delay        | 
+       |                              |                   | parameter in meter                                        |
+
 
             and following Dataset `meta` data:
 
@@ -590,9 +640,9 @@ class SinexTmsParser(SinexParser):
             dset.add_time("time", val=time, scale="utc", fmt=time_format_def[time_type])
                      
         # Add position field to dataset
-        if "x" in self.data["timeseries_data"].keys():
+        if "obs.x" in self.data["timeseries_data"].keys():
             dset.add_position(
-                "site_pos",
+                "obs.site_pos",
                 val=np.vstack((
                             self.data["timeseries_data"]["x"], 
                             self.data["timeseries_data"]["y"], 
@@ -609,7 +659,7 @@ class SinexTmsParser(SinexParser):
             )
             
         # Add position_delta field to dataset
-        if "east" in self.data["timeseries_data"].keys():
+        if "obs.east" in self.data["timeseries_data"].keys():
 
             ref_pos = Position(
                 val = np.repeat(
@@ -625,7 +675,7 @@ class SinexTmsParser(SinexParser):
             )
             
             dset.add_position_delta(
-                "dsite_pos",
+                "obs.dsite_pos",
                 val= np.vstack((
                             self.data["timeseries_data"]["east"], 
                             self.data["timeseries_data"]["north"], 
@@ -646,42 +696,42 @@ class SinexTmsParser(SinexParser):
         field_def = {
 
             # General data types
-            "sig_e": FieldDef("dsite_pos_east_sigma", "meter"),
-            "sig_n": FieldDef("dsite_pos_north_sigma", "meter"),
-            "sig_u": FieldDef("dsite_pos_up_sigma", "meter"),
-            "sig_x": FieldDef("site_pos_x_sigma", "meter"),
-            "sig_y": FieldDef("site_pos_y_sigma", "meter"),
-            "sig_z": FieldDef("site_pos_z_sigma", "meter"),
-            "corr_en": FieldDef("dsite_pos_en_correlation", None),
-            "corr_eu": FieldDef("dsite_pos_eu_correlation", None),
-            "corr_nu": FieldDef("dsite_pos_nu_correlation", None),
-            "corr_xy": FieldDef("site_pos_xy_correlation", None),
-            "corr_xz": FieldDef("site_pos_xz_correlation", None),
-            "corr_yz": FieldDef("site_pos_yz_correlation", None),
+            "sig_e": FieldDef("obs.dsite_pos_east_sigma", "meter"),
+            "sig_n": FieldDef("obs.dsite_pos_north_sigma", "meter"),
+            "sig_u": FieldDef("obs.dsite_pos_up_sigma", "meter"),
+            "sig_x": FieldDef("obs.site_pos_x_sigma", "meter"),
+            "sig_y": FieldDef("obs.site_pos_y_sigma", "meter"),
+            "sig_z": FieldDef("obs.site_pos_z_sigma", "meter"),
+            "corr_en": FieldDef("obs.dsite_pos_en_correlation", None),
+            "corr_eu": FieldDef("obs.dsite_pos_eu_correlation", None),
+            "corr_nu": FieldDef("obs.dsite_pos_nu_correlation", None),
+            "corr_xy": FieldDef("obs.site_pos_xy_correlation", None),
+            "corr_xz": FieldDef("obs.site_pos_xz_correlation", None),
+            "corr_yz": FieldDef("obs.site_pos_yz_correlation", None),
 
             # GNSS specific data types
-            "nobsc": FieldDef("code_obs_num", None),
-            "nobsp": FieldDef("phase_obs_num", None),
-            "noutc": FieldDef("code_outlier_num", None),
-            "noutp": FieldDef("phase_outlier_num", None),
-            "pres_c": FieldDef("code_residual_rms", "meter"),
-            "pres_p": FieldDef("phase_residual_rms", "meter"),
+            "nobsc": FieldDef("obs.code_obs_num", None),
+            "nobsp": FieldDef("obs.phase_obs_num", None),
+            "noutc": FieldDef("obs.code_outlier_num", None),
+            "noutp": FieldDef("obs.phase_outlier_num", None),
+            "pres_c": FieldDef("obs.code_residual_rms", "meter"),
+            "pres_p": FieldDef("obs.phase_residual_rms", "meter"),
 
             # GNSS specific parameter types
-            "rcv_clk": FieldDef("receiver_clock", "meter"),
-            "tge": FieldDef("trop_gradient_east", "meter"),
-            "tgn": FieldDef("trop_gradient_north", "meter"),
-            "tgtot": FieldDef("trop_gradient_total", "meter"),
-            "trodry": FieldDef("trop_zenith_dry", "meter"),
-            "trotot": FieldDef("trop_zenith_total", "meter"),
-            "tro_wet": FieldDef("trop_zenith_wet", "meter"),
-            "sig_rcv_clk": FieldDef("receiver_clock_sigma", "meter"),
-            "sig_tge": FieldDef("trop_gradient_east_sigma", "meter"),
-            "sig_tgn": FieldDef("trop_gradient_north_sigma", "meter"),
-            "sig_tgtot": FieldDef("trop_gradient_total_sigma", "meter"),
-            "sig_trodry": FieldDef("trop_zenith_dry_sigma", "meter"),
-            "sig_trotot": FieldDef("trop_zenith_total_sigma", "meter"),
-            "sig_trowet": FieldDef("trop_zenith_wet_sigma", "meter"),
+            "rcv_clk": FieldDef("obs.receiver_clock", "meter"),
+            "tge": FieldDef("obs.trop_gradient_east", "meter"),
+            "tgn": FieldDef("obs.trop_gradient_north", "meter"),
+            "tgtot": FieldDef("obs.trop_gradient_total", "meter"),
+            "trodry": FieldDef("obs.trop_zenith_dry", "meter"),
+            "trotot": FieldDef("obs.trop_zenith_total", "meter"),
+            "tro_wet": FieldDef("obs.trop_zenith_wet", "meter"),
+            "sig_rcv_clk": FieldDef("obs.receiver_clock_sigma", "meter"),
+            "sig_tge": FieldDef("obs.trop_gradient_east_sigma", "meter"),
+            "sig_tgn": FieldDef("obs.trop_gradient_north_sigma", "meter"),
+            "sig_tgtot": FieldDef("obs.trop_gradient_total_sigma", "meter"),
+            "sig_trodry": FieldDef("obs.trop_zenith_dry_sigma", "meter"),
+            "sig_trotot": FieldDef("obs.trop_zenith_total_sigma", "meter"),
+            "sig_trowet": FieldDef("obs.trop_zenith_wet_sigma", "meter"),
         }
         
         for type_, def_ in field_def.items():

@@ -102,48 +102,48 @@ DATA_FIELD_TYPES = OrderedDict({
     #"STATION": "station",
 
     # General data types
-    "X": "site_pos.trs.x",
-    "Y": "site_pos.trs.y",
-    "Z": "site_pos.trs.z",
-    "SIG_X": "site_pos_x_sigma",
-    "SIG_Y": "site_pos_y_sigma",
-    "SIG_Z": "site_pos_z_sigma",
-    "CORR_XY": "site_pos_xy_correlation",
-    "CORR_XZ": "site_pos_xz_correlation",
-    "CORR_YZ": "site_pos_yz_correlation",
-    "EAST": "dsite_pos.enu.east",
-    "NORTH": "dsite_pos.enu.north",
-    "UP": "dsite_pos.enu.up",
-    "SIG_E": "dsite_pos_east_sigma",
-    "SIG_N": "dsite_pos_north_sigma",
-    "SIG_U": "dsite_pos_up_sigma",
-    "CORR_EN": "dsite_pos_en_correlation",
-    "CORR_EU": "dsite_pos_eu_correlation",
-    "CORR_NU": "dsite_pos_nu_correlation",
+    "X": "obs.site_pos.trs.x",
+    "Y": "obs.site_pos.trs.y",
+    "Z": "obs.site_pos.trs.z",
+    "SIG_X": "obs.site_pos_x_sigma",
+    "SIG_Y": "obs.site_pos_y_sigma",
+    "SIG_Z": "obs.site_pos_z_sigma",
+    "CORR_XY": "obs.site_pos_xy_correlation",
+    "CORR_XZ": "obs.site_pos_xz_correlation",
+    "CORR_YZ": "obs.site_pos_yz_correlation",
+    "EAST": "obs.dsite_pos.enu.east",
+    "NORTH": "obs.dsite_pos.enu.north",
+    "UP": "obs.dsite_pos.enu.up",
+    "SIG_E": "obs.dsite_pos_east_sigma",
+    "SIG_N": "obs.dsite_pos_north_sigma",
+    "SIG_U": "obs.dsite_pos_up_sigma",
+    "CORR_EN": "obs.dsite_pos_en_correlation",
+    "CORR_EU": "obs.dsite_pos_eu_correlation",
+    "CORR_NU": "obs.dsite_pos_nu_correlation",
 
     # GNSS specific data types
-    "NOBSC": "code_obs_num",
-    "NOBSP": "phase_obs_num",
-    "NOUTC": "code_outlier_num",
-    "NOUTP": "phase_outlier_num",
-    "PRES_C": "code_residual_rms",
-    "PRES_P": "phase_residual_rms",
+    "NOBSC": "obs.code_obs_num",
+    "NOBSP": "obs.phase_obs_num",
+    "NOUTC": "obs.code_outlier_num",
+    "NOUTP": "obs.phase_outlier_num",
+    "PRES_C": "obs.code_residual_rms",
+    "PRES_P": "obs.phase_residual_rms",
 
     # GNSS specific parameter types
-    "RCV_CLK": "receiver_clock",
-    "SIG_RCV_CLK": "receiver_clock_sigma",
-    "TGE": "trop_gradient_east",
-    "SIG_TGE": "trop_gradient_east_sigma",
-    "TGN": "trop_gradient_north",
-    "SIG_TGN": "trop_gradient_north_sigma",
-    "TGTOT": "trop_gradient_total",
-    "SIG_TGTOT": "trop_gradient_total_sigma",
-    "TRODRY": "trop_zenith_dry",
-    "SIG_TRODRY": "trop_zenith_dry_sigma",
-    "TROWET": "trop_zenith_wet",
-    "SIG_TROWET": "trop_zenith_wet_sigma",
-    "TROTOT": "trop_zenith_total",
-    "SIG_TROTOT": "trop_zenith_total_sigma",
+    "RCV_CLK": "obs.receiver_clock",
+    "SIG_RCV_CLK": "obs.receiver_clock_sigma",
+    "TGE": "obs.trop_gradient_east",
+    "SIG_TGE": "obs.trop_gradient_east_sigma",
+    "TGN": "obs.trop_gradient_north",
+    "SIG_TGN": "obs.trop_gradient_north_sigma",
+    "TGTOT": "obs.trop_gradient_total",
+    "SIG_TGTOT": "obs.trop_gradient_total_sigma",
+    "TRODRY": "obs.trop_zenith_dry",
+    "SIG_TRODRY": "obs.trop_zenith_dry_sigma",
+    "TROWET": "obs.trop_zenith_wet",
+    "SIG_TROWET": "obs.trop_zenith_wet_sigma",
+    "TROTOT": "obs.trop_zenith_total",
+    "SIG_TROTOT": "obs.trop_zenith_total_sigma",
 })
 
 
@@ -354,8 +354,15 @@ class TimeseriesBlocks:
         """
         data_field_types = OrderedDict()
         for type_, field in data_field_types_def.items():
-            if field.split(".")[0] in fields:  # Check first field entry
-                data_field_types[type_] = field
+
+            if "obs." in field:
+                if ".".join(field.split(".")[0:2]) in fields:  # Check only collection+field name (e.g. obs.site_pos 
+                    data_field_types[type_] = field            # instead of obs.site_pos.trs.x)
+                    
+            else:
+                if field.split(".")[0] in fields: # Check only first entry (e.g. time instead of time.utc)
+                    data_field_types[type_] = field
+
         return data_field_types
     
     
@@ -366,10 +373,10 @@ class TimeseriesBlocks:
             Reference coordinate position as Position object
         """
         idx = self.dset.filter(station=self.station)
-        if self.dset.dsite_pos.ref_pos[idx].shape[0] == 1: # only one reference station coordinate entry are given
-            ref_pos = Position(self.dset.dsite_pos.ref_pos[idx][0], system="trs")
+        if self.dset.obs.dsite_pos.ref_pos[idx].shape[0] == 1: # only one reference station coordinate entry are given
+            ref_pos = Position(self.dset.obs.dsite_pos.ref_pos[idx][0], system="trs")
         else: 
-            ref_pos = self.dset.dsite_pos.ref_pos[idx][0]
+            ref_pos = self.dset.obs.dsite_pos.ref_pos[idx][0]
 
         return ref_pos
 
