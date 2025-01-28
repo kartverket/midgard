@@ -114,19 +114,21 @@ class GipsyxTdpParser(LineParser):
 
        | Field                | Type              | Description                                                       |
        | :------------------- | :---------------- | :---------------------------------------------------------------- |
-       | receiver_clock       | numpy.ndarray     | Receiver clock parameter                                          |
+       | receiver_clock       | numpy.ndarray     | Receiver clock parameter in meter                                 |
        | satellite            | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)     |
-       | satellite_clock      | numpy.ndarray     | Satellite clock parameter                                         |
-       | satellite_ant_pco    | PositionTable     | Satellite antenna phase center offset                             |
-       | site_posvel          | PosVel            | Station coordinates and velocities                                |
+       | satellite_clock      | numpy.ndarray     | Satellite clock parameter in meter                                |
+       | satellite_ant_pco    | Position          | Satellite antenna phase center offset as Position object          |
+       | site_posvel          | PosVel            | Station coordinates and velocities as Position/Velocity object    |
        | source_id            | numpy.ndarray     | Source ID                                                         |
        | station              | numpy.ndarray     | Station name list                                                 |
        | system               | numpy.ndarray     | GNSS identifier (e.g. G or E)                                     |
        | time                 | Time              | Parameter time given as TimeTable object                          |
-       | trop_zenith_model    | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter                |
-       | trop_zenith_wet      | numpy.ndarray     | Zenith wet troposphere delay parameter                            |
-       | trop_gradient_east   | numpy.ndarray     | Troposphere horizontal delay gradient in the East direction       |
-       | trop_gradient_north  | numpy.ndarray     | Troposphere horizontal delay gradient in the North direction      |
+       | trop_zenith_dry      | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter in meter       |
+       | trop_zenith_wet      | numpy.ndarray     | Zenith wet troposphere delay parameter in meter                   |
+       | trop_gradient_east   | numpy.ndarray     | Troposphere horizontal delay gradient in the East direction in    |
+       |                      |                   | meter                                                             |
+       | trop_gradient_north  | numpy.ndarray     | Troposphere horizontal delay gradient in the North direction in   |
+       |                      |                   | meter                                                             |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
