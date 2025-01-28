@@ -288,7 +288,7 @@ class TimeseriesBlocks:
         self.fid.write("+TIMESERIES/REF_COORDINATE\n")
         self.fid.write("*STATION__ PT SOLN T __REF_EPOCH___ __REF_X______ __REF_Y______ __REF_Z______ SYSTEM\n")
         self.fid.write(f" {self.station.upper():<9s}  A ---- P "
-                       f"{Time(datetime.fromisoformat(self.dset.meta['reference_epoch']), scale='utc', fmt='datetime').yyyydddsssss} "
+                       f"{Time(datetime.fromisoformat(self.dset.meta['ref_epoch']), scale='utc', fmt='datetime').yyyydddsssss} "
                        f"{ref_pos.trs.x:13.4f} "
                        f"{ref_pos.trs.y:13.4f} "
                        f"{ref_pos.trs.z:13.4f} "
