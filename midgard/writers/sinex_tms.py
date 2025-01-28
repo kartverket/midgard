@@ -292,7 +292,7 @@ class TimeseriesBlocks:
                        f"{ref_pos.trs.x:13.4f} "
                        f"{ref_pos.trs.y:13.4f} "
                        f"{ref_pos.trs.z:13.4f} "
-                       f"{self.dset.meta['reference_frame']:>6}\n"
+                       f"{self.dset.meta['ref_frame']:>6}\n"
 	    )
         self.fid.write("-TIMESERIES/REF_COORDINATE\n")
 

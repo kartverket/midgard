@@ -101,7 +101,7 @@ class BerneseCrdParser(LineParser):
                 if line.startswith("LOCAL GEODETIC DATUM"):
                     words = [w.strip() for w in line.replace("LOCAL GEODETIC DATUM:", "").replace("EPOCH:", "").split()]
         
-                    self.meta["reference_frame"] = words[0]
+                    self.meta["ref_frame"] = words[0]
                     self.meta["epoch"] =  datetime.strptime(words[1] + words[2], "%Y-%m-%d%H:%M:%S")
                     break
 
