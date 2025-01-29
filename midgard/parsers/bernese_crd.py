@@ -35,7 +35,7 @@ class BerneseCrdParser(LineParser):
     Following **data** are available after reading Bernese CRD file:
 
     | Parameter           | Description                                                                           |
-    |---------------------|---------------------------------------------------------------------------------------|
+    | :------------------ | :------------------------------------------------------------------------------------ |
     | num                 | Number of station coordinate solution                                                 |
     | station             | 4-digit station identifier                                                            |
     | domes               | Domes number                                                                          |
@@ -48,10 +48,13 @@ class BerneseCrdParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | \__data_path__       | File path                                                                            |
     | \__params__          | np.genfromtxt parameters                                                             |
     | \__parser_name__     | Parser name                                                                          |
+    | ref_epoch            | Reference epoch of reference station coordinate in ISO format                        |
+    |                      | yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)                                       |
+    | ref_frame            | Reference frame of reference station coordinate                                      |
 
     """
 
@@ -102,7 +105,7 @@ class BerneseCrdParser(LineParser):
                     words = [w.strip() for w in line.replace("LOCAL GEODETIC DATUM:", "").replace("EPOCH:", "").split()]
         
                     self.meta["ref_frame"] = words[0]
-                    self.meta["epoch"] =  datetime.strptime(words[1] + words[2], "%Y-%m-%d%H:%M:%S")
+                    self.meta["ref_epoch"] =  f"{words[1]}T{words[2]}"
                     break
 
     #
@@ -173,13 +176,16 @@ class BerneseCrdParser(LineParser):
         |  Entry              | Type  | Description                                                                    |
         | :------------------ | :---- | :----------------------------------------------------------------------------- |
         | \__data_path__      | str   | File path                                                                      |
+        | ref_epoch           | str   | Reference epoch of reference station coordinate in ISO format                  |
+        |                     |       | yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)                                 |
+        | ref_frame           | str   | Reference frame of reference station coordinate                                |
         """
              
         # Generate dataset
         dset = dataset.Dataset(num_obs=len(self.data["station"]))
         dset.meta = self.meta.copy()
 
-        # Remove unnecessary fields in meta
+        # Remove unnecessary entries in meta
         for key in ["__params__", "__parser_name__"]:
             del dset.meta[key]
 
@@ -194,7 +200,11 @@ class BerneseCrdParser(LineParser):
 
         dset.add_position(
             "site_pos", 
-            time=Time([dset.meta["epoch"] for ii in range(0, dset.num_obs)], scale="gps", fmt="datetime"),
+            time=Time(
+                    [datetime.fromisoformat(dset.meta["ref_epoch"]) for ii in range(0, dset.num_obs)], 
+                    scale="gps", 
+                    fmt="datetime",
+            ),
             system="trs", 
             val=np.stack((np.array(self.data["pos_x"]), np.array(self.data["pos_y"]), np.array(self.data["pos_z"])), axis=1),
         )
