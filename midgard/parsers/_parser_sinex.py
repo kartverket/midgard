@@ -285,7 +285,7 @@ class SinexParser(Parser):
 
         except StopIteration:  # File ended without reading all sinex_blocks
             missing = ", ".join(sinex_blocks)
-            log.warn(f"SinexParser {self.parser_name!r} did not find Sinex blocks {missing} in file {self.file_path}")
+            log.debug(f"SinexParser {self.parser_name!r} did not find Sinex blocks {missing} in file {self.file_path}")
 
     def parse_lines(self, lines: List[bytes], fields: Tuple[SinexField, ...]) -> np.array:
         """Parse lines in a Sinex file
