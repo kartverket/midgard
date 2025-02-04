@@ -248,10 +248,35 @@ class SinexSiteParser(SinexParser):
         | site_pos_z_sigma | numpy.ndarray | Standard deviation for z station coordinate |
         | station          | numpy.ndarray | Station name list                           |
         | time             | Time          | Parameter time given as TimeTable object    |
+
+
+            and following Dataset `meta` data:
+
+       |  Entry              | Type  | Description                                                                    |
+       | :------------------ | :---- | :----------------------------------------------------------------------------- |
+       | \__data_path__      | str   | File path                                                                      |
+       | \__parser_name__    | str   | Parser name                                                                    |
+       | create_agency       | str   | Agency creating the file                                                       |
+       | create_epoch        | str   | Creation time of file in ISO format (e.g. 2025-01-14T00:00:00)                 |
+       | data_agency         | str   | Agency providing the data in SINEX TMS format                                  |
+       | end_epoch           | str   | End time of timeseries solution as date in ISO format                          |
+       |                     |       | (e.g. 2025-01-14T00:00:00)                                                     |
+       | obs_code            | str   | Observation code consistent with IERS convention                               |
+       | snx_version         | float | SINEX TMS version                                                              |
+       | start_epoch         | str   | Start time of timeseries solution as date in ISO format                        |
+       |                     |       | (e.g. 2025-01-18T00:00:00)                                                     |
+
         """
 
         num_stations = len(self.data.keys())
         dset = dataset.Dataset(num_obs=num_stations)
+
+        # Save selected parts of meta information
+        dset.meta.update(self.meta)
+        for key in ["constraint_code", "num_param", "solution_contents"]:
+            del dset.meta[key]
+        for key in ["create_epoch", "start_epoch", "end_epoch"]:  # Convert datetime to str
+            dset.meta[key] = dset.meta[key].isoformat()
 
         # Same epoch for all stations
         time_array = [
@@ -289,4 +314,5 @@ class SinexSiteParser(SinexParser):
         dset.add_float("site_pos_y_sigma", sigma_y_array, unit="meter")
         dset.add_float("site_pos_z_sigma", sigma_z_array, unit="meter")
         dset.add_text("station", stations)
+
         return dset
