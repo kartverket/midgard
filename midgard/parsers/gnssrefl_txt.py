@@ -201,7 +201,7 @@ class GnssreflTxt(LineParser):
         if self.meta["file_type"] == "gnssir":
             self.data["time"] = [ datetime.strptime(f"{int(yy)}-{int(dd)}", "%Y-%j") + timedelta(hours=hh) for yy,dd,hh in zip(self.data["year"], self.data["doy"], self.data["hour_utc"]) ]
         elif self.meta["file_type"] == "subdaily":
-            self.data["time"] = [ datetime.strptime(f"{int(yy)}{int(dd)}{int(hh)}{int(mm)}{int(ss)}", "%Y%j%H%M%S") for yy,dd,hh,mm,ss in zip(self.data["year"], self.data["doy"], self.data["hour"], self.data["minute"], self.data["second"]) ]
+            self.data["time"] = [ datetime.strptime(f"{int(yy)}-{int(dd)}-{int(hh)}-{int(mm)}-{int(ss)}", "%Y-%j-%H-%M-%S") for yy,dd,hh,mm,ss in zip(self.data["year"], self.data["doy"], self.data["hour"], self.data["minute"], self.data["second"]) ]
 
         for key in ["year", "doy", "hour_utc", "hour", "minute", "mjd", "second"]:
             if key in self.data.keys():
