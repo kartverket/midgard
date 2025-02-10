@@ -7,7 +7,7 @@ from collections import namedtuple, OrderedDict
 from datetime import datetime
 from operator import attrgetter
 from pathlib import PosixPath
-from typing import List, Union
+from typing import Any, Dict, List, Union
 
 # Midgard imports
 from midgard.dev import log, plugins
@@ -79,14 +79,14 @@ DATA_TYPES = {
     "PRES_P": DataType("m", "14.4f", "Post-fit GNSS pseudo_range residuals by generation of site coordinate solution for given sampling rate period"),
 
     # GNSS specific parameter types
-    "RCV_CLK": DataType("m", "16.4f", "Daily average of receiver clock estimate"),
+    "RCV_CLK": DataType("m", "18.4f", "Daily average of receiver clock estimate"),
     "TGE": DataType("m", "14.4f", "Daily average of tropospheric gradient - East component"),
     "TGN": DataType("m", "14.4f", "Daily average of tropospheric gradient - North component"),
     "TGTOT": DataType("m", "14.4f", "Daily average of tropospheric total gradient (East + North parts)"),
     "TRODRY": DataType("m", "14.4f", "Daily average of tropospheric zenith dry/hydrostation delay (ZHD)"),
     "TROTOT": DataType("m", "14.4f", "Daily average of tropospheric zenith total delay (ZTD)"),
     "TROWET": DataType("m", "14.4f", "Daily average of tropospheric zenith wet delay (ZWD)"),
-    "SIG_RCV_CLK": DataType("m", "11.4f", "Daily average of standard deviation of receiver clock estimate"),
+    "SIG_RCV_CLK": DataType("m", "18.4f", "Daily average of standard deviation of receiver clock estimate"),
     "SIG_TGE": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric gradient - East component"),
     "SIG_TGN": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric gradient - North component"),
     "SIG_TGTOT": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric total gradient (East + North parts)"),
@@ -147,6 +147,95 @@ DATA_FIELD_TYPES = OrderedDict({
 })
 
 
+# Definition of solution estimate type and corresponding meta entry of dataset.
+ParaType = namedtuple(
+    "ParaType", ["keys", "unit"]
+)
+ParaType.__new__.__defaults__ = (None,) * len(ParaType._fields)
+ParaType.__doc__ = """A convenience class for defining a parameter type 
+
+    Args:
+        keys (tuple):          Keys of meta variable dictionary
+        unit (str):            Unit of parameter
+    """
+
+ESTIMATE_PARAMETER_FIELD_TYPES = OrderedDict({
+    "VEL_X": ParaType(("vel","trend","x"), "m/y"),
+    "VEL_Y": ParaType(("vel","trend","y"), "m/y"),
+    "VEL_Z": ParaType(("vel","trend","z"), "m/y"),
+    "VEL_E": ParaType(("vel","trend","e"), "m/y"),
+    "VEL_N": ParaType(("vel","trend","n"), "m/y"),
+    "VEL_U": ParaType(("vel","trend","u"), "m/y"),
+    "BIAS_X": ParaType(("vel","bias","x"), "m"),
+    "BIAS_Y": ParaType(("vel","bias","y"), "m"),
+    "BIAS_Z": ParaType(("vel","bias","z"), "m"),
+    "BIAS_E": ParaType(("vel","bias","e"), "m"),
+    "BIAS_N": ParaType(("vel","bias","n"), "m"),
+    "BIAS_U": ParaType(("vel","bias","u"), "m"),
+    "AMPA_X": ParaType(("vel","amp_annual","x"), "m"),
+    "AMPA_Y": ParaType(("vel","amp_annual","y"), "m"),
+    "AMPA_Z": ParaType(("vel","amp_annual","z"), "m"),
+    "AMPA_E": ParaType(("vel","amp_annual","e"), "m"),
+    "AMPA_N": ParaType(("vel","amp_annual","n"), "m"),
+    "AMPA_U": ParaType(("vel","amp_annual","u"), "m"),
+    "AMPS_X": ParaType(("vel","amp_semiannual","x"), "m"),
+    "AMPS_Y": ParaType(("vel","amp_semiannual","y"), "m"),
+    "AMPS_Z": ParaType(("vel","amp_semiannual","z"), "m"),
+    "AMPS_E": ParaType(("vel","amp_semiannual","e"), "m"),
+    "AMPS_N": ParaType(("vel","amp_semiannual","n"), "m"),
+    "AMPS_U": ParaType(("vel","amp_semiannual","u"), "m"),
+    "PHSA_X": ParaType(("vel","phase_annual","x"), "deg"),
+    "PHSA_Y": ParaType(("vel","phase_annual","y"), "deg"),
+    "PHSA_Z": ParaType(("vel","phase_annual","z"), "deg"),
+    "PHSA_E": ParaType(("vel","phase_annual","e"), "deg"),
+    "PHSA_N": ParaType(("vel","phase_annual","n"), "deg"),
+    "PHSA_U": ParaType(("vel","phase_annual","u"), "deg"),
+    "PHSS_X": ParaType(("vel","phase_semiannual","x"), "deg"),
+    "PHSS_Y": ParaType(("vel","phase_semiannual","y"), "deg"),
+    "PHSS_Z": ParaType(("vel","phase_semiannual","z"), "deg"),
+    "PHSS_E": ParaType(("vel","phase_semiannual","e"), "deg"),
+    "PHSS_N": ParaType(("vel","phase_semiannual","n"), "deg"),
+    "PHSS_U": ParaType(("vel","phase_semiannual","u"), "deg"),
+    "RMS_X": ParaType(("vel","rms","x"), "m"),
+    "RMS_Y": ParaType(("vel","rms","y"), "m"),
+    "RMS_Z": ParaType(("vel","rms","z"), "m"),
+    "RMS_E": ParaType(("vel","rms","e"), "m"),
+    "RMS_N": ParaType(("vel","rms","n"), "m"),
+    "RMS_U": ParaType(("vel","rms","u"), "m"),
+    "OFFSET_X": ParaType(("vel","offset","x"), "m"),
+    "OFFSET_Y": ParaType(("vel","offset","y"), "m"),
+    "OFFSET_Z": ParaType(("vel","offset","z"), "m"),
+    "OFFSET_E": ParaType(("vel","offset","e"), "m"),
+    "OFFSET_N": ParaType(("vel","offset","n"), "m"),
+    "OFFSET_U": ParaType(("vel","offset","u"), "m"),
+
+    "VEL_X_SIG": ParaType(("vel","trend_sigma","x"), "m/y"),
+    "VEL_Y_SIG": ParaType(("vel","trend_sigma","y"), "m/y"),
+    "VEL_Y_SIG": ParaType(("vel","trend_sigma","z"), "m/y"),
+    "VEL_E_SIG": ParaType(("vel","trend_sigma","e"), "m/y"),
+    "VEL_N_SIG": ParaType(("vel","trend_sigma","n"), "m/y"),
+    "VEL_U_SIG": ParaType(("vel","trend_sigma","u"), "m/y"),
+    "BIAS_X_SIG": ParaType(("vel","bias_sigma","x"), "m"),
+    "BIAS_Y_SIG": ParaType(("vel","bias_sigma","y"), "m"),
+    "BIAS_Z_SIG": ParaType(("vel","bias_sigma","z"), "m"),
+    "BIAS_E_SIG": ParaType(("vel","bias_sigma","e"), "m"),
+    "BIAS_N_SIG": ParaType(("vel","bias_sigma","n"), "m"),
+    "BIAS_U_SIG": ParaType(("vel","bias_sigma","u"), "m"),
+    "AMPA_X_SIG": ParaType(("vel","amp_annual_sigma","x"), "m"),
+    "AMPA_Y_SIG": ParaType(("vel","amp_annual_sigma","y"), "m"),
+    "AMPA_Z_SIG": ParaType(("vel","amp_annual_sigma","z"), "m"),
+    "AMPA_E_SIG": ParaType(("vel","amp_annual_sigma","e"), "m"),
+    "AMPA_N_SIG": ParaType(("vel","amp_annual_sigma","n"), "m"),
+    "AMPA_U_SIG": ParaType(("vel","amp_annual_sigma","u"), "m"),
+    "AMPS_X_SIG": ParaType(("vel","amp_semiannual_sigma","x"), "m"),
+    "AMPS_Y_SIG": ParaType(("vel","amp_semiannual_sigma","y"), "m"),
+    "AMPS_Z_SIG": ParaType(("vel","amp_semiannual_sigma","z"), "m"),
+    "AMPS_E_SIG": ParaType(("vel","amp_semiannual_sigma","e"), "m"),
+    "AMPS_N_SIG": ParaType(("vel","amp_semiannual_sigma","n"), "m"),
+    "AMPS_U_SIG": ParaType(("vel","amp_semiannual_sigma","u"), "m"),
+})
+
+
 @plugins.register
 def sinex_tms(
         dset: "Dataset",
@@ -173,10 +262,14 @@ def sinex_tms(
         # Write the blocks
         block.write_block("header_line")
         block.write_block("file_reference")
+        if block.estimate_parameter_field_types:
+            block.write_block("solution_estimate")
         if "EAST" in block.data_field_types.keys():
             block.write_block("timeseries_ref_coordinate")
         block.write_block("timeseries_columns")
         block.write_block("timeseries_data")
+
+
 
     fid.close()
 
@@ -235,7 +328,9 @@ class TimeseriesBlocks:
 
         # Get data type and corresponding dataset fields, which should be written to file
         data_field_types = DATA_FIELD_TYPES if data_field_types is None else data_field_types        
-        self.data_field_types = self._get_existing_fields(data_field_types, dset.fields)
+        self.data_field_types = self._get_existing_data_fields(data_field_types, dset.fields)
+        
+        self.estimate_parameter_field_types = self._get_existing_parameter_fields(dset, ESTIMATE_PARAMETER_FIELD_TYPES)
         
 
     def header_line(self):
@@ -338,11 +433,73 @@ class TimeseriesBlocks:
         self.fid.write("-TIMESERIES/DATA\n")
 
 
+    def solution_estimate(self):
+        """
+        Write the SOLUTION/ESTIMATE block
+        """
+        # Example:
+        #                    1 OFFSET_01_X   NYA100NOR  A    1 1997:152:00000 2002:356:00000 m/yr 0.010020000000000E+00 .000100E+00
+        #               0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1
+
+        self.fid.write("+SOLUTION/ESTIMATE\n")
+        self.fid.write("*INDEX TYPE_________ STATION__ PT SOLN __DATA_START__ __DATA_END____ UNIT_ __ESTIMATED_VALUE_____ __STD_DEV____\n")
+
+        index=1
+        for type_, entries in self.estimate_parameter_field_types.items():
+            if type_.endswith("_SIG"): # Skip standard deviation entries
+                continue
+
+            # Handling of time dependent entries (e.g. like trend and offset)
+            if type(entries) == dict:
+
+                for idx_sol, (period, value) in enumerate(entries.items()):
+                    
+                    if type(period) == tuple: # Handling of trend time interval
+                        time_from=Time(datetime.fromisoformat(period[0]), scale='utc', fmt='datetime').yyyydddsssss
+                        time_to=Time(datetime.fromisoformat(period[1]), scale='utc', fmt='datetime').yyyydddsssss
+                    else: # Handling of offset timestamp
+                        time_from=Time(datetime.fromisoformat(period), scale='utc', fmt='datetime').yyyydddsssss
+                        time_to="0000:000:00000"
+
+                    self.fid.write(" {index:>5d} {type_:<13s} {station:<9s} {point_id:>2s} {soln_id:>4d} {time_from:12s} {time_to:12s} {unit:5s} {value:>22.15E} {sigma:>13.6E}\n".format(
+                            index=index,
+                            type_=type_,
+                            station=self.station.upper(),
+                            point_id="A",
+                            soln_id=idx_sol+1,
+                            time_from=time_from,
+                            time_to=time_to,
+                            unit=ESTIMATE_PARAMETER_FIELD_TYPES[type_].unit,
+                            value=value,
+                            sigma= self.estimate_parameter_field_types[f"{type_}_SIG"][period] if f"{type_}_SIG" in self.estimate_parameter_field_types.keys() else 0.0,
+                        )
+                    )
+                    index+=1
+            else:
+
+                self.fid.write(" {index:>5d} {type_:<13s} {station:<9s} {point_id:>2s} {soln_id:>4d} {time_from:12s} {time_to:12s} {unit:5s} {value:>22.15E} {sigma:>13.6E}\n".format(
+                        index=index,
+                        type_=type_,
+                        station=self.station.upper(),
+                        point_id="A",
+                        soln_id=1,
+                        time_from=Time(self.dset.meta["vel"]["interval"][0][0], scale='utc', fmt='datetime').yyyydddsssss,
+                        time_to=Time(self.dset.meta["vel"]["interval"][0][1], scale='utc', fmt='datetime').yyyydddsssss,
+                        unit=ESTIMATE_PARAMETER_FIELD_TYPES[type_].unit,
+                        value=entries,
+                        sigma= self.estimate_parameter_field_types[f"{type_}_SIG"] if f"{type_}_SIG" in self.estimate_parameter_field_types.keys() else 0.0,
+                    )
+                )
+                index+=1
+
+        self.fid.write("-SOLUTION/ESTIMATE\n")
+
+
     # 
     # AUXILIARY FUNCTIONS OF CLASS
     #
     @staticmethod
-    def _get_existing_fields(data_field_types_def: OrderedDict[str, str], fields: List[str]) -> OrderedDict[str, str]:
+    def _get_existing_data_fields(data_field_types_def: OrderedDict[str, str], fields: List[str]) -> OrderedDict[str, str]:
         """Get existing dataset fields which corresponds to definition of data types
 
         Args:
@@ -364,7 +521,40 @@ class TimeseriesBlocks:
                     data_field_types[type_] = field
 
         return data_field_types
-    
+
+    @staticmethod
+    def _get_existing_parameter_fields(
+                    dset: "Dataset",
+                    parameter_field_def: OrderedDict[str, str], 
+    ) -> OrderedDict[str, str]:
+        """Get existing dataset fields which corresponds to estimate parameter definition
+
+        Args:
+            dset:                A dataset containing the data.
+            parameter_field_def: Ordered dictionary with definition of estimate parameters and corresponding meta 
+                                 variables
+
+        Return:
+            Ordered dictionary with definition of parameter fields and given values
+        """
+        def _get_value(dict_: Dict[str, Any], keys: List[str]) -> bool:
+            value = dict_
+            for key in keys:
+                try:
+                    value = value[key]
+                except KeyError:
+                    return None
+
+            return value
+
+        parameter_fields = OrderedDict()
+        for name, field_def in parameter_field_def.items():
+            value = _get_value(dset.meta, field_def.keys)
+            if value:
+                parameter_fields.update({name: value})
+
+        return parameter_fields
+
     
     def _get_ref_pos(self) -> "Position":
         """Get reference coordinate position for the given station
