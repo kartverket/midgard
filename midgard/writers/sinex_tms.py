@@ -263,6 +263,8 @@ def sinex_tms(
         block.write_block("header_line")
         block.write_block("file_reference")
         if block.estimate_parameter_field_types:
+            if "solution_description" in dset.meta.keys():
+                block.write_block("solution_description")
             block.write_block("solution_estimate")
         if "EAST" in block.data_field_types.keys():
             block.write_block("timeseries_ref_coordinate")
@@ -433,13 +435,36 @@ class TimeseriesBlocks:
         self.fid.write("-TIMESERIES/DATA\n")
 
 
+    def solution_description(self):
+        """
+        Write the SOLUTION/DESCRIPTION block
+        """
+        self.fid.write("+SOLUTION/DESCRIPTION\n")
+        self.fid.write("*_________KEYWORD____________: __VALUE(S)_______________________________________\n")
+        for key, value in self.dset.meta["solution_description"].items():
+            self.fid.write(" {key:<29s} {value:<s}\n".format(
+                    key=f"{key.replace('_', ' ').upper()}",
+                    value=value,
+                )
+            )
+            
+        self.fid.write("-SOLUTION/DESCRIPTION\n")
+
+
     def solution_estimate(self):
         """
         Write the SOLUTION/ESTIMATE block
         """
         # Example:
-        #                    1 OFFSET_01_X   NYA100NOR  A    1 1997:152:00000 2002:356:00000 m/yr 0.010020000000000E+00 .000100E+00
-        #               0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1
+        # *INDEX TYPE_________ STATION__ PT SOLN __DATA_START__ __DATA_END____ UNIT_ __ESTIMATED_VALUE_____ __STD_DEV____
+        #      1 VEL_E         SLPN       A    1 2004:050:00000 2012:001:00000 m/y   -6.640000000000000E-03  3.000000E-05
+        #      2 VEL_E         SLPN       A    2 2012:001:00000 2021:365:00000 m/y   -1.853300000000000E-02  2.400000E-05
+        #      3 VEL_N         SLPN       A    1 2004:050:00000 2012:001:00000 m/y   -1.102100000000000E-02  3.300000E-05
+        #      4 VEL_N         SLPN       A    2 2012:001:00000 2021:365:00000 m/y   -1.739000000000000E-02  2.600000E-05
+        #      5 VEL_U         SLPN       A    1 2004:050:00000 2012:001:00000 m/y    2.217600000000000E-02  9.400000E-05
+        #      6 VEL_U         SLPN       A    2 2012:001:00000 2021:365:00000 m/y   -2.248000000000000E-03  7.600000E-05
+        #      7 BIAS_E        SLPN       A    1 2004:050:00000 2021:365:00000 m      4.676000000000000E-03 -1.380000E-04
+        # 0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1
 
         self.fid.write("+SOLUTION/ESTIMATE\n")
         self.fid.write("*INDEX TYPE_________ STATION__ PT SOLN __DATA_START__ __DATA_END____ UNIT_ __ESTIMATED_VALUE_____ __STD_DEV____\n")
