@@ -40,6 +40,10 @@ def pos_trs_s():
     """"""
     return position.Position(np.random.random((3,)) * 6.3e6, system="trs")
 
+@pytest.fixture
+def pos_trs_sa():
+    """"""
+    return position.Position(np.random.random((1,3)) * 6.3e6, system="trs")
 
 @pytest.fixture
 def posvel_trs_a():
@@ -54,12 +58,23 @@ def posvel_trs_s():
     factor = np.array([2e8] * 3 + [1e3] * 3)
     return position.PosVel(np.random.random((6,)) * factor, system="trs")
 
+@pytest.fixture
+def posvel_trs_sa():
+    """"""
+    factor = np.array([2e8] * 3 + [1e3] * 3)
+    return position.PosVel(np.random.random((1, 6)) * factor, system="trs")
 
 @pytest.fixture
 def posveldelta_trs_a():
     """"""
     ref_pos = position.PosVel(np.random.random((5, 6)) * 6.3e6, system="trs")
     return position.PosVelDelta(np.random.random((5, 6)), system="trs", ref_pos=ref_pos)
+
+@pytest.fixture
+def posveldelta_trs_sa():
+    """"""
+    ref_pos = position.PosVel(np.random.random((1, 6)) * 6.3e6, system="trs")
+    return position.PosVelDelta(np.random.random((1, 6)), system="trs", ref_pos=ref_pos)
 
 
 @pytest.fixture
@@ -82,8 +97,13 @@ def posdelta_trs_s():
     ref_pos = position.Position(np.random.random((3,)) * 6.3e6, system="trs")
     return position.PositionDelta(np.random.random((3,)), system="trs", ref_pos=ref_pos)
 
+@pytest.fixture
+def posdelta_trs_sa():
+    """"""
+    ref_pos = position.Position(np.random.random((1, 3)) * 6.3e6, system="trs")
+    return position.PositionDelta(np.random.random((1, 3)), system="trs", ref_pos=ref_pos)
 
-@pytest.mark.parametrize("pos", (pos_trs_a, pos_trs_s), indirect=True)
+@pytest.mark.parametrize("pos", (pos_trs_a, pos_trs_s, pos_trs_sa), indirect=True)
 def test_pos_conversions(pos):
     systems = position.PositionArray.systems.keys()
 
@@ -97,7 +117,7 @@ def test_pos_conversions(pos):
             print(f"Conversion from {pos.system} to {system} is not defined")
 
 
-@pytest.mark.parametrize("posdelta", (posdelta_trs_a, posdelta_trs_s), indirect=True)
+@pytest.mark.parametrize("posdelta", (posdelta_trs_a, posdelta_trs_s, posdelta_trs_sa), indirect=True)
 def test_posdelta_conversions(posdelta):
     systems = position.PositionDeltaArray.systems.keys()
 
@@ -111,7 +131,7 @@ def test_posdelta_conversions(posdelta):
             print(f"Conversion from {posdelta.system} to {system} is not defined")
 
 
-@pytest.mark.parametrize("posvel", (posvel_trs_a, posvel_trs_s), indirect=True)
+@pytest.mark.parametrize("posvel", (posvel_trs_a, posvel_trs_s, posvel_trs_sa), indirect=True)
 def test_posvel_conversions(posvel):
     systems = position.PosVelArray.systems.keys()
 
@@ -172,7 +192,7 @@ def test_slice_and_columns():
     assert np.equal(_pos[1:].other.val, np.array([[4, 5, 6], [7, 8, 9]])).all()
 
 
-@pytest.mark.parametrize("pos", (pos_trs_a, pos_trs_s), indirect=True)
+@pytest.mark.parametrize("pos", (pos_trs_a, pos_trs_s, pos_trs_sa), indirect=True)
 def test_pos_unit(pos):
     assert pos.unit() == ("meter", "meter", "meter")
     assert pos.unit("elevation") == ("radians",)
@@ -199,7 +219,7 @@ def test_posvel_unit(posvel):
     assert posvel.vel.unit() == ("meter/second", "meter/second", "meter/second")
 
 
-@pytest.mark.parametrize("posveldelta", (posveldelta_trs_a, posveldelta_trs_s), indirect=True)
+@pytest.mark.parametrize("posveldelta", (posveldelta_trs_a, posveldelta_trs_s, posveldelta_trs_sa), indirect=True)
 def test_posveldelta_unit(posveldelta):
     assert posveldelta.unit() == ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
     assert posveldelta.unit("acr") == ("meter", "meter", "meter", "meter/second", "meter/second", "meter/second")
