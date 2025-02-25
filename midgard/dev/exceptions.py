@@ -51,6 +51,10 @@ class ParserError(MidgardException):
     pass
 
 
+class PositionOutsideTranformationRegion(MidgardException):
+    pass
+
+
 class TimerNotRunning(MidgardException):
     pass
 
