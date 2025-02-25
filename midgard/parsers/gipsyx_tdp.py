@@ -15,7 +15,7 @@ Reads data from files in GipsyX time dependent parameter (TDP) format.
 """
 # Standard library imports
 from collections import namedtuple
-from typing import Any, Dict
+from typing import Any, Callable, Dict, List
 
 # External library imports
 import numpy as np
@@ -96,11 +96,41 @@ class GipsyxTdpParser(LineParser):
         # 375969900  3.940000000000000e-01  3.940000000000000e-01  0.000000000000000e+00 .Satellite.GPS63.Antennas.Antenna1.MapCenterOffset.All.X
         # 375969900  8.729059297499520e+03  8.729059297499520e+03  0.000000000000000e+00 .Satellite.GPS62.Clk.Bias
         return dict(
-            names=("time_past_j2000", "apriori", "value", "sigma", "name"),
-            delimiter=(10, 23, 23, 23, 200),
-            dtype=("f8", "f8", "f8", "f8", "U200"),
-            autostrip=True,
+            delimiter = None, # consecutive whitespace 
+            dtype = None,
+            encoding="utf-8",
         )
+
+
+    #
+    # SETUP POSTPROCESSORS
+    #
+    def setup_postprocessors(self) -> List[Callable[[], None]]:
+        """List steps necessary for postprocessing
+        """
+        return [
+            self._define_field_names,
+        ]
+
+
+    def _define_field_names(self) -> None:
+        """Define field name for each column
+        """
+        columns = {
+            "f0": "time_past_j2000",
+            "f1": "apriori",
+            "f2": "value",
+            "f3": "sigma",
+            "f4": "name",
+        }
+
+        if not len(self.data.keys()) == len(columns.keys()):
+            log.fatal("Expected column number is not correct in file {self.meta['__data_path__']}")
+            
+        for col, name in columns.items():
+            self.data[name] = self.data[col]
+            del self.data[col]
+
 
     #
     # WRITE DATA
@@ -114,19 +144,21 @@ class GipsyxTdpParser(LineParser):
 
        | Field                | Type              | Description                                                       |
        | :------------------- | :---------------- | :---------------------------------------------------------------- |
-       | receiver_clock       | numpy.ndarray     | Receiver clock parameter                                          |
+       | receiver_clock       | numpy.ndarray     | Receiver clock parameter in meter                                 |
        | satellite            | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)     |
-       | satellite_clock      | numpy.ndarray     | Satellite clock parameter                                         |
-       | satellite_ant_pco    | PositionTable     | Satellite antenna phase center offset                             |
-       | site_posvel          | PosVel            | Station coordinates and velocities                                |
+       | satellite_clock      | numpy.ndarray     | Satellite clock parameter in meter                                |
+       | satellite_ant_pco    | Position          | Satellite antenna phase center offset as Position object          |
+       | site_posvel          | PosVel            | Station coordinates and velocities as Position/Velocity object    |
        | source_id            | numpy.ndarray     | Source ID                                                         |
        | station              | numpy.ndarray     | Station name list                                                 |
        | system               | numpy.ndarray     | GNSS identifier (e.g. G or E)                                     |
        | time                 | Time              | Parameter time given as TimeTable object                          |
-       | trop_zenith_model    | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter                |
-       | trop_zenith_wet      | numpy.ndarray     | Zenith wet troposphere delay parameter                            |
-       | trop_gradient_east   | numpy.ndarray     | Troposphere horizontal delay gradient in the East direction       |
-       | trop_gradient_north  | numpy.ndarray     | Troposphere horizontal delay gradient in the North direction      |
+       | trop_zenith_dry      | numpy.ndarray     | Zenith hydrostatic/dry troposphere delay parameter in meter       |
+       | trop_zenith_wet      | numpy.ndarray     | Zenith wet troposphere delay parameter in meter                   |
+       | trop_gradient_east   | numpy.ndarray     | Troposphere horizontal delay gradient in the East direction in    |
+       |                      |                   | meter                                                             |
+       | trop_gradient_north  | numpy.ndarray     | Troposphere horizontal delay gradient in the North direction in   |
+       |                      |                   | meter                                                             |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         
@@ -298,7 +330,7 @@ class GipsyxTdpParser(LineParser):
                         ).T
 
             else:
-                log.fatal(f"Parameter '{parameter}' is not defined.")
+                log.fatal(f"Parameter '{parameter}' is not defined. See file {self.meta['__data_path__']}.")
 
         dset.subset(keep_idx)  # Remove unnecessary entries (e.g. '.X' and '.Y' )
 
