@@ -74,3 +74,4 @@ GRS80 = Ellipsoid("GRS80", a=6_378_137, f_inv=298.257_222_101, description="Used
 WGS84 = Ellipsoid("WGS84", a=6_378_137, f_inv=298.257_223_563, description="Used by GPS")
 IERS2003 = Ellipsoid("IERS2003", a=6_378_136.6, f_inv=298.25642, description="IERS conventions 2003, p. 12")
 IERS2010 = Ellipsoid("IERS2010", a=6_378_136.6, f_inv=298.25642, description="IERS conventions 2010, p. 18")
+DORIS = Ellipsoid("DORIS", a=6_378_136.0, f_inv=298.257810, description="Used by DORIS")
