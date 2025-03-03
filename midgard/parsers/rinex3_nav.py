@@ -26,15 +26,14 @@ import dateutil.parser
 import itertools
 from typing import Any, Callable, Dict, Iterable, List, Union
 
-# External library imports
+# Third party imports
 import numpy as np
 
 # Midgard imports
-from midgard.parsers import ChainParser, ParserDef
 from midgard.data import dataset
 from midgard.data.time import Time
-from midgard.dev import log
-from midgard.dev import plugins
+from midgard.dev import log, plugins
+from midgard.parsers import ChainParser, ParserDef
 
 
 # TODO: SYSTEM_TIME_OFFSET_TO_GPS_SECOND & SYSTEM_TIME_OFFSET_TO_GPS_WEEK should be placed in constant.conf
