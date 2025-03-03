@@ -285,7 +285,7 @@ class SinexParser(Parser):
 
         except StopIteration:  # File ended without reading all sinex_blocks
             missing = ", ".join(sinex_blocks)
-            log.warn(f"SinexParser {self.parser_name!r} did not find Sinex blocks {missing} in file {self.file_path}")
+            log.debug(f"SinexParser {self.parser_name!r} did not find Sinex blocks {missing} in file {self.file_path}")
 
     def parse_lines(self, lines: List[bytes], fields: Tuple[SinexField, ...]) -> np.array:
         """Parse lines in a Sinex file
@@ -1041,7 +1041,7 @@ class SinexParser(Parser):
         return SinexBlock(
             marker="SOLUTION/NORMAL_EQUATION_VECTOR",
             fields=(
-                SinexField("param_idx", 1, "i5"),
+                SinexField("param_idx", 1, "i8"),
                 SinexField("param_type", 7, "U6"),
                 SinexField("site_code", 14, "U4"),
                 SinexField("point code", 19, "U2"),

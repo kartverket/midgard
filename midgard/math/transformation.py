@@ -143,16 +143,14 @@ def trs2kepler(trs: "TrsPosVel") -> "KeplerPosVel":
     Returns:
         tuple with numpy.ndarray types: Tuple with following Keplerian elements:
 
-    ===============  ======  ==================================================================================
-     Keys             Unit     Description
-    ===============  ======  ==================================================================================
-     a                m       Semimajor axis
-     e                        Eccentricity of the orbit
-     i                rad     Inclination
-     Omega            rad     Right ascension of the ascending node
-     omega            rad     Argument of perigee
-     E                rad     Eccentric anomaly
-    ===============  ======  ==================================================================================
+   | Keys           | Unit  |  Description                          |
+   | :--------------| :-----| :------------------------------------ |
+   | a              | m     | Semimajor axis                        |
+   | e              |       | Eccentricity of the orbit             |
+   | i              | rad   | Inclination                           |
+   | Omega          | rad   | Right ascension of the ascending node |
+   | omega          | rad   | Argument of perigee                   |
+   | E              | rad   | Eccentric anomaly                     |
     """
     r_norm = nputil.norm(trs.pos)  # Norm of position vector
     v_norm = nputil.norm(trs.vel)  # Norm of velocity vector
@@ -226,7 +224,12 @@ def delta_trs2enu(trs: "TrsPositionDelta") -> "EnuPositionDelta":
 
 def delta_enu2trs(enu: "EnuPositionDelta") -> "TrsPositionDelta":
     """Convert position deltas from ENU to TRS"""
-    return np.squeeze(enu.ref_pos.enu2trs @ enu.mat)
+    if enu.shape[0] == 1: # Different handling if only 1 element is given for 1. dimension.
+        trs = (enu.ref_pos.enu2trs @ enu.val.T).reshape((1,3))
+    else:
+        trs = np.squeeze(enu.ref_pos.enu2trs @ enu.mat)
+    
+    return trs
 
 
 def delta_trs2enu_posvel(trs: "TrsPosVelDelta") -> "EnuPosVelDelta":
@@ -338,11 +341,13 @@ def sigma_trs2enu(
     for idx in range(0, num_obs):
 
         # Define covariance matrix of the geocentric coordinates
-        C_g    = np.array([
-                [sx[idx]**2,cxy[idx]*sx[idx]*sy[idx],cxz[idx]*sx[idx]*sz[idx]],
-                [cxy[idx]*sx[idx]*sy[idx],sy[idx]**2,cyz[idx]*sy[idx]*sz[idx]],
-                [cxz[idx]*sx[idx]*sz[idx],cyz[idx]*sy[idx]*sz[idx],sz[idx]**2],
-        ])
+        C_g = np.squeeze(
+                    np.array([
+                        [sx[idx]**2,cxy[idx]*sx[idx]*sy[idx],cxz[idx]*sx[idx]*sz[idx]],
+                        [cxy[idx]*sx[idx]*sy[idx],sy[idx]**2,cyz[idx]*sy[idx]*sz[idx]],
+                        [cxz[idx]*sx[idx]*sz[idx],cyz[idx]*sy[idx]*sz[idx],sz[idx]**2],
+                    ])
+        )
 
         # Calculate covariance matrix of the topocentric coordinates
         C_t = np.dot(np.dot(R,C_g),R.T)
@@ -354,4 +359,4 @@ def sigma_trs2enu(
 
     return se,sn,su
 
-
+ 

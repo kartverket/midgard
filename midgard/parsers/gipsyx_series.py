@@ -133,13 +133,13 @@ class GipsyxSeriesParser(LineParser):
             Midgard Dataset where timeseries data are stored with following fields:
 
     
-           | Field               | Type              | Description                                                    |
-           |---------------------|-------------------|----------------------------------------------------------------|
-           | obs.dpos            | PositionDelta     | Position delta object referred to a reference position         |
-           | obs.dpos_sigma_east | numpy.array       | Standard deviation of east position                            |
-           | obs.dpos_sigma_north| numpy.array       | Standard deviation of north position                           |
-           | obs.dpos_sigma_up   | numpy.array       | Standard deviation of up position                              |
-           | time                | Time              | Parameter time given as TimeTable object                       |
+           | Field                     | Type              | Description                                              |
+           | :------------------------ | :---------------- | :------------------------------------------------------- |
+           | obs.dsite_pos             | PositionDelta     | Position delta object referred to a reference position   |
+           | obs.dsite_pos_east_sigma  | numpy.array       | Standard deviation of east position                      |
+           | obs.dsite_pos_north_sigma | numpy.array       | Standard deviation of north position                     |
+           | obs.dsite_pos_up_sigma    | numpy.array       | Standard deviation of up position                        |
+           | time                      | Time              | Parameter time given as TimeTable object                 |
         """
 
         # Initialize dataset
@@ -153,19 +153,19 @@ class GipsyxSeriesParser(LineParser):
         # Add position
         ref_pos = position.Position(np.repeat(np.array([ref_pos]), dset.num_obs, axis=0), system="trs")
         dset.add_position_delta(
-            name="obs.dpos",
+            name="obs.dsite_pos",
             val=np.stack((self.data["east"], self.data["north"], self.data["vertical"]), axis=1),
             system="enu",
             ref_pos=ref_pos,
         )
 
-        # TODO: sigma functionality has to be improved: dpos_sigma.enu.east, dpos_sigma.trs.x
+        # TODO: sigma functionality has to be improved: dsite_pos_sigma.enu.east, site_pos_sigma.trs.x
         ## Add position sigma
         # sigma = np.stack((self.data["east_sigma"], self.data["north_sigma"], self.data["vertical_sigma"]), axis=1)
-        # dset.add_sigma(name="dpos_sigma", val=dset.dpos.val, sigma=sigma, unit="meter")
-        dset.add_float(name="obs.dpos_sigma_east", val=self.data["east_sigma"], unit="meter")
-        dset.add_float(name="obs.dpos_sigma_north", val=self.data["north_sigma"], unit="meter")
-        dset.add_float(name="obs.dpos_sigma_up", val=self.data["vertical_sigma"], unit="meter")
+        # dset.add_sigma(name="dsite_pos_sigma", val=dset.dsite_pos.val, sigma=sigma, unit="meter")
+        dset.add_float(name="obs.dsite_pos_east_sigma", val=self.data["east_sigma"], unit="meter")
+        dset.add_float(name="obs.dsite_pos_north_sigma", val=self.data["north_sigma"], unit="meter")
+        dset.add_float(name="obs.dsite_pos_up_sigma", val=self.data["vertical_sigma"], unit="meter")
 
         # Add time
         dset.add_time(

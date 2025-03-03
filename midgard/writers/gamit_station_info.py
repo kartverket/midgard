@@ -108,7 +108,6 @@ def gamit_station_info(
                 stop = min(a.date_to, r.date_to)
 
                 # Eccentricity information
-                import IPython; IPython.embed()
                 height_code = REFERENCE_POINT.get(a.reference_point, "-----")
                 e_start = values["eccentricity"].get(start)
                 e_end = values["eccentricity"].get(stop)
