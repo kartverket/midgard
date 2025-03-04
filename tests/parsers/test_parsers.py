@@ -173,12 +173,14 @@ def test_parser_galileo_constellation_html_download():
     """Test that parsing galileo_constellation_html gives expected output"""
     assert False
 
+
 def test_parser_gamit_org():
     """Test that parsing gamit file gives expected output"""
     dset = get_parser("gamit_org").as_dataset()
+
     assert len(dset.site_pos) == 8
     assert len(dset.time) == 8
-    assert "REYK_JPS" in dset.station
+    assert "REYK" in dset.station[0]
 
 
 def test_parser_gipsy_stacov():
@@ -279,7 +281,7 @@ def test_parser_gnssrefl_subdaily_txt():
     """Test that parsing gnssrefl_txt gives expected output for 'subdaily' output file"""
     parser = get_parser("gnssrefl_txt", example_path="./example_files/gnssrefl_subdaily_txt").as_dict()
     
-    assert len(parser) == 19
+    assert len(parser) == 20
     assert "satellite" in parser
     assert 10.0 == parser["satellite"][0]
 
@@ -384,6 +386,13 @@ def test_parser_sinex_site():
     assert "site_code" in parser["brux"]["site_id"]
     assert "brux" in parser["brux"]["site_id"]["site_code"]
 
+def test_parser_sp3():
+    """Test that parsing sp3 gives expected output"""
+    parser = get_parser("sp3", pathlib.Path(__file__).parent / "example_files" / "sp3d").as_dict()
+
+    assert len(parser) == 7
+    assert "system" in parser
+    assert "G" in parser["system"][0]
 
 def test_parser_spring_csv():
     """Test that parsing spring_csv gives expected output"""

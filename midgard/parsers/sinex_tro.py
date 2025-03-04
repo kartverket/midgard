@@ -23,8 +23,8 @@ from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField, p
 
 
 @plugins.register
-class BernTropSnxParser(SinexParser):
-    """A parser for reading data from Bernese troposphere files in SNX format
+class SinexTropParser(SinexParser):
+    """A parser for reading data from troposphere files in SNX format
     """
 
     def __init__(self, file_path, encoding=None):
