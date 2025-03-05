@@ -220,6 +220,7 @@ class Sp3dParser(ChainParser):
             second=float(line["second"]),
         )
 
+
     def _parse_float(self, line, _):
         """Parse float entries of SP3 header to instance variable 'meta'
 
@@ -228,12 +229,13 @@ class Sp3dParser(ChainParser):
         """
         for k, v in line.items():
 
-            # Skip lines following lines:
+            # Skip second %f line e.g. like:
             # %f  0.0000000  0.000000000  0.00000000000  0.000000000000000
-            if k == "base_posvel" and float(v) == 0.0:
+            if ("base_posvel" in self.meta.keys()) and (k == "base_posvel"):
                 break
 
             self.meta[k] = float(v)
+
 
     def _parse_string(self, line, _):
         """Parse string entries of SP3 header to instance variable 'meta'
