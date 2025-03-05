@@ -198,7 +198,7 @@ def kepler2trs(kepler: "KeplerPosVel") -> "TrsPosVel":
     """
 
     num_obs = 1 if kepler.ndim == 1 else len(kepler)
-    zero = 0 if num_obs == 1 else np.zeros(num_obs)
+    zero = 0 if kepler.ndim == 1 else np.zeros(num_obs)
     cosE = np.cos(kepler.E)
     sinE = np.sin(kepler.E)
     fac = np.sqrt((1 - kepler.e) * (1 + kepler.e))
@@ -224,12 +224,7 @@ def delta_trs2enu(trs: "TrsPositionDelta") -> "EnuPositionDelta":
 
 def delta_enu2trs(enu: "EnuPositionDelta") -> "TrsPositionDelta":
     """Convert position deltas from ENU to TRS"""
-    if enu.shape[0] == 1: # Different handling if only 1 element is given for 1. dimension.
-        trs = (enu.ref_pos.enu2trs @ enu.val.T).reshape((1,3))
-    else:
-        trs = np.squeeze(enu.ref_pos.enu2trs @ enu.mat)
-    
-    return trs
+    return np.squeeze(enu.ref_pos.enu2trs @ enu.mat)
 
 
 def delta_trs2enu_posvel(trs: "TrsPosVelDelta") -> "EnuPosVelDelta":
