@@ -199,8 +199,11 @@ class GamitOrgParser(ChainParser):
 
         # Add position information
         dset.add_position("site_pos", pos_array, system="trs")
-        dset.add_float("site_pos_x_sigma", sigma_x_array)
-        dset.add_float("site_pos_y_sigma", sigma_y_array)
-        dset.add_float("site_pos_z_sigma", sigma_z_array)
+        dset.add_float("site_pos_x_sigma", sigma_x_array, unit="meter")
+        dset.add_float("site_pos_y_sigma", sigma_y_array, unit="meter")
+        dset.add_float("site_pos_z_sigma", sigma_z_array, unit="meter")
         dset.add_text("station", stations)
+
         return dset
+
+

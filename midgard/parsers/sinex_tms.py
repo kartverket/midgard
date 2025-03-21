@@ -745,7 +745,7 @@ class SinexTmsParser(SinexParser):
             "tgtot": FieldDef("obs.trop_gradient_total", "meter"),
             "trodry": FieldDef("obs.trop_zenith_dry", "meter"),
             "trotot": FieldDef("obs.trop_zenith_total", "meter"),
-            "tro_wet": FieldDef("obs.trop_zenith_wet", "meter"),
+            "trowet": FieldDef("obs.trop_zenith_wet", "meter"),
             "sig_rcv_clk": FieldDef("obs.receiver_clock_sigma", "meter"),
             "sig_tge": FieldDef("obs.trop_gradient_east_sigma", "meter"),
             "sig_tgn": FieldDef("obs.trop_gradient_north_sigma", "meter"),

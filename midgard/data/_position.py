@@ -159,6 +159,9 @@ class PosBase(np.ndarray):
             if self.is_transposed:
                 if self.ndim == 1:
                     self._cache["mat"] = self.val[None, :].T
+                # Special handling of array with one position
+                elif np.squeeze(self).ndim == 1:
+                    self._cache["mat"] = self.val[:, :, None]
                 else:
                     self._cache["mat"] = self.val[:, None, :].T
             else:
@@ -392,8 +395,12 @@ class PosBase(np.ndarray):
         # Return one column as a regular numpy array
         elif key in self.column_names:
             idx = self.column_names.index(key)
+
             if self.ndim == 1:
                 return self.val[idx]
+            # Special handling of array with one position
+            elif np.squeeze(self).ndim == 1:
+                return self.val[:, idx]
             else:
                 if self.is_transposed:
                     return self.val[idx, :]
