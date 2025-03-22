@@ -3,6 +3,7 @@
 
 
 # Standard library imports
+from copy import deepcopy
 from collections import namedtuple, OrderedDict
 from datetime import datetime
 from operator import attrgetter
@@ -254,8 +255,33 @@ def sinex_tms(
     Args:
         dset:  A dataset containing the data.
     """
-    log.info(f"Write file {file_path}")
+    
+    # Generate a dataset, whereby 'obs' collection is used for defined dataset fields
+    if not "obs" in dset.fields:
+        dset = deepcopy(dset)  # Necessary because Dataset is changed in the following
+        skip_fields = ["domes", "flag", "station", "time"]
+        
+        for field in dset.fields:
+            
+            # Skip fields
+            if field in ["domes", "flag", "station", "time"]:
+                continue
 
+            if field == "site_pos":
+                dset.add_position("obs.site_pos", val=dset[field])
+
+            elif field == "dsite_pos":
+                dset.add_position_delta("obs.dsite_pos", val=dset[field])
+
+            else:
+                unit = None if dset.unit(field) is None else dset.unit(field)[0]
+                dset.add_float(f"obs.{field}", val=dset[field], unit=unit)
+
+            del dset[field]
+       
+
+    log.info(f"Write file {file_path}")
+    
     with files.open(file_path=file_path, create_dirs=True, mode="wt") as fid:
         block = TimeseriesBlocks(dset, fid, station, contact, data_agency, file_agency, input_, organization, software, version)
 
