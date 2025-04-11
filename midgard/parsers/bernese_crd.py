@@ -1,4 +1,4 @@
-"""A parser for reading Bernese CRD file
+"""A parser for reading Bernese v5.2 CRD file
 
 Example:
 --------
@@ -10,7 +10,7 @@ Example:
 Description:
 ------------
 
-Reads data from files in Bernese CRD format.
+Reads data from files in Bernese v5.2 CRD format.
 
 """
 # Standard library imports
@@ -30,7 +30,7 @@ from midgard.dev import plugins
 
 @plugins.register
 class BerneseCrdParser(LineParser):
-    """A parser for reading Bernese CRD file
+    """A parser for reading Bernese v5.2 CRD file
 
     Following **data** are available after reading Bernese CRD file:
 
@@ -74,16 +74,20 @@ class BerneseCrdParser(LineParser):
         # --------------------------------------------------------------------------------
         # LOCAL GEODETIC DATUM: IGS14             EPOCH: 2018-10-03 12:00:00
         #
-        # NUM  STATION NAME           X (M)          Y (M)          Z (M)     FLAG
+        # NUM  STATION NAME           X (M)          Y (M)          Z (M)     FLAG     SYSTEM
         #
         self._parse_header()
 
         # Parse data
         # 
         # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8--
-        #   1  0ABI              2233557.47676   761080.39008  5906186.08412    A
-        #   2  AASC              3172870.25685   604208.64396  5481574.60291    A
-        #   3  ABMF 97103M001    2919785.71395 -5383745.04971  1774604.71351
+        #   1  0ABI              2233557.47676   761080.39008  5906186.08412    A      G
+        #   2  AASC              3172870.25685   604208.64396  5481574.60291    A      G E
+        #   3  ADAC              1916240.25705   963577.10453  5986596.68012    A      G E
+        #   4  REYK              2587383.89197 -1043033.60556  5716564.19973    A      G E
+        #   5  REYZ              2587383.61728 -1043032.73718  5716564.50521
+        #   6  RIGA              3183898.83876  1421478.77924  5322810.95829    W      G E
+        #   7  RIND              2860555.73826   463969.57221  5662948.95409    A      G E
         return dict(
             autostrip=True,
             comments="#",
@@ -157,8 +161,12 @@ class BerneseCrdParser(LineParser):
     #
     # GET DATASET
     #
-    def as_dataset(self) -> "Dataset":
+    def as_dataset(self, remove_empty_flags=True) -> "Dataset":
         """Return the parsed data as a Dataset
+        
+        Args:
+            remove_empty_flags:  Entries are removed with empty flag definition. These are coordinate solutions, which
+                                 are not estimated, not used or unknown.
 
         Returns:
             Midgard Dataset where station coordinates and belonging information are stored with following fields:
@@ -208,5 +216,10 @@ class BerneseCrdParser(LineParser):
             system="trs", 
             val=np.stack((np.array(self.data["pos_x"]), np.array(self.data["pos_y"]), np.array(self.data["pos_z"])), axis=1),
         )
+        
+        # Remove entries without flag (not estimated, not used, or unknown)
+        if remove_empty_flags:
+            idx = dset.flag == ""
+            dset.subset(~idx)
               
         return dset
