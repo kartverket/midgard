@@ -265,7 +265,10 @@ def _get_object_for_date(date: datetime, history) -> Dict[Tuple[datetime, dateti
     Returns:
         Antenna, receiver or eccentricity object
     """
-    for (date_from, date_to), object_ in sorted(history.items()): 
+    for (date_from, date_to), object_ in sorted(history.items()):
+        if date_from == date_to:
+            return object_
+            
         if date_from <= date < date_to:
             return object_
         
