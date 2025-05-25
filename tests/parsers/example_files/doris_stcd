@@ -1,0 +1,38 @@
+%fgfgjk
++FILE/REFERENCE
+ DESCRIPTION   Analysis of the IDS (16-17) weekly solutions by the IDS Combination Center
+ INPUT         Weekly sinex in free-network
+ OUTPUT        Weekly sinex expressed in DPOD2014
+ CONTACT       Guilhem.Moreaux@cls.fr
+ SOFTWARE      CATREF software
+*_______________________________________________________________________________
++FILE/COMMENT
+ FIELDS - modified julian date, dX, dY, dZ, sX, sY, sZ, dEast, dNorth, dUp, sEast, sNorth, sUp
+ FORMAT - 2x,f7.1,2(2x,3(1x,f6.3),3(1x,f5.3))
+ UNITS - all position residuals in millimeters  
+ REFERENCE SYSTEM - DORIS terrestrial system
+ EARTH ELLIPSOID - flattening factor: 298.257810 equatorial radius: 6378136.0 m
+-FILE/COMMENT
+*_______________________________________________________________________________
++SITE/ID
+*Code Pt __Domes__ T _Station Description__ _Longitude_ _Latitude__ _Height
+ SVAC  A 10338S003 D NY-ALESUND II, NORWAY   11 50 29.7  78 56 27.8    65.8
+-SITE/ID
+*_______________________________________________________________________________
++SOLUTION/APRIORI
+*Index _Type_ Code Pt Soln _Ref_Epoch__ Unit S __Estimated Value____ _Std_Dev___
+    -- STAX   SVAC -- ---- 00:001:00000 m    2 +1.20130004166439e+06 2.00720e-03
+    -- STAY   SVAC -- ---- 00:001:00000 m    2 +2.51874432173654e+05 2.00660e-03
+    -- STAZ   SVAC -- ---- 00:001:00000 m    2 +6.23800030817128e+06 1.90070e-03
+-SOLUTION/APRIORI
+*_______________________________________________________________________________
+  58408.5      -328.1     201.4     311.6       6.4       6.3       6.2       263.5     333.4     252.1       6.2       6.4       6.2
+  58415.5      -319.8     184.6     306.9       2.7       2.5       2.3       245.5     327.9     248.4       2.5       2.7       2.3
+  58422.5      -319.8     186.9     317.5       3.1       2.8       2.5       247.8     329.5     258.9       2.8       3.0       2.6
+  58429.5      -320.5     189.5     311.9       2.6       2.3       2.0       250.5     328.5     253.4       2.3       2.5       2.1
+  58436.5      -322.4     190.4     314.2       2.5       2.3       2.0       251.7     330.6     255.4       2.3       2.5       2.0
+  58443.5      -314.4     188.0     314.6       2.7       2.6       2.2       247.7     323.5     257.1       2.6       2.7       2.2
+  58450.5      -324.6     186.1     310.9       2.4       2.4       2.0       247.9     333.0     251.5       2.3       2.4       2.0
+  58457.5      -328.1     191.4     314.8       2.4       2.3       2.0       253.8     336.0     254.9       2.3       2.4       2.0
+  58464.5      -321.0     193.0     309.4       2.3       2.2       1.9       253.9     327.8     250.9       2.2       2.3       1.9
+  58471.5      -315.1     194.7     312.6       2.0       1.9       1.7       254.4     322.5     255.3       1.9       2.0       1.7
