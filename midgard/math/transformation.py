@@ -22,6 +22,13 @@ def trs2llh(trs: np.ndarray, ellipsoid: Ellipsoid = None) -> np.ndarray:
     """Convert geocentric xyz-coordinates to geodetic latitude-, longitude-, height-coordinates
 
     Reimplementation of GC2GDE.for from the IUA SOFA software collection.
+    
+    Args:
+        trs:        Array with geocentric xyz-coordinates in meter
+        ellipsoid:  Ellipsoid definition given via Ellipsoid data class 
+        
+    Returns:
+        Geodetic latitude, longitude and height coordinates in radian and meter
 
     """
     if ellipsoid is None:
@@ -100,6 +107,13 @@ def llh2trs(llh: np.ndarray, ellipsoid: Ellipsoid = None) -> np.ndarray:
     """Convert geodetic latitude-, longitude-, height-coordinates to geocentric xyz-coordinates
 
     Reimplementation of GD2GCE.for from the IUA SOFA software collection.
+    
+    Args:
+        llh:        Array with geodetic latitude, longitude and height coordinates in radian and meter
+        ellipsoid:  Ellipsoid definition given via Ellipsoid data class 
+        
+    Returns:
+        Array with geocentric xyz-coordinates in meter
     """
     if ellipsoid is None:
         ellipsoid = llh.ellipsoid if hasattr(llh, "ellipsoid") else GRS80
@@ -129,7 +143,7 @@ def _llh2trs(llh: nputil.HashArray, ellipsoid: Ellipsoid) -> np.ndarray:
     return np.stack((x, y, z)).T
 
 
-def trs2kepler(trs: "TrsPosVel") -> "KeplerPosVel":
+def trs2kepler(trs: "TrsPosVel") -> np.ndarray:
     """Compute Keplerian elements for elliptic orbit based on orbit position and velocity vector given in ITRS.
 
     The used equations are described in Section 2.2.4 in Montenbruck :cite:`montenbruck2012`.
@@ -139,18 +153,21 @@ def trs2kepler(trs: "TrsPosVel") -> "KeplerPosVel":
 
     .. note::
     The function cannot be used with position/velocity vectors describing a circular or non-inclined orbit.
+    
+    Args:
+        trs: Position and velocity coordinates given in terrestrial reference frame and as PosVel object
 
     Returns:
-        tuple with numpy.ndarray types: Tuple with following Keplerian elements:
+        Array with following Keplerian elements:
 
-   | Keys           | Unit  |  Description                          |
-   | :--------------| :-----| :------------------------------------ |
-   | a              | m     | Semimajor axis                        |
-   | e              |       | Eccentricity of the orbit             |
-   | i              | rad   | Inclination                           |
-   | Omega          | rad   | Right ascension of the ascending node |
-   | omega          | rad   | Argument of perigee                   |
-   | E              | rad   | Eccentric anomaly                     |
+       | Keys           | Unit  |  Description                          |
+       | :--------------| :-----| :------------------------------------ |
+       | a              | m     | Semimajor axis                        |
+       | e              |       | Eccentricity of the orbit             |
+       | i              | rad   | Inclination                           |
+       | Omega          | rad   | Right ascension of the ascending node |
+       | omega          | rad   | Argument of perigee                   |
+       | E              | rad   | Eccentric anomaly                     |
     """
     r_norm = nputil.norm(trs.pos)  # Norm of position vector
     v_norm = nputil.norm(trs.vel)  # Norm of velocity vector
@@ -189,12 +206,17 @@ def trs2kepler(trs: "TrsPosVel") -> "KeplerPosVel":
     return np.stack((a, e, i, Omega, omega, E)).T
 
 
-def kepler2trs(kepler: "KeplerPosVel") -> "TrsPosVel":
+def kepler2trs(kepler: "KeplerPosVel") -> np.ndarray:
     r"""Compute orbit position and velocity vector in geocentric equatorial coordinate system based on Keplerian
     elements for elliptic orbits.
 
     The implementation is based on Section 2.2.3 in :cite:`montenbruck2012`.
+    
+    Args:
+        kepler: Keplerian elements as PosVel object
 
+    Returns:
+        Array with following position and velocity vector
     """
 
     num_obs = 1 if kepler.ndim == 1 else len(kepler)
