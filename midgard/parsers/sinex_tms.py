@@ -34,7 +34,7 @@ import numpy as np
 from midgard.data import dataset
 from midgard.data.position import Position
 from midgard.data.time import Time
-from midgard.dev import plugins
+from midgard.dev import log, plugins
 from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField
 from midgard.site_info.site_info import SiteInfo
 
