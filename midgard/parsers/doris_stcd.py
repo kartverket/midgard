@@ -1,5 +1,12 @@
-"""A parser for reading DORIS station coordinate timeseries file in STCD format
+"""A parser for reading DORIS station coordinate timeseries file in Station Coordinates Difference (STCD) format
 
+
+Description:
+------------
+
+Reads station coordinate timeseries data from files in DORIS Station Coordinates Difference (STCD) format
+
+Format description can be found under: https://ids-doris.org/documents/report/CB_STCD_format_v1.0.pdf
 
 Example:
 --------
@@ -7,11 +14,6 @@ Example:
     from midgard import parsers
     p = parsers.parse_file(parser_name='doris_stcd', file_path='ids21wd03.stcd.svac')
     data = p.as_dict()
-
-Description:
-------------
-
-Reads station coordinate timeseries data from files in DORIS STCD format
 
 """
 # Standard library imports
@@ -26,6 +28,7 @@ from midgard.data import dataset
 from midgard.data.position import Position
 from midgard.dev import plugins, log
 from midgard.files import files
+from midgard.math.unit import Unit
 from midgard.parsers._parser_sinex import SinexParser, SinexBlock, SinexField
 
 
@@ -53,7 +56,7 @@ class DorisStcdParser(SinexParser):
             file_path (String/Path):    Path to file that will be read.
             encoding (String):          Encoding of file that will be read.
         """
-        super().__init__(file_path, encoding)
+        super().__init__(file_path, encoding, header=False)
 
     def setup_parser(self):
         return [
@@ -278,17 +281,17 @@ class DorisStcdParser(SinexParser):
             Midgard Dataset whereby following SINEX timeseries data block entries could be stored (depending on input 
             data):
 
-       | Field                    | Type              | Description                                                   |
-       | :----------------------- | :---------------- | :------------------------------------------------------------ |
-       | dsite_pos                | PositionDelta     | Position delta object refered to a reference position         |       
-       | dsite_pos_east_sigma     | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
-       | dsite_pos_north_sigma    | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
-       | dsite_pos_up_sigma       | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
-       | dsite_pos_x_sigma        | numpy.ndarray     | Standard deviation of geocentric X-coordinate                 |
-       | dsite_pos_y_sigma        | numpy.ndarray     | Standard deviation of geocentric Y-coordinate                 |
-       | dsite_pos_z_sigma        | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
-       | site_pos                 | Position          | Position object with given station coordinates                |
-       | time                     | Time              | Parameter time given as TimeTable object                      |
+       | Field                     | Type              | Description                                                   |
+       | :------------------------ | :---------------- | :------------------------------------------------------------ |
+       | obs.dsite_pos             | PositionDelta     | Position delta object refered to a reference position         |       
+       | obs.dsite_pos_east_sigma  | numpy.ndarray     | Standard deviation of topocentric East-coordinate             |
+       | obs.dsite_pos_north_sigma | numpy.ndarray     | Standard deviation of topocentric North-coordinate            |
+       | obs.dsite_pos_up_sigma    | numpy.ndarray     | Standard deviation of topocentric Up-coordinate               |
+       | obs.dsite_pos_x_sigma     | numpy.ndarray     | Standard deviation of geocentric X-coordinate                 |
+       | obs.dsite_pos_y_sigma     | numpy.ndarray     | Standard deviation of geocentric Y-coordinate                 |
+       | obs.dsite_pos_z_sigma     | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
+       | obs.site_pos              | Position          | Position object with given station coordinates                |
+       | time                      | Time              | Parameter time given as TimeTable object                      |
            
         and **meta**-data:
 
@@ -305,10 +308,19 @@ class DorisStcdParser(SinexParser):
        | ref_pos_y        | float         | Y-coordinate of reference station coordinate in [m]                       |
        | ref_pos_z        | float         | Z-coordinate of reference station coordinate in [m]                       | 
        | site_id          | dict          | General information of site                                               | 
+       | station          | str           | Station name                                                              |
        """
         dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["mjd"]))
         dset.meta.update(self.meta)
         dset.meta["station"] = self.data["site_id"]["site_code"].lower() if "site_id" in self.data.keys() else "NONE" 
+        
+        # Define reference frame of coordinate solutions
+        # TODO: What is the DORIS terrestrial system? It is not a clear definition.
+        reference_system = self.data["file_comment"][3].split("-")[1].strip()
+        if reference_system == "DORIS terrestrial system":
+            dset.meta["ref_frame"] = "DORIS"
+        else:
+            dset.meta["ref_frame"] = "UNKNOWN"
         
         # Move solution apriori information to meta reference coordinate variables
         dset.meta["ref_epoch"] = self.data["solution_apriori"]["stax"]["ref_epoch"].isoformat()
@@ -327,48 +339,52 @@ class DorisStcdParser(SinexParser):
         # Add position_delta field to dataset
         if "dx" in self.data["timeseries_data"].keys():
             ref_pos = Position(
-                val = [ 
-                    dset.meta["ref_pos_x"],
-                    dset.meta["ref_pos_y"],
-                    dset.meta["ref_pos_z"],
-                ],
-                system="trs",
+                            np.repeat(
+                                np.array([[
+                                    dset.meta["ref_pos_x"], 
+                                    dset.meta["ref_pos_y"],
+                                    dset.meta["ref_pos_z"],
+                                ]]), 
+                                dset.num_obs, 
+                                axis=0,
+                            ), 
+                            system="trs",
             )
-            
+                  
             dset.add_position_delta(
-                "dsite_pos",
+                "obs.dsite_pos",
                 val=np.vstack((
-                    self.data["timeseries_data"]["dx"], 
-                    self.data["timeseries_data"]["dy"], 
-                    self.data["timeseries_data"]["dz"]),
+                    self.data["timeseries_data"]["dx"] * Unit.millimeter2meter, 
+                    self.data["timeseries_data"]["dy"] * Unit.millimeter2meter, 
+                    self.data["timeseries_data"]["dz"] * Unit.millimeter2meter),
                 ).T,
                 system="trs",
                 ref_pos=ref_pos,
             )
             
             dset.add_position(
-                "site_pos",
+                "obs.site_pos",
                 val=np.vstack((
-                    self.data["timeseries_data"]["dx"] + dset.meta["ref_pos_x"], 
-                    self.data["timeseries_data"]["dy"] + dset.meta["ref_pos_y"], 
-                    self.data["timeseries_data"]["dz"] + dset.meta["ref_pos_z"]),
+                    self.data["timeseries_data"]["dx"] * Unit.millimeter2meter + dset.meta["ref_pos_x"], 
+                    self.data["timeseries_data"]["dy"] * Unit.millimeter2meter + dset.meta["ref_pos_y"], 
+                    self.data["timeseries_data"]["dz"] * Unit.millimeter2meter + dset.meta["ref_pos_z"]),
                 ).T,
                 system="trs",
             )
                     
         # Add float field to dataset
         field_def = {
-            "sig_x": FieldDef("dsite_pos_x_sigma", "meter"),
-            "sig_y": FieldDef("dsite_pos_y_sigma", "meter"),
-            "sig_z": FieldDef("dsite_pos_z_sigma", "meter"),
-            "sig_east": FieldDef("dsite_pos_east_sigma", "meter"),
-            "sig_north": FieldDef("dsite_pos_north_sigma", "meter"),
-            "sig_up": FieldDef("dsite_pos_up_sigma", "meter"),
+            "sig_x": FieldDef("obs.dsite_pos_x_sigma", "meter"),
+            "sig_y": FieldDef("obs.dsite_pos_y_sigma", "meter"),
+            "sig_z": FieldDef("obs.dsite_pos_z_sigma", "meter"),
+            "sig_east": FieldDef("obs.dsite_pos_east_sigma", "meter"),
+            "sig_north": FieldDef("obs.dsite_pos_north_sigma", "meter"),
+            "sig_up": FieldDef("obs.dsite_pos_up_sigma", "meter"),
         }
               
         for type_, def_ in field_def.items():
             if type_ in self.data["timeseries_data"].keys():
-                dset.add_float(def_.field, val=self.data["timeseries_data"][type_], unit=def_.unit)
+                dset.add_float(def_.field, val=self.data["timeseries_data"][type_] * Unit.millimeter2meter, unit=def_.unit)
 
         return dset
     
