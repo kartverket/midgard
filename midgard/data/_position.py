@@ -172,20 +172,19 @@ class PosBase(np.ndarray):
         return self._cache["mat"]
 
     @property
-    def is_transposed(self):
-        # Because we forced order == "C" on creation
-        return self.flags.f_contiguous
-
-    @property
     def unit_vector(self):
-        """Compute unit vector of position from system origo"""
+        """Compute the norm with magnitude 1"""
         return nputil.unit_vector(self.val)
 
     @property
-    @register_field(units=("meter"))
-    def length(self):
-        """Compute length"""
+    def norm(self):
+        """Compute the norm"""
         return nputil.norm(self)
+
+    @property
+    def is_transposed(self):
+        # Because we forced order == "C" on creation
+        return self.flags.f_contiguous
 
     @property
     def SYSTEMS(self):
@@ -409,7 +408,11 @@ class PosBase(np.ndarray):
 
         # Raise error for unknown attributes
         else:
-            raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
+            pass
+            # print(f"_SYSTEMS: {_SYSTEMS}")
+            # print(f"self.cls_name: {self.cls_name}")
+            # print(f"self.__class__: {self.__class__}")
+            #raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
 
     def __dir__(self):
         """List all fields and attributes on the PosDeltaBase array"""
@@ -693,6 +696,18 @@ class PositionArray(PosBase):
         memo[old_id_a] = (a, new_pos)
         memo[old_id_b] = (b, new_pos)
         return new_pos
+
+    @property
+    @register_field(units=("meter"))
+    def unit_vector(self):
+        """Compute unit vector of position from system origo"""
+        return nputil.unit_vector(self.val)
+
+    @property
+    @register_field(units=("meter"))
+    def length(self):
+        """Compute length"""
+        return nputil.norm(self)
 
     @property
     def pos(self):
