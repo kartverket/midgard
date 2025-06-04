@@ -699,12 +699,6 @@ class PositionArray(PosBase):
 
     @property
     @register_field(units=("meter"))
-    def unit_vector(self):
-        """Compute unit vector of position from system origo"""
-        return nputil.unit_vector(self.val)
-
-    @property
-    @register_field(units=("meter"))
     def length(self):
         """Compute length"""
         return nputil.norm(self)
