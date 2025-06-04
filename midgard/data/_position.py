@@ -1056,6 +1056,12 @@ class PositionDeltaArray(PosBase):
     def fieldnames(self):
         return super().fieldnames() + ["ref_pos"]
 
+    @property
+    @register_field(units=("meter"))
+    def length(self):
+        """Compute length of PositionDelta"""
+        return nputil.norm(self)
+
     @classmethod
     def from_position(cls, val: np.ndarray, other: "PositionArray") -> "PositionDeltaArray":
         """Create a new position delta with given values and same attributes as other position
