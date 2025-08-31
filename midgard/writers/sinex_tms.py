@@ -247,6 +247,7 @@ def sinex_tms(
         file_agency: str,
         input_: str,
         organization: str,
+        output: str,
         software: str,
         version: str,
 ) -> None:
@@ -283,7 +284,19 @@ def sinex_tms(
     log.info(f"Write file {file_path}")
     
     with files.open(file_path=file_path, create_dirs=True, mode="wt") as fid:
-        block = TimeseriesBlocks(dset, fid, station, contact, data_agency, file_agency, input_, organization, software, version)
+        block = TimeseriesBlocks(
+                        dset, 
+                        fid,
+                        station,
+                        contact,
+                        data_agency,
+                        file_agency,
+                        input_,
+                        organization,
+                        output,
+                        software,
+                        version,
+        )
 
         # Write the blocks
         block.write_block("header_line")
@@ -316,7 +329,8 @@ class TimeseriesBlocks:
                 data_agency: str, 
                 file_agency: str, 
                 input_: str = "", 
-                organization: str = "", 
+                organization: str = "",
+                output: str = "",
                 software: str = "", 
                 version: str="001",
                 data_field_types: Union[None, OrderedDict[str, str]] = None,
@@ -332,6 +346,7 @@ class TimeseriesBlocks:
             file_agency:       3-digit acronym of file agency, which generates the timeseries file
             input_:            Brief description of the input used to generate this solution
             organization:      Full name of organization(s) gathering/altering the file contents
+            output:            Description of the file content
             software:          Name of software, which has generated the file
             version:           Unique 3-digit version number identifier of the product
             data_field_types:  Ordered dictionary with definition of data type and corresponding dataset field, e.g.:
@@ -351,6 +366,7 @@ class TimeseriesBlocks:
         self.file_agency = file_agency
         self.input = input_
         self.organization = organization
+        self.output = output
         self.software = software
         self.version = version
 
@@ -395,7 +411,7 @@ class TimeseriesBlocks:
             "*INFO_TYPE________: INFO___________________________________________________________________________________\n"
         )
         self.fid.write(f" {'DESCRIPTION':<18} {self.organization}\n")
-        self.fid.write(f" {'OUTPUT':<18} {'GNSS station coordinate timeseries solution':<60}\n")
+        self.fid.write(f" {'OUTPUT':<18} {self.output:<60}\n")
         self.fid.write(f" {'CONTACT':<18} {self.contact:<60}\n")
         self.fid.write(f" {'SOFTWARE':<18} {self.software:<60}\n")
         self.fid.write(f" {'INPUT':<18} {self.input:<60}\n")
