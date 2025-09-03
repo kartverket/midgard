@@ -55,7 +55,7 @@ class BoolField(FieldType):
         Returns:
             Numpy-array that can be plotted by for instance matplotlib.
         """
-        return self.data.astype(np.float_)
+        return self.data.astype(np.float64)
 
     def unit(self, _):
         """Unit of fields"""
