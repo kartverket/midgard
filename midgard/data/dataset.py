@@ -380,7 +380,7 @@ class Dataset(collection.Collection):
 
     def num(self, **filters: Any) -> int:
         """Number of observations satisfying the filters"""
-        return sum(self.filter(**filters))
+        return int(sum(self.filter(**filters)))
 
     @property
     def num_obs(self) -> int:

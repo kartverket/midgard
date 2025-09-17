@@ -115,6 +115,6 @@ class TextField(FieldType):
     def _write(self, h5_group, _) -> None:
         """Write data to a HDF5 data source"""
         # Convert text from unicode to byte-string to avoid error in h5py
-        data = np.asarray(self.data, dtype=np.string_)
+        data = np.asarray(self.data, dtype=np.bytes_)
         h5_field = h5_group.create_dataset(h5_group.attrs["fieldname"], self.data.shape, dtype=data.dtype)
         h5_field[...] = data

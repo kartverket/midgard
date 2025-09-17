@@ -18,7 +18,7 @@ def encode_h5attr(data: Any) -> Any:
     reading and correct interpretation of the attribute.
     """
     data_type = type(data).__name__
-    error_msg = f"Cannot save attribute to file. Data too complex: {type(data)} {data}. Data can only consist of strings, lists, dicts, tuples, sets or numbers"
+    error_msg = f"Cannot save attribute to file. Data too complex: {data_type} {data}. Data can only consist of strings, lists, dicts, tuples, sets or numbers"
 
     try:
         encoded_data = globals()[f"_{data_type}2h5attr"](data)
