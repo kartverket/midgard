@@ -1,4 +1,4 @@
-"""Write Bernese station information file in *.STA format
+"""Write Bernese station information file in *.STA v5.2 format
 
 Description:
 ------------
@@ -18,7 +18,7 @@ from midgard.files import files
 
 
 @plugins.register
-def bernese_sta(
+def bernese_sta_v52(
         file_path: PosixPath, 
         site_info: Dict[str, Any],
         rename_station: Dict[str, str] = dict(),
@@ -26,7 +26,7 @@ def bernese_sta(
         agency: str = "UNKNOWN",
         skip_firmware: bool = False,
 ) -> None:
-    """Write Bernese station information file in *.STA format
+    """Write Bernese station information file in *.STA v5.2 format
 
     Args:
         file_path:       File path of Bernese *.STA output file
@@ -102,8 +102,8 @@ def bernese_sta(
         # TYPE 002: STATION INFORMATION
         #
         fid.write(_get_interline_header("TYPE 002: STATION INFORMATION"))
-        fid.write("STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP     AZIMUTH  LONG NAME  DESCRIPTION             REMARK\n")
-        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************\n")
+        fid.write("STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP      DESCRIPTION             REMARK\n")
+        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  **********************  ************************\n")
         for sta in sorted(site_info.keys()):
                         
             events = _get_events(site_info, sta, skip_firmware=skip_firmware)
@@ -112,9 +112,8 @@ def bernese_sta(
             ecc_hist = site_info[sta]["eccentricity"].history
             rcv_hist = site_info[sta]["receiver"].history
 
-            # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5
-            # BRUX                  001  2021 04 20 08 33 00  2099 12 31 00 00 00  SEPT POLARX5TR        3057609                57609  JAVRINGANT_DM   SCIS  999999                999999    0.0010    0.0000    0.4689     0.0  BRUX00BEL  Brussels, BEL           5.4.0
-            # ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************
+            # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----
+            # ARGI 10117M002        001  2008 09 25 00 00 00  2016 11 11 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     6.00       
             for date_from , date_to in _pairwise(sorted(events.keys())):
                 
                 rcv = _get_object_for_date(date_from, rcv_hist)                
@@ -133,7 +132,7 @@ def bernese_sta(
                     continue
                 
                 fid.write(
-                    "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {rcv:20.20s}  {rcv_serial:<20.20s}  {rcv_serial_short:>6.6s}  {ant:15.15s} {radome:4.4s}  {ant_serial:<20.20s}  {ant_serial_short:>6.6s}  {north:>8.4f}  {east:>8.4f}  {up:>8.4f}  {azimuth:>6.1f}  {long_name:>8s}  {description:22.22}  {remark}\n".format(
+                    "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {rcv:20.20s}{rcv_serial:>22.22s}{rcv_serial_short:>8.8s}  {ant:15.15s} {radome:4.4s}{ant_serial:>22.22s}{ant_serial_short:>8.8s}{north:>10.4f}{east:>10.4f}{up:>10.4f}  {description:22.22}  {remark}\n".format(
                         station=sta.upper(),
                         domes="" if identifier.domes is None else identifier.domes,
                         flag="001",
@@ -149,8 +148,6 @@ def bernese_sta(
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,
-                        azimuth=0.0,
-                        long_name=f"{sta.upper()}00{identifier.country_code.upper()}" if identifier.country_code else f"{sta.upper()}00XXX",
                         description= f"{identifier.name}, {identifier.country_code}" if identifier.country_code else identifier.name,
                         remark=rcv.firmware,
                     )
@@ -162,9 +159,7 @@ def bernese_sta(
         #
         fid.write(_get_interline_header("TYPE 003: HANDLING OF STATION PROBLEMS"))
         fid.write("STATION NAME          FLG          FROM                   TO         REMARK\n")
-        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************************************************\n")
-
-
+        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************\n")
         for sta in sorted(site_info.keys()):
             
             identifier = site_info[sta]['identifier']
@@ -199,15 +194,16 @@ def bernese_sta(
         fid.write(_get_interline_header("TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)"))
         fid.write("                                        RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
         fid.write("STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP\n")
-        fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n") 
-      
+        fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n")     
+        
         #
         # TYPE 005: HANDLING STATION TYPES
         #
         fid.write(_get_interline_header("TYPE 005: HANDLING STATION TYPES"))
         fid.write("STATION NAME          FLG  FROM                 TO                   MARKER TYPE           REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************\n")
-             
+       
+        
         #
         # TYPE/FLAG  DESCRIPTION
         #
@@ -235,7 +231,7 @@ def _get_header(agency: str) -> str:
     Return:
         Header as string
     """
-    solution=f"BERNESE V.5.4 STA FILE FOR {agency.upper()} PROCESSING"
+    solution=f"BERNESE V.5.2 STA FILE FOR {agency.upper()} PROCESSING"
     return (f"{solution:64s} {datetime.now().strftime('%d-%b-%y %H:%M'):s}\n"
             f"{'-'*80}\n\n"
             "FORMAT VERSION: 1.01\n"
