@@ -74,6 +74,7 @@ def bernese_sta(
         # TYPE 001: RENAMING OF STATIONS
         #
         fid.write(_get_interline_header("TYPE 001: RENAMING OF STATIONS"))
+        fid.write("\n")
         fid.write("STATION NAME          FLG          FROM                   TO         OLD STATION NAME      REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************\n")
         for sta in sorted(site_info.keys()):
@@ -107,6 +108,7 @@ def bernese_sta(
         # TYPE 002: STATION INFORMATION
         #
         fid.write(_get_interline_header("TYPE 002: STATION INFORMATION"))
+        fid.write("\n")
         fid.write("STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP     AZIMUTH  LONG NAME  DESCRIPTION             REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************\n")
         for sta in sorted(site_info.keys()):
@@ -175,6 +177,7 @@ def bernese_sta(
         # TYPE 003: HANDLING OF STATION PROBLEMS
         #
         fid.write(_get_interline_header("TYPE 003: HANDLING OF STATION PROBLEMS"))
+        fid.write("\n")
         fid.write("STATION NAME          FLG          FROM                   TO         REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************************************************\n")
 
@@ -215,6 +218,7 @@ def bernese_sta(
         # TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
         #
         fid.write(_get_interline_header("TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)"))
+        fid.write("\n")
         fid.write("                                            RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
         fid.write("STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP\n")
         fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n") 
@@ -231,6 +235,7 @@ def bernese_sta(
         #
         fid.write("\n\n\n")
         fid.write(_get_interline_header("TYPE/FLAG  DESCRIPTION"))
+        fid.write("\n")
         fid.write("001 001: RENAME STATION IN ALL PROGRAMS. NEW NAME IS USED FOR ALL FLAGS BELOW\n")
         fid.write("001 002: RENAME STATION RXOBV3. WILDCARDS ALLOWED. NEW NAME IS USED FOR ALL FLAGS BELOW\n")
         fid.write("001 003: RENAME STATION IN ADDNEQ. NEW NAME IS USED FOR ALL FLAGS BELOW\n\n")
@@ -272,7 +277,7 @@ def _get_interline_header(line: str) -> str:
     """
     
     return (f"\n{line}\n"
-            f"{'-'*len(line)}\n\n"      
+            f"{'-'*len(line)}\n"      
     )
 
 
