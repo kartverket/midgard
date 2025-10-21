@@ -1,4 +1,4 @@
-"""Write Bernese station information file in *.STA format
+"""Write Bernese station information file in *.STA v5.2 format
 
 Description:
 ------------
@@ -18,16 +18,15 @@ from midgard.files import files
 
 
 @plugins.register
-def bernese_sta(
+def bernese_sta_v52(
         file_path: PosixPath, 
         site_info: Dict[str, Any],
         rename_station: Dict[str, str] = dict(),
         event_path: Union[PosixPath, None] = None,
         agency: str = "UNKNOWN",
         skip_firmware: bool = False,
-        use_first_common_date: bool = True,
 ) -> None:
-    """Write Bernese station information file in *.STA format
+    """Write Bernese station information file in *.STA v5.2 format
 
     Args:
         file_path:       File path of Bernese *.STA output file
@@ -39,10 +38,6 @@ def bernese_sta(
         event_path:      File path of event file with additional event 
         agency:          Agency which uses this Bernese station information file for processing
         skip_firmware:   Skip firmware changes by generating "TYPE 002: STATION INFORMATION" block
-        use_first_common_date: Use first common date entry given by receiver, antenna and eccentricity properties. It  
-                         can happen, that the first date entry is inconsistent for these properties. In this case the
-                         first common date entry of one of these properties is used in the BERNESE STA file. The 
-                         alternative is to skip date entries, which does not fit into the given date period.
     """
 
     # EXAMPLE:
@@ -107,29 +102,19 @@ def bernese_sta(
         # TYPE 002: STATION INFORMATION
         #
         fid.write(_get_interline_header("TYPE 002: STATION INFORMATION"))
-        fid.write("STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP     AZIMUTH  LONG NAME  DESCRIPTION             REMARK\n")
-        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************\n")
+        fid.write("STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP      DESCRIPTION             REMARK\n")
+        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  **********************  ************************\n")
         for sta in sorted(site_info.keys()):
                         
-            events, first_property_date = _get_events(
-                            site_info, 
-                            sta,
-                            skip_firmware=skip_firmware,
-                            use_first_common_date=use_first_common_date,
-            )
+            events = _get_events(site_info, sta, skip_firmware=skip_firmware)
             identifier = site_info[sta]['identifier']
             ant_hist= site_info[sta]["antenna"].history
             ecc_hist = site_info[sta]["eccentricity"].history
             rcv_hist = site_info[sta]["receiver"].history
 
-            # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5
-            # BRUX                  001  2021 04 20 08 33 00  2099 12 31 00 00 00  SEPT POLARX5TR        3057609                57609  JAVRINGANT_DM   SCIS  999999                999999    0.0010    0.0000    0.4689     0.0  BRUX00BEL  Brussels, BEL           5.4.0
-            # ****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************
+            # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----
+            # ARGI 10117M002        001  2008 09 25 00 00 00  2016 11 11 00 00 00  LEICA GRX1200GGPRO                  356103  356103  LEIAT504GG      LEIS                999999  999999    0.0000    0.0000    0.0000  Argir, Torshavn, FO     6.00       
             for date_from , date_to in _pairwise(sorted(events.keys())):
-
-                if first_property_date:
-                    if date_from < first_property_date:
-                        continue
                 
                 rcv = _get_object_for_date(date_from, rcv_hist)                
                 if not rcv:
@@ -147,7 +132,7 @@ def bernese_sta(
                     continue
                 
                 fid.write(
-                    "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {rcv:20.20s}  {rcv_serial:<20.20s}  {rcv_serial_short:>6.6s}  {ant:15.15s} {radome:4.4s}  {ant_serial:<20.20s}  {ant_serial_short:>6.6s}  {north:>8.4f}  {east:>8.4f}  {up:>8.4f}  {azimuth:>6.1f}  {long_name:>8s}  {description:22.22}  {remark}\n".format(
+                    "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {rcv:20.20s}{rcv_serial:>22.22s}{rcv_serial_short:>8.8s}  {ant:15.15s} {radome:4.4s}{ant_serial:>22.22s}{ant_serial_short:>8.8s}{north:>10.4f}{east:>10.4f}{up:>10.4f}  {description:22.22}  {remark}\n".format(
                         station=sta.upper(),
                         domes="" if identifier.domes is None else identifier.domes,
                         flag="001",
@@ -159,12 +144,10 @@ def bernese_sta(
                         ant=ant.type,
                         radome=ant.radome_type if ant.radome_type else "NONE",
                         ant_serial=ant.serial_number,
-                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-5:] if ant.calibration else "999999",
+                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-6:] if ant.calibration else "999999",
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,
-                        azimuth=0.0,
-                        long_name=f"{sta.upper()}00{identifier.country_code.upper()}" if identifier.country_code else f"{sta.upper()}00XXX",
                         description= f"{identifier.name}, {identifier.country_code}" if identifier.country_code else identifier.name,
                         remark=rcv.firmware,
                     )
@@ -176,17 +159,14 @@ def bernese_sta(
         #
         fid.write(_get_interline_header("TYPE 003: HANDLING OF STATION PROBLEMS"))
         fid.write("STATION NAME          FLG          FROM                   TO         REMARK\n")
-        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************************************************\n")
-
-
+        fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************\n")
         for sta in sorted(site_info.keys()):
             
             identifier = site_info[sta]['identifier']
-            events, first_property_date = _get_events(
+            events = _get_events(
                             site_info, 
                             sta, 
                             skip_firmware=True, # Skip firmware update dates, only interested in receiver type changes.
-                            use_first_common_date=use_first_common_date, 
                             event_path=event_path, # Read file with events and add them to dates.
             ) 
             del events[sorted(events.keys())[0]]  # First date is the installation date and should be rejected as problematic date.
@@ -195,10 +175,6 @@ def bernese_sta(
             # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----
             # STAS 10330M001        001  2007 05 02 00 00 00  2007 06 30 00 00 00  DEFEKT ANTENNE
             for date, items in sorted(events.items()):
-
-                if first_property_date:
-                    if date < first_property_date:
-                        continue
                                 
                 fid.write(
                     "{station:4s} {domes:10s}{flag:>10s}{date_from:>21s}{date_to:>21s}  {remark}\n".format(
@@ -210,22 +186,24 @@ def bernese_sta(
                         remark=items["description"],
                     )
                 )
+        fid.write("\n")
         
         #
         # TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
         #
         fid.write(_get_interline_header("TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)"))
-        fid.write("                                            RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
+        fid.write("                                        RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
         fid.write("STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP\n")
-        fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n") 
-      
+        fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n")     
+        
         #
         # TYPE 005: HANDLING STATION TYPES
         #
         fid.write(_get_interline_header("TYPE 005: HANDLING STATION TYPES"))
         fid.write("STATION NAME          FLG  FROM                 TO                   MARKER TYPE           REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************\n")
-             
+       
+        
         #
         # TYPE/FLAG  DESCRIPTION
         #
@@ -253,7 +231,7 @@ def _get_header(agency: str) -> str:
     Return:
         Header as string
     """
-    solution=f"BERNESE V.5.4 STA FILE FOR {agency.upper()} PROCESSING"
+    solution=f"BERNESE V.5.2 STA FILE FOR {agency.upper()} PROCESSING"
     return (f"{solution:64s} {datetime.now().strftime('%d-%b-%y %H:%M'):s}\n"
             f"{'-'*80}\n\n"
             "FORMAT VERSION: 1.01\n"
@@ -276,30 +254,18 @@ def _get_interline_header(line: str) -> str:
     )
 
 
-def _get_object_for_date(
-                date: datetime,
-                history: Dict[str, Any],
-) -> Dict[Tuple[datetime, datetime], Any]:
+def _get_object_for_date(date: datetime, history) -> Dict[Tuple[datetime, datetime], Any]:
     """Get antenna, receiver or eccentricity object for a given date based on object history
 
     Args:
         date:     Date
         history:  Antenna, receiver or eccentricity history dictionary (e.g. 
                   site_info[station]["antenna"].history)
-
-
-        first_property_date: First common property date, which should be used for BERNESE_STA file generation.
         
     Returns:
-        Antenna, receiver or eccentricity object and updated date 
+        Antenna, receiver or eccentricity object
     """
     for (date_from, date_to), object_ in sorted(history.items()):
-
-        # Set hour, minute and second to zero. This avoids possible data gaps by changing the GNSS equipment. Data gaps
-        # can lead to missing receiver or antenna information in a certain time span. 
-        date_from = datetime(date_from.year, date_from.month, date_from.day)
-        date_to = datetime(date_to.year, date_to.month, date_to.day)
-    
         if date_from == date_to:
             return object_
             
@@ -311,9 +277,8 @@ def _get_events(
         site_info: Dict[str, Any], 
         station: str, 
         skip_firmware: bool = False,
-        use_first_common_date: bool = True,
         event_path: Union[None, PosixPath] = None,
-    ) -> Tuple[Dict[datetime, List[str]], datetime]:
+    ) -> Dict[datetime, List[str]]:
     """Get events for given station needed for "station information" or "handling of station problems" section
 
     The "station information" section of Bernese files includes receiver, antenna and eccentricity information. Changes
@@ -344,20 +309,13 @@ def _get_events(
                         information the value.
         station:        Station name
         skip_firmware:  Skip firmware changes by generating dates 
-        use_first_common_date: Use first common date entry given by receiver, antenna and eccentricity properties. It  
-                        can happen, that the first date entry is inconsistent for these properties. In this case the
-                        first common date entry of one of these properties is used in the BERNESE STA file. The 
-                        alternative is to skip date entries, which does not fit into the given date period.
         event_path:     File path of event file with additional event
         
     Returns:
-        Tuple with a dictionary with start dates of events as keys and a dictionary with items as values. The items
-        includes end date ("date_to"), "description" and "property" information. In addition the tuple includes the
-        first property date, which should be used for BERNESE_STA file generation.
+        Dictionary with start dates of events as keys and a dictionary with items as values. The items includes end
+        date ("date_to"), "description" and "property" information. 
     """
     events = dict()
-    first_property_date = None
-    first_property_date_entry = {}
     former_ant_type = None
     former_ant_serial_number = None
     former_radome_type = None
@@ -395,10 +353,6 @@ def _get_events(
                 former_ant_serial_number = ant.serial_number
                 former_radome_type = ant.radome_type
 
-            # Save first date entry for each property
-            if property_ not in first_property_date_entry.keys():
-                first_property_date_entry[property_] = date[0]
-
             # Append new date
             if date[0] in events.keys():
                 
@@ -414,29 +368,10 @@ def _get_events(
                         "property": [property_],
                     }
                 })
-
+                
     # Add last date (Note: This is needed for getting last information at "station information" section.)
     events.update({date[1]: {}})
-   
-    # Check if first date entry of each property is consistent
-    first_property_dates = set(first_property_date_entry.values())
-    if len(first_property_dates) > 1:
-        date_log_msg = [f"{k}: {v.strftime('%Y-%m-%d %H:%M:%S')}" for k,v in first_property_date_entry.items()]
-        log.warn(f"First date of given station information entries is inconsistent for station {station.upper()} "
-                 f"({', '.join(date_log_msg)}).")
-
-        # Apply first date entry for all properties
-        if use_first_common_date:
-            first_property_date = max(first_property_dates)
-            log.warn(f"Date {first_property_date} is used as starting date for all properties (like receiver, antenna or "
-                     f"eccentricity information) for station {station.upper()} .")
-
-            ## Note: All first property dates larger than first date should be changed.
-            #change_dates = [v for v in first_property_dates if v > first_date] 
-            #for date in events.keys():
-            #    if date in changes_dates:
-            #        events[date]
-                 
+    
     # Add addtional events read from file
     if event_path:
         events_from_file = _read_events_from_file(station, event_path)
@@ -448,8 +383,8 @@ def _get_events(
         if items:
             if not "description" in items:
                 events[date]["description"] = _replace_last(f"New {', '.join(items['property'])}", ",", " and")
-                         
-    return events, first_property_date
+                              
+    return events
     
 #TODO: Should maybe be moved to a library.    
 def _pairwise(iterable: Any) -> zip:
