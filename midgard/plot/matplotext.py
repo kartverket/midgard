@@ -40,6 +40,9 @@ class MatPlotExt:
     | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line  |
     | axhline_width      | <num>            | Line width of horizontal line                                         |
     | axhline_color      | <name>           | Color of horizontal line                                              |
+    | axvline_x          | <num>            | Add a vertical line across the Axes by defining x-position of line    |
+    | axvline_width      | <num>            | Line width of vertical line                                           |
+    | axvline_color      | <name>           | Color of vertical line                                                |
     | bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                              |
     | bar_text_offset    | <num>            | Define text offset for text of bar plots                              |
     | bar_zeroline       | <True|False>     | Plot zero line at a bar plot                                          |
@@ -366,9 +369,9 @@ class MatPlotExt:
         | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line    |
         | axhline_width      | <num>            | Line width of horizontal line                                           |
         | axhline_color      | <name>           | Color of horizontal line                                                |
-        | axvline_x          | <num>            | Add a vertical line across the Axes by defining x-position of line    |
-        | axvline_width      | <num>            | Line width of vertical line                                           |
-        | axvline_color      | <name>           | Color of vertical line                                                |
+        | axvline_x          | <num>            | Add a vertical line across the Axes by defining x-position of line      |
+        | axvline_width      | <num>            | Line width of vertical line                                             |
+        | axvline_color      | <name>           | Color of vertical line                                                  |
         | colorbar           | <True|False>     | Plot color bar based on labels                                          |
         | colorbar_label     | <text>           | Color bar label                                                         |
         | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
