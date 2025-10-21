@@ -98,7 +98,7 @@ class MatPlotExt:
 
     def __init__(
         self, options: Dict[str, Any]=None) -> None:
-        #print(' £££££££££££££££££ Midgard has been changed')
+
         """Set up a new Report object
 
         Args:
