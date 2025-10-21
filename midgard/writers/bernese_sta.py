@@ -144,7 +144,7 @@ def bernese_sta(
                         ant=ant.type,
                         radome=ant.radome_type if ant.radome_type else "NONE",
                         ant_serial=ant.serial_number,
-                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-6:] if ant.calibration else "999999",
+                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-5:] if ant.calibration else "999999",
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,
@@ -186,13 +186,12 @@ def bernese_sta(
                         remark=items["description"],
                     )
                 )
-        fid.write("\n")
         
         #
         # TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
         #
         fid.write(_get_interline_header("TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)"))
-        fid.write("                                        RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
+        fid.write("                                            RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
         fid.write("STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP\n")
         fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n")     
         
