@@ -218,7 +218,6 @@ def bernese_sta(
         # TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
         #
         fid.write(_get_interline_header("TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)"))
-        fid.write("\n")
         fid.write("                                            RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
         fid.write("STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP\n")
         fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n") 
