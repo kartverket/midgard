@@ -98,6 +98,7 @@ class MatPlotExt:
 
     def __init__(
         self, options: Dict[str, Any]=None) -> None:
+        #print(' £££££££££££££££££ Midgard has been changed')
         """Set up a new Report object
 
         Args:
@@ -110,6 +111,9 @@ class MatPlotExt:
             "axhline_y": None,
             "axhline_width": 2,
             "axhline_color": "red",  
+            "axvline_x": None,
+            "axvline_width": 2,
+            "axvline_color": "red",  
             "bar_text": False,
             "bar_text_offset": 0,
             "bar_zeroline": False,
@@ -362,6 +366,9 @@ class MatPlotExt:
         | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line    |
         | axhline_width      | <num>            | Line width of horizontal line                                           |
         | axhline_color      | <name>           | Color of horizontal line                                                |
+        | axvline_x          | <num>            | Add a vertical line across the Axes by defining x-position of line    |
+        | axvline_width      | <num>            | Line width of vertical line                                           |
+        | axvline_color      | <name>           | Color of vertical line                                                |
         | colorbar           | <True|False>     | Plot color bar based on labels                                          |
         | colorbar_label     | <text>           | Color bar label                                                         |
         | colormap           | <type>           | Color map type for plotting either events or labels (e.g. viridis, jet, |
@@ -524,6 +531,9 @@ class MatPlotExt:
 
         if self.options["axhline_y"]:
             plt.axhline(y=self.options["axhline_y"], linewidth=self.options["axhline_width"], color=self.options["axhline_color"])
+            
+        if self.options["axvline_x"]:
+            plt.axvline(x=self.options["axvline_x"], linewidth=self.options["axvline_width"], color=self.options["axvline_color"])
     
         # Plot legend
         if events:
