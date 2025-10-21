@@ -125,7 +125,7 @@ class GipsyxTdpParser(LineParser):
         }
 
         if not len(self.data.keys()) == len(columns.keys()):
-            log.fatal("Expected column number is not correct in file {self.meta['__data_path__']}")
+            raise ValueError("Expected column number is not correct in file {self.meta['__data_path__']}")
             
         for col, name in columns.items():
             self.data[name] = self.data[col]
@@ -170,6 +170,7 @@ class GipsyxTdpParser(LineParser):
             "Clk ConstellationBias Beidou2": DatasetField("clock_bias_constellation_bds2", None, "float"),
             "Clk ConstellationBias Beidou3": DatasetField("clock_bias_constellation_bds3", None, "float"),
             "Clk ConstellationBias Galileo": DatasetField("clock_bias_constellation_gal", None, "float"),
+            "DifferentialCodeBias E IonoFreeC_1C_5Q-IonoFreeC_1X_5X": DatasetField("dcb_e1c_e5q_e1x_e5x", None, "float"), #TODO: Maybe better solution is needed?
             "Antennas Antenna1 MapCenterOffset All Z": DatasetField("satellite_ant_pco", "Satellite", "position"),
             "State Pos Z": DatasetField("site_posvel", "Station", "posvel"),
             "Source": DatasetField("source_id", "Source", "float"),
@@ -330,7 +331,7 @@ class GipsyxTdpParser(LineParser):
                         ).T
 
             else:
-                log.fatal(f"Parameter '{parameter}' is not defined. See file {self.meta['__data_path__']}.")
+                raise ValueError(f"Parameter '{parameter}' is not defined. See file {self.meta['__data_path__']}.")
 
         dset.subset(keep_idx)  # Remove unnecessary entries (e.g. '.X' and '.Y' )
 
