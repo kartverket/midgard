@@ -203,7 +203,7 @@ class ApiWaterLevelNorwayParser(Parser):
             "abstract": "Data collected from Norwegian water level API (https://api.sehavniva.no)",
             "time_interval": "600 seconds",
             "reference_level": reference_level_def[reference_level], 
-            "provider": "Kartverket sjødivisjonen (Norwegian Hydrographic Service)",
+            "provider": "Kartverket - Norwegian Hydrographic Service",
             "unit": "cm",
             "series1": "Water level observations",
             "url": url,
