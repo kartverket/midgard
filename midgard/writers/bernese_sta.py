@@ -42,7 +42,7 @@ def bernese_sta(
         use_first_common_date: Use first common date entry given by receiver, antenna and eccentricity properties. It  
                          can happen, that the first date entry is inconsistent for these properties. In this case the
                          first common date entry of one of these properties is used in the BERNESE STA file. The 
-                         alternative is to skip date entries, which does not fit into the given date period.
+                         alternative is to skip date entries, which does not fit into the given date period. 
     """
 
     # EXAMPLE:
@@ -303,10 +303,7 @@ def _get_object_for_date(
         # can lead to missing receiver or antenna information in a certain time span. 
         date_from = datetime(date_from.year, date_from.month, date_from.day)
         date_to = datetime(date_to.year, date_to.month, date_to.day)
-    
-        if date_from == date_to:
-            return object_
-            
+                
         if date_from <= date < date_to:
             return object_
         
