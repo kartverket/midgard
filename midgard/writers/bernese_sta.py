@@ -397,7 +397,7 @@ def _get_events(
                 former_radome_type = ant.radome_type
 
             # Save first date entry for each property
-            if property_ not in first_property_date_entry.keys():
+            if property_ not in first_property_date_entry.keys() and not property_=="radome":  # First use of radome can be different related to antenna installation.
                 first_property_date_entry[property_] = date[0]
 
             # Append new date
