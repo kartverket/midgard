@@ -42,7 +42,7 @@ def bernese_sta(
         use_first_common_date: Use first common date entry given by receiver, antenna and eccentricity properties. It  
                          can happen, that the first date entry is inconsistent for these properties. In this case the
                          first common date entry of one of these properties is used in the BERNESE STA file. The 
-                         alternative is to skip date entries, which does not fit into the given date period.
+                         alternative is to skip date entries, which does not fit into the given date period. 
     """
 
     # EXAMPLE:
@@ -74,6 +74,7 @@ def bernese_sta(
         # TYPE 001: RENAMING OF STATIONS
         #
         fid.write(_get_interline_header("TYPE 001: RENAMING OF STATIONS"))
+        fid.write("\n")
         fid.write("STATION NAME          FLG          FROM                   TO         OLD STATION NAME      REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ************************\n")
         for sta in sorted(site_info.keys()):
@@ -107,6 +108,7 @@ def bernese_sta(
         # TYPE 002: STATION INFORMATION
         #
         fid.write(_get_interline_header("TYPE 002: STATION INFORMATION"))
+        fid.write("\n")
         fid.write("STATION NAME          FLG          FROM                   TO         RECEIVER TYPE         RECEIVER SERIAL NBR   REC #   ANTENNA TYPE          ANTENNA SERIAL NBR    ANT #    NORTH      EAST      UP     AZIMUTH  LONG NAME  DESCRIPTION             REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ********************  ********************  ******  ********************  ********************  ******  ***.****  ***.****  ***.****  ****.*  *********  **********************  ************************\n")
         for sta in sorted(site_info.keys()):
@@ -159,7 +161,7 @@ def bernese_sta(
                         ant=ant.type,
                         radome=ant.radome_type if ant.radome_type else "NONE",
                         ant_serial=ant.serial_number,
-                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-6:] if ant.calibration else "999999",
+                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-5:] if ant.calibration else "999999",
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,
@@ -175,6 +177,7 @@ def bernese_sta(
         # TYPE 003: HANDLING OF STATION PROBLEMS
         #
         fid.write(_get_interline_header("TYPE 003: HANDLING OF STATION PROBLEMS"))
+        fid.write("\n")
         fid.write("STATION NAME          FLG          FROM                   TO         REMARK\n")
         fid.write("****************      ***  YYYY MM DD HH MM SS  YYYY MM DD HH MM SS  ************************************************************\n")
 
@@ -210,13 +213,12 @@ def bernese_sta(
                         remark=items["description"],
                     )
                 )
-        fid.write("\n")
         
         #
         # TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)
         #
         fid.write(_get_interline_header("TYPE 004: STATION COORDINATES AND VELOCITIES (ADDNEQ)"))
-        fid.write("                                        RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
+        fid.write("                                            RELATIVE CONSTR. POSITION     RELATIVE CONSTR. VELOCITY\n")
         fid.write("STATION NAME 1        STATION NAME 2        NORTH     EAST      UP        NORTH     EAST      UP\n")
         fid.write("****************      ****************      **.*****  **.*****  **.*****  **.*****  **.*****  **.*****\n") 
       
@@ -232,6 +234,7 @@ def bernese_sta(
         #
         fid.write("\n\n\n")
         fid.write(_get_interline_header("TYPE/FLAG  DESCRIPTION"))
+        fid.write("\n")
         fid.write("001 001: RENAME STATION IN ALL PROGRAMS. NEW NAME IS USED FOR ALL FLAGS BELOW\n")
         fid.write("001 002: RENAME STATION RXOBV3. WILDCARDS ALLOWED. NEW NAME IS USED FOR ALL FLAGS BELOW\n")
         fid.write("001 003: RENAME STATION IN ADDNEQ. NEW NAME IS USED FOR ALL FLAGS BELOW\n\n")
@@ -273,7 +276,7 @@ def _get_interline_header(line: str) -> str:
     """
     
     return (f"\n{line}\n"
-            f"{'-'*len(line)}\n\n"      
+            f"{'-'*len(line)}\n"      
     )
 
 
@@ -296,14 +299,13 @@ def _get_object_for_date(
     """
     for (date_from, date_to), object_ in sorted(history.items()):
 
-        # Set hour, minute and second to zero. This avoids possible data gaps by changing the GNSS equipment. Data gaps
-        # can lead to missing receiver or antenna information in a certain time span. 
-        date_from = datetime(date_from.year, date_from.month, date_from.day)
-        date_to = datetime(date_to.year, date_to.month, date_to.day)
-    
-        if date_from == date_to:
-            return object_
-            
+        # Often the time hh:mm:ss is set in addition to date for the GNSS equipment change. This leads sometimes to 
+        # data gaps during the equipment change. These data gaps can lead to missing receiver or antenna information
+        # in a certain time span. To avoid these daily time data gaps, the hour, minute and second is set to 
+        # 00:00:00 for date_from and to 23:59:59 for date_to. 
+        date_from = datetime(date_from.year, date_from.month, date_from.day, 0, 0, 0)
+        date_to = datetime(date_to.year, date_to.month, date_to.day, 23, 59, 59)
+        
         if date_from <= date < date_to:
             return object_
         
@@ -372,10 +374,12 @@ def _get_events(
     
     # Add equipment changes events
     for property_ in ["receiver", "antenna", "eccentricity"]:
+
         for date, _ in site_info[station][property_].history.items():
             
             # Skip firmware changes
             if skip_firmware and property_ == "receiver":
+
                 rcv = _get_object_for_date(date[0], rcv_hist)
                 if rcv.type == former_rcv_type and rcv.serial_number == former_rcv_serial_number:
                     log.debug(f"Skip firmware update for station {station.upper()} on date "
@@ -397,7 +401,7 @@ def _get_events(
                 former_radome_type = ant.radome_type
 
             # Save first date entry for each property
-            if property_ not in first_property_date_entry.keys():
+            if property_ not in first_property_date_entry.keys() and not property_=="radome":  # First use of radome can be different related to antenna installation.
                 first_property_date_entry[property_] = date[0]
 
             # Append new date
