@@ -163,6 +163,34 @@ class RotationPole:
     unit: str
     description: str
 
+
+#
+# ITRF2020 plate motion model
+#
+# Reference: Altamimi, Z., Metivier, L., Rebischung, P., Collilieux, X., Charnard, K. and Barneoud, J. (2023): "ITRF2020 plate motion 
+#            model", Geophysical Research Letters, doi: 10.1029/2023GL106373
+#
+itrf2020 = PlateMotionModel(
+    name="itrf2020", 
+    description="ITRF2020 plate motion model",
+    poles= dict(
+        amur=RotationPole("amur", wx=-0.131, wy=-0.551, wz= 0.837, dwx=0.009, dwy=0.014, dwz=0.015, unit="milliarcsecond per year", description="Amurian plate"),
+        anta=RotationPole("anta", wx=-0.269, wy=-0.312, wz= 0.678, dwx=0.003, dwy=0.003, dwz=0.004, unit="milliarcsecond per year", description="Antarctic plate"),
+        arab=RotationPole("arab", wx= 1.129, wy=-0.146, wz= 1.438, dwx=0.025, dwy=0.027, dwz=0.016, unit="milliarcsecond per year", description="Arabian plate"),
+        aust=RotationPole("aust", wx= 1.487, wy= 1.175, wz= 1.223, dwx=0.003, dwy=0.003, dwz=0.003, unit="milliarcsecond per year", description="Australian plate"),
+        carb=RotationPole("carb", wx= 0.207, wy=-1.422, wz= 0.726, dwx=0.076, dwy=0.174, dwz=0.061, unit="milliarcsecond per year", description="Caribbean plate"),
+        eura=RotationPole("eura", wx=-0.085, wy=-0.519, wz= 0.753, dwx=0.003, dwy=0.003, dwz=0.003, unit="milliarcsecond per year", description="Eurasian plate"),
+        indi=RotationPole("indi", wx= 1.137, wy= 0.013, wz= 1.444, dwx=0.008, dwy=0.040, dwz=0.016, unit="milliarcsecond per year", description="Indian plate"),
+        nazc=RotationPole("nazc", wx=-0.327, wy=-1.561, wz= 1.605, dwx=0.006, dwy=0.018, dwz=0.008, unit="milliarcsecond per year", description="Nazca plate"),
+        noam=RotationPole("noam", wx= 0.045, wy=-0.666, wz=-0.098, dwx=0.003, dwy=0.003, dwz=0.003, unit="milliarcsecond per year", description="North American plate"),
+        nubi=RotationPole("nubi", wx= 0.090, wy=-0.585, wz= 0.717, dwx=0.003, dwy=0.003, dwz=0.004, unit="milliarcsecond per year", description="Nubia plate"),
+        pcfc=RotationPole("pcfc", wx=-0.404, wy= 1.021, wz=-2.154, dwx=0.003, dwy=0.003, dwz=0.004, unit="milliarcsecond per year", description="Pacific plate"),
+        soam=RotationPole("soam", wx=-0.261, wy=-0.282, wz=-0.157, dwx=0.004, dwy=0.004, dwz=0.003, unit="milliarcsecond per year", description="South American plate"),
+        soma=RotationPole("soma", wx=-0.081, wy=-0.719, wz= 0.864, dwx=0.014, dwy=0.015, dwz=0.005, unit="milliarcsecond per year", description="Somali plate"),
+    )
+)
+
+
 #
 # ITRF2014 plate motion model
 #
