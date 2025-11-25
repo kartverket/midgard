@@ -615,7 +615,11 @@ class SinexTmsParser(SinexParser):
        | ref_pos_y           | float | Y-coordinate of reference station coordinate in [m]                            |
        | ref_pos_z           | float | Z-coordinate of reference station coordinate in [m]                            |
         """
-        dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
+        if "timeseries_data" in self.data.keys():
+            dset = dataset.Dataset(num_obs=len(self.data["timeseries_data"]["yyyy-mm-dd"]))
+        else:
+            return dataset.Dataset()
+            
         dset.meta.update(self.meta)
         dset.meta["station"] = self.meta["solution_contents"].lower() if "solution_contents" in self.meta.keys() else "none"
         del dset.meta["solution_contents"]
