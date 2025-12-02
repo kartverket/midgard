@@ -1,0 +1,447 @@
+<tide>
+<locationdata>
+<location name="Andenes" code="ANX" latitude="69.326067" longitude="16.134848" delay="0" factor="1.00" obsname="Andenes" obscode="ANX" descr="Tides and observed water level from Andenes"/>
+<reflevelcode>CD</reflevelcode>
+<data type="observation" unit="cm" qualityFlag="1" qualityClass="Quality High" qualityDescription="High quality data: It has been verified against measurements that the data represents physical conditions.">
+<waterlevel value="244.2" time="2025-01-01T00:00:00+00:00" flag="obs"/>
+<waterlevel value="245.6" time="2025-01-01T00:10:00+00:00" flag="obs"/>
+<waterlevel value="246.5" time="2025-01-01T00:20:00+00:00" flag="obs"/>
+<waterlevel value="247.0" time="2025-01-01T00:30:00+00:00" flag="obs"/>
+<waterlevel value="246.8" time="2025-01-01T00:40:00+00:00" flag="obs"/>
+<waterlevel value="246.1" time="2025-01-01T00:50:00+00:00" flag="obs"/>
+<waterlevel value="244.8" time="2025-01-01T01:00:00+00:00" flag="obs"/>
+<waterlevel value="243.0" time="2025-01-01T01:10:00+00:00" flag="obs"/>
+<waterlevel value="240.8" time="2025-01-01T01:20:00+00:00" flag="obs"/>
+<waterlevel value="238.2" time="2025-01-01T01:30:00+00:00" flag="obs"/>
+<waterlevel value="234.8" time="2025-01-01T01:40:00+00:00" flag="obs"/>
+<waterlevel value="231.1" time="2025-01-01T01:50:00+00:00" flag="obs"/>
+<waterlevel value="226.8" time="2025-01-01T02:00:00+00:00" flag="obs"/>
+<waterlevel value="222.1" time="2025-01-01T02:10:00+00:00" flag="obs"/>
+<waterlevel value="217.1" time="2025-01-01T02:20:00+00:00" flag="obs"/>
+<waterlevel value="211.9" time="2025-01-01T02:30:00+00:00" flag="obs"/>
+<waterlevel value="206.2" time="2025-01-01T02:40:00+00:00" flag="obs"/>
+<waterlevel value="200.5" time="2025-01-01T02:50:00+00:00" flag="obs"/>
+<waterlevel value="194.5" time="2025-01-01T03:00:00+00:00" flag="obs"/>
+<waterlevel value="188.3" time="2025-01-01T03:10:00+00:00" flag="obs"/>
+<waterlevel value="181.7" time="2025-01-01T03:20:00+00:00" flag="obs"/>
+<waterlevel value="175.3" time="2025-01-01T03:30:00+00:00" flag="obs"/>
+<waterlevel value="169.0" time="2025-01-01T03:40:00+00:00" flag="obs"/>
+<waterlevel value="162.8" time="2025-01-01T03:50:00+00:00" flag="obs"/>
+<waterlevel value="156.9" time="2025-01-01T04:00:00+00:00" flag="obs"/>
+<waterlevel value="151.0" time="2025-01-01T04:10:00+00:00" flag="obs"/>
+<waterlevel value="145.2" time="2025-01-01T04:20:00+00:00" flag="obs"/>
+<waterlevel value="139.7" time="2025-01-01T04:30:00+00:00" flag="obs"/>
+<waterlevel value="134.2" time="2025-01-01T04:40:00+00:00" flag="obs"/>
+<waterlevel value="129.0" time="2025-01-01T04:50:00+00:00" flag="obs"/>
+<waterlevel value="124.2" time="2025-01-01T05:00:00+00:00" flag="obs"/>
+<waterlevel value="119.9" time="2025-01-01T05:10:00+00:00" flag="obs"/>
+<waterlevel value="116.1" time="2025-01-01T05:20:00+00:00" flag="obs"/>
+<waterlevel value="112.3" time="2025-01-01T05:30:00+00:00" flag="obs"/>
+<waterlevel value="109.4" time="2025-01-01T05:40:00+00:00" flag="obs"/>
+<waterlevel value="106.9" time="2025-01-01T05:50:00+00:00" flag="obs"/>
+<waterlevel value="104.9" time="2025-01-01T06:00:00+00:00" flag="obs"/>
+<waterlevel value="103.4" time="2025-01-01T06:10:00+00:00" flag="obs"/>
+<waterlevel value="102.4" time="2025-01-01T06:20:00+00:00" flag="obs"/>
+<waterlevel value="101.8" time="2025-01-01T06:30:00+00:00" flag="obs"/>
+<waterlevel value="101.8" time="2025-01-01T06:40:00+00:00" flag="obs"/>
+<waterlevel value="102.5" time="2025-01-01T06:50:00+00:00" flag="obs"/>
+<waterlevel value="103.5" time="2025-01-01T07:00:00+00:00" flag="obs"/>
+<waterlevel value="105.0" time="2025-01-01T07:10:00+00:00" flag="obs"/>
+<waterlevel value="107.0" time="2025-01-01T07:20:00+00:00" flag="obs"/>
+<waterlevel value="109.6" time="2025-01-01T07:30:00+00:00" flag="obs"/>
+<waterlevel value="112.8" time="2025-01-01T07:40:00+00:00" flag="obs"/>
+<waterlevel value="116.6" time="2025-01-01T07:50:00+00:00" flag="obs"/>
+<waterlevel value="120.9" time="2025-01-01T08:00:00+00:00" flag="obs"/>
+<waterlevel value="125.6" time="2025-01-01T08:10:00+00:00" flag="obs"/>
+<waterlevel value="130.7" time="2025-01-01T08:20:00+00:00" flag="obs"/>
+<waterlevel value="136.0" time="2025-01-01T08:30:00+00:00" flag="obs"/>
+<waterlevel value="141.6" time="2025-01-01T08:40:00+00:00" flag="obs"/>
+<waterlevel value="147.3" time="2025-01-01T08:50:00+00:00" flag="obs"/>
+<waterlevel value="153.4" time="2025-01-01T09:00:00+00:00" flag="obs"/>
+<waterlevel value="159.6" time="2025-01-01T09:10:00+00:00" flag="obs"/>
+<waterlevel value="166.2" time="2025-01-01T09:20:00+00:00" flag="obs"/>
+<waterlevel value="172.8" time="2025-01-01T09:30:00+00:00" flag="obs"/>
+<waterlevel value="179.6" time="2025-01-01T09:40:00+00:00" flag="obs"/>
+<waterlevel value="186.2" time="2025-01-01T09:50:00+00:00" flag="obs"/>
+<waterlevel value="192.9" time="2025-01-01T10:00:00+00:00" flag="obs"/>
+<waterlevel value="199.4" time="2025-01-01T10:10:00+00:00" flag="obs"/>
+<waterlevel value="205.6" time="2025-01-01T10:20:00+00:00" flag="obs"/>
+<waterlevel value="211.6" time="2025-01-01T10:30:00+00:00" flag="obs"/>
+<waterlevel value="217.3" time="2025-01-01T10:40:00+00:00" flag="obs"/>
+<waterlevel value="222.6" time="2025-01-01T10:50:00+00:00" flag="obs"/>
+<waterlevel value="227.7" time="2025-01-01T11:00:00+00:00" flag="obs"/>
+<waterlevel value="232.5" time="2025-01-01T11:10:00+00:00" flag="obs"/>
+<waterlevel value="236.9" time="2025-01-01T11:20:00+00:00" flag="obs"/>
+<waterlevel value="240.9" time="2025-01-01T11:30:00+00:00" flag="obs"/>
+<waterlevel value="244.6" time="2025-01-01T11:40:00+00:00" flag="obs"/>
+<waterlevel value="247.6" time="2025-01-01T11:50:00+00:00" flag="obs"/>
+<waterlevel value="250.0" time="2025-01-01T12:00:00+00:00" flag="obs"/>
+<waterlevel value="251.8" time="2025-01-01T12:10:00+00:00" flag="obs"/>
+<waterlevel value="252.9" time="2025-01-01T12:20:00+00:00" flag="obs"/>
+<waterlevel value="253.6" time="2025-01-01T12:30:00+00:00" flag="obs"/>
+<waterlevel value="253.9" time="2025-01-01T12:40:00+00:00" flag="obs"/>
+<waterlevel value="253.5" time="2025-01-01T12:50:00+00:00" flag="obs"/>
+<waterlevel value="252.6" time="2025-01-01T13:00:00+00:00" flag="obs"/>
+<waterlevel value="251.2" time="2025-01-01T13:10:00+00:00" flag="obs"/>
+<waterlevel value="249.2" time="2025-01-01T13:20:00+00:00" flag="obs"/>
+<waterlevel value="246.5" time="2025-01-01T13:30:00+00:00" flag="obs"/>
+<waterlevel value="243.3" time="2025-01-01T13:40:00+00:00" flag="obs"/>
+<waterlevel value="239.7" time="2025-01-01T13:50:00+00:00" flag="obs"/>
+<waterlevel value="235.5" time="2025-01-01T14:00:00+00:00" flag="obs"/>
+<waterlevel value="231.0" time="2025-01-01T14:10:00+00:00" flag="obs"/>
+<waterlevel value="225.9" time="2025-01-01T14:20:00+00:00" flag="obs"/>
+<waterlevel value="220.3" time="2025-01-01T14:30:00+00:00" flag="obs"/>
+<waterlevel value="214.1" time="2025-01-01T14:40:00+00:00" flag="obs"/>
+<waterlevel value="207.7" time="2025-01-01T14:50:00+00:00" flag="obs"/>
+<waterlevel value="201.1" time="2025-01-01T15:00:00+00:00" flag="obs"/>
+<waterlevel value="194.6" time="2025-01-01T15:10:00+00:00" flag="obs"/>
+<waterlevel value="188.1" time="2025-01-01T15:20:00+00:00" flag="obs"/>
+<waterlevel value="181.5" time="2025-01-01T15:30:00+00:00" flag="obs"/>
+<waterlevel value="174.6" time="2025-01-01T15:40:00+00:00" flag="obs"/>
+<waterlevel value="167.8" time="2025-01-01T15:50:00+00:00" flag="obs"/>
+<waterlevel value="160.7" time="2025-01-01T16:00:00+00:00" flag="obs"/>
+<waterlevel value="153.5" time="2025-01-01T16:10:00+00:00" flag="obs"/>
+<waterlevel value="146.5" time="2025-01-01T16:20:00+00:00" flag="obs"/>
+<waterlevel value="139.7" time="2025-01-01T16:30:00+00:00" flag="obs"/>
+<waterlevel value="133.4" time="2025-01-01T16:40:00+00:00" flag="obs"/>
+<waterlevel value="127.2" time="2025-01-01T16:50:00+00:00" flag="obs"/>
+<waterlevel value="121.4" time="2025-01-01T17:00:00+00:00" flag="obs"/>
+<waterlevel value="115.7" time="2025-01-01T17:10:00+00:00" flag="obs"/>
+<waterlevel value="110.1" time="2025-01-01T17:20:00+00:00" flag="obs"/>
+<waterlevel value="104.9" time="2025-01-01T17:30:00+00:00" flag="obs"/>
+<waterlevel value="100.1" time="2025-01-01T17:40:00+00:00" flag="obs"/>
+<waterlevel value="95.8" time="2025-01-01T17:50:00+00:00" flag="obs"/>
+<waterlevel value="92.0" time="2025-01-01T18:00:00+00:00" flag="obs"/>
+<waterlevel value="88.7" time="2025-01-01T18:10:00+00:00" flag="obs"/>
+<waterlevel value="85.8" time="2025-01-01T18:20:00+00:00" flag="obs"/>
+<waterlevel value="83.5" time="2025-01-01T18:30:00+00:00" flag="obs"/>
+<waterlevel value="81.5" time="2025-01-01T18:40:00+00:00" flag="obs"/>
+<waterlevel value="80.3" time="2025-01-01T18:50:00+00:00" flag="obs"/>
+<waterlevel value="79.7" time="2025-01-01T19:00:00+00:00" flag="obs"/>
+<waterlevel value="79.8" time="2025-01-01T19:10:00+00:00" flag="obs"/>
+<waterlevel value="80.8" time="2025-01-01T19:20:00+00:00" flag="obs"/>
+<waterlevel value="82.1" time="2025-01-01T19:30:00+00:00" flag="obs"/>
+<waterlevel value="84.0" time="2025-01-01T19:40:00+00:00" flag="obs"/>
+<waterlevel value="86.2" time="2025-01-01T19:50:00+00:00" flag="obs"/>
+<waterlevel value="89.2" time="2025-01-01T20:00:00+00:00" flag="obs"/>
+<waterlevel value="92.3" time="2025-01-01T20:10:00+00:00" flag="obs"/>
+<waterlevel value="96.5" time="2025-01-01T20:20:00+00:00" flag="obs"/>
+<waterlevel value="101.0" time="2025-01-01T20:30:00+00:00" flag="obs"/>
+<waterlevel value="105.8" time="2025-01-01T20:40:00+00:00" flag="obs"/>
+<waterlevel value="111.1" time="2025-01-01T20:50:00+00:00" flag="obs"/>
+<waterlevel value="116.6" time="2025-01-01T21:00:00+00:00" flag="obs"/>
+<waterlevel value="122.3" time="2025-01-01T21:10:00+00:00" flag="obs"/>
+<waterlevel value="128.5" time="2025-01-01T21:20:00+00:00" flag="obs"/>
+<waterlevel value="134.9" time="2025-01-01T21:30:00+00:00" flag="obs"/>
+<waterlevel value="141.7" time="2025-01-01T21:40:00+00:00" flag="obs"/>
+<waterlevel value="148.6" time="2025-01-01T21:50:00+00:00" flag="obs"/>
+<waterlevel value="155.4" time="2025-01-01T22:00:00+00:00" flag="obs"/>
+<waterlevel value="162.2" time="2025-01-01T22:10:00+00:00" flag="obs"/>
+<waterlevel value="168.9" time="2025-01-01T22:20:00+00:00" flag="obs"/>
+<waterlevel value="175.5" time="2025-01-01T22:30:00+00:00" flag="obs"/>
+<waterlevel value="181.9" time="2025-01-01T22:40:00+00:00" flag="obs"/>
+<waterlevel value="188.4" time="2025-01-01T22:50:00+00:00" flag="obs"/>
+<waterlevel value="194.6" time="2025-01-01T23:00:00+00:00" flag="obs"/>
+<waterlevel value="200.7" time="2025-01-01T23:10:00+00:00" flag="obs"/>
+<waterlevel value="206.3" time="2025-01-01T23:20:00+00:00" flag="obs"/>
+<waterlevel value="211.7" time="2025-01-01T23:30:00+00:00" flag="obs"/>
+<waterlevel value="216.4" time="2025-01-01T23:40:00+00:00" flag="obs"/>
+<waterlevel value="220.9" time="2025-01-01T23:50:00+00:00" flag="obs"/>
+<waterlevel value="224.9" time="2025-01-02T00:00:00+00:00" flag="obs"/>
+</data>
+<data type="prediction" unit="cm" qualityFlag="1" qualityClass="Quality High" qualityDescription="High quality data: It has been verified against measurements that the data represents physical conditions.">
+<waterlevel value="214.9" time="2025-01-01T00:00:00+00:00" flag="pre"/>
+<waterlevel value="216.2" time="2025-01-01T00:10:00+00:00" flag="pre"/>
+<waterlevel value="217.0" time="2025-01-01T00:20:00+00:00" flag="pre"/>
+<waterlevel value="217.3" time="2025-01-01T00:30:00+00:00" flag="pre"/>
+<waterlevel value="217.0" time="2025-01-01T00:40:00+00:00" flag="pre"/>
+<waterlevel value="216.1" time="2025-01-01T00:50:00+00:00" flag="pre"/>
+<waterlevel value="214.7" time="2025-01-01T01:00:00+00:00" flag="pre"/>
+<waterlevel value="212.8" time="2025-01-01T01:10:00+00:00" flag="pre"/>
+<waterlevel value="210.4" time="2025-01-01T01:20:00+00:00" flag="pre"/>
+<waterlevel value="207.5" time="2025-01-01T01:30:00+00:00" flag="pre"/>
+<waterlevel value="204.1" time="2025-01-01T01:40:00+00:00" flag="pre"/>
+<waterlevel value="200.3" time="2025-01-01T01:50:00+00:00" flag="pre"/>
+<waterlevel value="196.0" time="2025-01-01T02:00:00+00:00" flag="pre"/>
+<waterlevel value="191.4" time="2025-01-01T02:10:00+00:00" flag="pre"/>
+<waterlevel value="186.4" time="2025-01-01T02:20:00+00:00" flag="pre"/>
+<waterlevel value="181.1" time="2025-01-01T02:30:00+00:00" flag="pre"/>
+<waterlevel value="175.6" time="2025-01-01T02:40:00+00:00" flag="pre"/>
+<waterlevel value="169.8" time="2025-01-01T02:50:00+00:00" flag="pre"/>
+<waterlevel value="163.8" time="2025-01-01T03:00:00+00:00" flag="pre"/>
+<waterlevel value="157.7" time="2025-01-01T03:10:00+00:00" flag="pre"/>
+<waterlevel value="151.6" time="2025-01-01T03:20:00+00:00" flag="pre"/>
+<waterlevel value="145.3" time="2025-01-01T03:30:00+00:00" flag="pre"/>
+<waterlevel value="139.1" time="2025-01-01T03:40:00+00:00" flag="pre"/>
+<waterlevel value="132.9" time="2025-01-01T03:50:00+00:00" flag="pre"/>
+<waterlevel value="126.8" time="2025-01-01T04:00:00+00:00" flag="pre"/>
+<waterlevel value="120.9" time="2025-01-01T04:10:00+00:00" flag="pre"/>
+<waterlevel value="115.1" time="2025-01-01T04:20:00+00:00" flag="pre"/>
+<waterlevel value="109.6" time="2025-01-01T04:30:00+00:00" flag="pre"/>
+<waterlevel value="104.3" time="2025-01-01T04:40:00+00:00" flag="pre"/>
+<waterlevel value="99.3" time="2025-01-01T04:50:00+00:00" flag="pre"/>
+<waterlevel value="94.6" time="2025-01-01T05:00:00+00:00" flag="pre"/>
+<waterlevel value="90.3" time="2025-01-01T05:10:00+00:00" flag="pre"/>
+<waterlevel value="86.3" time="2025-01-01T05:20:00+00:00" flag="pre"/>
+<waterlevel value="82.9" time="2025-01-01T05:30:00+00:00" flag="pre"/>
+<waterlevel value="79.8" time="2025-01-01T05:40:00+00:00" flag="pre"/>
+<waterlevel value="77.3" time="2025-01-01T05:50:00+00:00" flag="pre"/>
+<waterlevel value="75.2" time="2025-01-01T06:00:00+00:00" flag="pre"/>
+<waterlevel value="73.7" time="2025-01-01T06:10:00+00:00" flag="pre"/>
+<waterlevel value="72.7" time="2025-01-01T06:20:00+00:00" flag="pre"/>
+<waterlevel value="72.3" time="2025-01-01T06:30:00+00:00" flag="pre"/>
+<waterlevel value="72.4" time="2025-01-01T06:40:00+00:00" flag="pre"/>
+<waterlevel value="73.2" time="2025-01-01T06:50:00+00:00" flag="pre"/>
+<waterlevel value="74.4" time="2025-01-01T07:00:00+00:00" flag="pre"/>
+<waterlevel value="76.3" time="2025-01-01T07:10:00+00:00" flag="pre"/>
+<waterlevel value="78.7" time="2025-01-01T07:20:00+00:00" flag="pre"/>
+<waterlevel value="81.7" time="2025-01-01T07:30:00+00:00" flag="pre"/>
+<waterlevel value="85.1" time="2025-01-01T07:40:00+00:00" flag="pre"/>
+<waterlevel value="89.1" time="2025-01-01T07:50:00+00:00" flag="pre"/>
+<waterlevel value="93.5" time="2025-01-01T08:00:00+00:00" flag="pre"/>
+<waterlevel value="98.4" time="2025-01-01T08:10:00+00:00" flag="pre"/>
+<waterlevel value="103.7" time="2025-01-01T08:20:00+00:00" flag="pre"/>
+<waterlevel value="109.3" time="2025-01-01T08:30:00+00:00" flag="pre"/>
+<waterlevel value="115.2" time="2025-01-01T08:40:00+00:00" flag="pre"/>
+<waterlevel value="121.4" time="2025-01-01T08:50:00+00:00" flag="pre"/>
+<waterlevel value="127.9" time="2025-01-01T09:00:00+00:00" flag="pre"/>
+<waterlevel value="134.5" time="2025-01-01T09:10:00+00:00" flag="pre"/>
+<waterlevel value="141.2" time="2025-01-01T09:20:00+00:00" flag="pre"/>
+<waterlevel value="148.0" time="2025-01-01T09:30:00+00:00" flag="pre"/>
+<waterlevel value="154.9" time="2025-01-01T09:40:00+00:00" flag="pre"/>
+<waterlevel value="161.7" time="2025-01-01T09:50:00+00:00" flag="pre"/>
+<waterlevel value="168.4" time="2025-01-01T10:00:00+00:00" flag="pre"/>
+<waterlevel value="175.1" time="2025-01-01T10:10:00+00:00" flag="pre"/>
+<waterlevel value="181.5" time="2025-01-01T10:20:00+00:00" flag="pre"/>
+<waterlevel value="187.8" time="2025-01-01T10:30:00+00:00" flag="pre"/>
+<waterlevel value="193.8" time="2025-01-01T10:40:00+00:00" flag="pre"/>
+<waterlevel value="199.5" time="2025-01-01T10:50:00+00:00" flag="pre"/>
+<waterlevel value="204.8" time="2025-01-01T11:00:00+00:00" flag="pre"/>
+<waterlevel value="209.8" time="2025-01-01T11:10:00+00:00" flag="pre"/>
+<waterlevel value="214.3" time="2025-01-01T11:20:00+00:00" flag="pre"/>
+<waterlevel value="218.4" time="2025-01-01T11:30:00+00:00" flag="pre"/>
+<waterlevel value="222.0" time="2025-01-01T11:40:00+00:00" flag="pre"/>
+<waterlevel value="225.2" time="2025-01-01T11:50:00+00:00" flag="pre"/>
+<waterlevel value="227.7" time="2025-01-01T12:00:00+00:00" flag="pre"/>
+<waterlevel value="229.8" time="2025-01-01T12:10:00+00:00" flag="pre"/>
+<waterlevel value="231.3" time="2025-01-01T12:20:00+00:00" flag="pre"/>
+<waterlevel value="232.2" time="2025-01-01T12:30:00+00:00" flag="pre"/>
+<waterlevel value="232.5" time="2025-01-01T12:40:00+00:00" flag="pre"/>
+<waterlevel value="232.2" time="2025-01-01T12:50:00+00:00" flag="pre"/>
+<waterlevel value="231.4" time="2025-01-01T13:00:00+00:00" flag="pre"/>
+<waterlevel value="230.0" time="2025-01-01T13:10:00+00:00" flag="pre"/>
+<waterlevel value="228.1" time="2025-01-01T13:20:00+00:00" flag="pre"/>
+<waterlevel value="225.6" time="2025-01-01T13:30:00+00:00" flag="pre"/>
+<waterlevel value="222.6" time="2025-01-01T13:40:00+00:00" flag="pre"/>
+<waterlevel value="219.1" time="2025-01-01T13:50:00+00:00" flag="pre"/>
+<waterlevel value="215.0" time="2025-01-01T14:00:00+00:00" flag="pre"/>
+<waterlevel value="210.6" time="2025-01-01T14:10:00+00:00" flag="pre"/>
+<waterlevel value="205.7" time="2025-01-01T14:20:00+00:00" flag="pre"/>
+<waterlevel value="200.4" time="2025-01-01T14:30:00+00:00" flag="pre"/>
+<waterlevel value="194.7" time="2025-01-01T14:40:00+00:00" flag="pre"/>
+<waterlevel value="188.7" time="2025-01-01T14:50:00+00:00" flag="pre"/>
+<waterlevel value="182.5" time="2025-01-01T15:00:00+00:00" flag="pre"/>
+<waterlevel value="176.0" time="2025-01-01T15:10:00+00:00" flag="pre"/>
+<waterlevel value="169.3" time="2025-01-01T15:20:00+00:00" flag="pre"/>
+<waterlevel value="162.5" time="2025-01-01T15:30:00+00:00" flag="pre"/>
+<waterlevel value="155.5" time="2025-01-01T15:40:00+00:00" flag="pre"/>
+<waterlevel value="148.5" time="2025-01-01T15:50:00+00:00" flag="pre"/>
+<waterlevel value="141.6" time="2025-01-01T16:00:00+00:00" flag="pre"/>
+<waterlevel value="134.6" time="2025-01-01T16:10:00+00:00" flag="pre"/>
+<waterlevel value="127.7" time="2025-01-01T16:20:00+00:00" flag="pre"/>
+<waterlevel value="121.0" time="2025-01-01T16:30:00+00:00" flag="pre"/>
+<waterlevel value="114.5" time="2025-01-01T16:40:00+00:00" flag="pre"/>
+<waterlevel value="108.1" time="2025-01-01T16:50:00+00:00" flag="pre"/>
+<waterlevel value="102.1" time="2025-01-01T17:00:00+00:00" flag="pre"/>
+<waterlevel value="96.3" time="2025-01-01T17:10:00+00:00" flag="pre"/>
+<waterlevel value="90.8" time="2025-01-01T17:20:00+00:00" flag="pre"/>
+<waterlevel value="85.8" time="2025-01-01T17:30:00+00:00" flag="pre"/>
+<waterlevel value="81.1" time="2025-01-01T17:40:00+00:00" flag="pre"/>
+<waterlevel value="76.9" time="2025-01-01T17:50:00+00:00" flag="pre"/>
+<waterlevel value="73.1" time="2025-01-01T18:00:00+00:00" flag="pre"/>
+<waterlevel value="69.8" time="2025-01-01T18:10:00+00:00" flag="pre"/>
+<waterlevel value="67.0" time="2025-01-01T18:20:00+00:00" flag="pre"/>
+<waterlevel value="64.8" time="2025-01-01T18:30:00+00:00" flag="pre"/>
+<waterlevel value="63.1" time="2025-01-01T18:40:00+00:00" flag="pre"/>
+<waterlevel value="62.0" time="2025-01-01T18:50:00+00:00" flag="pre"/>
+<waterlevel value="61.4" time="2025-01-01T19:00:00+00:00" flag="pre"/>
+<waterlevel value="61.5" time="2025-01-01T19:10:00+00:00" flag="pre"/>
+<waterlevel value="62.1" time="2025-01-01T19:20:00+00:00" flag="pre"/>
+<waterlevel value="63.3" time="2025-01-01T19:30:00+00:00" flag="pre"/>
+<waterlevel value="65.1" time="2025-01-01T19:40:00+00:00" flag="pre"/>
+<waterlevel value="67.4" time="2025-01-01T19:50:00+00:00" flag="pre"/>
+<waterlevel value="70.3" time="2025-01-01T20:00:00+00:00" flag="pre"/>
+<waterlevel value="73.7" time="2025-01-01T20:10:00+00:00" flag="pre"/>
+<waterlevel value="77.6" time="2025-01-01T20:20:00+00:00" flag="pre"/>
+<waterlevel value="82.0" time="2025-01-01T20:30:00+00:00" flag="pre"/>
+<waterlevel value="86.7" time="2025-01-01T20:40:00+00:00" flag="pre"/>
+<waterlevel value="91.9" time="2025-01-01T20:50:00+00:00" flag="pre"/>
+<waterlevel value="97.5" time="2025-01-01T21:00:00+00:00" flag="pre"/>
+<waterlevel value="103.3" time="2025-01-01T21:10:00+00:00" flag="pre"/>
+<waterlevel value="109.4" time="2025-01-01T21:20:00+00:00" flag="pre"/>
+<waterlevel value="115.7" time="2025-01-01T21:30:00+00:00" flag="pre"/>
+<waterlevel value="122.2" time="2025-01-01T21:40:00+00:00" flag="pre"/>
+<waterlevel value="128.8" time="2025-01-01T21:50:00+00:00" flag="pre"/>
+<waterlevel value="135.5" time="2025-01-01T22:00:00+00:00" flag="pre"/>
+<waterlevel value="142.3" time="2025-01-01T22:10:00+00:00" flag="pre"/>
+<waterlevel value="149.0" time="2025-01-01T22:20:00+00:00" flag="pre"/>
+<waterlevel value="155.6" time="2025-01-01T22:30:00+00:00" flag="pre"/>
+<waterlevel value="162.2" time="2025-01-01T22:40:00+00:00" flag="pre"/>
+<waterlevel value="168.6" time="2025-01-01T22:50:00+00:00" flag="pre"/>
+<waterlevel value="174.7" time="2025-01-01T23:00:00+00:00" flag="pre"/>
+<waterlevel value="180.6" time="2025-01-01T23:10:00+00:00" flag="pre"/>
+<waterlevel value="186.3" time="2025-01-01T23:20:00+00:00" flag="pre"/>
+<waterlevel value="191.5" time="2025-01-01T23:30:00+00:00" flag="pre"/>
+<waterlevel value="196.5" time="2025-01-01T23:40:00+00:00" flag="pre"/>
+<waterlevel value="200.9" time="2025-01-01T23:50:00+00:00" flag="pre"/>
+<waterlevel value="205.0" time="2025-01-02T00:00:00+00:00" flag="pre"/>
+</data>
+<data type="weathereffect" unit="cm" qualityFlag="1" qualityClass="Quality High" qualityDescription="High quality data: It has been verified against measurements that the data represents physical conditions.">
+<waterlevel value="29.3" time="2025-01-01T00:00:00+00:00"/>
+<waterlevel value="29.3" time="2025-01-01T00:10:00+00:00"/>
+<waterlevel value="29.5" time="2025-01-01T00:20:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T00:30:00+00:00"/>
+<waterlevel value="29.8" time="2025-01-01T00:40:00+00:00"/>
+<waterlevel value="30.0" time="2025-01-01T00:50:00+00:00"/>
+<waterlevel value="30.0" time="2025-01-01T01:00:00+00:00"/>
+<waterlevel value="30.2" time="2025-01-01T01:10:00+00:00"/>
+<waterlevel value="30.4" time="2025-01-01T01:20:00+00:00"/>
+<waterlevel value="30.7" time="2025-01-01T01:30:00+00:00"/>
+<waterlevel value="30.8" time="2025-01-01T01:40:00+00:00"/>
+<waterlevel value="30.8" time="2025-01-01T01:50:00+00:00"/>
+<waterlevel value="30.8" time="2025-01-01T02:00:00+00:00"/>
+<waterlevel value="30.7" time="2025-01-01T02:10:00+00:00"/>
+<waterlevel value="30.7" time="2025-01-01T02:20:00+00:00"/>
+<waterlevel value="30.7" time="2025-01-01T02:30:00+00:00"/>
+<waterlevel value="30.6" time="2025-01-01T02:40:00+00:00"/>
+<waterlevel value="30.7" time="2025-01-01T02:50:00+00:00"/>
+<waterlevel value="30.7" time="2025-01-01T03:00:00+00:00"/>
+<waterlevel value="30.6" time="2025-01-01T03:10:00+00:00"/>
+<waterlevel value="30.1" time="2025-01-01T03:20:00+00:00"/>
+<waterlevel value="30.0" time="2025-01-01T03:30:00+00:00"/>
+<waterlevel value="29.9" time="2025-01-01T03:40:00+00:00"/>
+<waterlevel value="29.8" time="2025-01-01T03:50:00+00:00"/>
+<waterlevel value="30.0" time="2025-01-01T04:00:00+00:00"/>
+<waterlevel value="30.1" time="2025-01-01T04:10:00+00:00"/>
+<waterlevel value="30.1" time="2025-01-01T04:20:00+00:00"/>
+<waterlevel value="30.1" time="2025-01-01T04:30:00+00:00"/>
+<waterlevel value="30.0" time="2025-01-01T04:40:00+00:00"/>
+<waterlevel value="29.8" time="2025-01-01T04:50:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T05:00:00+00:00"/>
+<waterlevel value="29.6" time="2025-01-01T05:10:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T05:20:00+00:00"/>
+<waterlevel value="29.5" time="2025-01-01T05:30:00+00:00"/>
+<waterlevel value="29.6" time="2025-01-01T05:40:00+00:00"/>
+<waterlevel value="29.6" time="2025-01-01T05:50:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T06:00:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T06:10:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T06:20:00+00:00"/>
+<waterlevel value="29.5" time="2025-01-01T06:30:00+00:00"/>
+<waterlevel value="29.4" time="2025-01-01T06:40:00+00:00"/>
+<waterlevel value="29.4" time="2025-01-01T06:50:00+00:00"/>
+<waterlevel value="29.0" time="2025-01-01T07:00:00+00:00"/>
+<waterlevel value="28.7" time="2025-01-01T07:10:00+00:00"/>
+<waterlevel value="28.3" time="2025-01-01T07:20:00+00:00"/>
+<waterlevel value="27.9" time="2025-01-01T07:30:00+00:00"/>
+<waterlevel value="27.7" time="2025-01-01T07:40:00+00:00"/>
+<waterlevel value="27.5" time="2025-01-01T07:50:00+00:00"/>
+<waterlevel value="27.4" time="2025-01-01T08:00:00+00:00"/>
+<waterlevel value="27.2" time="2025-01-01T08:10:00+00:00"/>
+<waterlevel value="27.0" time="2025-01-01T08:20:00+00:00"/>
+<waterlevel value="26.7" time="2025-01-01T08:30:00+00:00"/>
+<waterlevel value="26.4" time="2025-01-01T08:40:00+00:00"/>
+<waterlevel value="25.9" time="2025-01-01T08:50:00+00:00"/>
+<waterlevel value="25.5" time="2025-01-01T09:00:00+00:00"/>
+<waterlevel value="25.1" time="2025-01-01T09:10:00+00:00"/>
+<waterlevel value="24.9" time="2025-01-01T09:20:00+00:00"/>
+<waterlevel value="24.7" time="2025-01-01T09:30:00+00:00"/>
+<waterlevel value="24.7" time="2025-01-01T09:40:00+00:00"/>
+<waterlevel value="24.5" time="2025-01-01T09:50:00+00:00"/>
+<waterlevel value="24.5" time="2025-01-01T10:00:00+00:00"/>
+<waterlevel value="24.4" time="2025-01-01T10:10:00+00:00"/>
+<waterlevel value="24.1" time="2025-01-01T10:20:00+00:00"/>
+<waterlevel value="23.8" time="2025-01-01T10:30:00+00:00"/>
+<waterlevel value="23.6" time="2025-01-01T10:40:00+00:00"/>
+<waterlevel value="23.2" time="2025-01-01T10:50:00+00:00"/>
+<waterlevel value="22.9" time="2025-01-01T11:00:00+00:00"/>
+<waterlevel value="22.7" time="2025-01-01T11:10:00+00:00"/>
+<waterlevel value="22.5" time="2025-01-01T11:20:00+00:00"/>
+<waterlevel value="22.5" time="2025-01-01T11:30:00+00:00"/>
+<waterlevel value="22.5" time="2025-01-01T11:40:00+00:00"/>
+<waterlevel value="22.5" time="2025-01-01T11:50:00+00:00"/>
+<waterlevel value="22.3" time="2025-01-01T12:00:00+00:00"/>
+<waterlevel value="22.0" time="2025-01-01T12:10:00+00:00"/>
+<waterlevel value="21.7" time="2025-01-01T12:20:00+00:00"/>
+<waterlevel value="21.5" time="2025-01-01T12:30:00+00:00"/>
+<waterlevel value="21.4" time="2025-01-01T12:40:00+00:00"/>
+<waterlevel value="21.2" time="2025-01-01T12:50:00+00:00"/>
+<waterlevel value="21.2" time="2025-01-01T13:00:00+00:00"/>
+<waterlevel value="21.2" time="2025-01-01T13:10:00+00:00"/>
+<waterlevel value="21.1" time="2025-01-01T13:20:00+00:00"/>
+<waterlevel value="20.9" time="2025-01-01T13:30:00+00:00"/>
+<waterlevel value="20.7" time="2025-01-01T13:40:00+00:00"/>
+<waterlevel value="20.6" time="2025-01-01T13:50:00+00:00"/>
+<waterlevel value="20.5" time="2025-01-01T14:00:00+00:00"/>
+<waterlevel value="20.4" time="2025-01-01T14:10:00+00:00"/>
+<waterlevel value="20.2" time="2025-01-01T14:20:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T14:30:00+00:00"/>
+<waterlevel value="19.4" time="2025-01-01T14:40:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T14:50:00+00:00"/>
+<waterlevel value="18.7" time="2025-01-01T15:00:00+00:00"/>
+<waterlevel value="18.6" time="2025-01-01T15:10:00+00:00"/>
+<waterlevel value="18.8" time="2025-01-01T15:20:00+00:00"/>
+<waterlevel value="19.0" time="2025-01-01T15:30:00+00:00"/>
+<waterlevel value="19.1" time="2025-01-01T15:40:00+00:00"/>
+<waterlevel value="19.2" time="2025-01-01T15:50:00+00:00"/>
+<waterlevel value="19.2" time="2025-01-01T16:00:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T16:10:00+00:00"/>
+<waterlevel value="18.7" time="2025-01-01T16:20:00+00:00"/>
+<waterlevel value="18.7" time="2025-01-01T16:30:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T16:40:00+00:00"/>
+<waterlevel value="19.1" time="2025-01-01T16:50:00+00:00"/>
+<waterlevel value="19.3" time="2025-01-01T17:00:00+00:00"/>
+<waterlevel value="19.4" time="2025-01-01T17:10:00+00:00"/>
+<waterlevel value="19.3" time="2025-01-01T17:20:00+00:00"/>
+<waterlevel value="19.1" time="2025-01-01T17:30:00+00:00"/>
+<waterlevel value="19.0" time="2025-01-01T17:40:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T17:50:00+00:00"/>
+<waterlevel value="19.0" time="2025-01-01T18:00:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T18:10:00+00:00"/>
+<waterlevel value="18.8" time="2025-01-01T18:20:00+00:00"/>
+<waterlevel value="18.7" time="2025-01-01T18:30:00+00:00"/>
+<waterlevel value="18.4" time="2025-01-01T18:40:00+00:00"/>
+<waterlevel value="18.3" time="2025-01-01T18:50:00+00:00"/>
+<waterlevel value="18.3" time="2025-01-01T19:00:00+00:00"/>
+<waterlevel value="18.4" time="2025-01-01T19:10:00+00:00"/>
+<waterlevel value="18.7" time="2025-01-01T19:20:00+00:00"/>
+<waterlevel value="18.8" time="2025-01-01T19:30:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T19:40:00+00:00"/>
+<waterlevel value="18.8" time="2025-01-01T19:50:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T20:00:00+00:00"/>
+<waterlevel value="18.6" time="2025-01-01T20:10:00+00:00"/>
+<waterlevel value="18.9" time="2025-01-01T20:20:00+00:00"/>
+<waterlevel value="19.1" time="2025-01-01T20:30:00+00:00"/>
+<waterlevel value="19.1" time="2025-01-01T20:40:00+00:00"/>
+<waterlevel value="19.2" time="2025-01-01T20:50:00+00:00"/>
+<waterlevel value="19.2" time="2025-01-01T21:00:00+00:00"/>
+<waterlevel value="19.0" time="2025-01-01T21:10:00+00:00"/>
+<waterlevel value="19.1" time="2025-01-01T21:20:00+00:00"/>
+<waterlevel value="19.2" time="2025-01-01T21:30:00+00:00"/>
+<waterlevel value="19.5" time="2025-01-01T21:40:00+00:00"/>
+<waterlevel value="19.8" time="2025-01-01T21:50:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T22:00:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T22:10:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T22:20:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T22:30:00+00:00"/>
+<waterlevel value="19.8" time="2025-01-01T22:40:00+00:00"/>
+<waterlevel value="19.8" time="2025-01-01T22:50:00+00:00"/>
+<waterlevel value="19.8" time="2025-01-01T23:00:00+00:00"/>
+<waterlevel value="20.1" time="2025-01-01T23:10:00+00:00"/>
+<waterlevel value="20.1" time="2025-01-01T23:20:00+00:00"/>
+<waterlevel value="20.2" time="2025-01-01T23:30:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T23:40:00+00:00"/>
+<waterlevel value="19.9" time="2025-01-01T23:50:00+00:00"/>
+<waterlevel value="20.0" time="2025-01-02T00:00:00+00:00"/>
+</data>
+</locationdata>
+</tide>
