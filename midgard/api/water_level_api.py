@@ -120,7 +120,7 @@ class WaterLevelApi(object):
                                         'pre'  - tidal predictions
                                         'tab'  - tide table with high and low tides
             reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn2000
-            interval:        Data interval in [min]  
+            interval:        Data interval in [min], which can be either 10 or 60 min  
             no_annual_tidal: Annual tidal constituent SA is removed from the tidal predictions, if set to True                                     
             url:             URL to download from water level data
         """
@@ -206,7 +206,7 @@ class WaterLevelApi(object):
                                         'pre'  - tidal predictions
                                         'tab'  - tide table with high and low tides
             reference_level: Choose reference, which can be chart_datum, mean_sea_level or nn2000
-            interval:        Data interval in [min]  
+            interval:        Data interval in [min], which can be either 10 or 60 min    
             no_annual_tidal: Annual tidal constituent SA is removed from the tidal predictions, if set to True                                     
             url:             URL to download from water level data
         """
@@ -220,13 +220,16 @@ class WaterLevelApi(object):
             station = station.upper()
 
             if station not in STATION_DEF:
-                raise ValueError(f"Unkown station name '{station}'. Following 3-digit station names can be chosen: {''.join(STATION_DEF)}")
+                raise ValueError(f"Unkown station name '{station}'. Following 3-digit station names can be chosen: {', '.join(STATION_DEF)}")
 
         if (date_from is None) or (date_to is None):
             raise ValueError("Following arguments has to be set: date_from, date_to")
 
         if (station is None) and (latitude is None):
             raise ValueError("Following arguments has to be set: station or latitude/longitude")
+            
+        if interval not in ["10", "60"]:
+            raise ValueError(f"Invalid interval {interval}. Valid values are 10 or 60.")
                 
         # Define arguments
         args = dict(
