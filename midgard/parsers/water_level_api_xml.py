@@ -145,6 +145,9 @@ class WaterLevelApiXml(Parser):
 
             elements = self._get_data_by_type(document, type_)
             if not elements:
+                del self.data[type_def[type_]]  # Delete 'type_' for which no observations exists
+                if type_ == "observation":
+                    del self.data["flag"]
                 continue
 
             if not self.data["time"]:
@@ -156,7 +159,7 @@ class WaterLevelApiXml(Parser):
 
             for element in elements:
                 self.data[type_def[type_]].append(float(element.getAttribute("value")))
-
+              
 
     #
     # GET DATASET
