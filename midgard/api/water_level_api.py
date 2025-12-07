@@ -101,7 +101,7 @@ class WaterLevelApi(object):
             longitude: Optional[float] = None,
             datatype: Optional[str] = "all",
             reference_level: Optional[str] = "chart_datum", 
-            interval: Optional[int] = 10, 
+            interval: Union[int, str] = 10, 
             no_annual_tidal: Optional[bool] = False,
             url: Optional[str] = "https://vannstand.kartverket.no/tideapi.php",
     ) -> None:
@@ -144,14 +144,16 @@ class WaterLevelApi(object):
         """Return the water level data as Midgard Dataset
         
         Returns:
-            Dataset where water level observation are stored with following fields:
-
-       |  Field               | Type              | Description                                                       |
-       | :------------------- | :---------------- | :---------------------------------------------------------------- |
-       | flag                 | numpy.ndarray     | Data flag (obs: observation, pre: prediction, weather: weather    |
-       |                      |                   | effect, forecast: forecast)                                       |
-       | time                 | TimeTable         | Observation time given as TimeTable object                        |
-       | water_level          | numpy.ndarray     | Water level in [m]                                                |
+            Dataset where water level observation are stored with following fields in dependency of given data:
+       
+       |  Field                     | Type              | Description                                                 |
+       | :------------------------- | :---------------- | :---------------------------------------------------------- |
+       | flag                       | numpy.array       | Data flag of water level observation data (obs: observation,|
+       |                            |                   | pre: prediction), which can also predicted tidal data       |
+       | time                       | TimeTable         | Observation time given as TimeTable object                  |
+       | water_level                | numpy.array       | Observed/estimated water level data in [m]                  |
+       | water_level_predicted      | numpy.array       | Tidal prediction data in [m]                                |
+       | water_level_weather_effect | numpy.array       | Weather effect [m]                                          |
             
         """
         p = parsers.parse_file(parser_name="water_level_api_xml",  file_path=self.file_path)
@@ -165,17 +167,20 @@ class WaterLevelApi(object):
 
             Dictionary with water level data saved in following keys:
 
-        | Keys                | Description                                                                           |
-        | :------------------ | :------------------------------------------------------------------------------------ |
-        | flag                | Data flag (obs: observation, pre: prediction, weather: weather effect, forecast:      |
-        |                     | forecast)                                                                             |
-        | time                | Observation time                                                                      |
-        | water_level         | Water level in [m]                                                                    |
+        | Keys                       | Description                                                                    |
+        | :------------------------- | :----------------------------------------------------------------------------- |
+        | flag                       | Data flag of water level observation data (obs: observation, pre: prediction), |
+        |                            | which can also predicted tidal data                                            |
+        | time                       | Observation time                                                               |
+        | water_level                | Observed/estimated water level data in [m]                                     |
+        | water_level_predicted      | Tidal prediction data in [m]                                                   |
+        | water_level_weather_effect | Weather effect [m]                                                             |
         """
         p = parsers.parse_file(parser_name="water_level_api_xml",  file_path=self.file_path)
         data = p.as_dict()
-        data["water_level"] = [ v * Unit.cm2m for v in data["value"]]
-        del data["value"]
+        for key in data.keys():
+            if key in ["water_level", "water_level_predicted", "water_level_weather_effect"]:
+                 data[key] = [ v * Unit.cm2m for v in data[key]]
         return data
 
 
@@ -188,7 +193,7 @@ class WaterLevelApi(object):
             longitude: Optional[float] = None,
             datatype: Optional[str] = "all",
             reference_level: Optional[str] = "chart_datum", 
-            interval: Optional[int] = 10, 
+            interval: Union[int, str] = 10, 
             no_annual_tidal: Optional[bool] = False,
             url: Optional[str] = "https://vannstand.kartverket.no/tideapi.php",
     ) -> None:
@@ -228,8 +233,8 @@ class WaterLevelApi(object):
         if (station is None) and (latitude is None):
             raise ValueError("Following arguments has to be set: station or latitude/longitude")
             
-        if interval not in ["10", "60"]:
-            raise ValueError(f"Invalid interval {interval}. Valid values are 10 or 60.")
+        if str(interval) not in ["10", "60"]:
+            raise ValueError(f"Invalid interval {str(interval)}. Valid values are 10 or 60.")
                 
         # Define arguments
         args = dict(
@@ -241,7 +246,7 @@ class WaterLevelApi(object):
             place="",
             file="",
             lang="en",
-            interval=interval,
+            interval=str(interval),
             dst=0,  # summer time is not used
             tzone=0,  # UTC
         )
