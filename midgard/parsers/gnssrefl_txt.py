@@ -247,6 +247,7 @@ class GnssreflTxt(LineParser):
            | rising_satellite          | numpy.array   | Rising satellite if True and setting satellite if False      |
            | satellite                 | numpy.array   | Satellite number                                             |
            | satellite_arc_length      | numpy.array   | Satellite arc length in [s]                                  |
+           | system                    | numpy.ndarray | GNSS identifier                                              |
            | time                      | Time          | Time                                                         |
                
         """
@@ -276,9 +277,8 @@ class GnssreflTxt(LineParser):
                 "elevation_max": "radian",
                 "elevation_min": "radian",
                 "interfreq_bias_correction": "meter",
-                "number_of_values": None,
+                "number_of_observation": None,
                 "peak2noise": None, 
-                "use_gpt2": None,
                 "reflector_height": "meter",
                 "reflector_height_with_interfreq_corr": "meter", # Not added to dataset, but unit information is needed.
                 "reflector_height_with_rhdot_corr": "meter", # Not added to dataset, but unit information is needed.
