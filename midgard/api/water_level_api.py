@@ -235,6 +235,10 @@ class WaterLevelApi(object):
             
         if str(interval) not in ["10", "60"]:
             raise ValueError(f"Invalid interval {str(interval)}. Valid values are 10 or 60.")
+            
+        if reference_level not in reference_level_def.keys():
+            raise ValueError(f"Invalid reference level {reference_level}. Valid reference levels are 'chart_datum', "
+                             f"'mean_sea_level' and 'nn2000'.")
                 
         # Define arguments
         args = dict(
