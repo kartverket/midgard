@@ -247,27 +247,31 @@ class GnssreflTxt(LineParser):
            | rising_satellite          | numpy.array   | Rising satellite if True and setting satellite if False      |
            | satellite                 | numpy.array   | Satellite number                                             |
            | satellite_arc_length      | numpy.array   | Satellite arc length in [s]                                  |
+           | system                    | numpy.ndarray | GNSS identifier                                              |
            | time                      | Time          | Time                                                         |
                
         """
         
         freq_def = {
-            1: "L1",     # G
-            2: "L2",     # G
-            5: "L5",     # G
-            20: "L2C",   # G
-            101: "L1",   # R
-            102: "L2",   # R
-            201: "E1",   # E 
-            205: "E5a",  # E
-            206: "E6",   # E
-            207: "E5b",  # E
-            208: "E5",   # E
-            302: "B1_2", # C
-            306: "B3",   # C
-            307: "B2b",  # C
+            1: "L1",     # G  1575.42
+            2: "L2",     # G  1227.60
+            5: "L5",     # G  1176.45
+            20: "L2C",   # G  1227.60
+            101: "G1",   # R
+            102: "G2",   # R
+            201: "E1",   # E  1575.420
+            205: "E5a",  # E  1176.450
+            206: "E6",   # E  1278.70
+            207: "E5b",  # E  1207.140
+            208: "E5",   # E  1191.795   
+            301: "B1C",  # C  1575.42
+            302: "B1",   # C  1561.098 
+            305: "B2a",  # C  1176.45
+            306: "B3",   # C  1268.52
+            307: "B2b",  # C  1207.14  B2 BDS-2 signal/B2b BDS-3 signal
+            308: "B2",   # C  1191.795 B2a+B2b BDS-3 signal
         }
-
+            
         float_fields = {
                 "amplitude": None,
                 "azimuth": "radian",
@@ -276,9 +280,8 @@ class GnssreflTxt(LineParser):
                 "elevation_max": "radian",
                 "elevation_min": "radian",
                 "interfreq_bias_correction": "meter",
-                "number_of_values": None,
+                "number_of_observation": None,
                 "peak2noise": None, 
-                "use_gpt2": None,
                 "reflector_height": "meter",
                 "reflector_height_with_interfreq_corr": "meter", # Not added to dataset, but unit information is needed.
                 "reflector_height_with_rhdot_corr": "meter", # Not added to dataset, but unit information is needed.

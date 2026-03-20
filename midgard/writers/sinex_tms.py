@@ -10,6 +10,9 @@ from operator import attrgetter
 from pathlib import PosixPath
 from typing import Any, Dict, List, Union
 
+# Third party imports
+import numpy as np
+
 # Midgard imports
 from midgard.dev import log, plugins
 from midgard.data.position import Position
@@ -472,7 +475,10 @@ class TimeseriesBlocks:
             idx = time == self.dset.time.utc.datetime[idx_sta]
             line = " "
             for name, field in self.data_field_types.items():
-                line += f"{{:{DATA_TYPES[name].format}}}".format(attrgetter(field)(self.dset)[idx_sta][idx][0])
+                if self.dset.time.utc.datetime[idx_sta].shape[0] == 1: # only one station coordinate entry are given
+                    line += f"{{:{DATA_TYPES[name].format}}}".format(np.squeeze(attrgetter(field)(self.dset)))
+                else:
+                    line += f"{{:{DATA_TYPES[name].format}}}".format(attrgetter(field)(self.dset)[idx_sta][idx][0])
             self.fid.write(f"{line}\n")
         self.fid.write("-TIMESERIES/DATA\n")
 
@@ -631,7 +637,7 @@ class TimeseriesBlocks:
         """
         idx = self.dset.filter(station=self.station)
         if self.dset.obs.dsite_pos.ref_pos[idx].shape[0] == 1: # only one reference station coordinate entry are given
-            ref_pos = Position(self.dset.obs.dsite_pos.ref_pos[idx][0], system="trs")
+            ref_pos = Position(np.squeeze(self.dset.obs.dsite_pos.ref_pos[idx]), system="trs")
         else: 
             ref_pos = self.dset.obs.dsite_pos.ref_pos[idx][0]
 

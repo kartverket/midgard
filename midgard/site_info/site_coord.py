@@ -285,7 +285,7 @@ class SiteCoordSinex(SiteInfoBase):
 
     @property
     def ref_epoch(self) -> "UtcTime":
-        """ Get reference epoch of site coordinate from SINEX file
+        """ Get reference epoch of site coordinate
 
         Returns:
             Reference epoch of site coordinate
@@ -341,7 +341,7 @@ class SiteCoordSinex(SiteInfoBase):
 
     @property
     def vel_sigma(self) -> np.ndarray:
-        """ Get standard deviation of site velocity from SINEX file
+        """ Get standard deviation of site velocity
 
         Returns:
             Standard deviation of site velocity for X, Y and Z component in [m/yr]
@@ -649,7 +649,7 @@ class SiteCoordSsc(SiteInfoBase):
 
     @property
     def pos_sigma(self) -> np.ndarray:
-        """ Get standard deviation of site coordinate from SCC file
+        """ Get standard deviation of site coordinate
 
         Returns:
             Standard deviation of site coordinate for X, Y and Z in [m]
@@ -662,7 +662,7 @@ class SiteCoordSsc(SiteInfoBase):
 
     @property
     def ref_epoch(self) -> "UtcTime":
-        """ Get reference epoch of site coordinate from SINEX file
+        """ Get reference epoch of site coordinate
 
         Returns:
             Reference epoch of site coordinate

@@ -43,7 +43,7 @@ class ParserDef(NamedTuple):
     entry points to the parser function and the `field` entry defines how to separate the line in fields. The separated
     fields are saved either in a dictionary or in a list. In the last case the line is split on whitespace by
     default. With the `delimiter` entry the default definition can be overwritten, whereby also regular expressions can
-    be used (like '\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default 
+    be used (like r'\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default
     before a line is parsed.  This default can be overwritten by defining the characters, which should be removed with 
     the 'strip' entry. The `parser` dictionary is defined like:
 
@@ -139,7 +139,7 @@ class ChainParser(Parser):
         elif isinstance(fields, list):
             line = line.strip(parser.parser_def[label].get("strip"))
             # Split on whitespaces if delimiter is not defined
-            for field, value in zip(fields, re.split(parser.parser_def[label].get("delimiter", "\s+"), line)):
+            for field, value in zip(fields, re.split(parser.parser_def[label].get("delimiter", r"\s+"), line)):
                 if field is not None:
                     values[field] = value.strip(parser.parser_def[label].get("strip"))
 

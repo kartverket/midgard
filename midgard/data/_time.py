@@ -637,7 +637,7 @@ class TimeArray(TimeBase):
         Returns:
             Time:    Time object containing the mean time
         """
-        if self.size == 1:
+        if self.size == 1 or self.size == 0:
             return self
 
         return self._cls_scale(self.scale)(np.mean(self.utc.jd), fmt="jd")

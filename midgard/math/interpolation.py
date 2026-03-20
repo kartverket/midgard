@@ -139,6 +139,85 @@ def interpolate_with_derivative(
 # INTERPOLATORS
 #
 @register_interpolator
+def cubic(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
+    """Cubic spline interpolation through the given points
+
+    Uses the scipy.interpolate.interp1d function with kind='cubic' behind the scenes.
+
+    Args:
+        x:       1-dimensional array with original x-values.
+        y:       Array with original y-values.
+        ipargs:  Keyword arguments passed on to the interp1d-interpolator.
+
+    Returns:
+        Cubic spline interpolation function
+    """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+    # Interpolate along axis=0 by default
+    ipargs.setdefault("axis", 0)
+    return scipy.interpolate.interp1d(x, y, kind="cubic", **ipargs)
+    
+
+@register_interpolator
+def barycentric_interpolator(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
+    """The interpolating polynomial through the given points
+
+    Uses the scipy.interpolate.BarycentricInterpolator function behind the scenes.
+
+    Args:
+        x:       1-dimensional array with original x-values.
+        y:       Array with original y-values.
+        ipargs:  Keyword arguments passed on to the scipy-interpolator.
+
+    Returns:
+        Barycentric interpolation function
+    """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+    return scipy.interpolate.BarycentricInterpolator(x, y, **ipargs)
+    
+    
+@register_interpolator
+def interpolated_univariate_spline(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
+    """One-dimensional interpolating spline for the given points
+
+    Uses the scipy.interpolate.InterpolatedUnivariateSpline function behind the scenes.
+
+    The original only deals with one-dimensional y arrays, so multiple calls are made for higher dimensional y
+    arrays. The dimensions are handled independently of each other.
+
+    Args:
+        x:       1-dimensional array with original x-values.
+        y:       Array with original y-values.
+        ipargs:  Keyword arguments passed on to the scipy-interpolator.
+
+    Returns:
+        Interpolating spline function
+    """
+    if y.ndim < 1:
+        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+    if y.ndim == 1:
+        return scipy.interpolate.InterpolatedUnivariateSpline(x, y, **ipargs)
+
+    # Loop over columns in y for higher dimensions
+    def _interpolated_univariate_spline(x_new: np.ndarray) -> np.ndarray:
+        """Interpolate using an interpolating spline"""
+        first_y = (slice(len(y)),)
+        first_new = (slice(len(x_new)),)
+        y_new = np.zeros(x_new.shape[:1] + y.shape[1:])
+
+        for last_cols in np.ndindex(y.shape[1:]):
+            idx_new = first_new + last_cols
+            idx_y = first_y + last_cols
+            y_new[idx_new] = scipy.interpolate.InterpolatedUnivariateSpline(x, y[idx_y], **ipargs)(x_new)
+
+        return y_new
+
+    return _interpolated_univariate_spline
+    
+
+@register_interpolator
 def lagrange(
     x: np.ndarray, y: np.ndarray, *, window: int = 10, bounds_error: bool = True, assume_sorted: bool = False
 ) -> Callable:
@@ -240,13 +319,13 @@ def linear(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
     # Interpolate along axis=0 by default
     ipargs.setdefault("axis", 0)
     return scipy.interpolate.interp1d(x, y, kind="linear", **ipargs)
-
-
+    
+    
 @register_interpolator
-def cubic(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
-    """Cubic spline interpolation through the given points
+def nearest(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
+    """Nearest neighbor interpolation through the given points
 
-    Uses the scipy.interpolate.interp1d function with kind='cubic' behind the scenes.
+    Uses the scipy.interpolate.interp1d function with kind='nearest' behind the scenes.
 
     Args:
         x:       1-dimensional array with original x-values.
@@ -254,72 +333,15 @@ def cubic(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
         ipargs:  Keyword arguments passed on to the interp1d-interpolator.
 
     Returns:
-        Cubic spline interpolation function
+        Nearest neighbor interpolation function
     """
     if y.ndim < 1:
         raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
+
     # Interpolate along axis=0 by default
     ipargs.setdefault("axis", 0)
-    return scipy.interpolate.interp1d(x, y, kind="cubic", **ipargs)
-
-
-@register_interpolator
-def interpolated_univariate_spline(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
-    """One-dimensional interpolating spline for the given points
-
-    Uses the scipy.interpolate.InterpolatedUnivariateSpline function behind the scenes.
-
-    The original only deals with one-dimensional y arrays, so multiple calls are made for higher dimensional y
-    arrays. The dimensions are handled independently of each other.
-
-    Args:
-        x:       1-dimensional array with original x-values.
-        y:       Array with original y-values.
-        ipargs:  Keyword arguments passed on to the scipy-interpolator.
-
-    Returns:
-        Interpolating spline function
-    """
-    if y.ndim < 1:
-        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
-    if y.ndim == 1:
-        return scipy.interpolate.InterpolatedUnivariateSpline(x, y, **ipargs)
-
-    # Loop over columns in y for higher dimensions
-    def _interpolated_univariate_spline(x_new: np.ndarray) -> np.ndarray:
-        """Interpolate using an interpolating spline"""
-        first_y = (slice(len(y)),)
-        first_new = (slice(len(x_new)),)
-        y_new = np.zeros(x_new.shape[:1] + y.shape[1:])
-
-        for last_cols in np.ndindex(y.shape[1:]):
-            idx_new = first_new + last_cols
-            idx_y = first_y + last_cols
-            y_new[idx_new] = scipy.interpolate.InterpolatedUnivariateSpline(x, y[idx_y], **ipargs)(x_new)
-
-        return y_new
-
-    return _interpolated_univariate_spline
-
-
-@register_interpolator
-def barycentric_interpolator(x: np.ndarray, y: np.ndarray, **ipargs: Any) -> Callable:
-    """The interpolating polynomial through the given points
-
-    Uses the scipy.interpolate.BarycentricInterpolator function behind the scenes.
-
-    Args:
-        x:       1-dimensional array with original x-values.
-        y:       Array with original y-values.
-        ipargs:  Keyword arguments passed on to the scipy-interpolator.
-
-    Returns:
-        Barycentric interpolation function
-    """
-    if y.ndim < 1:
-        raise ValueError(f"The y array must have at least one dimension, currently y.ndim={y.ndim}.")
-    return scipy.interpolate.BarycentricInterpolator(x, y, **ipargs)
-    
+    return scipy.interpolate.interp1d(x, y, kind="nearest", **ipargs)
+       
 
 #
 # AUXILIARY FUNCTIONS

@@ -90,12 +90,21 @@ class PlateMotion():
        return np.array([self.pole.wx, self.pole.wy, self.pole.wz]) * Unit(self.pole.unit).to("milliarcsecond per year").m
    
    
-    def to_cartesian(self, pole: np.ndarray) -> np.ndarray:
+    def to_cartesian(self, pole: Union[List[float], np.ndarray]) -> np.ndarray:
        """Convert Euler pole of tectonic plate from spherical to cartesian coordinates
        
-       That means from location in latitude and longitude and magnitude of rotation to X, Y and Z coordinates.
+       That means from location in latitude and longitude and magnitude of rotation to X, Y and Z coordinates. Conversion is determined based on:
        
-       https://geo.libretexts.org/Courses/University_of_California_Davis/GEL_056%3A_Introduction_to_Geophysics/Geophysics_is_everywhere_in_geology.../04%3A_Plate_Tectonics/4.07%3A_Plate_Motions_on_a_Sphere
+           :math:`\\omega_x = \\omega \\cos(lat) \\cos(lon)`    # X-coordinate of Euler pole
+           :math:`\\omega_y = \\omega \\cos(lat) \\sin(lon)`    # Y-coordinate of Euler pole
+           :math:`\\omega_z = \\omega \\sin(lat)`               # Z-coordinate of Euler pole
+           
+       with            
+           :math:`lat`    - latitude of Euler Pole
+           :math:`lon`    - longitude of Euler Pole
+           :math:`omega`  - magnitude of rotation of Euler Pole
+       
+       See also reference: https://geo.libretexts.org/Courses/University_of_California_Davis/GEL_056%3A_Introduction_to_Geophysics/Geophysics_is_everywhere_in_geology.../04%3A_Plate_Tectonics/4.07%3A_Plate_Motions_on_a_Sphere
        
        Args:
            pole: Euler pole array in spherical coordinates (latitude [deg], longitude [deg], magnitude of rotation [degree per million years])
@@ -114,10 +123,16 @@ class PlateMotion():
        return np.array([wx, wy, wz])
    
     
-    def to_spherical(self, pole: np.ndarray) -> np.ndarray:
+    def to_spherical(self, pole: Union[List[float], np.ndarray]) -> np.ndarray:
        """Convert Euler pole of tectonic plate from cartesian to spherical coordinates, that means location in latitude and longitude and magnitude of rotation
        
-       https://geo.libretexts.org/Courses/University_of_California_Davis/GEL_056%3A_Introduction_to_Geophysics/Geophysics_is_everywhere_in_geology.../04%3A_Plate_Tectonics/4.07%3A_Plate_Motions_on_a_Sphere
+       Conversion is determined based on:
+       
+           :math:`\\lon   = tan^{-1} \\frac{\\omega_y}{\\omega_x}`                          # longitude of Euler pole 
+           :math:`\\lat   = tan^{-1} \\frac{\\omega_z}{\\sqrt{\\omega_x^2 + \\omega_y^2}}`  # latitude of Euler pole
+           :math:`\\omega = \\sqrt{\\omega_x^2 + \\omega_y^2 + \\omega_z^2}`                # magnitude of rotation of Euler pole
+       
+       See also reference: https://geo.libretexts.org/Courses/University_of_California_Davis/GEL_056%3A_Introduction_to_Geophysics/Geophysics_is_everywhere_in_geology.../04%3A_Plate_Tectonics/4.07%3A_Plate_Motions_on_a_Sphere
        
        Args:
            pole: Euler pole array in cartesian coordinates (X,Y,Z) in [milliarcsecond per year])

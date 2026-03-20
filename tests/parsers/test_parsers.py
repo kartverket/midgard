@@ -111,7 +111,7 @@ def test_parser_bernese_crd():
     """Test that parsing bernese_crd gives expected output"""
     parser = get_parser("bernese_crd").as_dict()
 
-    assert len(parser) == 3
+    assert len(parser) == 7
     assert "aasc" in parser
     assert "domes" in parser["aasc"]
     
@@ -447,3 +447,11 @@ def test_parser_vlbi_source_names():
     assert "2357-326" in parser
     assert len(parser) == 8
     assert parser["2357-326"]["icrf_name_short"] == "J0000-3221"
+    
+def test_water_level_api_xml():
+    """Test that parsing water_level_api_xml gives expected output"""
+    parser = get_parser("water_level_api_xml").as_dict()
+
+    assert len(parser) == 3
+    assert "value" in parser
+    assert 244.2 == parser["value"][0]

@@ -146,8 +146,8 @@ class RotationPole:
     
     Attributes:
         name:           Name of tectonic plate
-        wx, wy, wx:     Rotation pole (angular velocity) components
-        dwx, dwy, dwz:  Standard deviation of rotation pole components
+        wx, wy, wx:     Rotation pole (angular velocity) components 
+        dwx, dwy, dwz:  Standard deviation of rotation pole components 
         unit:           Unit of rotation pole entries
         description:    Description of tectonic plate
     """
@@ -282,6 +282,28 @@ itrf2008 = PlateMotionModel(
 #    Sur             sr  −32.50  −111.32  0.107 ± 0.028  11.0  0.0271
 #    Yangtze         yz   63.03  −116.62  0.334 ± 0.013  36.5  0.0542
 # 
+# Note: Conversion from rotation vector (Euler pole) from spherical to cartesian representation is calculated based on:
+#
+#           :math:`\\omega_x = \\omega * \\cos(lat) * \\cos(lon)`    # X-coordinate of Euler pole
+#           :math:`\\omega_y = \\omega * \\cos(lat) * \\sin(lon)`    # Y-coordinate of Euler pole
+#           :math:`\\omega_z = \\omega * \\sin(lat)`                 # Z-coordinate of Euler pole
+#           
+#       with            
+#           :math:`lat`    - latitude of Euler Pole in degree
+#           :math:`lon`    - longitude of Euler Pole in degree
+#           :math:`omega`  - magnitude of rotation of Euler Pole in degree per million years
+#
+#       The Midgard module midgard.math.plate_motion can be used to convert Euler pole from spherical to cartesian
+#       representation like:
+#
+#           from midgard.math.plate_motion import PlateMotion
+#           pm = PlateMotion(plate="amur")
+#           pm.to_cartesian([63.17, -122.82, 0.297])  # Euler pole in spherical coordinates for Amur tectonic plate
+#
+#           Output:
+#               array([-0.26155799, -0.40554759,  0.95410021])  # Euler pole in cartesian coordinates for Amur 
+#                                                               # tectonic plate
+#
 nnr_morvel56 = PlateMotionModel(
     name="nnr_morvel56", 
     description="NNR-MORVEL56 plate motion model",
@@ -314,6 +336,34 @@ nnr_morvel56 = PlateMotionModel(
         
     )
 )
+
+
+#
+# NNR-NUVEL1 plate motion model
+#
+# Reference: Argus, D.F., and Gordon, R.G. (1991): No-Net-Rotation model of current plate velocities incorporating
+#            plate motion model NUVEL-1, Geophysical Research Letters, Vol. 18, No. 11, pp 2039-2042, November 1991,
+#            https://doi.org/10.1029/91GL01532
+#
+#
+#    Plate          Lat    Lon       w        RMS   
+#                   deg N  deg E     deg/Myr  mm/yr
+#    ________________________________________________________________
+#    Africa           50.6   -74.0   0.30     30
+#    Antarctica       63.0  -115.9   0.25     16
+#    Arabia           45.2    -4.4   0.57     46
+#    Australia        33.8    33.2   0.68     66
+#    Caribbean        25.0   -93.1   0.22      9
+#    Cocos            24.5  -115.8   1.58     77
+#    Eurasia          50.6  -112.4   0.24     25
+#    India            45.5     0.4   0.57     59
+#    Juan de Fuca    -27.4    58.1   0.64     20
+#    Nazca            47.8  -100.2   0.78     79
+#    North America    -2.5   -86.0   0.22     20
+#    Pacific         -63.0   107.4   0.67     67
+#    PhilippineSea   -39.0   -36.7   0.95     42
+#    South America   -25.4  -124.6   0.12     12
+
 
 
 

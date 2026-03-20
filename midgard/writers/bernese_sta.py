@@ -297,18 +297,29 @@ def _get_object_for_date(
     Returns:
         Antenna, receiver or eccentricity object and updated date 
     """
+    selected_object = None
     for (date_from, date_to), object_ in sorted(history.items()):
 
+        #+TODO: The following solution was used before for handling of data gaps. But this is not a good solution, 
+        #       because date_from is changed, which leads to failure in selection of GNSS equipment.
+        #       log.fatal error handling is added to observe if it is still a problem.
+        #
         # Often the time hh:mm:ss is set in addition to date for the GNSS equipment change. This leads sometimes to 
         # data gaps during the equipment change. These data gaps can lead to missing receiver or antenna information
         # in a certain time span. To avoid these daily time data gaps, the hour, minute and second is set to 
         # 00:00:00 for date_from and to 23:59:59 for date_to. 
-        date_from = datetime(date_from.year, date_from.month, date_from.day, 0, 0, 0)
-        date_to = datetime(date_to.year, date_to.month, date_to.day, 23, 59, 59)
-        
+        #date_from = datetime(date_from.year, date_from.month, date_from.day, 0, 0, 0)
+        #date_to = datetime(date_to.year, date_to.month, date_to.day, 23, 59, 59)
+        #-TODO
+
         if date_from <= date < date_to:
-            return object_
-        
+            selected_object = object_
+            break
+
+    if not selected_object:
+        log.fatal(f"No station information could be found for date {date.isoformat()}")
+
+    return selected_object       
         
 def _get_events(
         site_info: Dict[str, Any], 

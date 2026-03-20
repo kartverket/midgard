@@ -1,5 +1,6 @@
 dist
 documents
+notebooks/examples/api/water_level_api.xml
 notebooks/examples/writers
 __pycache__/
 .coverage

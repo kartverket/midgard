@@ -179,7 +179,7 @@ class MatPlotExt:
         List of statistical functions (**funcs**), which can be chosen:
     
         | Function   | Description                      |
-        |------------|----------------------------------|
+        | :--------- | :------------------------------- |
         | max        | Maximal value of data array      |
         | min        | Minimal value of data array      |
         | mean       | Mean value of data array         |

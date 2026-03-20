@@ -52,9 +52,19 @@ class SscSiteParser(ChainParser):
     # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2----+----3----+----
     def setup_parser(self):
 
-        # Ignore header
+        # Get reference frame information from header
         header_parser = ParserDef(
-            end_marker=lambda _l, _ln, nextline: nextline[0:5].isnumeric(), label=None, parser_def=None
+            end_marker=lambda _l, _ln, nextline: nextline[0:5].isnumeric(), 
+            label=lambda line, _ln: line.strip().startswith("REFERENCE FRAME"),
+            parser_def={
+                # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
+                # REFERENCE FRAME:    IGb14    AT EPOCH OF 2010.0
+                True: {
+                    "parser": self.parse_reference_frame,
+                    "delimiter": "\s+",
+                    "fields": ["_", "_", "ref_frame", "_"],
+                },
+            },
         )
 
         # Every pair of lines contains information about one station
@@ -77,6 +87,12 @@ class SscSiteParser(ChainParser):
         )
 
         return itertools.chain([header_parser], itertools.repeat(obs_parser))
+
+
+    # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
+    # REFERENCE FRAME:    IGb14    AT EPOCH OF 2010.0
+    def parse_reference_frame(self, line, cache):
+        self.data["ref_system"] = line["ref_frame"]
     
 
     # 10001M007 SMNE              GPS SMNE  4201791.972   177945.561  4779286.951  0.001  0.001  0.001  1 00:322:00000 08:118:86370 10:001:00000
@@ -116,11 +132,14 @@ class SscSiteParser(ChainParser):
         else:
             pos_vel["end"] = datetime.max
 
+        if "ref_system" in self.data.keys():
+            pos_vel["ref_system"] = self.data["ref_system"]
+
         self.data.setdefault(cache["site_id"], dict())
         self.data[cache["site_id"]].update(line)
         self.data[cache["site_id"]].setdefault("pos_vel", dict())
         self.data[cache["site_id"]]["pos_vel"][line["soln"]] = pos_vel
-
+        
 
     # 10001M007                                  -.0130       0.0175       0.0106 0.0001 0.0001 0.0001
     # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+--

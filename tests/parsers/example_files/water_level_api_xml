@@ -1,0 +1,24 @@
+<tide>
+<locationdata>
+<location name="Andenes" code="ANX" latitude="69.326067" longitude="16.134848" delay="0" factor="1.00" obsname="Andenes" obscode="ANX" descr="Tides and observed water level from Andenes"/>
+<reflevelcode>CD</reflevelcode>
+<data type="observation" unit="cm" qualityFlag="1" qualityClass="Quality High" qualityDescription="High quality data: It has been verified against measurements that the data represents physical conditions.">
+<waterlevel value="244.2" time="2025-01-01T00:00:00+00:00" flag="obs"/>
+<waterlevel value="245.6" time="2025-01-01T00:10:00+00:00" flag="obs"/>
+<waterlevel value="246.5" time="2025-01-01T00:20:00+00:00" flag="obs"/>
+<waterlevel value="247.0" time="2025-01-01T00:30:00+00:00" flag="obs"/>
+</data>
+<data type="prediction" unit="cm" qualityFlag="1" qualityClass="Quality High" qualityDescription="High quality data: It has been verified against measurements that the data represents physical conditions.">
+<waterlevel value="214.9" time="2025-01-01T00:00:00+00:00" flag="pre"/>
+<waterlevel value="216.2" time="2025-01-01T00:10:00+00:00" flag="pre"/>
+<waterlevel value="217.0" time="2025-01-01T00:20:00+00:00" flag="pre"/>
+<waterlevel value="217.3" time="2025-01-01T00:30:00+00:00" flag="pre"/>
+</data>
+<data type="weathereffect" unit="cm" qualityFlag="1" qualityClass="Quality High" qualityDescription="High quality data: It has been verified against measurements that the data represents physical conditions.">
+<waterlevel value="29.3" time="2025-01-01T00:00:00+00:00"/>
+<waterlevel value="29.3" time="2025-01-01T00:10:00+00:00"/>
+<waterlevel value="29.5" time="2025-01-01T00:20:00+00:00"/>
+<waterlevel value="29.7" time="2025-01-01T00:30:00+00:00"/>
+</data>
+</locationdata>
+</tide>
