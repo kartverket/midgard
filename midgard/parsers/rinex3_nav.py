@@ -666,9 +666,9 @@ class Rinex3NavParser(ChainParser):
         Following relationship are given between GNSS time scale (either BeiDou, Galileo, IRNSS or QZSS)
         :math:`t_{GNSS}` and GPS time scale :math:`t_{GPS}` (see Section 2.1.4 in :cite:`teunissen2017`):
         .. math::
-              t_{GPS}  = t_{GNSS} + \Delta t
+              t_{GPS}  = t_{GNSS} + \\Delta t
 
-        The time offset :math:`\Delta t` is 0 s for Galileo, IRNSS and QZSS and for BeiDou 14 s. All these time scales
+        The time offset :math:`\\Delta t` is 0 s for Galileo, IRNSS and QZSS and for BeiDou 14 s. All these time scales
         are related to the International Atomic Time (TAI) by a certain time offset. In addition the GNSS week number
         is different depending on the GNSS. Galileo, IRNSS and QZSS are referring to the same GPS week, whereas BeiDou
         week starts at GPS week 1356.
@@ -842,14 +842,14 @@ class Rinex3NavParser(ChainParser):
        | omega               | CEGIJ | rad             | Argument of perigee                                             |
        | Omega               | CEGIJ | rad             | Longitude of ascending node of orbit plane at weekly epoch      |
        | Omega_dot           | CEGIJ | rad/s           | Rate of change of right ascension of the ascending node         |
-       | sat_clock_bias      | CEGIJ | s               | Satellite clock offset from GPS time                            |
-       | sat_clock_drift     | CEGIJ | s/s             | Satellite clock frequency offset                                |
-       | sat_clock_drift_rate| CEGIJ | :math:`s/s^2`   | Satellite clock frequency drift                                 |
+       | sat_clock_bias      | CEGIJ | s               | Satellite clock offset from GNSS time scale                     |
+       | sat_clock_drift     | CEGIJ | s/s             | Satellite clock drift                                           |
+       | sat_clock_drift_rate| CEGIJ | :math:`s/s^2`   | Satellite clock drift rate                                      |
        | satellite           | CEGIJ |                 | Satellite PRN number                                            |
        | shs_e1              |  E    |                 | Signal health status for E1 signal                              |
        | shs_e5a             |  E    |                 | Signal health status for E5a signal                             |
        | shs_e5b             |  E    |                 | Signal health status for E5b signal                             |
-       | sqrt_a              | CEGIJ | :math:`\sqrt{m}`| Square root of semi-major axis of the orbit                     |
+       | sqrt_a              | CEGIJ | :math:`\\sqrt{m}`| Square root of semi-major axis of the orbit                     |
        | sv_accuracy         | CEGIJ | m               | Satellite accuracy index, which is different for GNSS:          |
        |                     |       |                 |   - GPS: SV accuracy in meters (see section 20.3.3.3.1.3 in     |
        |                     |       |                 |     :cite:`is-gps-200h`)                                        |
