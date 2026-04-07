@@ -27,8 +27,7 @@ from typing import Any, Dict, Iterable
 import numpy as np
 
 # Midgard imports
-from midgard.dev import exceptions
-from midgard.dev import plugins
+from midgard.dev import exceptions, plugins
 from midgard.parsers import ChainParser, ParserDef
 from midgard.math.unit import Unit
 
@@ -62,7 +61,7 @@ class AntexParser(ChainParser):
     with following entries:
 
     | Value              | Type              | Description                                                            |
-    |--------------------|-------------------|------------------------------------------------------------------------|
+    | :----------------- | :---------------- | :--------------------------------------------------------------------- |
     | azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with |
     |                    |                   | the shape: number of azimuth values x number of elevation values.      |
     | azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections |
@@ -86,10 +85,11 @@ class AntexParser(ChainParser):
     | valid_from         | datetime.datetime | Start of validity period of satellite in GPS time                      |
     | valid_until        | datetime.datetime | End of validity period of satellite in GPS time                        |
 
+
     The 'meta' attribute is a dictionary with following entries:
 
     | Value          | Type | Description                                      |
-    |----------------|------|--------------------------------------------------|
+    | :------------- | :--- | :----------------------------------------------- |
     | comment        | list | Header commments given in list line by line      |
     | pcv_type       | str  | Phase center variation type                      |
     | ref_antenna    | str  | Reference antenna type for relative antenna      |
@@ -283,7 +283,7 @@ class AntexParser(ChainParser):
             cache["noazi"] = [float(v) for v in values]
         else:
             del values[0]
-            cache.setdefault("azi", list()).append(values)
+            cache.setdefault("azi", list()).append([float(v) for v in values])
 
     def parse_num_of_frequencies(self, line: Dict[str, str], cache: Dict[str, Any]) -> None:
         """Parse '# OF FREQUENCIES' entry of ANTEX antenna section.
@@ -392,6 +392,7 @@ class AntexParser(ChainParser):
         tmp[freq]["noazi"] = np.array(cache["noazi"])
         if "azi" in cache:
             tmp[freq]["azi"] = np.array(cache["azi"])
+            del cache["azi"] # Otherwise 'azi' information of frequencies are stacked together
 
         # Save satellite antenna correction in data structure
         if cache["sat_code"]:
