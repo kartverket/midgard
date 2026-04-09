@@ -297,7 +297,7 @@ class AntexParser(ChainParser):
         dt = datetime.datetime(
             int(line["year"]), int(line["month"]), int(line["day"]), int(line["hour"]), int(line["minute"])
         )
-        dt = dt + datetime.timedelta(float(line["second"]))
+        dt = dt + datetime.timedelta(seconds=float(line["second"]))
         cache["valid_from"] = dt
 
     def parse_valid_until(self, line: Dict[str, str], cache: Dict[str, Any]) -> None:
@@ -306,7 +306,7 @@ class AntexParser(ChainParser):
         dt = datetime.datetime(
             int(line["year"]), int(line["month"]), int(line["day"]), int(line["hour"]), int(line["minute"])
         )
-        dt = dt + datetime.timedelta(float(line["second"]))
+        dt = dt + datetime.timedelta(seconds=float(line["second"]))
         cache["valid_until"] = dt
 
     def parse_default_meta(self, line: Dict[str, str], _: Dict[str, Any]) -> None:
