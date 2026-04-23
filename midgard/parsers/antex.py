@@ -62,7 +62,7 @@ class AntexParser(ChainParser):
 
     | Value              | Type              | Description                                                            |
     | :----------------- | :---------------- | :--------------------------------------------------------------------- |
-    | azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with |
+    | azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [m] with  |
     |                    |                   | the shape: number of azimuth values x number of elevation values.      |
     | azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections |
     |                    |                   | given in `azi`.                                                        |
@@ -77,7 +77,7 @@ class AntexParser(ChainParser):
     |                    |                   | point (ARP) for receiver antennas or to the center of mass of the      |
     |                    |                   | satellite in X-, Y- and Z-direction.                                   |
     | noazi              | numpy.ndarray     | List with elevation dependent (non-azimuth-dependent) antenna          |
-    |                    |                   | correction in [mm].                                                    |
+    |                    |                   | correction in [m].                                                     |
     | <prn>              | str               | Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number       |
     | <receiver antenna> | str               | Receiver antenna name together with radome code                        |
     | sat_code           | str               | Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number     |
@@ -389,9 +389,9 @@ class AntexParser(ChainParser):
             cache["east"] * Unit.millimeter2meter,
             cache["up"] * Unit.millimeter2meter,
         ]
-        tmp[freq]["noazi"] = np.array(cache["noazi"])
+        tmp[freq]["noazi"] = np.array(cache["noazi"]) * Unit.millimeter2meter
         if "azi" in cache:
-            tmp[freq]["azi"] = np.array(cache["azi"])
+            tmp[freq]["azi"] = np.array(cache["azi"]) *  Unit.millimeter2meter
             del cache["azi"] # Otherwise 'azi' information of frequencies are stacked together
 
         # Save satellite antenna correction in data structure
