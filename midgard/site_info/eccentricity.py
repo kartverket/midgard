@@ -225,6 +225,81 @@ class EccentricitySinex(SiteInfoBase):
         if self._info["vector_type"] == "XYZ":
             return self._info["vector_3"]
 
+    #
+    # SET METHODS
+    #
+    def set_date_from(self, date_from: datetime) -> None:
+        """ Set eccentricity installation date from site information attribute
+
+        Args:
+            date_from: Eccentricity installation date
+        """
+        self._info["start_time"] = date_from
+
+
+    def set_date_to(self, date_to: datetime) -> None:
+        """ Set eccentricity removing date from site information attribute
+
+        Args:
+            date_to: Eccentricity removing date
+        """
+        self._info["end_time"] = date_to
+
+
+    def set_east(self, east: float) -> None:
+        """ Set the up component of the eccentricity vector
+
+        Args:
+            east: Up component of the eccentricity vector in [meter]
+        """
+        self._info["vector_3"] = east
+
+
+    def set_north(self, north: float) -> None:
+        """ Set the north component of the eccentricity vector
+
+        Args:
+            east: North component of the eccentricity vector in [meter]
+        """
+        self._info["vector_2"] = north
+
+
+    def set_up(self, up: float) -> None:
+        """ Set the up component of the eccentricity vector
+
+        Args:
+            east: Up component of the eccentricity vector in [meter]
+        """
+        self._info["vector_1"] = up
+
+
+    def set_x(self, x: float) -> None:
+        """ Set the X component of the eccentricity vector
+
+        Args:
+            east: X component of the eccentricity vector in [meter]
+        """
+        self._info["vector_1"] = x
+
+
+    def set_y(self, y: float) -> None:
+        """ Set the Y component of the eccentricity vector
+
+        Args:
+            east: Y component of the eccentricity vector in [meter]
+        """
+        self._info["vector_2"] = y
+
+
+    def set_z(self, z: float) -> None:
+        """ Set the Z component of the eccentricity vector
+
+        Args:
+            east: Z component of the eccentricity vector in [meter]
+        """
+        self._info["vector_3"] = z
+
+
 
 @Eccentricity.register_source
 class EccentricityHistorySsc(SiteInfoHistoryBase):

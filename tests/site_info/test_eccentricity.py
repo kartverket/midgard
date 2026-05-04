@@ -13,6 +13,7 @@ from midgard.dev.exceptions import MissingDataError
 from midgard.site_info.eccentricity import Eccentricity
 
 # Tests: Eccentricity.get("snx",...)
+#=====================================
 
 @pytest.mark.usefixtures("sinex_data")
 def test_eccentricity_sinex_one_station(sinex_data):
@@ -65,7 +66,63 @@ def test_eccentricity_sinex_last_entry(sinex_data):
     assert "zimm" in e
     assert e["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
 
+
+# Tests: EccentricitySinex.set_...("snx",...)
+#=============================================
+
+@pytest.mark.usefixtures("sinex_data")
+def test_eccentricity_sinex_set_date_from(sinex_data):
+    e = Eccentricity.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].date_from == datetime.datetime(1993, 5, 1)
+
+    # Set date_from eccentricity
+    e["zimm"].set_date_from(datetime.datetime(2026, 1, 1))
+    assert e["zimm"].date_from == datetime.datetime(2026, 1, 1)
+
+@pytest.mark.usefixtures("sinex_data")
+def test_eccentricity_sinex_set_date_to(sinex_data):
+    e = Eccentricity.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].date_to.strftime("%Y-%m-%d %H:%M:%S") == "9999-12-31 23:59:59"
+
+    # Set date_to eccentricity
+    e["zimm"].set_date_to(datetime.datetime(2026, 12, 31))
+    assert e["zimm"].date_to == datetime.datetime(2026, 12, 31)
+
+@pytest.mark.usefixtures("sinex_data")
+def test_eccentricity_sinex_set_east(sinex_data):
+    e = Eccentricity.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].east == 0.03
+
+    # Set east eccentricity
+    e["zimm"].set_east(5.0)
+    assert e["zimm"].east == 5.0
+
+@pytest.mark.usefixtures("sinex_data")
+def test_eccentricity_sinex_set_north(sinex_data):
+    e = Eccentricity.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].north == 0.02
+
+    # Set north eccentricity
+    e["zimm"].set_north(6.0)
+    assert e["zimm"].north == 6.0
+
+@pytest.mark.usefixtures("sinex_data")
+def test_eccentricity_sinex_set_up(sinex_data):
+    e = Eccentricity.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].up == 0.01
+
+    # Set up eccentricity
+    e["zimm"].set_up(7.0)
+    assert e["zimm"].up == 7.0
+
+
 # Tests: Eccentricity.get_history("snx",...)
+#============================================
 
 @pytest.mark.usefixtures("sinex_data")
 def test_eccentricity_history_sinex_one_station(sinex_data):
@@ -104,7 +161,9 @@ def test_eccentricity_history_sinex_two_stations_error(sinex_data):
     with pytest.raises(MissingDataError):
         e = Eccentricity.get_history("snx", sinex_data, "zimm,xxxx", source_path="/path/to/sinex")
 
+
 # Tests: Eccentricity.get("ssc",...)
+#====================================
 
 @pytest.mark.usefixtures("ssc_data")
 def test_eccentricity_ssc_one_station(ssc_data):
@@ -180,7 +239,9 @@ def test_eccentricity_history_ssc_two_stations_error(ssc_data):
     with pytest.raises(MissingDataError):
         e = Eccentricity.get_history("ssc", ssc_data, "zimm,xxxx", source_path="/path/to/ssc")
 
+
 # Tests: Eccentricity.get("m3g",...)
+#====================================
 
 @pytest.mark.usefixtures("m3g_api")
 def test_eccentricity_m3g_one_station(m3g_api):
