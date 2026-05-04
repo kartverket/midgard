@@ -116,9 +116,10 @@ class Collection:
             if suffix and not suffix[1:].isdigit():
                 continue
             self.default_field_suffix = suffix
-            yield multiplier
-
-        self.default_field_suffix = previous_field_suffix
+            try:
+                yield multiplier
+            finally:
+                self.default_field_suffix = previous_field_suffix
 
     @property
     def default_field_suffix(self):
