@@ -76,7 +76,6 @@ def test_eccentricity_sinex_set_date_from(sinex_data):
     assert "zimm" in e
     assert e["zimm"].date_from == datetime.datetime(1993, 5, 1)
 
-    # Set date_from eccentricity
     e["zimm"].set_date_from(datetime.datetime(2026, 1, 1))
     assert e["zimm"].date_from == datetime.datetime(2026, 1, 1)
 
@@ -86,7 +85,6 @@ def test_eccentricity_sinex_set_date_to(sinex_data):
     assert "zimm" in e
     assert e["zimm"].date_to.strftime("%Y-%m-%d %H:%M:%S") == "9999-12-31 23:59:59"
 
-    # Set date_to eccentricity
     e["zimm"].set_date_to(datetime.datetime(2026, 12, 31))
     assert e["zimm"].date_to == datetime.datetime(2026, 12, 31)
 
@@ -96,7 +94,6 @@ def test_eccentricity_sinex_set_east(sinex_data):
     assert "zimm" in e
     assert e["zimm"].east == 0.03
 
-    # Set east eccentricity
     e["zimm"].set_east(5.0)
     assert e["zimm"].east == 5.0
 
@@ -106,7 +103,6 @@ def test_eccentricity_sinex_set_north(sinex_data):
     assert "zimm" in e
     assert e["zimm"].north == 0.02
 
-    # Set north eccentricity
     e["zimm"].set_north(6.0)
     assert e["zimm"].north == 6.0
 
@@ -116,7 +112,6 @@ def test_eccentricity_sinex_set_up(sinex_data):
     assert "zimm" in e
     assert e["zimm"].up == 0.01
 
-    # Set up eccentricity
     e["zimm"].set_up(7.0)
     assert e["zimm"].up == 7.0
 
