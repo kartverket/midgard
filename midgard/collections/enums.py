@@ -219,6 +219,7 @@ class WriteLevel(enum.IntEnum):
 
 @register_enum("gnss_num2freq_C")
 class BeidouFreqNum2Freq(str, enum.Enum):
+    """BeiDou RINEX frequency number to RINEX frequency name"""
     f1 = "B1"
     f2 = "B1_2"
     f5 = "B2a"
@@ -229,6 +230,7 @@ class BeidouFreqNum2Freq(str, enum.Enum):
 
 @register_enum("gnss_num2freq_E")
 class GalileoFreqNum2Freq(str, enum.Enum):
+    """Galileo RINEX frequency number to RINEX frequency name"""
     f1 = "E1"
     f5 = "E5a"
     f6 = "E6"
@@ -238,6 +240,7 @@ class GalileoFreqNum2Freq(str, enum.Enum):
 
 @register_enum("gnss_num2freq_G")
 class GpsFreqNum2Freq(str, enum.Enum):
+    """GPS RINEX frequency number to RINEX frequency name"""
     f1 = "L1"
     f2 = "L2"
     f5 = "L5"
@@ -245,6 +248,7 @@ class GpsFreqNum2Freq(str, enum.Enum):
 
 @register_enum("gnss_num2freq_R")
 class GlonassFreqNum2Freq(str, enum.Enum):
+    """GLONASS RINEX frequency number to RINEX frequency name"""
     f1 = "G1"
     f2 = "G2"
     f3 = "G3"
@@ -254,12 +258,14 @@ class GlonassFreqNum2Freq(str, enum.Enum):
 
 @register_enum("gnss_num2freq_I")
 class IrnssFreqNum2Freq(str, enum.Enum):
+    """IRNSS RINEX frequency number to RINEX frequency name"""
     f5 = "L5"
     f9 = "S"
 
 
 @register_enum("gnss_num2freq_J")
 class QzssFreqNum2Freq(str, enum.Enum):
+    """QZSS RINEX frequency number to RINEX frequency name"""
     f1 = "L1"
     f2 = "L2"
     f5 = "L5"
@@ -268,6 +274,7 @@ class QzssFreqNum2Freq(str, enum.Enum):
 
 @register_enum("gnss_num2freq_S")
 class SbasFreqNum2Freq(str, enum.Enum):
+    """SBAS RINEX frequency number to RINEX frequency name"""
     f1 = "L1"
     f5 = "L5"
 
@@ -302,7 +309,7 @@ class GalileoFrequency(float, enum.Enum):
 
 
 @register_enum("gnss_freq_G")
-class GPSFrequency(float, enum.Enum):
+class GpsFrequency(float, enum.Enum):
     """GPS frequencies in Hz"""
 
     L1 = f1 = 1575.42e6

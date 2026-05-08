@@ -35,7 +35,7 @@ class MatPlotExt:
     Following *options** can be selected:
 
     | Option             | Value            | Description                                                           |
-    |--------------------|------------------|-----------------------------------------------------------------------|
+    | :----------------- | :--------------- | :-------------------------------------------------------------------- |
     | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)                |
     | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line  |
     | axhline_width      | <num>            | Line width of horizontal line                                         |
@@ -265,7 +265,7 @@ class MatPlotExt:
         Following **options** options can be overwritten:
     
         | Option         | Value            | Description                                                                |
-        |----------------|------------------|----------------------------------------------------------------------------|
+        | :------------- | :--------------- | :------------------------------------------------------------------------- |
         | colormap       | <type>           | Color map type for plotting labels (e.g. viridis, jet, tab10, rainbow,     |
         |                |                  | hsv, plasma)                                                               |
         | dpi            | <num>            | Resolution of file in dots per inch                                        |
@@ -365,7 +365,7 @@ class MatPlotExt:
         Following **options** options can be overwritten:
     
         | Option             | Value            | Description                                                             |
-        |--------------------|------------------|-------------------------------------------------------------------------|
+        | :----------------- | :--------------- | :---------------------------------------------------------------------- |
         | axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line    |
         | axhline_width      | <num>            | Line width of horizontal line                                           |
         | axhline_color      | <name>           | Color of horizontal line                                                |
@@ -611,7 +611,7 @@ class MatPlotExt:
         Following **options** options can be overwritten:
     
         | Option             | Value            | Description                                                             |
-        |--------------------|------------------|-------------------------------------------------------------------------|
+        | :----------------- | :--------------- | :---------------------------------------------------------------------- |
         | colormap           | <type>           | Color map type for plotting events (e.g. viridis, jet, tab10, rainbow,  |
         |                    |                  | hsv, plasma)                                                            |
         | dpi                | <num>            | Resolution of file in dots per inch                                     |
@@ -806,7 +806,7 @@ class MatPlotExt:
         Following **options** options can be overwritten:           
     
         | Option             | Value            | Description                                                       |
-        |--------------------|------------------|-------------------------------------------------------------------|
+        | :----------------- | :--------------- | :---------------------------------------------------------------- |
         | alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)            |
         | bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                          |
         | bar_text_offset    | <num>            | Define text offset for text of bar plots                          |
@@ -1024,7 +1024,7 @@ class MatPlotExt:
         Following **options** can be selected:
     
         | Option             | Value            | Description                                                         |
-        |--------------------|------------------|---------------------------------------------------------------------|
+        | :----------------- | :--------------- | :------------------------------------------------------------------ |
         | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for      |
         |                    |                  | both axis on scatter plot                                           |
         | histogram_binwidth | <num>            | Histogram bin width                                                 |

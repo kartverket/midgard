@@ -104,10 +104,9 @@ class AntennaSinex(SiteInfoBase):
 
     source: str = "snx"
     fields: Dict[str, str] = dict(
-        type="antenna_type",
-        serial_number="serial_number",
         radome_type="radome_type",
-        radome_serial_number="radome_type",
+        serial_number="serial_number",
+        type="antenna_type",
     )
     
     @property
@@ -117,8 +116,12 @@ class AntennaSinex(SiteInfoBase):
         Returns:
             True if individual antenna calibration file exits otherwise False
         """
+       
         #Note: Information about individual antenna calibration is not given in SINEX file. 
-        return False
+        if "calibration" not in self._info.keys():
+            self._info["calibration"] = False
+
+        return self._info["calibration"]
 
     @property
     def date_from(self) -> datetime:
@@ -143,6 +146,91 @@ class AntennaSinex(SiteInfoBase):
             return self._info["end_time"]
         else:
             return datetime.max
+
+
+    @property
+    def radome_serial_number(self) -> datetime:
+        """ Get radome serial number
+
+        Returns:
+            Radome serial number
+        """
+        # In case radome serial number is set
+        if "radome_serial_number" in self._info.keys():
+            return self._info["radome_serial_number"]
+
+        # In case radome serial number is not given
+        if self._info["radome_type"] == "NONE":
+            return ""
+        else:
+            # Use of same serial number than antenna
+            return self._info["serial_number"]
+
+
+    #
+    # SET METHODS
+    #
+    def set_calibration(self, calibration: bool) -> None:
+        """ Set information if individual antenna calibration file exists
+
+        Args:
+            calibration: True if individual antenna calibration file exits otherwise False
+        """
+        self._info["calibration"] = calibration
+
+
+    def set_date_from(self, date_from: datetime) -> None:
+        """ Set antenna installation date from site information attribute
+
+        Args:
+            date_from: Antenna installation date
+        """
+        self._info["start_time"] = date_from
+
+
+    def set_date_to(self, date_to: datetime) -> None:
+        """ Set antenna removing date from site information attribute
+
+        Args:
+            date_to: Antenna removing date
+        """
+        self._info["end_time"] = date_to
+
+
+    def set_radome_serial_number(self, radome_serial_number: str) -> None:
+        """ Set radome serial number
+
+        Args:
+            radome_serial_number: Radome serial number
+        """
+        self._info["radome_serial_number"] = radome_serial_number
+
+
+    def set_radome_type(self, radome_type: str) -> None:
+        """ Set radome type
+
+        Args:
+            radome_type: Radome type
+        """
+        self._info["radome_type"] = radome_type
+
+
+    def set_serial_number(self, serial_number: str) -> None:
+        """ Set antenna serial number
+
+        Args:
+            serial_number: Antenna serial number
+        """
+        self._info["serial_number"] = serial_number
+
+
+    def set_type(self, antenna_type: str) -> None:
+        """ Set antenna antenna type
+
+        Args:
+            antenna_type: Antenna type
+        """
+        self._info["antenna_type"] = antenna_type
 
 
 @Antenna.register_source
