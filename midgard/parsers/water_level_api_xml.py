@@ -259,10 +259,11 @@ class WaterLevelApiXml(Parser):
         if "descr" in dset.meta.keys():      
             dset.meta["description"] = dset.meta["descr"]
             del dset.meta["descr"]
+        else:
+            dset.meta["description"] = "Tides and observed water level from {dset.meta['name']}"
 
-        if "reflevelcode" in dset.meta.keys():     
-            dset.meta["reference_level"] = ref_level_def[self.meta["reflevelcode"]]
-            del dset.meta["reflevelcode"]
+        dset.meta["reference_level"] = ref_level_def[self.meta["reflevelcode"]]
+        del dset.meta["reflevelcode"]
 
         for field in self.data.keys():
             if field == "time":
