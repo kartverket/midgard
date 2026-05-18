@@ -47,6 +47,14 @@ class DiscontinuitiesSnxParser(SinexParser):
        time entries (e.g. start_time, end_time) are given as 'datetime'. If the time is defined as 00:000:00000 in the
        SINEX file, then the value is saved as 'None' in the Sinex class.
     """
+    #
+    # +SOLUTION/DISCONTINUITY
+    #  ALES  A    1 P 97:027:00000 08:176:00000 P - 
+    #  ALES  A    2 P 08:176:00000 99:265:00000 P - Antenna change
+    #  ALVC  A    1 P 09:042:00000 10:035:00000 P - 
+    #  ALVC  A    2 P 10:035:00000 99:265:00000 P - Radome change
+    # -SOLUTION/DISCONTINUITY
+    # ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2--
 
     def setup_parser(self):
         return (self.solution_discontinuity,)
