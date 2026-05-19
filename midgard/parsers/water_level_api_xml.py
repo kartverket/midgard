@@ -260,7 +260,7 @@ class WaterLevelApiXml(Parser):
             dset.meta["description"] = dset.meta["descr"]
             del dset.meta["descr"]
         else:
-            dset.meta["description"] = "Tides and observed water level from {dset.meta['name']}"
+            dset.meta["description"] = f"Tides and observed water level from {dset.meta['name']}"
 
         dset.meta["reference_level"] = ref_level_def[self.meta["reflevelcode"]]
         del dset.meta["reflevelcode"]
