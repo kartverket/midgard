@@ -746,7 +746,11 @@ class PositionArray(PosBase):
         Returns:
             Array of vectors to other position array.
         """
-        return other.pos.to_system(self.system).val - self.pos.val
+        if isinstance(other, PositionArray):
+            return other.pos.to_system(self.system).val - self.pos.val
+        else:
+            return other.vector_from(self)
+        return
 
     @property
     @register_field(units=("meter", "meter", "meter"), dependence="other")
