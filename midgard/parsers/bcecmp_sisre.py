@@ -35,7 +35,7 @@ class BcecmpParser(ChainParser):
     The following **data** are available after reading BCEcmp Software output file:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
+    | :-------------------- | :----------------------------------------------------------------------------------- |
     | age_min               | age of ephemeris in [min]                                                            |
     | clk_diff_with_dt_mean | Satellite clock correction difference corrected for average satellite clock offset   |
     |                       | difference for given GNSS and epoch in [m]                                           |
@@ -58,9 +58,9 @@ class BcecmpParser(ChainParser):
     and **meta**-data:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__        | File path                                                                            |
-    | \__parser_name__      | Parser name                                                                          |
+    | :-------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__       | File path                                                                            |
+    | \\__parser_name__     | Parser name                                                                          |
     """
 
     #

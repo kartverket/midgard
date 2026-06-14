@@ -32,7 +32,7 @@ class BerneseSlrPltParser(LineParser):
     Following **data** are available after reading Bernese PLT file:
 
     | Parameter          | Description                                                                    |
-    |--------------------|--------------------------------------------------------------------------------|
+    | :----------------- | :----------------------------------------------------------------------------- |
     | station            | 4-digit station identifier                                                     |
     | domes              | domes number, e.g.  50107M001                                                  |
     | sat_prn            | satellite, e.g. E18
@@ -45,10 +45,10 @@ class BerneseSlrPltParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__params__          | np.genfromtxt parameters                                                             |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__params__         | np.genfromtxt parameters                                                             |
+    | \\__parser_name__    | Parser name                                                                          |
 
     """
 

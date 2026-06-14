@@ -41,9 +41,9 @@ class BerneseTrpPaser(LineParser):
     | Key                  | Description                                                                          |
     | :------------------- | :----------------------------------------------------------------------------------- |
     | TODO                 |                                                                                      |
-    | \__data_path__       | File path                                                                            |
-    | \__params__          | np.genfromtxt parameters                                                             |
-    | \__parser_name__     | Parser name                                                                          |
+    | \\__data_path__      | File path                                                                            |
+    | \\__params__         | np.genfromtxt parameters                                                             |
+    | \\__parser_name__    | Parser name                                                                          |
     """
     
 

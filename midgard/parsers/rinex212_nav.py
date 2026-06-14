@@ -287,7 +287,7 @@ class Rinex212NavParser(ChainParser):
            and belonging ionosphere correction parameters is shown:
 
             | GNSS ID    | Parameters      | Description                                                            |
-            |------------|-----------------|------------------------------------------------------------------------|
+            | :--------- | :-------------- | :--------------------------------------------------------------------- |
             | GAL        | ai0 - ai2       | Parameters needed for NeQuick model (see Section 5.1.6 in              |
             |            |                 | :cite:`galileo-os-sis-icd`)                                            |
             | GPSA       | alpha0 - alpha3 | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in     |
@@ -402,7 +402,7 @@ class Rinex212NavParser(ChainParser):
            The time system correction parameters are dependent on the given correction type, which is shown below:
 
             | Type       | Parameters           | Description     |
-            |------------|----------------------|-----------------|
+            | :--------- | :------------------- | :-------------- |
             | BDUT       | a0=A_0UTC, a1=A_1UTC | BDS to UTC      |
             | GAUT       | a0, a1               | GAL to UTC      |
             | GLGP       | a0=-TauC, a1=0       | GLO to GPS      |
@@ -451,7 +451,7 @@ class Rinex212NavParser(ChainParser):
         the general field and the new GNSS dependent fields are shown:
 
        |  General field       | New field           | Description                                                       |
-       |----------------------|-------------------- |-------------------------------------------------------------------|
+       | :------------------- | :------------------ | :---------------------------------------------------------------- |
        | gnss_data_info       |                     | Depending on GNSS this field has different meaning:               |
        |                      | E: data_source      |  - Galileo: Data source information about the broadcast           |
        |                      |                     |    ephemeris block, that means if the ephemeris block is based    |
@@ -558,7 +558,7 @@ class Rinex212NavParser(ChainParser):
 
             |                  | Bit numbers |
             | Signal | Message | DVS |  SHS  |
-            |--------|---------|-----|-------|
+            | :----- | :------ | :-- | :---- |
             | E1     |  I/NAV  | 0   |  1-2  |
             | E5a    |  F/NAV  | 3   |  4-5  |
             | E5b    |  I/NAV  | 6   |  7-8  |
@@ -797,7 +797,7 @@ class Rinex212NavParser(ChainParser):
 
             
        | Field               | System | Unit            | Description                                                    |
-       |---------------------|--------|-----------------|----------------------------------------------------------------|
+       | :------------------ | :----- | :-------------- | :------------------------------------------------------------- |
        | age_of_clock_corr   | C      |                 | BeiDou: Age of data, clock (AODC) is the extrapolated interval |
        |                     |        |                 |   of clock correction parameters. It indicates the time        |
        |                     |        |                 |   difference between the reference epoch of clock correction   |
@@ -905,7 +905,7 @@ class Rinex212NavParser(ChainParser):
             as keys:
 
       |  Entry              | Type  | Description                                                                |
-      |---------------------|-------|----------------------------------------------------------------------------|
+      | :------------------ | :---- | :------------------------------------------------------------------------- |
       | comment             | list  | List with comment lines                                                    |
       | file_created        | str   | Date of file creation                                                      |
       | file_type           | str   | File type                                                                  |

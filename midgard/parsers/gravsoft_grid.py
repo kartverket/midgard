@@ -62,13 +62,13 @@ class GravsoftGrid(Parser):
     Following **data** are available after reading data:
 
     | Parameter           | Description                                                                           |
-    |---------------------|---------------------------------------------------------------------------------------|
+    | :------------------ | :------------------------------------------------------------------------------------ |
     | griddata            | Grid data with ordered grid blocks as list                                            |
 
     and **meta**-data:
 
     | Key                 | Description                                                                           |
-    |---------------------|---------------------------------------------------------------------------------------|
+    | :------------------ | :------------------------------------------------------------------------------------ |
     | grid_increment_lat  | Latitude grid increment in degree                                                     |
     | grid_increment_lon  | Longitude grid increment in degree                                                    |
     | grid_lat_max        | Maximal latitude border limit of grid area in degree                                  |
@@ -154,7 +154,7 @@ class GravsoftGrid(Parser):
             
 
            | Key        | Type              | Description                                                  |
-           |------------|-------------------|--------------------------------------------------------------|
+           | :--------- | :---------------- | :----------------------------------------------------------- |
            | data       | numpy.ndarray     | Grid data of dimension (longitude x latitude)                |
            | latitude   | numpy.ndarray     | Latitude values of grid in degree                            |
            | longitude  | numpy.ndarray     | Longitude values of grid in degree                           |

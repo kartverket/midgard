@@ -37,7 +37,7 @@ class GalatResults(LineParser):
     Following **data** are available after reading GALAT SPP result file:
 
     | Key                      | Description                                                                      |
-    |--------------------------|----------------------------------------------------------------------------------|
+    | :----------------------- | :------------------------------------------------------------------------------- |
     | time                     | Time epoch                                                                       |
     | latitude                 | Latitude in degree                                                               |
     | longitude                | Longitude in degree                                                              |
@@ -56,10 +56,10 @@ class GalatResults(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__params__          | np.genfromtxt parameters                                                             |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__params__         | np.genfromtxt parameters                                                             |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Dict[str, Any]:
@@ -191,7 +191,7 @@ class GalatResults(LineParser):
 
     
            | Field                    | Type              | Description                                               |
-           |--------------------------|-------------------|-----------------------------------------------------------|
+           | :----------------------- | :---------------- | :-------------------------------------------------------- |
            | hpe                      | np.ndarray        | Horizontal Position Error of site position vs. reference  |
            |                          |                   | position                                                  |
            | num_satellite_available  | np.ndarray        | Number of available satellites                            |

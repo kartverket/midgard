@@ -38,7 +38,7 @@ class GipsyStacovParser(ChainParser):
     Following **data** are available after reading Gipsy `stacov` output file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | correlation          | Correlation values                                                                   |
     | correlation_index1   | Correlation index (1st column)                                                       |
     | correlation_index2   | Correlation index (2nd column)                                                       |
@@ -52,14 +52,12 @@ class GipsyStacovParser(ChainParser):
     | time_past_j2000      | Time given in GPS seconds past J2000, whereby GipsyX uses following definition:      |
     |                      | J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.                          |
 
-
-
     and **meta**-data:
 
-    | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | Key                   | Description                                                                          |
+    | :-------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__       | File path                                                                            |
+    | \\__parser_name__     | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Iterable[ParserDef]:

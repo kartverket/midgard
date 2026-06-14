@@ -49,9 +49,9 @@ class BerneseCrdParser(LineParser):
 
     | Key                  | Description                                                                          |
     | :------------------- | :----------------------------------------------------------------------------------- |
-    | \__data_path__       | File path                                                                            |
-    | \__params__          | np.genfromtxt parameters                                                             |
-    | \__parser_name__     | Parser name                                                                          |
+    | \\__data_path__      | File path                                                                            |
+    | \\__params__         | np.genfromtxt parameters                                                             |
+    | \\__parser_name__    | Parser name                                                                          |
     | ref_epoch            | Reference epoch of reference station coordinate in ISO format                        |
     |                      | yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)                                       |
     | ref_frame            | Reference frame of reference station coordinate                                      |
@@ -183,7 +183,7 @@ class BerneseCrdParser(LineParser):
 
         |  Entry              | Type  | Description                                                                    |
         | :------------------ | :---- | :----------------------------------------------------------------------------- |
-        | \__data_path__      | str   | File path                                                                      |
+        | \\__data_path__     | str   | File path                                                                      |
         | ref_epoch           | str   | Reference epoch of reference station coordinate in ISO format                  |
         |                     |       | yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)                                 |
         | ref_frame           | str   | Reference frame of reference station coordinate                                |

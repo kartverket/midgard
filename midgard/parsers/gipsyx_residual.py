@@ -54,8 +54,8 @@ class GipsyxResidualParser(Parser):
 
     | Key                  | Description                                                                          |
     | :------------------- | :----------------------------------------------------------------------------------- |
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def read_data(self) -> None:
