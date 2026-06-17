@@ -122,7 +122,7 @@ def test_conversions(t):
                 print(f"{fmt} is not a valid format for {t.scale}. As expected.")
                 continue
 
-            if t.size == 1:
+            if not t.isarray:
                 assert t_fmt == getattr(converted_t, fmt)
             else:
                 if fmt == "datetime":
@@ -140,6 +140,18 @@ def test_conversions(t):
 def test_now():
     time.Time.now()
 
+def mean_min_max():
+    t = time.Time([datetime(2015, 6, i) for i in range(1, 4)], scale="utc", fmt="datetime")
+    assert t.mean.day == 2
+    assert t.mean.scale == "utc"
+    assert t.mean.scale == "datetime"
+    assert not t.mean.isarray
+
+    assert t.min.day == 1
+    assert not t.min.isarray
+
+    assert t.max.day == 3
+    assert not t.max.isarray
 
 def test_properties():
     t0 = time.Time(datetime(2000, 1, 1, 1, 1, 1), scale="utc", fmt="datetime")
@@ -197,15 +209,20 @@ def test_slice(t):
                 t_fmt = getattr(converted_t, fmt)
                 print(f"Creating time time.Time({t_fmt}, {scale}, {fmt})")
                 new_time_from_fmt = time.Time(t_fmt, scale=scale, fmt=fmt)
+                print(f"Output: {new_time_from_fmt}")
             except ValueError as err:
                 # some formats are only available for certain scales
                 assert converted_t.scale != "gps" and "gps" in fmt
                 print(f"{fmt} is not a valid format for {converted_t.scale}. As expected.")
                 continue
             assert len(converted_t[0:2]) == 2
+            assert len(converted_t[0]) == 1 and not converted_t[0].isarray
             print(f"t.{scale}[0:2] == 2 OK")
+            print(f"t.{scale}[0] == 1 OK")
             assert len(new_time_from_fmt[0:2]) == 2
+            assert len(new_time_from_fmt[0]) == 1 and not new_time_from_fmt[0].isarray
             print(f"t.{scale}.{fmt}[0:2] == 2 OK")
+            print(f"t.{scale}.{fmt}[0] == 1 OK")
 
 
 def test_math_s():

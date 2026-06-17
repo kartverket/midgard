@@ -26,8 +26,3 @@ keywords           = "geodesy utilities"
 testpaths = [
     "tests",
 ]
-
-# Requirements
-requires-python    = ">=3.9"
-requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy", "statsmodels"]
-dev-requires       = ["black", "bumpversion", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]

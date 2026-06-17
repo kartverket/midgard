@@ -100,7 +100,10 @@ def _trs2llh(trs: nputil.HashArray, ellipsoid: Ellipsoid) -> np.ndarray:
     # Restore sign of latitude
     lat *= np.sign(z)
 
-    return np.stack((lat, lon, height)).T
+    if trs.ndim == 2:
+        return np.stack((lat, lon, height)).T
+    else:
+        return [lat, lon, height]
 
 
 def llh2trs(llh: np.ndarray, ellipsoid: Ellipsoid = None) -> np.ndarray:
@@ -218,9 +221,9 @@ def kepler2trs(kepler: "KeplerPosVel") -> np.ndarray:
     Returns:
         Array with following position and velocity vector
     """
-
     num_obs = 1 if kepler.ndim == 1 else len(kepler)
     zero = 0 if kepler.ndim == 1 else np.zeros(num_obs)
+
     cosE = np.cos(kepler.E)
     sinE = np.sin(kepler.E)
     fac = np.sqrt((1 - kepler.e) * (1 + kepler.e))
@@ -233,48 +236,48 @@ def kepler2trs(kepler: "KeplerPosVel") -> np.ndarray:
 
     # Transformation from cartesian orbital to geocentric equatorial coordinate system
     PQW = rotation.R3(-kepler.Omega) @ rotation.R1(-kepler.i) @ rotation.R3(-kepler.omega)
-    R = np.squeeze(PQW @ np.expand_dims(r_orb.T, axis=r_orb.ndim))
-    V = np.squeeze(PQW @ np.expand_dims(v_orb.T, axis=v_orb.ndim))
+    R = np.squeeze(PQW @ np.expand_dims(r_orb.T, axis=r_orb.ndim), axis=-1)
+    V = np.squeeze(PQW @ np.expand_dims(v_orb.T, axis=v_orb.ndim), axis=-1)
 
     return np.hstack((R, V))
 
 
 def delta_trs2enu(trs: "TrsPositionDelta") -> "EnuPositionDelta":
     """Convert position deltas from TRS to ENU"""
-    return np.squeeze(trs.ref_pos.trs2enu @ trs.mat)
+    return np.squeeze(trs.ref_pos.trs2enu @ trs.mat, axis=-1)
 
 
 def delta_enu2trs(enu: "EnuPositionDelta") -> "TrsPositionDelta":
     """Convert position deltas from ENU to TRS"""
-    return np.squeeze(enu.ref_pos.enu2trs @ enu.mat)
+    return np.squeeze(enu.ref_pos.enu2trs @ enu.mat, axis=-1)
 
 
 def delta_trs2enu_posvel(trs: "TrsPosVelDelta") -> "EnuPosVelDelta":
     """Convert position deltas from TRS to ENU"""
     t2e = trs.ref_pos.trs2enu
     trs2enu = np.block([[t2e, np.zeros(t2e.shape)], [np.zeros(t2e.shape), t2e]])
-    return np.squeeze(trs2enu @ trs.mat)
+    return np.squeeze(trs2enu @ trs.mat, axis=-1)
 
 
 def delta_trs2acr_posvel(trs: "TrsPosVelDelta") -> "AcrPosVelDelta":
     """Convert position deltas from TRS to ACR"""
     t2a = trs.ref_pos.trs2acr
     trs2acr = np.block([[t2a, np.zeros(t2a.shape)], [np.zeros(t2a.shape), t2a]])
-    return np.squeeze(trs2acr @ trs.mat)
+    return np.squeeze(trs2acr @ trs.mat, axis=-1)
 
 
 def delta_enu2trs_posvel(enu: "EnuPosVelDelta") -> "TrsPosVelDelta":
     """Convert position deltas from ENU to TRS"""
     e2t = enu.ref_pos.enu2trs
     enu2trs = np.block([[e2t, np.zeros(e2t.shape)], [np.zeros(e2t.shape), e2t]])
-    return np.squeeze(enu2trs @ enu.mat)
+    return np.squeeze(enu2trs @ enu.mat, axis=-1)
 
 
 def delta_acr2trs_posvel(acr: "AcrPosVelDelta") -> "TrsPosVelDelta":
     """Convert position deltas from ACR to TRS"""
     a2t = acr.ref_pos.acr2trs
     acr2trs = np.block([[a2t, np.zeros(a2t.shape)], [np.zeros(a2t.shape), a2t]])
-    return np.squeeze(acr2trs @ acr.mat)
+    return np.squeeze(acr2trs @ acr.mat, axis=-1)
 
 #TODO: Should structure be improved?
 def sigma_trs2enu(

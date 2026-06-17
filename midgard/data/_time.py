@@ -226,6 +226,20 @@ class TimeBase(np.ndarray):
 
         return self.jd > other.jd
 
+    @property
+    def _fmt_ndim(self):
+        return self._formats()[self.fmt].ndim
+
+    @property
+    @lru_cache()
+    def isarray(self):
+        if len(self) > 1:
+            return True
+        if len(self) == 1:
+            if self._fmt_ndim > 1:
+                return self.ndim != 1
+            return self.ndim > 0
+
     @lru_cache()
     def to_scale(self, scale: str) -> "TimeBase":
         """Convert to a different scale
@@ -439,7 +453,10 @@ class TimeBase(np.ndarray):
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return np.all(self.jd1 == other.jd1) and np.all(self.jd2 == other.jd2)
+            _jd1 = np.all(self.jd1 == other.jd1)
+            _jd2 = np.all(self.jd2 == other.jd2)
+            _ndim = self.ndim == other.ndim
+            return _jd1 and _jd2 and _ndim
         else:
             return NotImplemented
 
@@ -465,8 +482,7 @@ class TimeBase(np.ndarray):
             raise AttributeError(f"{type(self).__name__!r} has no attribute {key!r}") from None
 
     def __len__(self):
-        fmt_ndim = self._formats()[self.fmt].ndim
-        return int(self.size / fmt_ndim)
+        return int(self.size / self._fmt_ndim)
 
     def __setattr__(self, name, value):
         raise AttributeError(f"{self.__class__.__name__} object does not support item assignment ")
@@ -634,22 +650,41 @@ class TimeArray(TimeBase):
     def mean(self):
         """Mean time
 
+        Uses mjd to compute the mean value. But returns a time object of same class and format as self.
+
         Returns:
             Time:    Time object containing the mean time
         """
-        if self.size == 1 or self.size == 0:
+        if not self.isarray:
             return self
 
-        return self._cls_scale(self.scale)(np.mean(self.utc.jd), fmt="jd")
+        mjd_mean = np.mean(self.mjd)
+        mjd_time = self._cls_scale(self.scale)(mjd_mean, fmt="mjd")
+        fmt_time = mjd_time.to_format(self.fmt)
+        return self._cls_scale(self.scale)(fmt_time, fmt=self.fmt)
 
     @property
     @lru_cache()
     def min(self):
+        """Minimum time
+
+        Returns:
+            Time:     Time object containing the minimum time
+        """
+        if not self.isarray:
+            return self
         return self[np.argmin(self.jd)]
 
     @property
     @lru_cache()
     def max(self):
+        """Maximum time
+
+        Returns:
+            Time:    Time ojbect containing the maximum time
+        """
+        if not self.isarray:
+            return self
         return self[np.argmax(self.jd)]
 
     @property
@@ -1172,14 +1207,16 @@ class TimeDateTime(TimeFormat):
 
     @classmethod
     def _to_jds(cls, val, val2=None, scale=None):
-        try:
+        if isinstance(val, datetime):
+            if val2 is not None:
+                if not isinstance(val2, timedelta):
+                    raise ValueError(f"val2 should be timedelta (not {val2}) for format {cls.fmt} when val is datetime")
+                val = val + val2
+            return cls._dt2jd(val)
+        else:
             if val2 is not None:
                 val = np.asarray(val) + np.asarray(val2)
             return np.array([cls._dt2jd(dt) for dt in val]).T
-        except TypeError:
-            if val2 is not None:
-                val = val + val2
-            return cls._dt2jd(val)
 
     @classmethod
     @lru_cache()
@@ -1427,10 +1464,10 @@ class TimeYyDddSssss(TimeFormat):
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
-        try:
+        if isinstance(val, (str, np.str_)):
+            return cls._yds2jd(val)
+        else:
             return np.array([cls._yds2jd(v) for v in val]).T
-        except TypeError:
-            cls._yds2jd(val)
 
     @classmethod
     @lru_cache()
@@ -1477,10 +1514,10 @@ class TimeYyyyDddSssss(TimeFormat):
         if val2 is not None:
             raise ValueError(f"val2 should be None (not {val2}) for format {fmt}")
 
-        try:
+        if isinstance(val, (str, np.str_)):
+            return cls._yds2jd(val)
+        else:
             return np.array([cls._yds2jd(v) for v in val]).T
-        except TypeError:
-            cls._yds2jd(val)
 
     @classmethod
     @lru_cache()
@@ -1669,15 +1706,13 @@ class TimeDeltaDateTime(TimeDeltaFormat):
 
     @classmethod
     def _to_jds(cls, val, val2, scale=None):
-        if val2 is None:
-            try:
-                val2 = [timedelta(seconds=0)] * len(val)
-            except TypeError:
+        if isinstance(val, timedelta):
+            if val2 is None:
                 val2 = timedelta(seconds=0)
-
-        try:
             days = (val + val2).total_seconds() * Unit.second2day
-        except AttributeError:
+        else:
+            if val2 is None:
+                val2 = [timedelta(seconds=0)] * len(val)
             seconds = [v1.total_seconds() + v2.total_seconds() for v1, v2 in zip(val, val2)]
             days = np.array(seconds) * Unit.second2day
 

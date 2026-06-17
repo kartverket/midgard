@@ -191,6 +191,25 @@ def test_slice_and_columns():
     assert np.equal(_posdelta[1].ref_pos.other.val, np.array([4, 5, 6])).all()
     assert np.equal(_pos[1:].other.val, np.array([[4, 5, 6], [7, 8, 9]])).all()
 
+@pytest.mark.parametrize("pos", (posvel_trs_a, pos_trs_a, posdelta_trs_a, posveldelta_trs_a), indirect=True)
+def test_sliced_fields(pos):
+    # Test that fields are sliced correctly too
+    sliced_pos_1 = pos[0] # Pick one element
+    sliced_pos_2 = pos[0:1] # Pick one slice (of size 1)
+    for f in pos.fieldnames():
+        field = getattr(pos, f)
+        sliced_field_1 = getattr(sliced_pos_1, f)
+        sliced_field_2 = getattr(sliced_pos_2, f)
+        if field is not None:
+            print(f"{pos.shape}, {f}, {field.shape}")
+            expected_sliced_shape_1 = field.shape[1:]
+            expected_sliced_shape_2 = tuple([1] + list(field.shape[1:]))
+            sliced_shape_1 = sliced_field_1.shape
+            sliced_shape_2 = sliced_field_2.shape
+            print(f"{f} one element: expected {expected_sliced_shape_1} vs got {sliced_shape_1}")
+            print(f"{f} one slice: expected {expected_sliced_shape_2} vs got {sliced_shape_2}")
+            assert sliced_shape_1 == expected_sliced_shape_1
+            assert sliced_shape_2 == expected_sliced_shape_2
 
 @pytest.mark.parametrize("pos", (pos_trs_a, pos_trs_s, pos_trs_sa), indirect=True)
 def test_pos_unit(pos):
