@@ -58,7 +58,7 @@ class HashArray(np.ndarray):
         return hash(self.tobytes())
 
     def __eq__(self, other):
-        return self.data.tobytes() == other.data.tobytes()
+        return (self.data.tobytes() == other.data.tobytes()) and (self.data.ndim == other.data.ndim)
 
 
 def hashable(func):

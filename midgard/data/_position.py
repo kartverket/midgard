@@ -194,7 +194,7 @@ class PosBase(np.ndarray):
     def CONVERSIONS(self):
         return self._conversions()
 
-    def to_system(self, system: str) -> "PosDeltaBase":
+    def to_system(self, system: str) -> "PosBase":
         """Convert to a different system
 
         Args:
@@ -264,7 +264,7 @@ class PosBase(np.ndarray):
     def fieldnames(self):
         """Return list of valid attributes for this object"""
         # Pick one element to avoid doing calculations on a large array 
-        obj = self if len(self) == 1 else self[0]
+        obj = self if len(self) == 1 else self[0:1]
 
         systems_and_columns = []
         for system in obj._systems():
@@ -800,10 +800,11 @@ class PositionArray(PosBase):
 
     def azimuth_to(self, other):
         trs_dir = self.trs.direction_to(other.trs)
-        east_proj = np.squeeze(nputil.row(trs_dir) @ nputil.col(self.enu_east))
-        north_proj = np.squeeze(nputil.row(trs_dir) @ nputil.col(self.enu_north))
+        east_proj = nputil.row(trs_dir) @ nputil.col(self.enu_east)
+        north_proj = nputil.row(trs_dir) @ nputil.col(self.enu_north)
+        azimuth = np.arctan2(east_proj, north_proj)
 
-        return np.arctan2(east_proj, north_proj)
+        return np.squeeze(azimuth, axis=(-1, -2))
 
     @property
     @register_field(units=("radians",), dependence="other")
@@ -817,9 +818,10 @@ class PositionArray(PosBase):
 
     def elevation_to(self, other):
         trs_dir = self.trs.direction_to(other.trs)
-        up_proj = np.squeeze(nputil.row(trs_dir) @ nputil.col(self.enu_up))
+        up_proj = nputil.row(trs_dir) @ nputil.col(self.enu_up)
+        elevation = np.arcsin(up_proj)
 
-        return np.arcsin(up_proj)
+        return np.squeeze(elevation, axis=(-1, -2))
 
     @property
     @register_field(units=("radians",), dependence="other")
