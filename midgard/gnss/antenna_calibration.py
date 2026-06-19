@@ -65,7 +65,7 @@ class AntennaCalibration():
     with following entries:
 
     | Value              | Type              | Description                                                             |
-    |--------------------|---------------------------------------------------------------------------------------------|
+    | :----------------- | :---------------- | :---------------------------------------------------------------------- |
     | azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with  |
     |                    |                   | the shape: number of azimuth values x number of elevation values.       |
     | azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections  |
