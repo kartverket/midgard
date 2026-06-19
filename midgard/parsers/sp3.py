@@ -328,11 +328,11 @@ class Sp3dParser(ChainParser):
             line (dict):  Dict containing the fields of a line.
             cache (dict): Temporary dictionary with the fields 'key' and 'values'.
         """
-        return  # TODO: Has to be implemented correctly!!!!
-
         self.data.setdefault("sat_vel", list()).append(
             np.array([float(line["vel_x"]), float(line["vel_y"]), float(line["vel_z"])]) * Unit.decimeter2meter
         )
+        return  # TODO: Only read velocity for now. Has to be implemented correctly!!!!
+
         self.data.setdefault("sat_clock_rate", list()).append(float(line["clk_rate"]) * Unit.microsecond2second)
 
         # Check if sigmas are defined in SP3 file (TODO: better solution?)

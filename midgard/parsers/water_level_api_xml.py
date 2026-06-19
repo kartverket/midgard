@@ -255,10 +255,14 @@ class WaterLevelApiXml(Parser):
             log.warn(f"No data in {self.meta['__data_path__']}.")
             return dset
 
-        # Renaming for consistency reason between other parsers        
-        dset.meta["description"] = dset.meta["descr"]
+        # Renaming for consistency reason between other parsers
+        if "descr" in dset.meta.keys():      
+            dset.meta["description"] = dset.meta["descr"]
+            del dset.meta["descr"]
+        else:
+            dset.meta["description"] = f"Tides and observed water level from {dset.meta['name']}"
+
         dset.meta["reference_level"] = ref_level_def[self.meta["reflevelcode"]]
-        del dset.meta["descr"]
         del dset.meta["reflevelcode"]
 
         for field in self.data.keys():

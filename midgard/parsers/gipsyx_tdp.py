@@ -47,7 +47,7 @@ class GipsyxTdpParser(LineParser):
     Following **data** are available after reading GipsyX TDP output file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | apriori              | Nominal value. This field contains the last value used by the model.                 |
     | name                 | Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."     |
     |                      | without spaces.                                                                      |
@@ -59,9 +59,9 @@ class GipsyxTdpParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Dict[str, Any]:

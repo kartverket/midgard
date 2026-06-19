@@ -283,7 +283,7 @@ class Rinex2NavParser(ChainParser):
                  RINEX format version 2.11.
 
             | GNSS ID  | Parameters             | Description                                                        |
-            |----------|------------------------|--------------------------------------------------------------------|
+            | :------- | :--------------------- | :----------------------------------------------------------------- |
             | GPSA     | alpha0 - alpha3        | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in |
             |          |                        | :cite:`is-gps-200h`)                                               |
         """
@@ -304,7 +304,7 @@ class Rinex2NavParser(ChainParser):
                  RINEX format version 2.11.
 
             | GNSS ID  | Parameters             | Description                                                        |
-            |----------|------------------------|--------------------------------------------------------------------|
+            | :------- | :--------------------- | :----------------------------------------------------------------- |
             | GPSB     | beta0 - beta3          | Parameters needed for Klobuchar model (see Section 20.3.3.5.2.5 in |
             |          |                        | :cite:`is-gps-200h`)                                               |
         
@@ -407,7 +407,7 @@ class Rinex2NavParser(ChainParser):
            2.11 (see :cite:`rinex2`) with following correction type:
 
             | Type       | Parameters           | Description |
-            |------------|----------------------|-------------|
+            | :--------- | :------------------- | :---------- |
             | GPUT       | a0, a1               | GPS to UTC  |
 
         """
@@ -439,7 +439,7 @@ class Rinex2NavParser(ChainParser):
         the general field and the new GNSS dependent fields are shown:
 
        |  General field       | New field           | Description                                                       |
-       |----------------------|-------------------- |-------------------------------------------------------------------|
+       | :------------------- | :------------------ | :---------------------------------------------------------------- |
        | gnss_data_info       |                     | Depending on GNSS this field has different meaning:               |
        |                      | E: data_source      |  - Galileo: Data source information about the broadcast           |
        |                      |                     |    ephemeris block, that means if the ephemeris block is based    |
@@ -545,7 +545,7 @@ class Rinex2NavParser(ChainParser):
 
             |                  | Bit numbers |
             | Signal | Message | DVS |  SHS  |
-            |--------|---------|-----|-------|
+            | :----- | :------ | :-- | :---- |
             | E1     |  I/NAV  | 0   |  1-2  |
             | E5a    |  F/NAV  | 3   |  4-5  |
             | E5b    |  I/NAV  | 6   |  7-8  |
@@ -795,7 +795,7 @@ class Rinex2NavParser(ChainParser):
 
             
        | Field               | System | Unit            | Description                                                    |
-       |---------------------|--------|-----------------|----------------------------------------------------------------|
+       | :------------------ | :----- | :-------------- | :------------------------------------------------------------- |
        | age_of_clock_corr   | C      |                 | BeiDou: Age of data, clock (AODC) is the extrapolated interval |
        |                     |        |                 |   of clock correction parameters. It indicates the time        |
        |                     |        |                 |   difference between the reference epoch of clock correction   |
@@ -911,7 +911,7 @@ class Rinex2NavParser(ChainParser):
             as keys:
 
       |  Entry              | Type  | Description                                                                |
-      |---------------------|-------|----------------------------------------------------------------------------|
+      | :------------------ | :---- | :------------------------------------------------------------------------- |
       | comment             | list  | List with comment lines                                                    |
       | file_created        | str   | Date of file creation                                                      |
       | file_type           | str   | File type                                                                  |

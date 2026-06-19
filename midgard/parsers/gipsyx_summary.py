@@ -28,7 +28,7 @@ class GipsyxSummary(Parser):
     GipsyX summary file **data** are grouped as follows:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
+    | :-------------------- | :----------------------------------------------------------------------------------- |
     | position              | Dictionary with position summary information                                         |
     | residual              | Dictionary with residual summary information                                         |
     | station               | Station name                                                                         |
@@ -36,7 +36,7 @@ class GipsyxSummary(Parser):
     **position** entries are:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
+    | :-------------------- | :----------------------------------------------------------------------------------- |
     | pos_x                 | X-coordinate of station position solution                                            |
     | pos_y                 | Y-coordinate of station position solution                                            |
     | pos_z                 | Z-coordinate of station position solution                                            |
@@ -52,7 +52,7 @@ class GipsyxSummary(Parser):
     **residual** entries are:
 
     | Key                   | Description                                                                          |
-    |-----------------------|--------------------------------------------------------------------------------------|
+    | :-------------------- | :----------------------------------------------------------------------------------- |
     | code_obs_num          | Number of used pseudo-range observations                                             |
     | code_residual_max     | Maximal residual of used pseudo-range observations                                   |
     | code_residual_min     | Minimal residual of used pseudo-range observations                                   |
@@ -74,9 +74,9 @@ class GipsyxSummary(Parser):
     and **meta**-data:
         
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def read_data(self) -> None:

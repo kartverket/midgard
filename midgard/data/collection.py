@@ -259,7 +259,11 @@ class Collection:
         if not subfield:
             return getattr(self, key)
         else:
-            return getattr(getattr(self, mainfield), subfield)
+            main_attr = self
+            while subfield:
+                main_attr = getattr(main_attr, mainfield)
+                mainfield, _, subfield = subfield.partition(".")
+            return getattr(main_attr, mainfield)
 
     def __getattr__(self, key):
         """Get a field from the dataset using dot-notation"""

@@ -254,8 +254,8 @@ class SinexSiteParser(SinexParser):
 
        |  Entry              | Type  | Description                                                                    |
        | :------------------ | :---- | :----------------------------------------------------------------------------- |
-       | \__data_path__      | str   | File path                                                                      |
-       | \__parser_name__    | str   | Parser name                                                                    |
+       | \\__data_path__     | str   | File path                                                                      |
+       | \\__parser_name__   | str   | Parser name                                                                    |
        | create_agency       | str   | Agency creating the file                                                       |
        | create_epoch        | str   | Creation time of file in ISO format (e.g. 2025-01-14T00:00:00)                 |
        | data_agency         | str   | Agency providing the data in SINEX TMS format                                  |

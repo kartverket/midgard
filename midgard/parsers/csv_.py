@@ -32,9 +32,9 @@ class CsvParser(Parser):
     Following **meta**-data are available after reading of CSV file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def read_data(self) -> None:

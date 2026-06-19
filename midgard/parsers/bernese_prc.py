@@ -72,8 +72,8 @@ class BernesePrcParser(ChainParser):
     | :------------------- | :----------------------------------------------------------------------------------- |
     | num_coord_files      | Number of coordinate files used for analysis                                         |
     | time                 | Date of analysis session                                                             |
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
 
@@ -497,10 +497,10 @@ class BernesePrcParser(ChainParser):
 
             and following Dataset `meta` data:
 
-       |  Entry              | Type  | Description                                                                    |
-       |---------------------|-------|--------------------------------------------------------------------------------|
+       | Entry               | Type  | Description                                                                    |
+       | :------------------ | :---- | :----------------------------------------------------------------------------- |
        | num_coord_files     | int   | Number of coordinate files used for analysis                                   | 
-       | \__data_path__      | str   | File path                                                                      |
+       | \\__data_path__     | str   | File path                                                                      |
         """
         data = dict()
              

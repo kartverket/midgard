@@ -74,7 +74,7 @@ class UreControlToolCsvParser(CsvParser):
             available from on the URE Control tool output):
 
         | Field                 | Former name | Description                                                            |
-        |-----------------------|--------------------------------------------------------------------------------------|
+        | :-------------------- | :----------------------------------------------------------------------------------- |
         | adjbgd-dcb_mean       |             |                                                                        |
         | adjbgd-dcb_med        |             |                                                                        |
         | clk_diff_dt_mean      | dB_mean     | MEAN clock offset determined in each epoch                             |

@@ -127,7 +127,7 @@ class SinexTmsParser(SinexParser):
                 for i, f in enumerate(fields, start=1)
                 if f.converter
             }
-        
+
         return np.genfromtxt(
             lines,
             names=names,
@@ -591,8 +591,8 @@ class SinexTmsParser(SinexParser):
 
        |  Entry              | Type  | Description                                                                    |
        | :------------------ | :---- | :----------------------------------------------------------------------------- |
-       | \__data_path__      | str   | File path                                                                      |
-       | \__parser_name__    | str   | Parser name                                                                    |
+       | \\__data_path__     | str   | File path                                                                      |
+       | \\__parser_name__   | str   | Parser name                                                                    |
        | create_agency       | str   | Agency creating the file                                                       |
        | data_agency         | str   | Agency providing the data in SINEX TMS format                                  |
        | end_epoch           | str   | End time of timeseries solution as date in ISO format                          |

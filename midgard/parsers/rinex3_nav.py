@@ -891,7 +891,7 @@ class Rinex3NavParser(ChainParser):
             as keys:
 
        |  Entry              | Type  |  Description                                                       |
-       |---------------------|-------|--------------------------------------------------------------------| 
+       | :------------------ | :---- | :----------------------------------------------------------------- | 
        | comment             |  list |  List with comment lines                                           |
        | file_created        |  str  |  Date of file creation                                             |
        | file_type           |  str  |  File type                                                         |

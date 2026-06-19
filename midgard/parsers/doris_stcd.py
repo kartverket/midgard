@@ -298,7 +298,7 @@ class DorisStcdParser(SinexParser):
        | Key              | Type          | Description                                                               |
        | :--------------- | :------------ | :------------------------------------------------------------------------ |
        | __data_path__    | str           | Data file path                                                            |
-       | \__params__      | dict          | np.genfromtxt parameters                                                  |
+       | __params__       | dict          | np.genfromtxt parameters                                                  |
        | __parser_name__  | str           | Parser name                                                               |
        | file_comment     | list          | General comments about the Sinex data file                                |
        | file_reference   | dict          | Information about how the Sinex file was created                          |

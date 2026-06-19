@@ -393,6 +393,14 @@ def test_parser_sp3():
     assert len(parser) == 7
     assert "system" in parser
     assert "G" in parser["system"][0]
+    
+def test_parser_sp3_with_velocity():
+    """Test that parsing sp3 gives expected output"""
+    parser = get_parser("sp3", pathlib.Path(__file__).parent / "example_files" / "sp3d_with_velocity").as_dict()
+
+    assert "system" in parser
+    assert "sat_vel" in parser
+    assert len(parser["sat_vel"]) == 1
 
 def test_parser_spring_csv():
     """Test that parsing spring_csv gives expected output"""

@@ -164,7 +164,7 @@ class GamitOrgParser(ChainParser):
         | site_pos_x_sigma | numpy.ndarray | Standard deviation for x station coordinate |
         | site_pos_y_sigma | numpy.ndarray | Standard deviation for y station coordinate |
         | site_pos_z_sigma | numpy.ndarray | Standard deviation for z station coordinate |
-        | station          | numpy.ndarray | Station name list                           |
+        | station          | numpy.ndarray | Station name list in lowercase              |
         | time             | Time          | Parameter time given as TimeTable object    |
         """
         num_stations = len(self.meta["station"])
@@ -195,7 +195,7 @@ class GamitOrgParser(ChainParser):
             sigma_y_array.append(sigma_y)
             sigma_z_array.append(sigma_z)
             station = station if keep_monumentation_number == True else station.split("_")[0] 
-            stations.append(station)
+            stations.append(station.lower())
 
         # Add position information
         dset.add_position("site_pos", pos_array, system="trs")

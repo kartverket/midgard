@@ -56,9 +56,9 @@ class BerneseStaV52Parser(ChainParser):
     and **meta**-data:
 
     | Key                  | Description                                                                        |
-    |----------------------|------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                          |
-    | \__parser_name__     | Parser name                                                                        |
+    | :------------------- | :--------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                          |
+    | \\__parser_name__    | Parser name                                                                        |
     """
 
 

@@ -82,9 +82,9 @@ from midgard.files import files
 
 
 # Available 3-digit tide gauge station names
-STATION_DEF = ["ANX", "BGO", "BOO", "BRJ", "HFT", "HAR", "HEI", "HRO", "HVG", "KAB", "KSU", "LEH", "MSU", "MAY", 
-               "NVK", "NYA", "OSC", "OSL", "RVK", "SBG", "SIE", "SOY", "SVG", "TRG", "TOS", "TRD", "TAZ", "VAW",
-               "VIK", "AES"]
+STATION_DEF = ["ANX", "BGO", "BOH", "BOO", "BRJ", "HFT", "HAR", "HEI", "HRO", "HVG", "KAB", "KSU", "LEH", "MSU",
+               "MAY", "NVK", "NYA", "OSC", "OSL", "RVK", "SBG", "SIE", "SOY", "SVG", "TRG", "TOS", "TRD", "TAZ",
+               "VAW", "VIK", "AES"]
 
 class WaterLevelApi(object):
     """Python wrapper around the Norwegian water level API (https://vannstand.kartverket.no/tideapi_en.html)
