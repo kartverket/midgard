@@ -35,7 +35,7 @@ class GipsyxSeriesParser(LineParser):
 
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | corr_en              | Correlation East-North.                                                              |
     | corr_ev              | Correlation East-Vertical.                                                           |
     | corr_nv              | Correlation North-Vertical.                                                          |
@@ -58,9 +58,9 @@ class GipsyxSeriesParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Dict[str, Any]:

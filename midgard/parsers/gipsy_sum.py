@@ -52,8 +52,8 @@ class GipsySummary(LineParser):
         
     | Key                  | Description                                                                          |
     | :------------------- | :----------------------------------------------------------------------------------- |
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Dict[str, Any]:

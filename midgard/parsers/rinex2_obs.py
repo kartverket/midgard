@@ -734,7 +734,7 @@ class Rinex2Parser(ChainParser):
             Midgard Dataset where GNSS observation are stored with following fields:
 
        |  Field               | Type              | Description                                                           |
-       |----------------------|-------------------|-----------------------------------------------------------------------|
+       | :------------------- | :---------------- | :-------------------------------------------------------------------- |
        | <observation type>   | numpy.ndarray     | GNSS observation type data (e.g. C1, P2, L1, L2, ...) given           |
        |                      |                   | in meters. Only observation types are kept, which are defined in      |
        |                      |                   | configuration file. Observation types are rejected, which include     |
@@ -756,7 +756,7 @@ class Rinex2Parser(ChainParser):
             and following Dataset `meta` data:
 
        |  Entry              | Type  | Description                                                                        |
-       |---------------------|-------|------------------------------------------------------------------------------------|
+       | :------------------ | :---- | :--------------------------------------------------------------------------------- |
        | agency              | str   | Name of agency from observer                                                       |
        | antenna_east        | float | East component of vector between marker and antenna reference point in meters      |
        | antenna_height      | float | Height component of vector between marker and antenna reference point in meters    |

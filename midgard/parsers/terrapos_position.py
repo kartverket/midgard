@@ -34,7 +34,7 @@ class TerraposPositionParser(LineParser):
     Following **data** are available after reading Terrapos position file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | gpsweek              | GPS week                                                                             |
     | gpssec               | Seconds of GPS week                                                                  |
     | head                 | Head in [deg]                                                                        |
@@ -55,9 +55,9 @@ class TerraposPositionParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
     
     def __init__(
@@ -130,7 +130,7 @@ class TerraposPositionParser(LineParser):
             
 
        | Field              | Type              | Description                                                         |
-       |--------------------|-------------------|---------------------------------------------------------------------|
+       | :----------------- | :---------------- | :------------------------------------------------------------------ |
        | head               | numpy.ndarray     | Head in [deg]                                                       |
        | num_sat            | numpy.ndarray     | Number of satellites                                                |
        | pdop               | numpy.ndarray     | Position Dilution of Precision (PDOP)                               |

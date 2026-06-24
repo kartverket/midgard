@@ -41,7 +41,7 @@ class GipsyxGdcovParser(ChainParser):
     Following **data** are available after reading GipsyX `gdcov` output file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | correlation          | Correlation values                                                                   |
     | correlation_index1   | Correlation index (1st column)                                                       |
     | correlation_index2   | Correlation index (2nd column)                                                       |
@@ -60,9 +60,9 @@ class GipsyxGdcovParser(ChainParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Iterable[ParserDef]:
