@@ -49,6 +49,9 @@ def decode_h5attr(attr: Any) -> Any:
             attr = re.sub(r"\bnan\b", "'nan'", attr)
             attr = re.sub(r"\binf\b", "'inf'", attr)
             attr = re.sub(r"-'\binf\b'", "'-inf'", attr)
+        if "np.int" in attr or "np.float" in attr:
+            # ast.literal_eval does not understand np.int and np.float
+            attr = " ".join([_replace_np(a) for a in attr.split()])
         result = globals()[f"_h5attr2{attr_type}"](attr)
         return _recursive_replace(result)
     except (AttributeError, KeyError):
@@ -135,3 +138,9 @@ def _recursive_replace(data):
         return {k: _recursive_replace(v) for k, v in data.items()}
     return data
 
+def _replace_np(text):
+    if text.startswith("np.") or text.startswith("numpy."):
+        start = text.find("(") + 1
+        end = len(text) - 2
+        return text[start:end] + ","
+    return text
