@@ -84,21 +84,21 @@ class GipsyxGdcovParser(ChainParser):
         data_parser = ParserDef(
             end_marker=lambda line, _ln, _n: False,
             end_callback=lambda line: self._parse_correlation,
-            label=lambda line, _ln: not re.match("^\d+ [A-Za-z0-9]+\.", line),
+            label=lambda line, _ln: not re.match("^\\d+ [A-Za-z0-9]+\\.", line),
             skip_line=lambda line: "PARAMETERS" in line,
             parser_def={
                 # ----+----1----+----2----+----3----+----4----+----5----+----6----+--
                 # 1 USN3.STA.X 376018350 1.112162030692846e+06 6.422311946865588e-04
                 False: {
                     "parser": self._parse_estimate,
-                    "delimiter": "\s+",
+                    "delimiter": "\\s+",
                     "fields": ["estimate_index", "name", "time_past_j2000", "estimate", "sigma"],
                 },
                 # ----+----1----+----2----+---
                 # 2 1 -5.741554474985751e-01
                 True: {
                     "parser": self._parse_correlation,
-                    "delimiter": "\s+",
+                    "delimiter": "\\s+",
                     "strip": " \t\n",
                     "fields": ["correlation_index1", "correlation_index2", "correlation"],
                 },

@@ -2,12 +2,24 @@
 requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module             = "midgard"
-author             = "Norwegian Mapping Authority"
-author-email       = "geir.arne.hjelle@kartverket.no"
-home-page          = "https://github.com/kartverket/midgard"
-description-file   = "README.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests",]
+
+
+# Requirements
+requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy", "statsmodels"]
+dev-requires       = ["black", "bumpversion", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]
+requires-python = ">=3.11"
+
+[project]
+name = "midgard"
+authors = [
+    {name = "Norwegian Mapping Authority", email = "hans.sverre.smalo@kartverket.no"},
+]
+readme = "README.md"
+dynamic = ["version", "description"]
+
 classifiers        = ["Development Status :: 2 - Pre-Alpha",
                       "Intended Audience :: Developers",
                       "Intended Audience :: Science/Research",
@@ -16,18 +28,15 @@ classifiers        = ["Development Status :: 2 - Pre-Alpha",
                       "Operating System :: MacOS",
                       "Operating System :: Microsoft",
                       "Operating System :: POSIX :: Linux",
-                      "Programming Language :: Python :: 3.9",
+                      "Programming Language :: Python :: 3.11",
                       "Topic :: Scientific/Engineering",
                       "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-keywords           = "geodesy utilities"
-
-[tool.pytest.ini_options]
-testpaths = [
-    "tests",
+keywords           = ["geodesy utilities"]
+dependencies = [
+    "flit>=4.0.2",
 ]
 
-# Requirements
-requires-python    = ">=3.9"
-requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy", "statsmodels"]
-dev-requires       = ["black", "bumpversion", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]
+[project.urls]
+Homepage = "https://kartverket.github.io/midgard/"
+Repository = "https://github.com/kartverket/midgard"
