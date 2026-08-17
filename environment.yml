@@ -2,8 +2,8 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - python>=3.9
-  - bumpversion
+  - python>=3.11
+  - bump-my-version
   - dataclasses
   - colorama
   - flit

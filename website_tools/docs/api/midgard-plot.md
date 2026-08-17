@@ -22,7 +22,14 @@ Class for plotting - Extension of matplotlib
 Following *options** can be selected:
 
 | Option             | Value            | Description                                                           |
-|--------------------|------------------|-----------------------------------------------------------------------|
+| :----------------- | :--------------- | :-------------------------------------------------------------------- |
+| alpha              | <num>            | Blending values of markers (0: transparent, 1: opaque)                |
+| axhline_y          | <num>            | Add a horizontal line across the Axes by defining y-position of line  |
+| axhline_width      | <num>            | Line width of horizontal line                                         |
+| axhline_color      | <name>           | Color of horizontal line                                              |
+| axvline_x          | <num>            | Add a vertical line across the Axes by defining x-position of line    |
+| axvline_width      | <num>            | Line width of vertical line                                           |
+| axvline_color      | <name>           | Color of vertical line                                                |
 | bar_text           | <True|False>     | Plot text on top/bottom of the bar plots                              |
 | bar_text_offset    | <num>            | Define text offset for text of bar plots                              |
 | bar_zeroline       | <True|False>     | Plot zero line at a bar plot                                          |
@@ -39,13 +46,13 @@ Following *options** can be selected:
 | errorbar           | <True|False>     | Plot error bars, either xerr_array or yerr_array has to be defined    |
 | figsize            | (num, num)       | Figure size given by (width, height) in inches                        |
 | fontsize           | <num>            | Fontsize of title, axis labels and legend                             |
-| fsize_subtitle     | <num>            | Fontsize of subplot title (statistical information)                   |
 | grid               | <True|False>     | Plot grid                                                             |
 | histogram          | <x, y>           | Plot x-axis histogram on top, y-axis histogram on right or for both   |
 |                    |                  | axis on scatter plot                                                  |
 | histogram_binwidth | <num>            | Histogram bin width                                                   |
 | histogram_size     | <num>            | Histogram y-axis size                                                 |
 | legend             | <True|False>     | Plot legend                                                           |
+| legend_bbox_bottom | (num, num)       | Placement of legend, if legend location 'bottom' is chosen            |
 | legend_location    | <right, bottom>  | Legend location                                                       |
 | legend_ncol        | <num>            | The number of legend columns                                          |
 | linestyle          | <style>          | Line style for plot type (e.g. 'solid', 'dashed')                     |
@@ -62,6 +69,8 @@ Following *options** can be selected:
 | statistic          | <rms, mean, ...> | Plot statistical information. Following function can be defined:      |
 |                    |                  | 'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function        |
 |                    |                  | _get_statistic for more information)                                  |
+| subtitle           | <text>           | Subtitle of subplots                                                  |
+| subtitle_fsize     | <num>            | Fontsize of subplot title (statistical information)                   |
 | tick_labelsize     | <(axis, size)>   | Change label size of x- and y-axis tick labels. This can be done      |
 |                    |                  | either for x-axis, y-axis or both axis via specifying 'x', 'y' or     |
 |                    |                  | both'.                                                                |
@@ -121,7 +130,7 @@ List with strings representing statistical information
 
 Full name: `midgard.plot.matplotlib_extension.plot`
 
-Signature: `(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: Optional[List[str]] = None, labels: Optional[List[str]] = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -> None`
+Signature: `(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: List[str] | None = None, labels: List[str] | None = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Dict[str, List[Any]] | None = None) -> None`
 
 Generate scatter/plot plot
 
@@ -192,7 +201,7 @@ Following **opt_arg** options can be selected:
 
 Full name: `midgard.plot.matplotlib_extension.plot_bar_dataframe_columns`
 
-Signature: `(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: Optional[List[str]] = None, opt_args: Optional[Dict[str, Any]] = None) -> None`
+Signature: `(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: List[str] | None = None, opt_args: Dict[str, Any] | None = None) -> None`
 
 Generate bar plot of given dataframe columns
 
@@ -230,7 +239,7 @@ Following **opt_arg** options can be selected:
 
 Full name: `midgard.plot.matplotlib_extension.plot_scatter_subplots`
 
-Signature: `(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: Optional[List[str]] = None, colors: Optional[List[str]] = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -> None`
+Signature: `(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: List[str] | None = None, colors: List[str] | None = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Dict[str, List[Any]] | None = None) -> None`
 
 Generate scatter subplot
 
@@ -292,7 +301,7 @@ Following **opt_arg** options can be selected:
 
 Full name: `midgard.plot.matplotlib_extension.plot_subplot_row`
 
-Signature: `(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: Optional[numpy.ndarray] = None, opt_args: Dict[str, Any] = {}) -> None`
+Signature: `(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: None | numpy.ndarray = None, opt_args: Dict[str, Any] = {}) -> None`
 
 Generate single row of plot subplot
 

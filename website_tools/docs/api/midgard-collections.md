@@ -46,15 +46,15 @@ Use enumerations in your code:
 
 Full name: `midgard.collections.enums.BeidouFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+BeiDou RINEX frequency number to RINEX frequency name
 
 ### **BeidouFrequency**
 
 Full name: `midgard.collections.enums.BeidouFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 BeiDou frequencies in Hz
 
@@ -62,31 +62,23 @@ BeiDou frequencies in Hz
 
 Full name: `midgard.collections.enums.ExitStatus`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Exit status definition
-
-### **GPSFrequency**
-
-Full name: `midgard.collections.enums.GPSFrequency`
-
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
-
-GPS frequencies in Hz
 
 ### **GalileoFreqNum2Freq**
 
 Full name: `midgard.collections.enums.GalileoFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+Galileo RINEX frequency number to RINEX frequency name
 
 ### **GalileoFrequency**
 
 Full name: `midgard.collections.enums.GalileoFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Galileo frequencies in Hz
 
@@ -94,15 +86,15 @@ Galileo frequencies in Hz
 
 Full name: `midgard.collections.enums.GlonassFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+GLONASS RINEX frequency number to RINEX frequency name
 
 ### **Gnss3DigitIdToId**
 
 Full name: `midgard.collections.enums.Gnss3DigitIdToId`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
@@ -110,7 +102,7 @@ RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.GnssIdTo3DigitId`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
@@ -118,7 +110,7 @@ RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
 Full name: `midgard.collections.enums.GnssIdToName`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS identifier to GNSS name
 
@@ -126,7 +118,7 @@ RINEX GNSS identifier to GNSS name
 
 Full name: `midgard.collections.enums.GnssIdToReferenceSystem`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
@@ -134,7 +126,7 @@ RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
 Full name: `midgard.collections.enums.GnssNameToId`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 GNSS name to RINEX GNSS identifier
 
@@ -142,23 +134,31 @@ GNSS name to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.GpsFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
+GPS RINEX frequency number to RINEX frequency name
 
+### **GpsFrequency**
+
+Full name: `midgard.collections.enums.GpsFrequency`
+
+Signature: `(*values)`
+
+GPS frequencies in Hz
 
 ### **IrnssFreqNum2Freq**
 
 Full name: `midgard.collections.enums.IrnssFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+IRNSS RINEX frequency number to RINEX frequency name
 
 ### **IrnssFrequency**
 
 Full name: `midgard.collections.enums.IrnssFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 IRNSS frequencies in Hz
 
@@ -166,7 +166,7 @@ IRNSS frequencies in Hz
 
 Full name: `midgard.collections.enums.LogColor`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Colors used when logging
 
@@ -174,7 +174,7 @@ Colors used when logging
 
 Full name: `midgard.collections.enums.LogLevel`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Levels used when deciding how much log output to show
 
@@ -190,15 +190,15 @@ Dummy class used as a marker for a argument not given, used instead of None beca
 
 Full name: `midgard.collections.enums.QzssFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+QZSS RINEX frequency number to RINEX frequency name
 
 ### **QzssFrequency**
 
 Full name: `midgard.collections.enums.QzssFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 QZSS frequencies in Hz
 
@@ -206,7 +206,7 @@ QZSS frequencies in Hz
 
 Full name: `midgard.collections.enums.RefSysNameToEpsg`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Reference system name to EPSG code
 
@@ -214,15 +214,15 @@ Reference system name to EPSG code
 
 Full name: `midgard.collections.enums.SbasFreqNum2Freq`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+SBAS RINEX frequency number to RINEX frequency name
 
 ### **SbasFrequency**
 
 Full name: `midgard.collections.enums.SbasFrequency`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 SBAS frequencies in Hz
 
@@ -230,7 +230,7 @@ SBAS frequencies in Hz
 
 Full name: `midgard.collections.enums.WriteLevel`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Levels used when deciding which fields of a dataset and other information to write to disk
 
@@ -251,7 +251,7 @@ Names of available enums.
 
 Full name: `midgard.collections.enums.exit_status`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Exit status definition
 
@@ -300,7 +300,7 @@ Value of enumeration with the given name.
 
 Full name: `midgard.collections.enums.gnss_3digit_id_to_id`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
@@ -308,7 +308,7 @@ RINEX GNSS 3-digit identifier to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.gnss_freq_C`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 BeiDou frequencies in Hz
 
@@ -316,7 +316,7 @@ BeiDou frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_E`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Galileo frequencies in Hz
 
@@ -324,7 +324,7 @@ Galileo frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_G`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 GPS frequencies in Hz
 
@@ -332,7 +332,7 @@ GPS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_I`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 IRNSS frequencies in Hz
 
@@ -340,7 +340,7 @@ IRNSS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_J`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 QZSS frequencies in Hz
 
@@ -348,7 +348,7 @@ QZSS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_freq_S`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 SBAS frequencies in Hz
 
@@ -356,7 +356,7 @@ SBAS frequencies in Hz
 
 Full name: `midgard.collections.enums.gnss_id_to_3digit_id`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
@@ -364,7 +364,7 @@ RINEX GNSS RINEX identifier to GNSS 3-digit identifier
 
 Full name: `midgard.collections.enums.gnss_id_to_name`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS identifier to GNSS name
 
@@ -372,7 +372,7 @@ RINEX GNSS identifier to GNSS name
 
 Full name: `midgard.collections.enums.gnss_id_to_reference_system`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
@@ -380,7 +380,7 @@ RINEX GNSS RINEX identifier to relevant GNSS reference system name
 
 Full name: `midgard.collections.enums.gnss_name_to_id`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 GNSS name to RINEX GNSS identifier
 
@@ -388,57 +388,57 @@ GNSS name to RINEX GNSS identifier
 
 Full name: `midgard.collections.enums.gnss_num2freq_C`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+BeiDou RINEX frequency number to RINEX frequency name
 
 ### **gnss_num2freq_E**
 
 Full name: `midgard.collections.enums.gnss_num2freq_E`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+Galileo RINEX frequency number to RINEX frequency name
 
 ### **gnss_num2freq_G**
 
 Full name: `midgard.collections.enums.gnss_num2freq_G`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+GPS RINEX frequency number to RINEX frequency name
 
 ### **gnss_num2freq_I**
 
 Full name: `midgard.collections.enums.gnss_num2freq_I`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+IRNSS RINEX frequency number to RINEX frequency name
 
 ### **gnss_num2freq_J**
 
 Full name: `midgard.collections.enums.gnss_num2freq_J`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+QZSS RINEX frequency number to RINEX frequency name
 
 ### **gnss_num2freq_R**
 
 Full name: `midgard.collections.enums.gnss_num2freq_R`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+GLONASS RINEX frequency number to RINEX frequency name
 
 ### **gnss_num2freq_S**
 
 Full name: `midgard.collections.enums.gnss_num2freq_S`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
-
+SBAS RINEX frequency number to RINEX frequency name
 
 ### **has_value**()
 
@@ -462,7 +462,7 @@ True if Enumeration defines value, False otherwise
 
 Full name: `midgard.collections.enums.log_color`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Colors used when logging
 
@@ -470,7 +470,7 @@ Colors used when logging
 
 Full name: `midgard.collections.enums.log_level`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Levels used when deciding how much log output to show
 
@@ -478,7 +478,7 @@ Levels used when deciding how much log output to show
 
 Full name: `midgard.collections.enums.ref_sys_name_to_epsg`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Reference system name to EPSG code
 
@@ -505,7 +505,7 @@ Decorator that registers an Enumeration.
 
 Full name: `midgard.collections.enums.write_level`
 
-Signature: `(value, names=None, *, module=None, qualname=None, type=None, start=1, boundary=None)`
+Signature: `(*values)`
 
 Levels used when deciding which fields of a dataset and other information to write to disk
 
@@ -569,8 +569,8 @@ Dataclass for plate motion model
 **Attributes:**
 
 - `name`:           Name of tectonic plate
-wx, wy, wx:     Rotation pole (angular velocity) components
-dwx, dwy, dwz:  Standard deviation of rotation pole components
+wx, wy, wx:     Rotation pole (angular velocity) components 
+dwx, dwy, dwz:  Standard deviation of rotation pole components 
 - `unit`:           Unit of rotation pole entries
 - `description`:    Description of tectonic plate
 
@@ -598,6 +598,10 @@ Instance of PlateMotionModel dataclass
 
 ### itrf2014 (PlateMotionModel)
 `itrf2014 = PlateMotionModel(name='itrf2014', description='ITRF2014 plate motion model', poles={'anta': RotationPole(name='anta', wx=-0.248, wy=-0.324, wz=0.675, dwx=0.004, dwy=0.004, dwz=0.008, unit='milliarcsecond per year', description='Antarctic plate'), 'arab': RotationPole(name='arab', wx=1.154, wy=-0.136, wz=1.444, dwx=0.02, dwy=0.022, dwz=0.014, unit='milliarcsecond per year', description='Arabian plate'), 'aust': RotationPole(name='aust', wx=1.51, wy=1.182, wz=1.215, dwx=0.004, dwy=0.004, dwz=0.004, unit='milliarcsecond per year', description='Australian plate'), 'eura': RotationPole(name='eura', wx=-0.085, wy=-0.531, wz=0.77, dwx=0.004, dwy=0.002, dwz=0.005, unit='milliarcsecond per year', description='Eurasian plate'), 'indi': RotationPole(name='indi', wx=1.154, wy=-0.005, wz=1.454, dwx=0.027, dwy=0.117, dwz=0.035, unit='milliarcsecond per year', description='Indian plate'), 'nazc': RotationPole(name='nazc', wx=-0.333, wy=-1.544, wz=1.623, dwx=0.006, dwy=0.015, dwz=0.007, unit='milliarcsecond per year', description='Nazca plate'), 'noam': RotationPole(name='noam', wx=0.024, wy=-0.694, wz=-0.063, dwx=0.002, dwy=0.005, dwz=0.004, unit='milliarcsecond per year', description='North American plate'), 'nubi': RotationPole(name='nubi', wx=0.099, wy=-0.614, wz=0.733, dwx=0.004, dwy=0.003, dwz=0.003, unit='milliarcsecond per year', description='Nubia plate'), 'pcfc': RotationPole(name='pcfc', wx=-0.409, wy=1.047, wz=-2.169, dwx=0.003, dwy=0.004, dwz=0.004, unit='milliarcsecond per year', description='Pacific plate'), 'soam': RotationPole(name='soam', wx=-0.27, wy=-0.301, wz=-0.14, dwx=0.006, dwy=0.006, dwz=0.003, unit='milliarcsecond per year', description='South American plate'), 'soma': RotationPole(name='soma', wx=-0.121, wy=-0.794, wz=0.884, dwx=0.035, dwy=0.034, dwz=0.008, unit='milliarcsecond per year', description='Somali plate')})`
+
+
+### itrf2020 (PlateMotionModel)
+`itrf2020 = PlateMotionModel(name='itrf2020', description='ITRF2020 plate motion model', poles={'amur': RotationPole(name='amur', wx=-0.131, wy=-0.551, wz=0.837, dwx=0.009, dwy=0.014, dwz=0.015, unit='milliarcsecond per year', description='Amurian plate'), 'anta': RotationPole(name='anta', wx=-0.269, wy=-0.312, wz=0.678, dwx=0.003, dwy=0.003, dwz=0.004, unit='milliarcsecond per year', description='Antarctic plate'), 'arab': RotationPole(name='arab', wx=1.129, wy=-0.146, wz=1.438, dwx=0.025, dwy=0.027, dwz=0.016, unit='milliarcsecond per year', description='Arabian plate'), 'aust': RotationPole(name='aust', wx=1.487, wy=1.175, wz=1.223, dwx=0.003, dwy=0.003, dwz=0.003, unit='milliarcsecond per year', description='Australian plate'), 'carb': RotationPole(name='carb', wx=0.207, wy=-1.422, wz=0.726, dwx=0.076, dwy=0.174, dwz=0.061, unit='milliarcsecond per year', description='Caribbean plate'), 'eura': RotationPole(name='eura', wx=-0.085, wy=-0.519, wz=0.753, dwx=0.003, dwy=0.003, dwz=0.003, unit='milliarcsecond per year', description='Eurasian plate'), 'indi': RotationPole(name='indi', wx=1.137, wy=0.013, wz=1.444, dwx=0.008, dwy=0.04, dwz=0.016, unit='milliarcsecond per year', description='Indian plate'), 'nazc': RotationPole(name='nazc', wx=-0.327, wy=-1.561, wz=1.605, dwx=0.006, dwy=0.018, dwz=0.008, unit='milliarcsecond per year', description='Nazca plate'), 'noam': RotationPole(name='noam', wx=0.045, wy=-0.666, wz=-0.098, dwx=0.003, dwy=0.003, dwz=0.003, unit='milliarcsecond per year', description='North American plate'), 'nubi': RotationPole(name='nubi', wx=0.09, wy=-0.585, wz=0.717, dwx=0.003, dwy=0.003, dwz=0.004, unit='milliarcsecond per year', description='Nubia plate'), 'pcfc': RotationPole(name='pcfc', wx=-0.404, wy=1.021, wz=-2.154, dwx=0.003, dwy=0.003, dwz=0.004, unit='milliarcsecond per year', description='Pacific plate'), 'soam': RotationPole(name='soam', wx=-0.261, wy=-0.282, wz=-0.157, dwx=0.004, dwy=0.004, dwz=0.003, unit='milliarcsecond per year', description='South American plate'), 'soma': RotationPole(name='soma', wx=-0.081, wy=-0.719, wz=0.864, dwx=0.014, dwy=0.015, dwz=0.005, unit='milliarcsecond per year', description='Somali plate')})`
 
 
 ### **models**()

@@ -41,7 +41,7 @@ Names of the available parsers
 
 Full name: `midgard.parsers.parse_file`
 
-Signature: `(parser_name: str, file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, timer_logger: Optional[Callable[[str], NoneType]] = None, use_cache: bool = False, **parser_args: Any) -> midgard.parsers._parser.Parser`
+Signature: `(parser_name: str, file_path: str | pathlib.Path, encoding: str | None = None, timer_logger: Callable[[str], NoneType] | None = None, use_cache: bool = False, **parser_args: Any) -> midgard.parsers._parser.Parser`
 
 Use the given parser on a file and return parsed data
 
@@ -90,7 +90,7 @@ This module contains functions and classes for parsing datafiles. It should typi
 
 Full name: `midgard.parsers._parser.Parser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 An abstract base class that has basic methods for parsing a datafile
 
@@ -127,7 +127,7 @@ This module contains functions and classes for parsing datafiles.
 
 Full name: `midgard.parsers._parser_chain.ChainParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 An abstract base class that has basic methods for parsing a datafile
 
@@ -139,7 +139,7 @@ this one, and at least specify the necessary parameters in `setup_parser`.
 
 Full name: `midgard.parsers._parser_chain.ParserDef`
 
-Signature: `(end_marker: Callable[[str, int, str], bool], label: Callable[[str, int], Any], parser_def: Dict[Any, Dict[str, Any]], skip_line: Optional[Callable[[str], bool]] = None, end_callback: Optional[Callable[[Dict[str, Any]], NoneType]] = None)`
+Signature: `(end_marker: Callable[[str, int, str], bool], label: Callable[[str, int], Any], parser_def: Dict[Any, Dict[str, Any]], skip_line: Callable[[str], bool] | None = None, end_callback: Callable[[Dict[str, Any]], NoneType] | None = None)`
 
 A convenience class for defining the necessary fields of a parser
 
@@ -158,7 +158,7 @@ The parser definition `parser_def` includes the `parser`, `field`, `strip` and `
 entry points to the parser function and the `field` entry defines how to separate the line in fields. The separated
 fields are saved either in a dictionary or in a list. In the last case the line is split on whitespace by
 default. With the `delimiter` entry the default definition can be overwritten, whereby also regular expressions can
-be used (like '\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default 
+be used (like r'\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default
 before a line is parsed.  This default can be overwritten by defining the characters, which should be removed with 
 the 'strip' entry. The `parser` dictionary is defined like:
 
@@ -197,7 +197,7 @@ This module contains functions and classes for parsing datafiles.
 
 Full name: `midgard.parsers._parser_line.LineParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 An abstract base class that has basic methods for parsing a datafile
 
@@ -237,7 +237,7 @@ A convenience class for defining how a Rinex header is parsed
 
 Full name: `midgard.parsers._parser_rinex.RinexParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 An abstract base class that has basic methods for parsing a datafile
 
@@ -271,7 +271,7 @@ This module contains functions and classes for parsing Sinex datafiles.
 
 Full name: `midgard.parsers._parser_sinex.SinexBlock`
 
-Signature: `(marker: str, fields: Tuple[midgard.parsers._parser_sinex.SinexField, ...], parser: Callable[[<built-in function array>, Tuple[str, ...]], Dict[str, Any]])`
+Signature: `(marker: str, fields: Tuple[midgard.parsers._parser_sinex.SinexField, ...], parser: Callable[[numpy.array, Tuple[str, ...]], Dict[str, Any]])`
 
 A convenience class for defining a Sinex block
 
@@ -286,7 +286,7 @@ A convenience class for defining a Sinex block
 
 Full name: `midgard.parsers._parser_sinex.SinexField`
 
-Signature: `(name: str, start_col: int, dtype: Optional[str], converter: Optional[str] = None)`
+Signature: `(name: str, start_col: int, dtype: str | None, converter: str | None = None)`
 
 A convenience class for defining the fields in a Sinex block
 
@@ -302,7 +302,7 @@ A convenience class for defining the fields in a Sinex block
 
 Full name: `midgard.parsers._parser_sinex.SinexParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -> None`
 
 An abstract base class that has basic methods for parsing a Sinex file
 
@@ -379,7 +379,7 @@ Reads data from files in the GNSS Antenna Exchange (ANTEX) file format version 1
 
 Full name: `midgard.parsers.antex.AntexParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading ANTEX file
 
@@ -408,8 +408,8 @@ like:
 with following entries:
 
 | Value              | Type              | Description                                                            |
-|--------------------|-------------------|------------------------------------------------------------------------|
-| azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [mm] with |
+| :----------------- | :---------------- | :--------------------------------------------------------------------- |
+| azi                | numpy.ndarray     | Array with azimuth-elevation dependent antenna correction in [m] with  |
 |                    |                   | the shape: number of azimuth values x number of elevation values.      |
 | azimuth            | numpy.ndarray     | List with azimuth values in [rad] corresponding to antenna corrections |
 |                    |                   | given in `azi`.                                                        |
@@ -424,7 +424,7 @@ with following entries:
 |                    |                   | point (ARP) for receiver antennas or to the center of mass of the      |
 |                    |                   | satellite in X-, Y- and Z-direction.                                   |
 | noazi              | numpy.ndarray     | List with elevation dependent (non-azimuth-dependent) antenna          |
-|                    |                   | correction in [mm].                                                    |
+|                    |                   | correction in [m].                                                     |
 | <prn>              | str               | Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number       |
 | <receiver antenna> | str               | Receiver antenna name together with radome code                        |
 | sat_code           | str               | Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number     |
@@ -432,10 +432,11 @@ with following entries:
 | valid_from         | datetime.datetime | Start of validity period of satellite in GPS time                      |
 | valid_until        | datetime.datetime | End of validity period of satellite in GPS time                        |
 
+
 The 'meta' attribute is a dictionary with following entries:
 
 | Value          | Type | Description                                      |
-|----------------|------|--------------------------------------------------|
+| :------------- | :--- | :----------------------------------------------- |
 | comment        | list | Header commments given in list line by line      |
 | pcv_type       | str  | Phase center variation type                      |
 | ref_antenna    | str  | Reference antenna type for relative antenna      |
@@ -460,7 +461,7 @@ A parser for reading Anubis xtr-files
 
 Full name: `midgard.parsers.anubis.AnubisXtrParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Anubis XTR files
 
@@ -479,12 +480,24 @@ A parser for reading water level data from open Norwegian water level API
     p = parsers.parse_file(parser_name='api_water_level_norway', file_path='api_water_level_norway')
     data = p.as_dict()
 
-    # Water level data has to be downloaded from API
+    # Water level data can be downloaded from API for a given location (modeled data)
     p = parsers.parse_file(
                     parser_name='api_water_level_norway', 
                     file_path='api_water_level_norway',
                     latitude=58.974339,
                     longitude=5.730121,
+                    from_date=datetime(2021,11,21),
+                    to_date=datetime(2021,11,22),
+    )
+    data = p.as_dict()
+
+    # Water level data can be downloaded from API for a station (observed data) e.g. for Solumstrand (SOY)
+    # Note: Available stations can be checked via:
+    #                https://api.sehavniva.no/tideapi.php?type=perm&tide_request=stationlist
+    p = parsers.parse_file(
+                    parser_name='api_water_level_norway', 
+                    file_path='api_water_level_norway',
+                    station='soy',
                     from_date=datetime(2021,11,21),
                     to_date=datetime(2021,11,22),
     )
@@ -500,11 +513,11 @@ See https://api.sehavniva.no/tideapi_no.html for an example
 
 Full name: `midgard.parsers.api_water_level_norway.ApiWaterLevelNorwayParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, url: Optional[str] = None, latitude: Optional[float] = None, longitude: Optional[float] = None, from_date: Optional[datetime.datetime] = None, to_date: Optional[datetime.datetime] = None, reference_level: Optional[str] = 'chart_datum') -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, url: str | None = None, from_date: datetime.datetime | None = None, to_date: datetime.datetime | None = None, station: str | None = None, latitude: float | None = None, longitude: float | None = None, reference_level: str | None = 'chart_datum') -> None`
 
 A parser for reading water level data from open Norwegian water level API
 
-See https://api.sehavniva.no/tideapi_no.html for an example
+See https://vannstand.kartverket.no/tideapi_no.html for an example
 
 Following **data** are available after water level data:
 
@@ -512,7 +525,7 @@ Following **data** are available after water level data:
 |---------------------|---------------------------------------------------------------------------------------|
 | flag                | Data flag (obs: observation, pre: prediction, weather: weather effect, forecast:      |
 |                     | forecast)                                                                             |
-| time                | Observation                                                                           |
+| time                | Observation time                                                                      |
 | water_level         | Water level in [cm]                                                                   |
 
 and **meta**-data:
@@ -543,14 +556,14 @@ Reads data from files in the BCEcmp Software output file format. The BCEcmp Soft
 
 Full name: `midgard.parsers.bcecmp_sisre.BcecmpParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading DLR BCEcmp Software output files.
 
 The following **data** are available after reading BCEcmp Software output file:
 
 | Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
+| :-------------------- | :----------------------------------------------------------------------------------- |
 | age_min               | age of ephemeris in [min]                                                            |
 | clk_diff_with_dt_mean | Satellite clock correction difference corrected for average satellite clock offset   |
 |                       | difference for given GNSS and epoch in [m]                                           |
@@ -573,9 +586,9 @@ The following **data** are available after reading BCEcmp Software output file:
 and **meta**-data:
 
 | Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__        | File path                                                                            |
-| \__parser_name__      | Parser name                                                                          |
+| :-------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__       | File path                                                                            |
+| \__parser_name__     | Parser name                                                                          |
 
 
 ## midgard.parsers.bernese_clu
@@ -597,14 +610,14 @@ Reads data from files in Bernese CLU format.
 
 Full name: `midgard.parsers.bernese_clu.BerneseCluParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Bernese CLU file
 
 Following **data** are available after reading Bernese CLU file:
 
 | Parameter           | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
+| :------------------ | :------------------------------------------------------------------------------------ |
 | station             | 4-digit station identifier                                                            |
 | domes               | Domes number                                                                          |
 | cluster             | Cluster number                                                                        |
@@ -612,9 +625,9 @@ Following **data** are available after reading Bernese CLU file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 
@@ -646,8 +659,8 @@ A parser for reading coordinate comparison in Bernese OUT format
 The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key. The station
 related data are saved in a dictionary with following keys:
 
-| Key                   | Type        |Description                                                           |
-|-----------------------|-------------|----------------------------------------------------------------------|
+| Key                   | Type        | Description                                                          |
+| :-------------------- | :---------- | :------------------------------------------------------------------- |
 | coord_comp_east       | List[float] | List with daily station coordinate comparison results for East       |
 |                       |             | component in [m]                                                     |
 | coord_comp_north      | List[float] | List with daily station coordinate comparison results for North      |
@@ -673,15 +686,15 @@ related data are saved in a dictionary with following keys:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | num_coord_files      | Number of coordinate files used for analysis                                         |
 | time                 | Date of analysis session                                                             |
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.bernese_crd
-A parser for reading Bernese CRD file
+A parser for reading Bernese v5.2 CRD file
 
 **Example:**
 
@@ -691,7 +704,7 @@ A parser for reading Bernese CRD file
 
 **Description:**
 
-Reads data from files in Bernese CRD format.
+Reads data from files in Bernese v5.2 CRD format.
 
 
 
@@ -699,14 +712,14 @@ Reads data from files in Bernese CRD format.
 
 Full name: `midgard.parsers.bernese_crd.BerneseCrdParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
-A parser for reading Bernese CRD file
+A parser for reading Bernese v5.2 CRD file
 
 Following **data** are available after reading Bernese CRD file:
 
 | Parameter           | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
+| :------------------ | :------------------------------------------------------------------------------------ |
 | num                 | Number of station coordinate solution                                                 |
 | station             | 4-digit station identifier                                                            |
 | domes               | Domes number                                                                          |
@@ -719,10 +732,13 @@ Following **data** are available after reading Bernese CRD file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__params__         | np.genfromtxt parameters                                                             |
+| \__parser_name__    | Parser name                                                                          |
+| ref_epoch            | Reference epoch of reference station coordinate in ISO format                        |
+|                      | yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)                                       |
+| ref_frame            | Reference frame of reference station coordinate                                      |
 
 
 
@@ -755,7 +771,7 @@ The parsed data are saved in variable **data** as a dictionay with 4-digit stati
 related data are saved in a dictionary with following keys:
 
 | Key                   | Type        |Description                                                           |
-|-----------------------|-------------|----------------------------------------------------------------------|
+| :-------------------- | :---------- | :------------------------------------------------------------------- |
 | coord_comp_east       | List[float] | List with daily station coordinate comparison results for East       |
 |                       |             | component in [m]                                                     |
 | coord_comp_north      | List[float] | List with daily station coordinate comparison results for North      |
@@ -788,11 +804,11 @@ related data are saved in a dictionary with following keys:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | num_coord_files      | Number of coordinate files used for analysis                                         |
 | time                 | Date of analysis session                                                             |
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.bernese_slr_plt
@@ -814,14 +830,14 @@ Reads data from files in Bernese PLT format.
 
 Full name: `midgard.parsers.bernese_slr_plt.BerneseSlrPltParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Bernese SLR PLT file
 
 Following **data** are available after reading Bernese PLT file:
 
 | Parameter          | Description                                                                    |
-|--------------------|--------------------------------------------------------------------------------|
+| :----------------- | :----------------------------------------------------------------------------- |
 | station            | 4-digit station identifier                                                     |
 | domes              | domes number, e.g.  50107M001                                                  |
 | sat_prn            | satellite, e.g. E18
@@ -834,21 +850,21 @@ Following **data** are available after reading Bernese PLT file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__params__         | np.genfromtxt parameters                                                             |
+| \__parser_name__    | Parser name                                                                          |
 
 
 
 ## midgard.parsers.bernese_sta
-A parser for reading station information in Bernese STA format
+A parser for reading station information in Bernese STA format in Bernese v5.4 format
 
 
 **Example:**
 
     from midgard import parsers
-    p = parsers.parse_file(parser_name='bernese_sta', file_path='NKG.STA')
+    p = parsers.parse_file(parser_name='bernese_sta_v52', file_path='NKG.STA')
     data = p.as_dict()
 
 **Description:**
@@ -864,14 +880,14 @@ Full name: `midgard.parsers.bernese_sta.BerneseStaParser`
 
 Signature: `(*args: Tuple[Any], **kwargs: Dict[Any, Any])`
 
-A parser for reading station information in Bernese STA format
+A parser for reading station information in Bernese STA format in Bernese v5.4 format
 
 
 The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key and a list with 
 station information dictionaries with following entries:
 
-| Key                          | Type     |Description                                                         |
-|------------------------------|----------|--------------------------------------------------------------------|
+| Key                          | Type     | Description                                                        |
+| :--------------------------- | :------- | :----------------------------------------------------------------- |
 | antenna_serial_number        | str      | Antenna serial number                                              |
 | antenna_serial_number_short  | str      | 6 last digits of antennna serial number                            |
 | antenna_type                 | str      | Antenna type                                                       |
@@ -892,9 +908,65 @@ station information dictionaries with following entries:
 and **meta**-data:
 
 | Key                  | Description                                                                        |
-|----------------------|------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                          |
-| \__parser_name__     | Parser name                                                                        |
+| :------------------- | :--------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                          |
+| \__parser_name__    | Parser name                                                                        |
+
+
+## midgard.parsers.bernese_sta_v52
+A parser for reading station information in Bernese STA format in Bernese v5.2 format
+
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='bernese_sta_v52', file_path='NKG.STA')
+    data = p.as_dict()
+
+**Description:**
+
+Reads station information from files in STA format, whereby at the moment only the 'STATION INFORMATION' part is
+parsed.
+
+
+
+### **BerneseStaV52Parser**
+
+Full name: `midgard.parsers.bernese_sta_v52.BerneseStaV52Parser`
+
+Signature: `(*args: Tuple[Any], **kwargs: Dict[Any, Any])`
+
+A parser for reading station information in Bernese STA format in Bernese v5.2 format
+
+
+The parsed data are saved in variable **data** as a dictionay with 4-digit station name as key and a list with 
+station information dictionaries with following entries:
+
+| Key                          | Type     | Description                                                        |
+| :--------------------------- | :------- | :----------------------------------------------------------------- |
+| antenna_serial_number        | str      | Antenna serial number                                              |
+| antenna_serial_number_short  | str      | 6 last digits of antennna serial number                            |
+| antenna_type                 | str      | Antenna type                                                       |
+| date_from                    | datetime | Start date where station information is valid                      |
+| date_to                      | datetime | End date of station information                                    | 
+| domes                        | str      | Domes number                                                       |
+| description                  | str      | Description normally with station name and country code            |
+| eccentricity_east            | float    | East component of eccentricity in [m]                              |
+| eccentricity_north           | float    | North component of eccentricity in [m]                             |
+| eccentricity_up              | float    | Up component of eccentricity in [m]                                |
+| flag                         | str      | Flag number                                                        |
+| radome                       | str      | Antenna radome type                                                |
+| receiver_serial_number       | str      | Receiver serial number                                             |
+| receiver_serial_number_short | str      | 6 last digits of receiver serial number                            |
+| receiver_type                | str      | Receiver type                                                      |
+| remark                       | str      | Remark                                                             |
+
+and **meta**-data:
+
+| Key                  | Description                                                                        |
+| :------------------- | :--------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                          |
+| \__parser_name__    | Parser name                                                                        |
 
 
 ## midgard.parsers.bernese_trp
@@ -917,7 +989,7 @@ Reads data from files troposphere files in TRP format
 
 Full name: `midgard.parsers.bernese_trp.BerneseTrpPaser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading troposphere files in Bernese TRP format
 
@@ -933,9 +1005,9 @@ and **meta**-data:
 | Key                  | Description                                                                          |
 | :------------------- | :----------------------------------------------------------------------------------- |
 | TODO                 |                                                                                      |
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
+| \__data_path__      | File path                                                                            |
+| \__params__         | np.genfromtxt parameters                                                             |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.cost
@@ -961,7 +1033,7 @@ Reads data from files in the COST file format 2.2a (see :cite:`cost`).
 
 Full name: `midgard.parsers.cost.CostParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading COST datan file
 
@@ -1014,7 +1086,7 @@ Reads data from files in CSV output format. The header information of the CSV fi
 
 Full name: `midgard.parsers.csv_.CsvParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading CSV output files
 
@@ -1024,9 +1096,50 @@ dictionary are represented by the CSV colum values.
 Following **meta**-data are available after reading of CSV file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
+
+
+## midgard.parsers.doris_stcd
+A parser for reading DORIS station coordinate timeseries file in Station Coordinates Difference (STCD) format
+
+
+**Description:**
+
+Reads station coordinate timeseries data from files in DORIS Station Coordinates Difference (STCD) format
+
+Format description can be found under: https://ids-doris.org/documents/report/CB_STCD_format_v1.0.pdf
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='doris_stcd', file_path='ids21wd03.stcd.svac')
+    data = p.as_dict()
+
+
+
+### **DorisStcdParser**
+
+Full name: `midgard.parsers.doris_stcd.DorisStcdParser`
+
+Signature: `(file_path, encoding=None)`
+
+A parser for reading DORIS station coordinate timeseries file in STCD format
+
+
+### **FieldDef**
+
+Full name: `midgard.parsers.doris_stcd.FieldDef`
+
+Signature: `(field=None, unit=None)`
+
+A convenience class for defining dataset fields 
+
+**Args:**
+
+field (str):             Dataset field name
+unit (str):              Unit of field
 
 
 ## midgard.parsers.galileo_constellation_html
@@ -1039,7 +1152,7 @@ See https://www.gsc-europa.eu/system-status/Constellation-Information for an exa
 
 Full name: `midgard.parsers.galileo_constellation_html.GalileoConstellationHTMLParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, url: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, url: str | None = None) -> None`
 
 A parser for reading Galileo constellation info from a web page
 
@@ -1088,7 +1201,7 @@ Example lines to be read from the .org file
 
 Full name: `midgard.parsers.gamit_org.GamitOrgParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading gamit org file
 
@@ -1130,14 +1243,14 @@ Reads data from files in Gipsy `stacov` format.
 
 Full name: `midgard.parsers.gipsy_stacov.GipsyStacovParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Gipsy `stacov` format file
 
 Following **data** are available after reading Gipsy `stacov` output file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | correlation          | Correlation values                                                                   |
 | correlation_index1   | Correlation index (1st column)                                                       |
 | correlation_index2   | Correlation index (2nd column)                                                       |
@@ -1151,12 +1264,10 @@ Following **data** are available after reading Gipsy `stacov` output file:
 | time_past_j2000      | Time given in GPS seconds past J2000, whereby GipsyX uses following definition:      |
 |                      | J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.                          |
 
-
-
 and **meta**-data:
 
-| Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| Key                   | Description                                                                          |
+| :-------------------- | :----------------------------------------------------------------------------------- |
 | \__data_path__       | File path                                                                            |
 | \__parser_name__     | Parser name                                                                          |
 
@@ -1180,7 +1291,7 @@ Reads data from files in Gipsy summary output format.
 
 Full name: `midgard.parsers.gipsy_sum.GipsySummary`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Gipsy summary output file (*.sum)
 
@@ -1207,8 +1318,8 @@ and **meta**-data:
 
 | Key                  | Description                                                                          |
 | :------------------- | :----------------------------------------------------------------------------------- |
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsy_tdp
@@ -1244,14 +1355,14 @@ dtype (str):             Dataset data type
 
 Full name: `midgard.parsers.gipsy_tdp.GipsyTdpParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Gipsy time dependent parameter (TDP) file
 
 Following **data** are available after reading Gipsy TDP output file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | apriori              | Nominal value. This field contains the last value used by the model.                 |
 | name                 | Parameter name.                                                                      |
 | sigma                | The sigma associated with the value of the parameter. A negative value indicates it  |
@@ -1265,9 +1376,9 @@ Following **data** are available after reading Gipsy TDP output file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_gdcov
@@ -1294,14 +1405,14 @@ Reads data from files in GipsyX `gdcov` format.
 
 Full name: `midgard.parsers.gipsyx_gdcov.GipsyxGdcovParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GipsyX `gdcov` format file
 
 Following **data** are available after reading GipsyX `gdcov` output file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | correlation          | Correlation values                                                                   |
 | correlation_index1   | Correlation index (1st column)                                                       |
 | correlation_index2   | Correlation index (2nd column)                                                       |
@@ -1320,9 +1431,9 @@ Following **data** are available after reading GipsyX `gdcov` output file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_residual
@@ -1344,14 +1455,14 @@ Reads data from files in GipsyX residual format.
 
 Full name: `midgard.parsers.gipsyx_residual.GipsyxResidualParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GipsyX residual file
 
 Following **data** are available after reading GipsyX residual output file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | azimuth              | Azimuth from receiver                                                                |
 | azimuth_sat          | Azimuth from satellite                                                               |
 | data_type            | Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)                                    |
@@ -1368,9 +1479,9 @@ Following **data** are available after reading GipsyX residual output file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_series
@@ -1392,7 +1503,7 @@ Reads data from files in GipsyX timeseries format.
 
 Full name: `midgard.parsers.gipsyx_series.GipsyxSeriesParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GipsyX timeseries file
 
@@ -1400,7 +1511,7 @@ Following **data** are available after reading GipsyX residual output file:
 
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | corr_en              | Correlation East-North.                                                              |
 | corr_ev              | Correlation East-Vertical.                                                           |
 | corr_nv              | Correlation North-Vertical.                                                          |
@@ -1423,9 +1534,9 @@ Following **data** are available after reading GipsyX residual output file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_summary
@@ -1447,14 +1558,14 @@ Reads data from files in GipsyX summary output format.
 
 Full name: `midgard.parsers.gipsyx_summary.GipsyxSummary`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GipsyX summary file
 
 GipsyX summary file **data** are grouped as follows:
 
 | Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
+| :-------------------- | :----------------------------------------------------------------------------------- |
 | position              | Dictionary with position summary information                                         |
 | residual              | Dictionary with residual summary information                                         |
 | station               | Station name                                                                         |
@@ -1462,7 +1573,7 @@ GipsyX summary file **data** are grouped as follows:
 **position** entries are:
 
 | Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
+| :-------------------- | :----------------------------------------------------------------------------------- |
 | pos_x                 | X-coordinate of station position solution                                            |
 | pos_y                 | Y-coordinate of station position solution                                            |
 | pos_z                 | Z-coordinate of station position solution                                            |
@@ -1478,7 +1589,7 @@ GipsyX summary file **data** are grouped as follows:
 **residual** entries are:
 
 | Key                   | Description                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------|
+| :-------------------- | :----------------------------------------------------------------------------------- |
 | code_obs_num          | Number of used pseudo-range observations                                             |
 | code_residual_max     | Maximal residual of used pseudo-range observations                                   |
 | code_residual_min     | Minimal residual of used pseudo-range observations                                   |
@@ -1500,9 +1611,9 @@ GipsyX summary file **data** are grouped as follows:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gipsyx_tdp
@@ -1539,14 +1650,14 @@ dtype (str):             Dataset data type
 
 Full name: `midgard.parsers.gipsyx_tdp.GipsyxTdpParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GipsyX time dependent parameter (TDP) file
 
 Following **data** are available after reading GipsyX TDP output file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | apriori              | Nominal value. This field contains the last value used by the model.                 |
 | name                 | Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."     |
 |                      | without spaces.                                                                      |
@@ -1558,9 +1669,9 @@ Following **data** are available after reading GipsyX TDP output file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.glab_output
@@ -1581,7 +1692,7 @@ A parser for reading gLAB output files
 
 Full name: `midgard.parsers.glab_output.GlabOutputParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading gLAB output files
 
@@ -1591,9 +1702,9 @@ the **data** dictionary are represented by the gLAB colum values.
 Following **meta**-data are available after reading of gLAB files:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gnss_android_raw_data
@@ -1619,7 +1730,7 @@ Reads raw data file from `GnssLogger` Android App.
 
 Full name: `midgard.parsers.gnss_android_raw_data.GnssAndroidRawDataParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 
 
@@ -1642,14 +1753,14 @@ Reads data from files in GALAT result format.
 
 Full name: `midgard.parsers.gnss_galat_results.GalatResults`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GALAT single point positioning result files
 
 Following **data** are available after reading GALAT SPP result file:
 
 | Key                      | Description                                                                      |
-|--------------------------|----------------------------------------------------------------------------------|
+| :----------------------- | :------------------------------------------------------------------------------- |
 | time                     | Time epoch                                                                       |
 | latitude                 | Latitude in degree                                                               |
 | longitude                | Longitude in degree                                                              |
@@ -1668,10 +1779,10 @@ Following **data** are available after reading GALAT SPP result file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__params__          | np.genfromtxt parameters                                                             |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__params__         | np.genfromtxt parameters                                                             |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.gnssrefl_allrh
@@ -1685,7 +1796,7 @@ A parser for reading GNSSREFL reflector height timeseries files
 
 **Description:**
 
-Reads data from files in GNSSREFL reflector height timeseries files
+Reads data from files in GNSSREFL reflector height timeseries format
 
 
 
@@ -1693,28 +1804,144 @@ Reads data from files in GNSSREFL reflector height timeseries files
 
 Full name: `midgard.parsers.gnssrefl_allrh.GnssreflAllRh`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GNSSREFL reflector height timeseries files
 
-Following **data** are available after reading Terrapos residual file:
+Following **data** are available after reading the file:
 
 | Parameter                 | Description                                                                     |
-|---------------------------|---------------------------------------------------------------------------------|
+| :------------------------ | :------------------------------------------------------------------------------ |
 | amplitude                 | Amplitude                                                                       |
 | azimuth                   | Azimuth in [deg]                                                                |
 | frequency                 | GNSS frequency identifier                                                       |
 | peak2noise                | Peak to noise                                                                   |
-| reflection_height         | Reflection height in [m]                                                        |
+| reflector_height          | Reflector height in [m]                                                         |
 | satellite                 | Satellite number                                                                |
 | time                      | Time as datetime object                                                         |
 
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
+
+
+
+## midgard.parsers.gnssrefl_snr
+A parser for reading GNSSREFL SNR files
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='gnssrefl_snr', file_path='ande2740.24.snr66')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from files in GNSSREFL SNR format
+
+
+
+### **GnssreflSnr**
+
+Full name: `midgard.parsers.gnssrefl_snr.GnssreflSnr`
+
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
+
+A parser for reading GNSSREFL SNR files
+
+Following **data** are available after reading the file:
+
+| Parameter                 | Description                                                                     |
+| :------------------------ | :------------------------------------------------------------------------------ |
+| azimuth                   | Azimuth in [deg]                                                                |
+| elevation                 | Elevation in [deg]                                                              |
+| elevation_rate            | Elevation angle rate of change [deg/s]                                          |
+| seconds_of_day            | Seconds of day (GPS time)                                                       |
+| satellite                 | Satellite number                                                                |
+| S1                        | SNR observation data on L1                                                      |
+| S2                        | SNR observation data on L2                                                      |
+| S5                        | SNR observation data on L5                                                      |
+| S6                        | SNR observation data on L6                                                      |
+| S7                        | SNR observation data on L7                                                      |   
+| S8                        | SNR observation data on L8                                                      | 
+| time                      | Time as datetime object                                                         |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| __data_path__        | File path                                                                            |
+| __parser_name__      | Parser name                                                                          |
+
+
+
+## midgard.parsers.gnssrefl_txt
+A parser for reading daily GNSSREFL reflector height results (output of 'gnssir' and 'subdaily' program)
+
+TODO: subdaily produces several different formats. Not all of them are handled so far by this parser. At the moment
+      only the final subdaily file with RHdot and interfrequency bias corrections can be read.
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='gnssrefl_txt', file_path='218.txt')
+    data = p.as_dict()
+
+**Description:**
+
+Reads data from daily GNSSREFL files given as output from program 'gnssir'
+
+
+
+### **GnssreflTxt**
+
+Full name: `midgard.parsers.gnssrefl_txt.GnssreflTxt`
+
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
+
+A parser for reading daily GNSSREFL reflector height results (output of 'gnssir' and 'subdaily' program)
+
+Following **data** can be available after reading the file:
+
+| Parameter                 | Description                                                                     |
+| :------------------------ | :------------------------------------------------------------------------------ |
+| amplitude                 | Amplitude                                                                       |
+| azimuth                   | Azimuth in [deg]                                                                |
+| elevation_max             | Maximal elevation [deg]                                                         |
+| elevation_min             | Minimal elevation [deg]                                                         |
+| elevation_rate            | Elevation rate [rad/hour]                                                       |
+| frequency                 | GNSS frequency identifier                                                       |
+| interfreq_bias_correction | Interfrequency bias correction in [m] (Note: Information added to data.)        |
+| number_of_observation     | Number of SNR observation                                                       |
+| peak2noise                | Peak to noise (maximal amplitude/noise)                                         |
+| reflector_height          | Reflector height in [m]                                                         |
+| reflector_height_with_    | Reflector height with interfrequency corrections in [m]                         |
+|  interfreq_corr           |                                                                                 |
+| reflector_height_with_    | Reflector height with time varying height corrections (RHDOT) in [m]            | 
+|  rhdot_corr               |                                                                                 |
+| refraction_model          | Defining used refraction model                                                  |
+|                           |    0: No refraction correction applied                                          |
+|                           |    1: Standard Bennett refraction correction                                    |
+|                           |    2: Standard Bennett refraction correction, time-varying                      |
+|                           |    3: Ulich refraction correction                                               |
+|                           |    4: Ulich refraction correction, time-varying                                 |
+|                           |    5: NITE refraction correction (Peng et al.)                                  |
+|                           |    6: MPF refraction correction, Wiliams and Nievinski                          |
+| rhdot_correction          | Time varying height corrections (RHDOT) in [m]                                  |
+| rising_satellite          | Rising satellite is set to 1 and setting satellite to -1                        | 
+| satellite                 | Satellite number                                                                |
+| satellite_arc_length      | Satellite arc length in [min]                                                   |
+| time                      | Time as datetime object                                                         |
+
+and **meta**-data:
+
+| Key                  | Description                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| __data_path__        | File path                                                                            |
+| __parser_name__      | Parser name                                                                          |
 
 
 
@@ -1766,20 +1993,20 @@ Programs", 3. edition, August 2014
 
 Full name: `midgard.parsers.gravsoft_grid.GravsoftGrid`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading GRAVSOFT grid text files
 
 Following **data** are available after reading data:
 
 | Parameter           | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
+| :------------------ | :------------------------------------------------------------------------------------ |
 | griddata            | Grid data with ordered grid blocks as list                                            |
 
 and **meta**-data:
 
 | Key                 | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
+| :------------------ | :------------------------------------------------------------------------------------ |
 | grid_increment_lat  | Latitude grid increment in degree                                                     |
 | grid_increment_lon  | Longitude grid increment in degree                                                    |
 | grid_lat_max        | Maximal latitude border limit of grid area in degree                                  |
@@ -1988,7 +2215,7 @@ Reads data from files in the Rinex file format 2.11 (see :cite:`rinex2`).
 
 Full name: `midgard.parsers.rinex2_obs.Rinex2Parser`
 
-Signature: `(*args: Tuple[Any], sampling_rate: Optional[float] = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -> None`
+Signature: `(*args: Tuple[Any], sampling_rate: None | float = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -> None`
 
 A parser for reading RINEX observation file
 
@@ -2044,7 +2271,7 @@ converted to GPS time scale.
 
 Full name: `midgard.parsers.rinex3_nav.Rinex3NavParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading RINEX navigation file
 
@@ -2122,7 +2349,7 @@ Reads data from files in the RINEX file format version 3.03 (see :cite:`rinex3`)
 
 Full name: `midgard.parsers.rinex3_obs.Rinex3Parser`
 
-Signature: `(*args: Tuple[Any], sampling_rate: Optional[float] = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -> None`
+Signature: `(*args: Tuple[Any], sampling_rate: None | float = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -> None`
 
 A parser for reading RINEX observation file
 
@@ -2213,7 +2440,7 @@ Reads discontinuities of GNSS station timeseries in SINEX format .
 
 Full name: `midgard.parsers.sinex_discontinuities.DiscontinuitiesSnxParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -> None`
 
 A parser for reading data from discontinuties.snx file in SINEX format
 
@@ -2257,7 +2484,7 @@ Reads events related to GNSS configuration, environment changes or station times
 
 Full name: `midgard.parsers.sinex_events.EventsSnxParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -> None`
 
 A parser for reading data from events.snx file in SINEX format
 
@@ -2312,7 +2539,7 @@ SOLUTION/ESTIMATE dictionary.
 
 Full name: `midgard.parsers.sinex_site.SinexSiteParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -> None`
 
 A parser for reading site related information from SINEX format
 
@@ -2398,6 +2625,52 @@ site - Site dictionary, whereby keys are the site identifiers and values are a s
 
 
 
+## midgard.parsers.sinex_tms
+A parser for reading SINEX timeseries format
+
+**Example:**
+
+    from midgard import parsers
+    p = parsers.parse_file(parser_name='sinex_tms', file_path='sinex_tms')
+    data = p.as_dict()
+
+**Description:**
+
+Following SINEX timeseries blocks are read:
+
+            FILE/REFERENCE 
+            SITE/ID
+            SITE/RECEIVER
+            SITE/ANTENNA
+            SITE/ECCENTRICITY
+            TIMESERIES/REF_COORDINATE
+            TIMESERIES/COLUMNS
+            TIMESERIES/DATA
+
+
+### **FieldDef**
+
+Full name: `midgard.parsers.sinex_tms.FieldDef`
+
+Signature: `(field=None, unit=None)`
+
+A convenience class for defining dataset fields 
+
+**Args:**
+
+field (str):             Dataset field name
+unit (str):              Unit of field
+
+
+### **SinexTmsParser**
+
+Full name: `midgard.parsers.sinex_tms.SinexTmsParser`
+
+Signature: `(file_path, encoding=None)`
+
+A parser for reading SINEX timeseries format
+
+
 ## midgard.parsers.sinex_tro
 A parser for reading troposphere results in SNX format
 
@@ -2417,13 +2690,13 @@ Format description: https://files.igs.org/pub/data/format/sinex_tropo.txt
 
 
 
-### **BernTropSnxParser**
+### **SinexTropParser**
 
-Full name: `midgard.parsers.sinex_tro.BernTropSnxParser`
+Full name: `midgard.parsers.sinex_tro.SinexTropParser`
 
 Signature: `(file_path, encoding=None)`
 
-A parser for reading data from Bernese troposphere files in SNX format
+A parser for reading data from troposphere files in SNX format
 
 
 ## midgard.parsers.slr_prediction
@@ -2439,9 +2712,71 @@ Reads data from files in the CPF file format as defined in http://ilrs.gsfc.nasa
 
 Full name: `midgard.parsers.slr_prediction.SlrPredictionParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading SLR prediction files (CPF format)
+
+
+## midgard.parsers.sp3
+A parser for reading SP3-c and SP3-d orbit files
+
+**Example:**
+
+    from midgard import parsers
+
+    # Parse data
+    p = parsers.parse_file(parser_name="sp3d", file_path=file_path)
+
+    # Get Dataset with parsed data
+    dset = p.as_dataset()
+
+
+**Description:**
+
+Reads data from SP3-c files (see :cite:`hilla2010` ) and SP3-d files (see :cite:`hilla2016`). The reference frame is 
+defined in the header of the SP3 file, which is for IGS products the current IGS terrestrial reference frame 
+(e.g. IGb08). The time system is for IGS products the GPS time scale. The orbit position and velocities are given 
+normally for every 15 minutes.
+
+
+
+### **Sp3dParser**
+
+Full name: `midgard.parsers.sp3.Sp3dParser`
+
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
+
+A parser for reading data from SP3-c and SP3-d orbit files
+
+**Attributes:**
+
+data (dict):             Dict containing the (precise orbit) data read from file.
+data_available (bool):   Indicator of whether data are available.
+dependencies (list):     List of files that have been read by the parser.
+file_key (str):          Key to the SP3 orbit file defined in files.conf file.
+file_path (pathlib.PosixPath):  File path to SP3 orbit file.
+meta (dict):             Dict containing the metainformation read from file, whereby SP3 header entries define
+                             the keys.
+
+Methods:
+    calculate_data()        Carry out the defined calculators
+    copy_cache_to_data()    Copy contents of the cache to the data datastructure
+    copy_cache_to_meta()    Copy contents of the cache to the meta datastructure
+    parse()                 Parse data
+    parse_default()         Add the contents of line to data
+    parse_default_meta()    Add the contents of line to meta
+    parse_file()            Read a data file and parse the content
+    parse_line()            Parse line
+    read_data()             Read data from datafiles
+    setup_calculators()     List steps necessary for postprocessing
+    setup_parsers()         Setup parser definition
+    write_to_dataset()      Write data based on GNSS SP3 orbit file
+
+    _parse_date()           Parse date orbit position/velocity block
+    _parse_float()          Parse float entries of SP3 header to instance variable 'meta'
+    _parse_position()       Parse orbit position
+    _parse_string()         Parse string entries of SP3 header to instance variable 'meta'
+    _parse_velocity()       Parse orbit velocity
 
 
 ## midgard.parsers.spring_csv
@@ -2462,7 +2797,7 @@ Reads data from files in Spring CSV output format. The header information of the
 
 Full name: `midgard.parsers.spring_csv.SpringCsvParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Spring CSV output files
 
@@ -2472,7 +2807,7 @@ dictionary are represented by the Spring CSV colum values.
 Depending on the Spring CSV following dataset fields can be available:
 
 | Field               | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
+| :-------------------| :-------------------------------------------------------------------------------------|
 | acquiredsat         | Number of acquired satellites (TODO?)                                                 |
 | gdop                | Geometric dilution of precision                                                       |
 | hdop                | Horizontal dilution of precision                                                      |
@@ -2507,7 +2842,7 @@ based on the reference epoch.
 
 Full name: `midgard.parsers.ssc_site.SscSiteParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading data from TRF files in SSC format
 
@@ -2531,14 +2866,14 @@ Reads data from files in Terrapos position output format.
 
 Full name: `midgard.parsers.terrapos_position.TerraposPositionParser`
 
-Signature: `(*args: Tuple[Any], station: Optional[str] = None, **kwargs: Dict[Any, Any]) -> None`
+Signature: `(*args: Tuple[Any], station: None | str = None, **kwargs: Dict[Any, Any]) -> None`
 
 A parser for reading Terrapos position output file
 
 Following **data** are available after reading Terrapos position file:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
+| :------------------- | :----------------------------------------------------------------------------------- |
 | gpsweek              | GPS week                                                                             |
 | gpssec               | Seconds of GPS week                                                                  |
 | head                 | Head in [deg]                                                                        |
@@ -2559,9 +2894,9 @@ Following **data** are available after reading Terrapos position file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 ## midgard.parsers.terrapos_residual
@@ -2583,14 +2918,14 @@ Reads data from files in Terrapos residual format.
 
 Full name: `midgard.parsers.terrapos_residual.TerraposResidualParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading Terrapos residual file
 
 Following **data** are available after reading Terrapos residual file:
 
 | Parameter           | Description                                                                           |
-|---------------------|---------------------------------------------------------------------------------------|
+| :------------------ | :------------------------------------------------------------------------------------ |
 | azimuth             | Azimuth of satellites in [deg]                                                        |
 | elevation           | Elevation of satellites in [deg]                                                      |
 | gpsweek             | GPS week                                                                              |
@@ -2604,9 +2939,9 @@ Following **data** are available after reading Terrapos residual file:
 and **meta**-data:
 
 | Key                  | Description                                                                          |
-|----------------------|--------------------------------------------------------------------------------------|
-| \__data_path__       | File path                                                                            |
-| \__parser_name__     | Parser name                                                                          |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| \__data_path__      | File path                                                                            |
+| \__parser_name__    | Parser name                                                                          |
 
 
 
@@ -2629,7 +2964,7 @@ not read (TODO).
 
 Full name: `midgard.parsers.ure_control_tool_csv.UreControlToolCsvParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading URE Control Tool CSV output files
 
@@ -2646,11 +2981,74 @@ A parser for reading IVS source names translation table
 
 Full name: `midgard.parsers.vlbi_source_names.VlbiSourceNamesParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
 
 A parser for reading IVS source names translation table
 
 See https://vlbi.gsfc.nasa.gov/output for an example of a IVS source name file
+
+
+## midgard.parsers.water_level_api_xml
+A parser for reading water level file in XML format form Norwegian water level API
+
+
+**Description:**
+Note, that 'forecast' data are not read by this parser. In addition only data with common time period are read.
+It can e.g. happen, that predicted tidal data are available for a period, where no water level observations
+are available.
+
+**Example:**
+
+    from midgard import parsers
+
+    p = parsers.parse_file(parser_name="water_level_api_xml",  file_path="water_level_api.xml")
+    data = p.as_dict()
+   
+
+
+### **WaterLevelApiXml**
+
+Full name: `midgard.parsers.water_level_api_xml.WaterLevelApiXml`
+
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None) -> None`
+
+A parser for reading water level file in XML format form Norwegian water level API
+
+See https://vannstand.kartverket.no/tideapi_no.html for an example
+
+Following **data** are available in dependency of given water level data:
+
+| Parameter                  | Description                                                                    |
+| :------------------------- | :----------------------------------------------------------------------------- |
+| flag                       | Data flag of water level observation data (obs: observation, pre: prediction), |
+|                            | which can also predicted tidal data                                            |
+| time                       | Observation time                                                               |
+| water_level                | Observed/estimated water level data in [cm]                                    |
+| water_level_predicted      | Tidal prediction data in [cm]                                                  |
+| water_level_weather_effect | Weather effect [cm]                                                            |
+
+and **meta**-data:
+
+| Key                 | Description                                                                           |
+| :------------------ | :------------------------------------------------------------------------------------ |
+| code                | 3-digit station identifier                                                            |
+| delay               | Time shift applied to the tidal prediction to best represent the given locations in   |
+|                     | [min]                                                                                 | 
+| descr               | Description of water level data                                                       |
+| factor              | Amplitude correction factor                                                           |
+| latitude            | Latitude of water level position in [deg]                                             |
+| longitude           | Longitude of water level position in [deg]                                            |
+| name                | Station name                                                                          |
+| obsname             | Station name of observations                                                          |
+| obscode             | 3-digit station identifier of observations                                            |
+| quality_flag        | Quality flag of 'type' data                                                           |
+| quality_class       | Quality class of 'type' data                                                          |
+| quality_description | Quality description of 'type' data                                                    |    
+| type                | Data type of water level data                                                         |
+| unit                | Unit of water level data (information provided from 'type' data)                      | 
+| __data_path__       | File path                                                                             |
+| __parser_name__     | Parser name                                                                           |
+| __url__             | URL of water level API                                                                |
 
 
 ## midgard.parsers.wip_rinex
@@ -2673,7 +3071,7 @@ A parser for reading RINEX navigation files with version 2.xx
 
 Full name: `midgard.parsers.wip_rinex2_nav.Rinex2NavParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading RINEX navigation files with version 2.xx
 
@@ -2695,7 +3093,7 @@ A mixin defining which RINEX navigation headers are mandatory and optional in RI
 
 Full name: `midgard.parsers.wip_rinex2_nav_header.Rinex2NavHeaderParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading just the RINEX version 2.xx navigation header
 
@@ -2710,7 +3108,7 @@ A parser for reading RINEX observation files with version 2.xx
 
 Full name: `midgard.parsers.wip_rinex2_obs.Rinex2ObsParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading RINEX observation files with version 2.xx
 
@@ -2732,7 +3130,7 @@ A mixin defining which RINEX observation headers are mandatory and optional in R
 
 Full name: `midgard.parsers.wip_rinex2_obs_header.Rinex2ObsHeaderParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading just the RINEX version 2.xx observation header
 
@@ -2747,7 +3145,7 @@ A parser for reading RINEX clock files with version 3.xx
 
 Full name: `midgard.parsers.wip_rinex3_clk.Rinex3ClkParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading RINEX clock files with version 3.xx
 
@@ -2768,7 +3166,7 @@ A mixin defining which RINEX clock headers are mandatory and optional in RINEX v
 
 Full name: `midgard.parsers.wip_rinex3_clk_header.Rinex3ClkHeaderParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading just the RINEX version 3.xx clock header
 
@@ -2783,7 +3181,7 @@ A parser for reading RINEX navigation files with version 3.xx
 
 Full name: `midgard.parsers.wip_rinex3_nav.Rinex3NavParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading RINEX navigation files with version 3.xx
 
@@ -2805,7 +3203,7 @@ A mixin defining which RINEX navigation headers are mandatory and optional in RI
 
 Full name: `midgard.parsers.wip_rinex3_nav_header.Rinex3NavHeaderParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading just the RINEX version 3.xx navigation header
 
@@ -2820,7 +3218,7 @@ A parser for reading RINEX observation files with version 3.xx
 
 Full name: `midgard.parsers.wip_rinex3_obs.Rinex3ObsParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading RINEX observation files with version 3.xx
 
@@ -2842,7 +3240,7 @@ A mixin defining which RINEX observation headers are mandatory and optional in R
 
 Full name: `midgard.parsers.wip_rinex3_obs_header.Rinex3ObsHeaderParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 A parser for reading just the RINEX version 3.xx observation header
 
@@ -2857,7 +3255,7 @@ A parser for reading Rinex navigation files
 
 Full name: `midgard.parsers.wip_rinex_clk.RinexClkParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 Class for defining common methods for RINEX clock parsers.
 
@@ -2878,7 +3276,7 @@ A parser for reading Rinex navigation files
 
 Full name: `midgard.parsers.wip_rinex_nav.RinexNavParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 Class for defining common methods for RINEX navigation parsers.
 
@@ -2899,7 +3297,7 @@ A parser for reading Rinex observation files
 
 Full name: `midgard.parsers.wip_rinex_obs.RinexObsParser`
 
-Signature: `(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=<built-in function print>, sampling_rate: Optional[int] = None, strict: bool = False) -> None`
+Signature: `(file_path: str | pathlib.Path, encoding: str | None = None, logger=<built-in function print>, sampling_rate: int | None = None, strict: bool = False) -> None`
 
 Class for defining common methods for RINEX observation parsers.
 

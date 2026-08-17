@@ -31,8 +31,8 @@ from pathlib import Path as _Path
 
 # Version of Midgard.
 #
-# This is automatically set using the bumpversion tool
-__version__ = "1.3.0"
+# This is automatically set using the bump-my-version tool
+__version__ = "1.4.0"
 
 
 # Authors of Midgard.

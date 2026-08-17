@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,15 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.data - Midgard v1.3.0</title>
+        <title>midgard.data - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -20,9 +24,9 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
                 <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -30,11 +34,11 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem">
+                            <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
@@ -42,12 +46,16 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
     <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
 </li>
                                     
 <li>
@@ -59,7 +67,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">midgard.data</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.data</a>
 </li>
                                     
 <li>
@@ -97,9 +105,9 @@
                             </li>
                         </ul>
 
-                    <ul class="nav navbar-nav ml-auto">
+                    <ul class="nav navbar-nav ms-md-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
@@ -120,100 +128,100 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
             <span class="fa fa-angle-down"></span>
         </button>
     </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#midgarddata" class="nav-link">midgard.data</a>
+            <li class="nav-item" data-bs-level="1"><a href="#midgarddata" class="nav-link">midgard.data</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgarddata_h5utils" class="nav-link">midgard.data._h5utils</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddata_position" class="nav-link">midgard.data._position</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddata_h5utils" class="nav-link">midgard.data._h5utils</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddata_time" class="nav-link">midgard.data._time</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddata_position" class="nav-link">midgard.data._position</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatacollection" class="nav-link">midgard.data.collection</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddata_time" class="nav-link">midgard.data._time</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatadataset" class="nav-link">midgard.data.dataset</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatacollection" class="nav-link">midgard.data.collection</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypes" class="nav-link">midgard.data.fieldtypes</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatadataset" class="nav-link">midgard.data.dataset</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypes_fieldtype" class="nav-link">midgard.data.fieldtypes._fieldtype</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypes" class="nav-link">midgard.data.fieldtypes</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypesbool" class="nav-link">midgard.data.fieldtypes.bool</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypes_fieldtype" class="nav-link">midgard.data.fieldtypes._fieldtype</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypescollection" class="nav-link">midgard.data.fieldtypes.collection</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypesbool" class="nav-link">midgard.data.fieldtypes.bool</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypesfloat" class="nav-link">midgard.data.fieldtypes.float</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypescollection" class="nav-link">midgard.data.fieldtypes.collection</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypesposition" class="nav-link">midgard.data.fieldtypes.position</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypesfloat" class="nav-link">midgard.data.fieldtypes.float</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypesposition_delta" class="nav-link">midgard.data.fieldtypes.position_delta</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypesposition" class="nav-link">midgard.data.fieldtypes.position</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypesposvel" class="nav-link">midgard.data.fieldtypes.posvel</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypesposition_delta" class="nav-link">midgard.data.fieldtypes.position_delta</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypesposvel_delta" class="nav-link">midgard.data.fieldtypes.posvel_delta</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypesposvel" class="nav-link">midgard.data.fieldtypes.posvel</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypessigma" class="nav-link">midgard.data.fieldtypes.sigma</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypesposvel_delta" class="nav-link">midgard.data.fieldtypes.posvel_delta</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypestext" class="nav-link">midgard.data.fieldtypes.text</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypessigma" class="nav-link">midgard.data.fieldtypes.sigma</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypestime" class="nav-link">midgard.data.fieldtypes.time</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypestext" class="nav-link">midgard.data.fieldtypes.text</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatafieldtypestime_delta" class="nav-link">midgard.data.fieldtypes.time_delta</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypestime" class="nav-link">midgard.data.fieldtypes.time</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddataposition" class="nav-link">midgard.data.position</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatafieldtypestime_delta" class="nav-link">midgard.data.fieldtypes.time_delta</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatasigma" class="nav-link">midgard.data.sigma</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddataposition" class="nav-link">midgard.data.position</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgarddatatime" class="nav-link">midgard.data.time</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatasigma" class="nav-link">midgard.data.sigma</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgarddatatime" class="nav-link">midgard.data.time</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -241,7 +249,7 @@ reading and correct interpretation of the attribute.</p>
 <p>Module for dealing with positions, velocities and position corrections in different coordinate systems</p>
 <h3 id="posbase"><strong>PosBase</strong></h3>
 <p>Full name: <code>midgard.data._position.PosBase</code></p>
-<p>Signature: <code>()</code></p>
+<p>Signature: <code>(shape, dtype=None, buffer=None, offset=0, strides=None, order=None)</code></p>
 <p>Base class for the various position and velocity arrays</p>
 <h3 id="posvelarray"><strong>PosVelArray</strong></h3>
 <p>Full name: <code>midgard.data._position.PosVelArray</code></p>
@@ -703,7 +711,7 @@ Returns:
 <p>Array with time epochs</p>
 <h3 id="time"><strong>Time</strong>()</h3>
 <p>Full name: <code>midgard.data.time.Time</code></p>
-<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None, _jd1: Optional[numpy.ndarray] = None, _jd2: Optional[numpy.ndarray] = None) -&gt; 'TimeArray'</code></p>
+<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: numpy.ndarray | None = None, _jd1: numpy.ndarray | None = None, _jd2: numpy.ndarray | None = None) -&gt; 'TimeArray'</code></p>
 <p>Factory for creating TimeArrays for different systems</p>
 <p>See each time class for exact optional parameters.</p>
 <p><strong>Args:</strong></p>
@@ -717,7 +725,7 @@ Returns:
 <p>Array with epochs in the given time scale and format</p>
 <h3 id="timedelta"><strong>TimeDelta</strong>()</h3>
 <p>Full name: <code>midgard.data.time.TimeDelta</code></p>
-<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None) -&gt; 'TimeDeltaArray'</code></p>
+<p>Signature: <code>(val: numpy.ndarray, scale: str, fmt: str, val2: numpy.ndarray | None = None) -&gt; 'TimeDeltaArray'</code></p>
 <p>Factory for creating TimeArrays for different systems</p>
 <p>See each time class for exact optional parameters.</p>
 <p><strong>Args:</strong></p>
@@ -742,8 +750,7 @@ Returns:
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="../../js/jquery-3.6.0.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
@@ -756,7 +763,7 @@ Returns:
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>From here you can search these documents. Enter your search terms below.</p>
@@ -776,7 +783,7 @@ Returns:
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <table class="table">

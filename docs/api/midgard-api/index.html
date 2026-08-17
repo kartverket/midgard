@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.files - Midgard v1.4.0</title>
+        <title>midgard.api - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -55,7 +55,7 @@
 </li>
                                     
 <li>
-    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.api</a>
 </li>
                                     
 <li>
@@ -75,7 +75,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">midgard.files</a>
+    <a href="../midgard-files/" class="dropdown-item">midgard.files</a>
 </li>
                                     
 <li>
@@ -112,12 +112,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../midgard-dev/" class="nav-link">
+                                <a rel="prev" href="../midgard/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../midgard-gnss/" class="nav-link">
+                                <a rel="next" href="../midgard-collections/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -139,24 +139,47 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#midgardfiles" class="nav-link">midgard.files</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesdates" class="nav-link">midgard.files.dates</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardapitransformation_api" class="nav-link">midgard.api.transformation_api</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesdependencies" class="nav-link">midgard.files.dependencies</a>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-transformationapi-class-on-default-url" class="nav-link">Get instance of TransformationApi class on default URL</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesfiles" class="nav-link">midgard.files.files</a>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-transformationapi-class-based-on-defined-url" class="nav-link">Get instance of TransformationApi class based on defined URL</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesurl" class="nav-link">midgard.files.url</a>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#transform-from-itrf2014-to-etrs89" class="nav-link">Transform from ITRF2014 to ETRS89</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#midgardapiwater_level_api" class="nav-link">midgard.api.water_level_api</a>
               <ul class="nav flex-column">
               </ul>
             </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#standard-library-imports" class="nav-link">Standard library imports</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#import-water-level-api-wrapper" class="nav-link">Import water level API wrapper</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#define-file-path-of-xml-file-received-by-water-level-api" class="nav-link">Define file path of XML file received by water level API</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-waterlevelapi-class" class="nav-link">Get instance of WaterLevelApi class</a>
+              <ul class="nav flex-column">
               </ul>
             </li>
         </ul>
@@ -164,161 +187,78 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="midgardfiles">midgard.files</h1>
-<h2 id="midgardfilesdates">midgard.files.dates</h2>
-<p>Convenience functions for working with dates</p>
+<h2 id="midgardapitransformation_api">midgard.api.transformation_api</h2>
+<p>Python wrapper around the Transformation API</p>
 <p><strong>Description:</strong></p>
-<p>Formats and converters that can be used for convenience and consistency.</p>
-<h3 id="fmt_date-str">FMT_date (str)</h3>
-<p><code>FMT_date = '%Y-%m-%d'</code></p>
-<h3 id="fmt_datetime-str">FMT_datetime (str)</h3>
-<p><code>FMT_datetime = '%Y-%m-%d %H:%M:%S'</code></p>
-<h3 id="fmt_dt_file-str">FMT_dt_file (str)</h3>
-<p><code>FMT_dt_file = '%Y%m%d-%H%M%S'</code></p>
-<h3 id="date_vars"><strong>date_vars</strong>()</h3>
-<p>Full name: <code>midgard.files.dates.date_vars</code></p>
-<p>Signature: <code>(date: datetime.date | datetime.datetime | None) -&gt; Dict[str, str]</code></p>
-<p>Construct a dict of date variables</p>
-<p>From a given date, construct a dict containing all relevant date
-variables. This dict can be used to for instance replace variables in file
-names.</p>
-<p><strong>Examples:</strong></p>
-<pre><code>&gt;&gt;&gt; from datetime import date
-&gt;&gt;&gt; date_vars(date(2009, 11, 2))  # doctest: +NORMALIZE_WHITESPACE
-{'yyyy': '2009', 'ce': '20', 'yy': '09', 'm': '11', 'mm': '11', 'mmm': 'nov', 'MMM': 'NOV', 'd': '2',
- 'dd': '02', 'doy': '306', 'dow': '1', 'h': '0', 'hh': '00'}
-
-&gt;&gt;&gt; date_vars(None)
-{}
-</code></pre>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>date</code>:  The given date.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Dictionary with date variables for the given date.</p>
-<h2 id="midgardfilesdependencies">midgard.files.dependencies</h2>
-<p>Midgard library module for handling dependencies</p>
-<p><strong>Description:</strong></p>
-<p>Stores a list of files with a hash/checksum or a timestamp that can be used to detect if a file changes.</p>
-<p>Two strategies are available:</p>
-<ul>
-<li>Timestamps: Fast, but not always reliable as timestamps may update without the file actually changing.</li>
-<li>md5 hash/checksum: Slower, since it needs to read through the whole file, but will reliably only trigger when a file
-  has changed.</li>
-</ul>
-<h3 id="add"><strong>add</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.add</code></p>
-<p>Signature: <code>(*file_paths: str | pathlib.Path, label: str = '') -&gt; None</code></p>
-<p>Add a list of files to the list of dependencies</p>
-<p>Records the current time stamp or md5 hash of the files specified by file
-paths, and stores as dependencies on the dependency file.</p>
-<p>Before adding dependencies, a call to <code>init()</code> has to be done, to set up
-where to store the dependencies.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_paths</code>:  List of file paths to add to the dependency file.</li>
-<li><code>label</code>:       Optional label for dependencies.</li>
-</ul>
-<h3 id="changed"><strong>changed</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.changed</code></p>
-<p>Signature: <code>(file_path: str | pathlib.Path, fast_check: bool = True) -&gt; bool</code></p>
-<p>Check if the dependencies have changed</p>
-<p>Returns True if any of the files listed in the dependency file have
-changed, or if the dependency file itself does not exist.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_path</code>:   Path to dependency file.</li>
-<li><code>fast_check</code>:  Fast check uses timestamps, slow check uses md5 checksums.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>True if any file has changed or if the dependecy file does not exist, False otherwise.</p>
-<h3 id="get_md5"><strong>get_md5</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.get_md5</code></p>
-<p>Signature: <code>(file_path: str | pathlib.Path) -&gt; str</code></p>
-<p>Return a md5 checksum based on a file.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_path</code>: Path to file.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>Hex-string representing the contents of the file.</p>
-<h3 id="get_paths_with_label"><strong>get_paths_with_label</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.get_paths_with_label</code></p>
-<p>Signature: <code>(file_path: str | pathlib.Path, label_pattern: str) -&gt; List[pathlib.Path]</code></p>
-<p>Find all paths with the given label</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_path</code>:      Path to dependency file.</li>
-<li><code>label_pattern</code>:  String with label or regular expression (e.g. 'gnss_rinex_nav_[MGE]' or 'gnss_rinex_nav_.').</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<ul>
-<li><code>List</code>:  List of file paths.</li>
-</ul>
-<h3 id="get_timestamp"><strong>get_timestamp</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.get_timestamp</code></p>
-<p>Signature: <code>(file_path: str | pathlib.Path) -&gt; str</code></p>
-<p>Return a textual timestamp from the modification date of a file</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_path</code>:  Path to file.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>String representing the modification date of the file.</p>
-<h3 id="init"><strong>init</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.init</code></p>
-<p>Signature: <code>(file_path: str | pathlib.Path, fast_check: bool = True) -&gt; None</code></p>
-<p>Start a clean list of dependencies</p>
-<p>The file_path is to the file in which dependencies are stored. This is
-cached, so after init() is run, the other functions do not need to specify
-the file_path.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_path</code>:   Path to dependency file.</li>
-<li><code>fast_check</code>:  Fast check uses timestamps, slow check uses md5 checksums.</li>
-</ul>
-<h3 id="write"><strong>write</strong>()</h3>
-<p>Full name: <code>midgard.files.dependencies.write</code></p>
-<p>Signature: <code>() -&gt; None</code></p>
-<p>Write dependencies to file</p>
-<h2 id="midgardfilesfiles">midgard.files.files</h2>
-<p>Utilities for working with files</p>
-<h3 id="move"><strong>move</strong>()</h3>
-<p>Full name: <code>midgard.files.files.move</code></p>
-<p>Signature: <code>(from_path: str | pathlib.Path, to_path: str | pathlib.Path, overwrite: bool = True) -&gt; None</code></p>
-<p>Move a file to another path</p>
-<p>With overwrite set to True, to_path may already exist and will be overwritten without warning. Setting overwrite to
-False will raise a FileExistsError if to_path already exists.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>from_path</code>:  Path of file to be moved.</li>
-<li><code>to_path</code>:    Path file will be moved to.</li>
-<li><code>overwrite</code>:  If True, to_path may already exist. If False, to_path will never be overwritten.</li>
-</ul>
-<h3 id="open"><strong>open</strong>()</h3>
-<p>Full name: <code>midgard.files.files.open</code></p>
-<p>Signature: <code>(file_path: str | pathlib.Path, create_dirs: bool = False, open_as_gzip: bool | None = None, **open_args: Any) -&gt; Iterator</code></p>
-<p>Open a file.</p>
-<p>Can automatically create the necessary directories before writing to a file, as well as handle gzipped files.</p>
-<p>With <code>open_as_gzip</code> set to None (default), it will try to detect whether the path is a .gz file simply by looking
-at the path suffix. For more control, you can set the parameter to True or False explicitly.</p>
-<p><strong>Args:</strong></p>
-<ul>
-<li><code>file_path</code>:     String or pathlib.Path representing the full file path.</li>
-<li><code>create_dirs</code>:   True or False, if True missing directories are created.</li>
-<li><code>open_as_gzip</code>:  Use gzip library to open file.</li>
-<li><code>open_args</code>:     All keyword arguments are passed on to the built-in open.</li>
-</ul>
-<p><strong>Returns:</strong></p>
-<p>File object representing the file.</p>
-<h2 id="midgardfilesurl">midgard.files.url</h2>
-<p>Midgard library module, defining a URL class that mirrors Pathlib.Path</p>
-<p>Warning: There are many intricacies of URLs that are not handled by this class at the moment.</p>
-<h3 id="url"><strong>URL</strong></h3>
-<p>Full name: <code>midgard.files.url.URL</code></p>
-<p>Signature: <code>()</code></p>
-<p>Simple wrapper around String to have URLs work similar to pathlib.Path</p></div>
+<p>Transformation of coordinates can be done by using Transformation API from/to different reference systems and 
+projection. Available Transformation API projections can be shown by using function 'projections'.</p>
+<p><strong>Example:</strong>
+from midgard.api import transformation_api</p>
+<h1 id="get-instance-of-transformationapi-class-on-default-url">Get instance of TransformationApi class on default URL</h1>
+<p>api = transformation_api.TransformationApi()</p>
+<h1 id="get-instance-of-transformationapi-class-based-on-defined-url">Get instance of TransformationApi class based on defined URL</h1>
+<p>api = transformation_api.TransformationApi(url="https://ws.geonorge.no/transformering/v1")</p>
+<h1 id="transform-from-itrf2014-to-etrs89">Transform from ITRF2014 to ETRS89</h1>
+<p>pos = api.transform(2169481.21111251,  627616.7736756 , 5944952.10084486, 2021.0, 4936, 7789)</p>
+<h3 id="transformationapi"><strong>TransformationApi</strong></h3>
+<p>Full name: <code>midgard.api.transformation_api.TransformationApi</code></p>
+<p>Signature: <code>(url: str = 'https://ws.geonorge.no/transformering/v1', proxy: str | None = None) -&gt; None</code></p>
+<p>A wrapper around the transformation API</p>
+<p>https://ws.geonorge.no/transformering/v1/transformer?x=1&amp;y=60&amp;z=0&amp;t=2018&amp;fra=4258&amp;til=4258</p>
+<h2 id="midgardapiwater_level_api">midgard.api.water_level_api</h2>
+<p>Python wrapper around the Norwegian water level API (https://vannstand.kartverket.no/tideapi_en.html)</p>
+<p><strong>Description:</strong>
+The Python wrapper access only the water level data from the API.</p>
+<p>Water level information includes information about levels, tide tables with high and low waters and tidal 
+constituents, and data such as predicted tides, (estimated) observed water level and surge, and water level forecasts.</p>
+<p>Using the API, water level information can be requested from a specific water level station, typically one of the 
+permanent tide gauges, or for a particular position. All requests for water level information for a position are based
+on a model where the Norwegian coast has been divided into tidal zones. For each valid zone, the tide tables, 
+predictions and tide related levels are calculated based on tidal prediction from an associated station with assigned
+correction factor for height and delay for time shift. Most zones return the observed weather effect (surge) from the
+closest permanent station. The estimated observations of water level returned are the sum of the adjusted tidal 
+predictions and the observed weather effects from the most relevant permanent tide gauge. The adjusted tidal 
+predictions and the observed weather effect can be based on different stations. </p>
+<p>The different types of levels include important reference levels used in maps and other official products, astronomical
+levels related to the tide, observed extremes and statistical return levels for extreme water levels with different
+return periods.</p>
+<p><strong>Terms of Use:</strong>
+The API is open for everybody and does not require registration, but the Norwegian Mapping Authority, Hydrographic
+Service must be credited, since we are licensee of the data.</p>
+<p>The use of the data is licensed through Creative Commons Attribution 4.0 international (CCBY 4.0). See also Terms of
+use at Kartverket.no.</p>
+<p>Please be careful not to abuse the API by excessive polling of data. Proper programming practice will be to cache
+static data locally and limit the number of requests. Remember that you share this resource with all other users.</p>
+<p>Users must also accept that the API is evolving, and that new elements or parameters might be added to existing
+requests.</p>
+<p><strong>Example:</strong></p>
+<h1 id="standard-library-imports">Standard library imports</h1>
+<p>from datetime import datetime</p>
+<h1 id="import-water-level-api-wrapper">Import water level API wrapper</h1>
+<p>from midgard.api import water_level_api</p>
+<h1 id="define-file-path-of-xml-file-received-by-water-level-api">Define file path of XML file received by water level API</h1>
+<p>file_path = "../examples/api/water_level_api.xml"</p>
+<h1 id="get-instance-of-waterlevelapi-class">Get instance of WaterLevelApi class</h1>
+<p>api = water_level_api.WaterLevelApi(
+        file_path=file_path,
+        date_from=datetime(2025, 1, 1),
+        date_to=datetime(2025, 1, 2),
+        station="ANX",
+)</p>
+<p>from datetime import datetime
+from midgard.api import water_level_api 
+api = water_level_api.WaterLevelApi(
+        file_path="test.xml",
+        date_from=datetime(2025, 1, 1),
+        date_to=datetime(2025, 1, 2),
+        station="ANX",
+)</p>
+<h3 id="station_def-list">STATION_DEF (list)</h3>
+<p><code>STATION_DEF = ['ANX', 'BGO', 'BOH', 'BOO', 'BRJ', 'HFT', 'HAR', 'HEI', 'HRO', 'HVG', 'KAB', 'KSU', 'LEH', 'MSU', 'MAY', 'NVK', 'NYA', 'OSC', 'OSL', 'RVK', 'SBG', 'SIE', 'SOY', 'SVG', 'TRG', 'TOS', 'TRD', 'TAZ', 'VAW', 'VIK', 'AES']</code></p>
+<h3 id="waterlevelapi"><strong>WaterLevelApi</strong></h3>
+<p>Full name: <code>midgard.api.water_level_api.WaterLevelApi</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, date_from: datetime.datetime, date_to: datetime.datetime, station: str | None = None, latitude: float | None = None, longitude: float | None = None, datatype: str | None = 'all', reference_level: str | None = 'chart_datum', interval: int | str = 10, no_annual_tidal: bool | None = False, url: str | None = 'https://vannstand.kartverket.no/tideapi.php') -&gt; None</code></p>
+<p>Python wrapper around the Norwegian water level API (https://vannstand.kartverket.no/tideapi_en.html)</p></div>
             </div>
         </div>
 

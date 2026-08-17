@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,15 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.parsers - Midgard v1.3.0</title>
+        <title>midgard.parsers - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -20,9 +24,9 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
                 <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -30,11 +34,11 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem">
+                            <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
@@ -42,12 +46,16 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
     <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
 </li>
                                     
 <li>
@@ -79,7 +87,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">midgard.parsers</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.parsers</a>
 </li>
                                     
 <li>
@@ -97,9 +105,9 @@
                             </li>
                         </ul>
 
-                    <ul class="nav navbar-nav ml-auto">
+                    <ul class="nav navbar-nav ms-md-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
@@ -120,291 +128,319 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
             <span class="fa fa-angle-down"></span>
         </button>
     </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#midgardparsers" class="nav-link">midgard.parsers</a>
+            <li class="nav-item" data-bs-level="1"><a href="#midgardparsers" class="nav-link">midgard.parsers</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardparsers_parser" class="nav-link">midgard.parsers._parser</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsers_parser_chain" class="nav-link">midgard.parsers._parser_chain</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsers_parser" class="nav-link">midgard.parsers._parser</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsers_parser_line" class="nav-link">midgard.parsers._parser_line</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsers_parser_chain" class="nav-link">midgard.parsers._parser_chain</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsers_parser_rinex" class="nav-link">midgard.parsers._parser_rinex</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsers_parser_line" class="nav-link">midgard.parsers._parser_line</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsers_parser_sinex" class="nav-link">midgard.parsers._parser_sinex</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsers_parser_rinex" class="nav-link">midgard.parsers._parser_rinex</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersantex" class="nav-link">midgard.parsers.antex</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsers_parser_sinex" class="nav-link">midgard.parsers._parser_sinex</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersanubis" class="nav-link">midgard.parsers.anubis</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersantex" class="nav-link">midgard.parsers.antex</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersapi_water_level_norway" class="nav-link">midgard.parsers.api_water_level_norway</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersanubis" class="nav-link">midgard.parsers.anubis</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbcecmp_sisre" class="nav-link">midgard.parsers.bcecmp_sisre</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersapi_water_level_norway" class="nav-link">midgard.parsers.api_water_level_norway</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_clu" class="nav-link">midgard.parsers.bernese_clu</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbcecmp_sisre" class="nav-link">midgard.parsers.bcecmp_sisre</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_compar_out" class="nav-link">midgard.parsers.bernese_compar_out</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_clu" class="nav-link">midgard.parsers.bernese_clu</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_crd" class="nav-link">midgard.parsers.bernese_crd</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_compar_out" class="nav-link">midgard.parsers.bernese_compar_out</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_prc" class="nav-link">midgard.parsers.bernese_prc</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_crd" class="nav-link">midgard.parsers.bernese_crd</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_slr_plt" class="nav-link">midgard.parsers.bernese_slr_plt</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_prc" class="nav-link">midgard.parsers.bernese_prc</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_sta" class="nav-link">midgard.parsers.bernese_sta</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_slr_plt" class="nav-link">midgard.parsers.bernese_slr_plt</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersbernese_trp" class="nav-link">midgard.parsers.bernese_trp</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_sta" class="nav-link">midgard.parsers.bernese_sta</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserscost" class="nav-link">midgard.parsers.cost</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_sta_v52" class="nav-link">midgard.parsers.bernese_sta_v52</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserscsv_" class="nav-link">midgard.parsers.csv_</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersbernese_trp" class="nav-link">midgard.parsers.bernese_trp</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgalileo_constellation_html" class="nav-link">midgard.parsers.galileo_constellation_html</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserscost" class="nav-link">midgard.parsers.cost</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgamit_org" class="nav-link">midgard.parsers.gamit_org</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserscsv_" class="nav-link">midgard.parsers.csv_</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#globk-ver-534-global-solution" class="nav-link">GLOBK Ver 5.34, Global solution</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersdoris_stcd" class="nav-link">midgard.parsers.doris_stcd</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsy_stacov" class="nav-link">midgard.parsers.gipsy_stacov</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgalileo_constellation_html" class="nav-link">midgard.parsers.galileo_constellation_html</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsy_sum" class="nav-link">midgard.parsers.gipsy_sum</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgamit_org" class="nav-link">midgard.parsers.gamit_org</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsy_tdp" class="nav-link">midgard.parsers.gipsy_tdp</a>
+            <li class="nav-item" data-bs-level="2"><a href="#globk-ver-534-global-solution" class="nav-link">GLOBK Ver 5.34, Global solution</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsyx_gdcov" class="nav-link">midgard.parsers.gipsyx_gdcov</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsy_stacov" class="nav-link">midgard.parsers.gipsy_stacov</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsyx_residual" class="nav-link">midgard.parsers.gipsyx_residual</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsy_sum" class="nav-link">midgard.parsers.gipsy_sum</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsyx_series" class="nav-link">midgard.parsers.gipsyx_series</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsy_tdp" class="nav-link">midgard.parsers.gipsy_tdp</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsyx_summary" class="nav-link">midgard.parsers.gipsyx_summary</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsyx_gdcov" class="nav-link">midgard.parsers.gipsyx_gdcov</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgipsyx_tdp" class="nav-link">midgard.parsers.gipsyx_tdp</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsyx_residual" class="nav-link">midgard.parsers.gipsyx_residual</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersglab_output" class="nav-link">midgard.parsers.glab_output</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsyx_series" class="nav-link">midgard.parsers.gipsyx_series</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgnss_android_raw_data" class="nav-link">midgard.parsers.gnss_android_raw_data</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsyx_summary" class="nav-link">midgard.parsers.gipsyx_summary</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgnss_galat_results" class="nav-link">midgard.parsers.gnss_galat_results</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgipsyx_tdp" class="nav-link">midgard.parsers.gipsyx_tdp</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgnssrefl_allrh" class="nav-link">midgard.parsers.gnssrefl_allrh</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersglab_output" class="nav-link">midgard.parsers.glab_output</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersgravsoft_grid" class="nav-link">midgard.parsers.gravsoft_grid</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgnss_android_raw_data" class="nav-link">midgard.parsers.gnss_android_raw_data</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersrinex212_nav" class="nav-link">midgard.parsers.rinex212_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgnss_galat_results" class="nav-link">midgard.parsers.gnss_galat_results</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-              </ul>
-            </li>
-            
-            <li class="nav-item" data-level="1"><a href="#todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables" class="nav-link">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardparsersrinex2_nav" class="nav-link">midgard.parsers.rinex2_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgnssrefl_allrh" class="nav-link">midgard.parsers.gnssrefl_allrh</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-              </ul>
-            </li>
-            
-            <li class="nav-item" data-level="1"><a href="#todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables_1" class="nav-link">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardparsersrinex2_obs" class="nav-link">midgard.parsers.rinex2_obs</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgnssrefl_snr" class="nav-link">midgard.parsers.gnssrefl_snr</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersrinex3_nav" class="nav-link">midgard.parsers.rinex3_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgnssrefl_txt" class="nav-link">midgard.parsers.gnssrefl_txt</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersgravsoft_grid" class="nav-link">midgard.parsers.gravsoft_grid</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersrinex212_nav" class="nav-link">midgard.parsers.rinex212_nav</a>
               <ul class="nav flex-column">
               </ul>
             </li>
               </ul>
             </li>
             
-            <li class="nav-item" data-level="1"><a href="#todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables_2" class="nav-link">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</a>
+            <li class="nav-item" data-bs-level="1"><a href="#todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables" class="nav-link">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardparsersrinex3_obs" class="nav-link">midgard.parsers.rinex3_obs</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersrinex_nav" class="nav-link">midgard.parsers.rinex_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersrinex2_nav" class="nav-link">midgard.parsers.rinex2_nav</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_discontinuities" class="nav-link">midgard.parsers.sinex_discontinuities</a>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables_1" class="nav-link">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersrinex2_obs" class="nav-link">midgard.parsers.rinex2_obs</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_events" class="nav-link">midgard.parsers.sinex_events</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersrinex3_nav" class="nav-link">midgard.parsers.rinex3_nav</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_site" class="nav-link">midgard.parsers.sinex_site</a>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables_2" class="nav-link">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersrinex3_obs" class="nav-link">midgard.parsers.rinex3_obs</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserssinex_tro" class="nav-link">midgard.parsers.sinex_tro</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersrinex_nav" class="nav-link">midgard.parsers.rinex_nav</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersslr_prediction" class="nav-link">midgard.parsers.slr_prediction</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserssinex_discontinuities" class="nav-link">midgard.parsers.sinex_discontinuities</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersspring_csv" class="nav-link">midgard.parsers.spring_csv</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserssinex_events" class="nav-link">midgard.parsers.sinex_events</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersssc_site" class="nav-link">midgard.parsers.ssc_site</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserssinex_site" class="nav-link">midgard.parsers.sinex_site</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersterrapos_position" class="nav-link">midgard.parsers.terrapos_position</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserssinex_tms" class="nav-link">midgard.parsers.sinex_tms</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersterrapos_residual" class="nav-link">midgard.parsers.terrapos_residual</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserssinex_tro" class="nav-link">midgard.parsers.sinex_tro</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersure_control_tool_csv" class="nav-link">midgard.parsers.ure_control_tool_csv</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersslr_prediction" class="nav-link">midgard.parsers.slr_prediction</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparsersvlbi_source_names" class="nav-link">midgard.parsers.vlbi_source_names</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserssp3" class="nav-link">midgard.parsers.sp3</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex" class="nav-link">midgard.parsers.wip_rinex</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersspring_csv" class="nav-link">midgard.parsers.spring_csv</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex2_nav" class="nav-link">midgard.parsers.wip_rinex2_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersssc_site" class="nav-link">midgard.parsers.ssc_site</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex2_nav_header" class="nav-link">midgard.parsers.wip_rinex2_nav_header</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersterrapos_position" class="nav-link">midgard.parsers.terrapos_position</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex2_obs" class="nav-link">midgard.parsers.wip_rinex2_obs</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersterrapos_residual" class="nav-link">midgard.parsers.terrapos_residual</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex2_obs_header" class="nav-link">midgard.parsers.wip_rinex2_obs_header</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersure_control_tool_csv" class="nav-link">midgard.parsers.ure_control_tool_csv</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex3_clk" class="nav-link">midgard.parsers.wip_rinex3_clk</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparsersvlbi_source_names" class="nav-link">midgard.parsers.vlbi_source_names</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex3_clk_header" class="nav-link">midgard.parsers.wip_rinex3_clk_header</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswater_level_api_xml" class="nav-link">midgard.parsers.water_level_api_xml</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex3_nav" class="nav-link">midgard.parsers.wip_rinex3_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex" class="nav-link">midgard.parsers.wip_rinex</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex3_nav_header" class="nav-link">midgard.parsers.wip_rinex3_nav_header</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex2_nav" class="nav-link">midgard.parsers.wip_rinex2_nav</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex3_obs" class="nav-link">midgard.parsers.wip_rinex3_obs</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex2_nav_header" class="nav-link">midgard.parsers.wip_rinex2_nav_header</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex3_obs_header" class="nav-link">midgard.parsers.wip_rinex3_obs_header</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex2_obs" class="nav-link">midgard.parsers.wip_rinex2_obs</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex_clk" class="nav-link">midgard.parsers.wip_rinex_clk</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex2_obs_header" class="nav-link">midgard.parsers.wip_rinex2_obs_header</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex_nav" class="nav-link">midgard.parsers.wip_rinex_nav</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex3_clk" class="nav-link">midgard.parsers.wip_rinex3_clk</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardparserswip_rinex_obs" class="nav-link">midgard.parsers.wip_rinex_obs</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex3_clk_header" class="nav-link">midgard.parsers.wip_rinex3_clk_header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex3_nav" class="nav-link">midgard.parsers.wip_rinex3_nav</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex3_nav_header" class="nav-link">midgard.parsers.wip_rinex3_nav_header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex3_obs" class="nav-link">midgard.parsers.wip_rinex3_obs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex3_obs_header" class="nav-link">midgard.parsers.wip_rinex3_obs_header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex_clk" class="nav-link">midgard.parsers.wip_rinex_clk</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex_nav" class="nav-link">midgard.parsers.wip_rinex_nav</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardparserswip_rinex_obs" class="nav-link">midgard.parsers.wip_rinex_obs</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -443,7 +479,7 @@ my_data = my_new_parser.as_dict()
 <p>Names of the available parsers</p>
 <h3 id="parse_file"><strong>parse_file</strong>()</h3>
 <p>Full name: <code>midgard.parsers.parse_file</code></p>
-<p>Signature: <code>(parser_name: str, file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, timer_logger: Optional[Callable[[str], NoneType]] = None, use_cache: bool = False, **parser_args: Any) -&gt; midgard.parsers._parser.Parser</code></p>
+<p>Signature: <code>(parser_name: str, file_path: str | pathlib.Path, encoding: str | None = None, timer_logger: Callable[[str], NoneType] | None = None, use_cache: bool = False, **parser_args: Any) -&gt; midgard.parsers._parser.Parser</code></p>
 <p>Use the given parser on a file and return parsed data</p>
 <p>Specify <code>parser_name</code> and <code>file_path</code> to the file that should be parsed. The following parsers are available:</p>
 <p>{doc_parser_names}</p>
@@ -477,7 +513,7 @@ my_data = my_new_parser.as_dict()
 </code></pre>
 <h3 id="parser"><strong>Parser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser.Parser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for parsing a file. You should inherit from one of the specific parsers like for
 instance ChainParser, LineParser, SinexParser etc</p>
@@ -499,13 +535,13 @@ my_data = my_new_parser.as_dict()
 </code></pre>
 <h3 id="chainparser"><strong>ChainParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_chain.ChainParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for parsing a file with chained groups of information. You should inherit from
 this one, and at least specify the necessary parameters in <code>setup_parser</code>.</p>
 <h3 id="parserdef"><strong>ParserDef</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_chain.ParserDef</code></p>
-<p>Signature: <code>(end_marker: Callable[[str, int, str], bool], label: Callable[[str, int], Any], parser_def: Dict[Any, Dict[str, Any]], skip_line: Optional[Callable[[str], bool]] = None, end_callback: Optional[Callable[[Dict[str, Any]], NoneType]] = None)</code></p>
+<p>Signature: <code>(end_marker: Callable[[str, int, str], bool], label: Callable[[str, int], Any], parser_def: Dict[Any, Dict[str, Any]], skip_line: Callable[[str], bool] | None = None, end_callback: Callable[[Dict[str, Any]], NoneType] | None = None)</code></p>
 <p>A convenience class for defining the necessary fields of a parser</p>
 <p>A single parser can read and parse one group of datalines, defined through the ParserDef by specifying how to parse
 each line (parser_def), how to identify each line (label), how to recognize the end of the group of lines
@@ -520,7 +556,7 @@ end_callback = func(cache)
 entry points to the parser function and the <code>field</code> entry defines how to separate the line in fields. The separated
 fields are saved either in a dictionary or in a list. In the last case the line is split on whitespace by
 default. With the <code>delimiter</code> entry the default definition can be overwritten, whereby also regular expressions can
-be used (like '\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default 
+be used (like r'\s+' for remove whitespaces. Leading and trailing whitespace characters are removed by default
 before a line is parsed.  This default can be overwritten by defining the characters, which should be removed with 
 the 'strip' entry. The <code>parser</code> dictionary is defined like:</p>
 <pre><code>parser_def = { &lt;label&gt;: {'fields':    &lt;dict or list of fields&gt;,
@@ -548,7 +584,7 @@ my_data = my_new_parser.as_dict()
 </code></pre>
 <h3 id="lineparser"><strong>LineParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_line.LineParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for using numpy to parse a file line by line. You should inherit from this one,
 and at least specify the necessary parameters in <code>setup_parser</code>.</p>
@@ -571,7 +607,7 @@ for a given Rinex format.</p>
 </ul>
 <h3 id="rinexparser"><strong>RinexParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_rinex.RinexParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a datafile</p>
 <p>This class provides functionality for reading Rinex header data. You should inherit from this one,
 and at least implement <code>parse_epochs</code>.</p>
@@ -589,7 +625,7 @@ and at least implement <code>parse_epochs</code>.</p>
 </ul>
 <h3 id="sinexblock"><strong>SinexBlock</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.SinexBlock</code></p>
-<p>Signature: <code>(marker: str, fields: Tuple[midgard.parsers._parser_sinex.SinexField, ...], parser: Callable[[&lt;built-in function array&gt;, Tuple[str, ...]], Dict[str, Any]])</code></p>
+<p>Signature: <code>(marker: str, fields: Tuple[midgard.parsers._parser_sinex.SinexField, ...], parser: Callable[[numpy.array, Tuple[str, ...]], Dict[str, Any]])</code></p>
 <p>A convenience class for defining a Sinex block</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -599,7 +635,7 @@ and at least implement <code>parse_epochs</code>.</p>
 </ul>
 <h3 id="sinexfield"><strong>SinexField</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.SinexField</code></p>
-<p>Signature: <code>(name: str, start_col: int, dtype: Optional[str], converter: Optional[str] = None)</code></p>
+<p>Signature: <code>(name: str, start_col: int, dtype: str | None, converter: str | None = None)</code></p>
 <p>A convenience class for defining the fields in a Sinex block</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -610,7 +646,7 @@ and at least implement <code>parse_epochs</code>.</p>
 </ul>
 <h3 id="sinexparser"><strong>SinexParser</strong></h3>
 <p>Full name: <code>midgard.parsers._parser_sinex.SinexParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -&gt; None</code></p>
 <p>An abstract base class that has basic methods for parsing a Sinex file</p>
 <p>This class provides functionality for parsing a sinex file with chained
 groups of information. You should inherit from this one, and at least
@@ -658,7 +694,7 @@ data = p.as_dict()
 <p>Reads data from files in the GNSS Antenna Exchange (ANTEX) file format version 1.4 (see :cite:<code>antex</code>).</p>
 <h3 id="antexparser"><strong>AntexParser</strong></h3>
 <p>Full name: <code>midgard.parsers.antex.AntexParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading ANTEX file</p>
 <p>The parser reads GNSS ANTEX format 1.4 (see :cite:<code>antex</code>).</p>
 <p>The 'data' attribute is a dictionary with GNSS satellite PRN or receiver antenna as key. The GNSS satellite
@@ -684,121 +720,121 @@ like:</p>
 <table>
 <thead>
 <tr>
-<th>Value</th>
-<th>Type</th>
-<th>Description</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>azi</td>
-<td>numpy.ndarray</td>
-<td>Array with azimuth-elevation dependent antenna correction in [mm] with</td>
+<td style="text-align: left;">azi</td>
+<td style="text-align: left;">numpy.ndarray</td>
+<td style="text-align: left;">Array with azimuth-elevation dependent antenna correction in [m] with</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>the shape: number of azimuth values x number of elevation values.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">the shape: number of azimuth values x number of elevation values.</td>
 </tr>
 <tr>
-<td>azimuth</td>
-<td>numpy.ndarray</td>
-<td>List with azimuth values in [rad] corresponding to antenna corrections</td>
+<td style="text-align: left;">azimuth</td>
+<td style="text-align: left;">numpy.ndarray</td>
+<td style="text-align: left;">List with azimuth values in [rad] corresponding to antenna corrections</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>given in <code>azi</code>.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">given in <code>azi</code>.</td>
 </tr>
 <tr>
-<td>cospar_id</td>
-<td>str</td>
-<td>COSPAR ID <yyyy-xxxa>: yyyy -&gt; year when the satellite was put in</td>
+<td style="text-align: left;">cospar_id</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">COSPAR ID <yyyy-xxxa>: yyyy -&gt; year when the satellite was put in</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>orbit, xxx -&gt; sequential satellite number for that year, a -&gt; alpha</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">orbit, xxx -&gt; sequential satellite number for that year, a -&gt; alpha</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>numeric sequence number within a launch</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">numeric sequence number within a launch</td>
 </tr>
 <tr>
-<td>elevation</td>
-<td>numpy.ndarray</td>
-<td>List with elevation values in [rad] corresponding to antenna</td>
+<td style="text-align: left;">elevation</td>
+<td style="text-align: left;">numpy.ndarray</td>
+<td style="text-align: left;">List with elevation values in [rad] corresponding to antenna</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>corrections given in <code>azi</code> or <code>noazi</code>.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">corrections given in <code>azi</code> or <code>noazi</code>.</td>
 </tr>
 <tr>
-<td><frequency></td>
-<td>str</td>
-<td>Frequency identifier (e.g. G01 - GPS L1)</td>
+<td style="text-align: left;"><frequency></td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Frequency identifier (e.g. G01 - GPS L1)</td>
 </tr>
 <tr>
-<td>neu</td>
-<td>list</td>
-<td>North, East and Up eccentricities in [m]. The eccentricities of the</td>
+<td style="text-align: left;">neu</td>
+<td style="text-align: left;">list</td>
+<td style="text-align: left;">North, East and Up eccentricities in [m]. The eccentricities of the</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>mean antenna phase center is given relative to the antenna reference</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">mean antenna phase center is given relative to the antenna reference</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>point (ARP) for receiver antennas or to the center of mass of the</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">point (ARP) for receiver antennas or to the center of mass of the</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>satellite in X-, Y- and Z-direction.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">satellite in X-, Y- and Z-direction.</td>
 </tr>
 <tr>
-<td>noazi</td>
-<td>numpy.ndarray</td>
-<td>List with elevation dependent (non-azimuth-dependent) antenna</td>
+<td style="text-align: left;">noazi</td>
+<td style="text-align: left;">numpy.ndarray</td>
+<td style="text-align: left;">List with elevation dependent (non-azimuth-dependent) antenna</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>correction in [mm].</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">correction in [m].</td>
 </tr>
 <tr>
-<td><prn></td>
-<td>str</td>
-<td>Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number</td>
+<td style="text-align: left;"><prn></td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Satellite code e.g. GPS PRN, GLONASS slot or Galileo SVID number</td>
 </tr>
 <tr>
-<td><receiver antenna></td>
-<td>str</td>
-<td>Receiver antenna name together with radome code</td>
+<td style="text-align: left;"><receiver antenna></td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Receiver antenna name together with radome code</td>
 </tr>
 <tr>
-<td>sat_code</td>
-<td>str</td>
-<td>Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number</td>
+<td style="text-align: left;">sat_code</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Satellite code e.g. GPS SVN, GLONASS number or Galileo GSAT number</td>
 </tr>
 <tr>
-<td>sat_type</td>
-<td>str</td>
-<td>Satellite type (e.g. BLOCK IIA)</td>
+<td style="text-align: left;">sat_type</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Satellite type (e.g. BLOCK IIA)</td>
 </tr>
 <tr>
-<td>valid_from</td>
-<td>datetime.datetime</td>
-<td>Start of validity period of satellite in GPS time</td>
+<td style="text-align: left;">valid_from</td>
+<td style="text-align: left;">datetime.datetime</td>
+<td style="text-align: left;">Start of validity period of satellite in GPS time</td>
 </tr>
 <tr>
-<td>valid_until</td>
-<td>datetime.datetime</td>
-<td>End of validity period of satellite in GPS time</td>
+<td style="text-align: left;">valid_until</td>
+<td style="text-align: left;">datetime.datetime</td>
+<td style="text-align: left;">End of validity period of satellite in GPS time</td>
 </tr>
 </tbody>
 </table>
@@ -806,41 +842,41 @@ like:</p>
 <table>
 <thead>
 <tr>
-<th>Value</th>
-<th>Type</th>
-<th>Description</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>comment</td>
-<td>list</td>
-<td>Header commments given in list line by line</td>
+<td style="text-align: left;">comment</td>
+<td style="text-align: left;">list</td>
+<td style="text-align: left;">Header commments given in list line by line</td>
 </tr>
 <tr>
-<td>pcv_type</td>
-<td>str</td>
-<td>Phase center variation type</td>
+<td style="text-align: left;">pcv_type</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Phase center variation type</td>
 </tr>
 <tr>
-<td>ref_antenna</td>
-<td>str</td>
-<td>Reference antenna type for relative antenna</td>
+<td style="text-align: left;">ref_antenna</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Reference antenna type for relative antenna</td>
 </tr>
 <tr>
-<td>ref_serial_num</td>
-<td>str</td>
-<td>Serial number of the reference antenna</td>
+<td style="text-align: left;">ref_serial_num</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Serial number of the reference antenna</td>
 </tr>
 <tr>
-<td>sat_sys</td>
-<td>str</td>
-<td>Satellite system</td>
+<td style="text-align: left;">sat_sys</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Satellite system</td>
 </tr>
 <tr>
-<td>version</td>
-<td>str</td>
-<td>Format version</td>
+<td style="text-align: left;">version</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Format version</td>
 </tr>
 </tbody>
 </table>
@@ -856,7 +892,7 @@ like:</p>
 <p>A parser for reading Anubis xtr-files</p>
 <h3 id="anubisxtrparser"><strong>AnubisXtrParser</strong></h3>
 <p>Full name: <code>midgard.parsers.anubis.AnubisXtrParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Anubis XTR files</p>
 <h2 id="midgardparsersapi_water_level_norway">midgard.parsers.api_water_level_norway</h2>
 <p>A parser for reading water level data from open Norwegian water level API</p>
@@ -868,7 +904,7 @@ from midgard import parsers
 p = parsers.parse_file(parser_name='api_water_level_norway', file_path='api_water_level_norway')
 data = p.as_dict()
 
-# Water level data has to be downloaded from API
+# Water level data can be downloaded from API for a given location (modeled data)
 p = parsers.parse_file(
                 parser_name='api_water_level_norway', 
                 file_path='api_water_level_norway',
@@ -878,14 +914,26 @@ p = parsers.parse_file(
                 to_date=datetime(2021,11,22),
 )
 data = p.as_dict()
+
+# Water level data can be downloaded from API for a station (observed data) e.g. for Solumstrand (SOY)
+# Note: Available stations can be checked via:
+#                https://api.sehavniva.no/tideapi.php?type=perm&amp;tide_request=stationlist
+p = parsers.parse_file(
+                parser_name='api_water_level_norway', 
+                file_path='api_water_level_norway',
+                station='soy',
+                from_date=datetime(2021,11,21),
+                to_date=datetime(2021,11,22),
+)
+data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
 <p>See https://api.sehavniva.no/tideapi_no.html for an example</p>
 <h3 id="apiwaterlevelnorwayparser"><strong>ApiWaterLevelNorwayParser</strong></h3>
 <p>Full name: <code>midgard.parsers.api_water_level_norway.ApiWaterLevelNorwayParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, url: Optional[str] = None, latitude: Optional[float] = None, longitude: Optional[float] = None, from_date: Optional[datetime.datetime] = None, to_date: Optional[datetime.datetime] = None, reference_level: Optional[str] = 'chart_datum') -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, url: str | None = None, from_date: datetime.datetime | None = None, to_date: datetime.datetime | None = None, station: str | None = None, latitude: float | None = None, longitude: float | None = None, reference_level: str | None = 'chart_datum') -&gt; None</code></p>
 <p>A parser for reading water level data from open Norwegian water level API</p>
-<p>See https://api.sehavniva.no/tideapi_no.html for an example</p>
+<p>See https://vannstand.kartverket.no/tideapi_no.html for an example</p>
 <p>Following <strong>data</strong> are available after water level data:</p>
 <table>
 <thead>
@@ -905,7 +953,7 @@ data = p.as_dict()
 </tr>
 <tr>
 <td>time</td>
-<td>Observation</td>
+<td>Observation time</td>
 </tr>
 <tr>
 <td>water_level</td>
@@ -947,88 +995,88 @@ data = p.as_dict()
 <p>Reads data from files in the BCEcmp Software output file format. The BCEcmp Software is developed and used by DLR.</p>
 <h3 id="bcecmpparser"><strong>BcecmpParser</strong></h3>
 <p>Full name: <code>midgard.parsers.bcecmp_sisre.BcecmpParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading DLR BCEcmp Software output files.</p>
 <p>The following <strong>data</strong> are available after reading BCEcmp Software output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>age_min</td>
-<td>age of ephemeris in [min]</td>
+<td style="text-align: left;">age_min</td>
+<td style="text-align: left;">age of ephemeris in [min]</td>
 </tr>
 <tr>
-<td>clk_diff_with_dt_mean</td>
-<td>Satellite clock correction difference corrected for average satellite clock offset</td>
+<td style="text-align: left;">clk_diff_with_dt_mean</td>
+<td style="text-align: left;">Satellite clock correction difference corrected for average satellite clock offset</td>
 </tr>
 <tr>
-<td></td>
-<td>difference for given GNSS and epoch in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">difference for given GNSS and epoch in [m]</td>
 </tr>
 <tr>
-<td>dalong_track</td>
-<td>Along-track orbit difference in [m]</td>
+<td style="text-align: left;">dalong_track</td>
+<td style="text-align: left;">Along-track orbit difference in [m]</td>
 </tr>
 <tr>
-<td>dcross_track</td>
-<td>Cross-track orbit difference in [m]</td>
+<td style="text-align: left;">dcross_track</td>
+<td style="text-align: left;">Cross-track orbit difference in [m]</td>
 </tr>
 <tr>
-<td>dradial</td>
-<td>Radial orbit difference in [m]</td>
+<td style="text-align: left;">dradial</td>
+<td style="text-align: left;">Radial orbit difference in [m]</td>
 </tr>
 <tr>
-<td>dradial_wul</td>
-<td>Worst-user-location (wul) SISRE?</td>
+<td style="text-align: left;">dradial_wul</td>
+<td style="text-align: left;">Worst-user-location (wul) SISRE?</td>
 </tr>
 <tr>
-<td>satellite</td>
-<td>Satellite PRN number together with GNSS identifier (e.g. G07)</td>
+<td style="text-align: left;">satellite</td>
+<td style="text-align: left;">Satellite PRN number together with GNSS identifier (e.g. G07)</td>
 </tr>
 <tr>
-<td>sisre</td>
-<td>Signal-in-space range error [m]</td>
+<td style="text-align: left;">sisre</td>
+<td style="text-align: left;">Signal-in-space range error [m]</td>
 </tr>
 <tr>
-<td>time</td>
-<td>Observation time</td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Observation time</td>
 </tr>
 <tr>
-<td>used_iodc</td>
-<td>GPS: IODC (Clock issue of data indicates changes (set equal to IODE))</td>
+<td style="text-align: left;">used_iodc</td>
+<td style="text-align: left;">GPS: IODC (Clock issue of data indicates changes (set equal to IODE))</td>
 </tr>
 <tr>
-<td></td>
-<td>QZSS: IODC</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">QZSS: IODC</td>
 </tr>
 <tr>
-<td>used_iode</td>
-<td>Ephemeris issue of data indicates changes to the broadcast ephemeris:</td>
+<td style="text-align: left;">used_iode</td>
+<td style="text-align: left;">Ephemeris issue of data indicates changes to the broadcast ephemeris:</td>
 </tr>
 <tr>
-<td></td>
-<td>- GPS: Ephemeris issue of data (IODE), which is set equal to IODC</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">- GPS: Ephemeris issue of data (IODE), which is set equal to IODC</td>
 </tr>
 <tr>
-<td></td>
-<td>- Galileo: Issue of Data of the NAV batch (IODnav)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">- Galileo: Issue of Data of the NAV batch (IODnav)</td>
 </tr>
 <tr>
-<td></td>
-<td>- QZSS: Ephemeris issue of data (IODE)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">- QZSS: Ephemeris issue of data (IODE)</td>
 </tr>
 <tr>
-<td></td>
-<td>- BeiDou: Age of Data Ephemeris (AODE)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">- BeiDou: Age of Data Ephemeris (AODE)</td>
 </tr>
 <tr>
-<td></td>
-<td>- IRNSS: Issue of Data, Ephemeris and Clock (IODEC)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">- IRNSS: Issue of Data, Ephemeris and Clock (IODEC)</td>
 </tr>
 </tbody>
 </table>
@@ -1036,18 +1084,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -1062,28 +1110,28 @@ data = p.as_dict()
 <p>Reads data from files in Bernese CLU format.</p>
 <h3 id="bernesecluparser"><strong>BerneseCluParser</strong></h3>
 <p>Full name: <code>midgard.parsers.bernese_clu.BerneseCluParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Bernese CLU file</p>
 <p>Following <strong>data</strong> are available after reading Bernese CLU file:</p>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>station</td>
-<td>4-digit station identifier</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">4-digit station identifier</td>
 </tr>
 <tr>
-<td>domes</td>
-<td>Domes number</td>
+<td style="text-align: left;">domes</td>
+<td style="text-align: left;">Domes number</td>
 </tr>
 <tr>
-<td>cluster</td>
-<td>Cluster number</td>
+<td style="text-align: left;">cluster</td>
+<td style="text-align: left;">Cluster number</td>
 </tr>
 </tbody>
 </table>
@@ -1091,18 +1139,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -1124,116 +1172,116 @@ related data are saved in a dictionary with following keys:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Type</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>coord_comp_east</td>
-<td>List[float]</td>
-<td>List with daily station coordinate comparison results for East</td>
+<td style="text-align: left;">coord_comp_east</td>
+<td style="text-align: left;">List[float]</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for East</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_north</td>
-<td>List[float]</td>
-<td>List with daily station coordinate comparison results for North</td>
+<td style="text-align: left;">coord_comp_north</td>
+<td style="text-align: left;">List[float]</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for North</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_up</td>
-<td>List[float]</td>
-<td>List with daily station coordinate comparison results for Up</td>
+<td style="text-align: left;">coord_comp_up</td>
+<td style="text-align: left;">List[float]</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for Up</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_rms_east</td>
-<td>float</td>
-<td>List with daily station coordinate comparison results for East</td>
+<td style="text-align: left;">coord_comp_rms_east</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for East</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_rms_north</td>
-<td>float</td>
-<td>List with daily station coordinate comparison results for North</td>
+<td style="text-align: left;">coord_comp_rms_north</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for North</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_rms_up</td>
-<td>float</td>
-<td>List with daily station coordinate comparison results for Up</td>
+<td style="text-align: left;">coord_comp_rms_up</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for Up</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_x</td>
-<td>float</td>
-<td>X-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_x</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">X-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_x_rms1</td>
-<td>float</td>
-<td>RMS1 of X-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_x_rms1</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS1 of X-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_x_rms2</td>
-<td>float</td>
-<td>RMS2 of X-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_x_rms2</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS2 of X-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_y</td>
-<td>float</td>
-<td>Y-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_y</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Y-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_y_rms1</td>
-<td>float</td>
-<td>RMS1 of Y-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_y_rms1</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS1 of Y-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_y_rms2</td>
-<td>float</td>
-<td>RMS2 of Y-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_y_rms2</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS2 of Y-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_z</td>
-<td>float</td>
-<td>Z-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_z</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Z-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_z_rms1</td>
-<td>float</td>
-<td>RMS1 of Z-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_z_rms1</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS1 of Z-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_z_rms2</td>
-<td>float</td>
-<td>RMS2 of Z-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_z_rms2</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS2 of Z-coordinate of mean station coordinate position in [m]</td>
 </tr>
 </tbody>
 </table>
@@ -1241,82 +1289,82 @@ related data are saved in a dictionary with following keys:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>num_coord_files</td>
-<td>Number of coordinate files used for analysis</td>
+<td style="text-align: left;">num_coord_files</td>
+<td style="text-align: left;">Number of coordinate files used for analysis</td>
 </tr>
 <tr>
-<td>time</td>
-<td>Date of analysis session</td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Date of analysis session</td>
 </tr>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
 <h2 id="midgardparsersbernese_crd">midgard.parsers.bernese_crd</h2>
-<p>A parser for reading Bernese CRD file</p>
+<p>A parser for reading Bernese v5.2 CRD file</p>
 <p><strong>Example:</strong></p>
 <pre><code>from midgard import parsers
 p = parsers.parse_file(parser_name='bernese_crd', file_path='W20216.CRD')
 data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
-<p>Reads data from files in Bernese CRD format.</p>
+<p>Reads data from files in Bernese v5.2 CRD format.</p>
 <h3 id="bernesecrdparser"><strong>BerneseCrdParser</strong></h3>
 <p>Full name: <code>midgard.parsers.bernese_crd.BerneseCrdParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
-<p>A parser for reading Bernese CRD file</p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
+<p>A parser for reading Bernese v5.2 CRD file</p>
 <p>Following <strong>data</strong> are available after reading Bernese CRD file:</p>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>num</td>
-<td>Number of station coordinate solution</td>
+<td style="text-align: left;">num</td>
+<td style="text-align: left;">Number of station coordinate solution</td>
 </tr>
 <tr>
-<td>station</td>
-<td>4-digit station identifier</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">4-digit station identifier</td>
 </tr>
 <tr>
-<td>domes</td>
-<td>Domes number</td>
+<td style="text-align: left;">domes</td>
+<td style="text-align: left;">Domes number</td>
 </tr>
 <tr>
-<td>gpssec</td>
-<td>Seconds of GPS week</td>
+<td style="text-align: left;">gpssec</td>
+<td style="text-align: left;">Seconds of GPS week</td>
 </tr>
 <tr>
-<td>pos_x</td>
-<td>X-coordinate of station position</td>
+<td style="text-align: left;">pos_x</td>
+<td style="text-align: left;">X-coordinate of station position</td>
 </tr>
 <tr>
-<td>pos_y</td>
-<td>Y-coordinate of station position</td>
+<td style="text-align: left;">pos_y</td>
+<td style="text-align: left;">Y-coordinate of station position</td>
 </tr>
 <tr>
-<td>pos_z</td>
-<td>Z-coordinate of station position</td>
+<td style="text-align: left;">pos_z</td>
+<td style="text-align: left;">Z-coordinate of station position</td>
 </tr>
 <tr>
-<td>flag</td>
-<td>Flag</td>
+<td style="text-align: left;">flag</td>
+<td style="text-align: left;">Flag</td>
 </tr>
 </tbody>
 </table>
@@ -1324,22 +1372,34 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
+<td style="text-align: left;">__params__</td>
+<td style="text-align: left;">np.genfromtxt parameters</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
+</tr>
+<tr>
+<td style="text-align: left;">ref_epoch</td>
+<td style="text-align: left;">Reference epoch of reference station coordinate in ISO format</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">yyyy-mm-ddTHH:MM:SS (e.g. 2025-01-01T00:00:00)</td>
+</tr>
+<tr>
+<td style="text-align: left;">ref_frame</td>
+<td style="text-align: left;">Reference frame of reference station coordinate</td>
 </tr>
 </tbody>
 </table>
@@ -1361,151 +1421,151 @@ related data are saved in a dictionary with following keys:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Type</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>coord_comp_east</td>
-<td>List[float]</td>
-<td>List with daily station coordinate comparison results for East</td>
+<td style="text-align: left;">coord_comp_east</td>
+<td style="text-align: left;">List[float]</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for East</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_north</td>
-<td>List[float]</td>
-<td>List with daily station coordinate comparison results for North</td>
+<td style="text-align: left;">coord_comp_north</td>
+<td style="text-align: left;">List[float]</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for North</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_up</td>
-<td>List[float]</td>
-<td>List with daily station coordinate comparison results for Up</td>
+<td style="text-align: left;">coord_comp_up</td>
+<td style="text-align: left;">List[float]</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for Up</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_rms_east</td>
-<td>float</td>
-<td>List with daily station coordinate comparison results for East</td>
+<td style="text-align: left;">coord_comp_rms_east</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for East</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_rms_north</td>
-<td>float</td>
-<td>List with daily station coordinate comparison results for North</td>
+<td style="text-align: left;">coord_comp_rms_north</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for North</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>coord_comp_rms_up</td>
-<td>float</td>
-<td>List with daily station coordinate comparison results for Up</td>
+<td style="text-align: left;">coord_comp_rms_up</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">List with daily station coordinate comparison results for Up</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>component in [m]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">component in [m]</td>
 </tr>
 <tr>
-<td>num_of_days</td>
-<td>float</td>
-<td>Number of days used for analysis</td>
+<td style="text-align: left;">num_of_days</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Number of days used for analysis</td>
 </tr>
 <tr>
-<td>pos_mean_x</td>
-<td>float</td>
-<td>X-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_x</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">X-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_x_rms1</td>
-<td>float</td>
-<td>RMS1 of X-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_x_rms1</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS1 of X-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_x_rms2</td>
-<td>float</td>
-<td>RMS2 of X-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_x_rms2</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS2 of X-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_y</td>
-<td>float</td>
-<td>Y-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_y</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Y-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_y_rms1</td>
-<td>float</td>
-<td>RMS1 of Y-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_y_rms1</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS1 of Y-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_y_rms2</td>
-<td>float</td>
-<td>RMS2 of Y-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_y_rms2</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS2 of Y-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_z</td>
-<td>float</td>
-<td>Z-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_z</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Z-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_z_rms1</td>
-<td>float</td>
-<td>RMS1 of Z-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_z_rms1</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS1 of Z-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>pos_mean_z_rms2</td>
-<td>float</td>
-<td>RMS2 of Z-coordinate of mean station coordinate position in [m]</td>
+<td style="text-align: left;">pos_mean_z_rms2</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">RMS2 of Z-coordinate of mean station coordinate position in [m]</td>
 </tr>
 <tr>
-<td>repeatability_east</td>
-<td>float</td>
-<td>Station coordinate repeatability for East component in [m]</td>
+<td style="text-align: left;">repeatability_east</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Station coordinate repeatability for East component in [m]</td>
 </tr>
 <tr>
-<td>repeatability_north</td>
-<td>float</td>
-<td>Station coordinate repeatability for North component in [m]</td>
+<td style="text-align: left;">repeatability_north</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Station coordinate repeatability for North component in [m]</td>
 </tr>
 <tr>
-<td>repeatability_up</td>
-<td>float</td>
-<td>Station coordinate repeatability for Up component in [m]</td>
+<td style="text-align: left;">repeatability_up</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Station coordinate repeatability for Up component in [m]</td>
 </tr>
 <tr>
-<td>residual_east</td>
-<td>float</td>
-<td>Station residuals for East component in [m]</td>
+<td style="text-align: left;">residual_east</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Station residuals for East component in [m]</td>
 </tr>
 <tr>
-<td>residual_north</td>
-<td>float</td>
-<td>Station residuals for North component in [m]</td>
+<td style="text-align: left;">residual_north</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Station residuals for North component in [m]</td>
 </tr>
 <tr>
-<td>residual_up</td>
-<td>float</td>
-<td>Station residuals for Up component in [m]</td>
+<td style="text-align: left;">residual_up</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Station residuals for Up component in [m]</td>
 </tr>
 </tbody>
 </table>
@@ -1513,26 +1573,26 @@ related data are saved in a dictionary with following keys:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>num_coord_files</td>
-<td>Number of coordinate files used for analysis</td>
+<td style="text-align: left;">num_coord_files</td>
+<td style="text-align: left;">Number of coordinate files used for analysis</td>
 </tr>
 <tr>
-<td>time</td>
-<td>Date of analysis session</td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Date of analysis session</td>
 </tr>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -1547,44 +1607,44 @@ data = p.as_dict()
 <p>Reads data from files in Bernese PLT format.</p>
 <h3 id="berneseslrpltparser"><strong>BerneseSlrPltParser</strong></h3>
 <p>Full name: <code>midgard.parsers.bernese_slr_plt.BerneseSlrPltParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Bernese SLR PLT file</p>
 <p>Following <strong>data</strong> are available after reading Bernese PLT file:</p>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>station</td>
-<td>4-digit station identifier</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">4-digit station identifier</td>
 </tr>
 <tr>
-<td>domes</td>
-<td>domes number, e.g.  50107M001</td>
+<td style="text-align: left;">domes</td>
+<td style="text-align: left;">domes number, e.g.  50107M001</td>
 </tr>
 <tr>
-<td>sat_prn</td>
-<td>satellite, e.g. E18</td>
+<td style="text-align: left;">sat_prn</td>
+<td style="text-align: left;">satellite, e.g. E18</td>
 </tr>
 <tr>
-<td>epoch</td>
-<td>mjd of observation</td>
+<td style="text-align: left;">epoch</td>
+<td style="text-align: left;">mjd of observation</td>
 </tr>
 <tr>
-<td>residual</td>
-<td>observation residual (mm)</td>
+<td style="text-align: left;">residual</td>
+<td style="text-align: left;">observation residual (mm)</td>
 </tr>
 <tr>
-<td>azi</td>
-<td>azimuth (deg)</td>
+<td style="text-align: left;">azi</td>
+<td style="text-align: left;">azimuth (deg)</td>
 </tr>
 <tr>
-<td>ele</td>
-<td>elevation (deg)</td>
+<td style="text-align: left;">ele</td>
+<td style="text-align: left;">elevation (deg)</td>
 </tr>
 </tbody>
 </table>
@@ -1592,30 +1652,30 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
+<td style="text-align: left;">__params__</td>
+<td style="text-align: left;">np.genfromtxt parameters</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
 <h2 id="midgardparsersbernese_sta">midgard.parsers.bernese_sta</h2>
-<p>A parser for reading station information in Bernese STA format</p>
+<p>A parser for reading station information in Bernese STA format in Bernese v5.4 format</p>
 <p><strong>Example:</strong></p>
 <pre><code>from midgard import parsers
-p = parsers.parse_file(parser_name='bernese_sta', file_path='NKG.STA')
+p = parsers.parse_file(parser_name='bernese_sta_v52', file_path='NKG.STA')
 data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
@@ -1624,97 +1684,97 @@ parsed.</p>
 <h3 id="bernesestaparser"><strong>BerneseStaParser</strong></h3>
 <p>Full name: <code>midgard.parsers.bernese_sta.BerneseStaParser</code></p>
 <p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any])</code></p>
-<p>A parser for reading station information in Bernese STA format</p>
+<p>A parser for reading station information in Bernese STA format in Bernese v5.4 format</p>
 <p>The parsed data are saved in variable <strong>data</strong> as a dictionay with 4-digit station name as key and a list with 
 station information dictionaries with following entries:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Type</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>antenna_serial_number</td>
-<td>str</td>
-<td>Antenna serial number</td>
+<td style="text-align: left;">antenna_serial_number</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Antenna serial number</td>
 </tr>
 <tr>
-<td>antenna_serial_number_short</td>
-<td>str</td>
-<td>6 last digits of antennna serial number</td>
+<td style="text-align: left;">antenna_serial_number_short</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">6 last digits of antennna serial number</td>
 </tr>
 <tr>
-<td>antenna_type</td>
-<td>str</td>
-<td>Antenna type</td>
+<td style="text-align: left;">antenna_type</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Antenna type</td>
 </tr>
 <tr>
-<td>date_from</td>
-<td>datetime</td>
-<td>Start date where station information is valid</td>
+<td style="text-align: left;">date_from</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">Start date where station information is valid</td>
 </tr>
 <tr>
-<td>date_to</td>
-<td>datetime</td>
-<td>End date of station information</td>
+<td style="text-align: left;">date_to</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">End date of station information</td>
 </tr>
 <tr>
-<td>domes</td>
-<td>str</td>
-<td>Domes number</td>
+<td style="text-align: left;">domes</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Domes number</td>
 </tr>
 <tr>
-<td>description</td>
-<td>str</td>
-<td>Description normally with station name and country code</td>
+<td style="text-align: left;">description</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Description normally with station name and country code</td>
 </tr>
 <tr>
-<td>eccentricity_east</td>
-<td>float</td>
-<td>East component of eccentricity in [m]</td>
+<td style="text-align: left;">eccentricity_east</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">East component of eccentricity in [m]</td>
 </tr>
 <tr>
-<td>eccentricity_north</td>
-<td>float</td>
-<td>North component of eccentricity in [m]</td>
+<td style="text-align: left;">eccentricity_north</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">North component of eccentricity in [m]</td>
 </tr>
 <tr>
-<td>eccentricity_up</td>
-<td>float</td>
-<td>Up component of eccentricity in [m]</td>
+<td style="text-align: left;">eccentricity_up</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Up component of eccentricity in [m]</td>
 </tr>
 <tr>
-<td>flag</td>
-<td>str</td>
-<td>Flag number</td>
+<td style="text-align: left;">flag</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Flag number</td>
 </tr>
 <tr>
-<td>radome</td>
-<td>str</td>
-<td>Antenna radome type</td>
+<td style="text-align: left;">radome</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Antenna radome type</td>
 </tr>
 <tr>
-<td>receiver_serial_number</td>
-<td>str</td>
-<td>Receiver serial number</td>
+<td style="text-align: left;">receiver_serial_number</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Receiver serial number</td>
 </tr>
 <tr>
-<td>receiver_serial_number_short</td>
-<td>str</td>
-<td>6 last digits of receiver serial number</td>
+<td style="text-align: left;">receiver_serial_number_short</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">6 last digits of receiver serial number</td>
 </tr>
 <tr>
-<td>receiver_type</td>
-<td>str</td>
-<td>Receiver type</td>
+<td style="text-align: left;">receiver_type</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Receiver type</td>
 </tr>
 <tr>
-<td>remark</td>
-<td>str</td>
-<td>Remark</td>
+<td style="text-align: left;">remark</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Remark</td>
 </tr>
 </tbody>
 </table>
@@ -1722,18 +1782,144 @@ station information dictionaries with following entries:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersbernese_sta_v52">midgard.parsers.bernese_sta_v52</h2>
+<p>A parser for reading station information in Bernese STA format in Bernese v5.2 format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='bernese_sta_v52', file_path='NKG.STA')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads station information from files in STA format, whereby at the moment only the 'STATION INFORMATION' part is
+parsed.</p>
+<h3 id="bernesestav52parser"><strong>BerneseStaV52Parser</strong></h3>
+<p>Full name: <code>midgard.parsers.bernese_sta_v52.BerneseStaV52Parser</code></p>
+<p>Signature: <code>(*args: Tuple[Any], **kwargs: Dict[Any, Any])</code></p>
+<p>A parser for reading station information in Bernese STA format in Bernese v5.2 format</p>
+<p>The parsed data are saved in variable <strong>data</strong> as a dictionay with 4-digit station name as key and a list with 
+station information dictionaries with following entries:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">antenna_serial_number</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Antenna serial number</td>
+</tr>
+<tr>
+<td style="text-align: left;">antenna_serial_number_short</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">6 last digits of antennna serial number</td>
+</tr>
+<tr>
+<td style="text-align: left;">antenna_type</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Antenna type</td>
+</tr>
+<tr>
+<td style="text-align: left;">date_from</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">Start date where station information is valid</td>
+</tr>
+<tr>
+<td style="text-align: left;">date_to</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">End date of station information</td>
+</tr>
+<tr>
+<td style="text-align: left;">domes</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Domes number</td>
+</tr>
+<tr>
+<td style="text-align: left;">description</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Description normally with station name and country code</td>
+</tr>
+<tr>
+<td style="text-align: left;">eccentricity_east</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">East component of eccentricity in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">eccentricity_north</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">North component of eccentricity in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">eccentricity_up</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Up component of eccentricity in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">flag</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Flag number</td>
+</tr>
+<tr>
+<td style="text-align: left;">radome</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Antenna radome type</td>
+</tr>
+<tr>
+<td style="text-align: left;">receiver_serial_number</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Receiver serial number</td>
+</tr>
+<tr>
+<td style="text-align: left;">receiver_serial_number_short</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">6 last digits of receiver serial number</td>
+</tr>
+<tr>
+<td style="text-align: left;">receiver_type</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Receiver type</td>
+</tr>
+<tr>
+<td style="text-align: left;">remark</td>
+<td style="text-align: left;">str</td>
+<td style="text-align: left;">Remark</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
+</tr>
+<tr>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -1748,7 +1934,7 @@ data = p.as_dict()
 <p>Reads data from files troposphere files in TRP format</p>
 <h3 id="bernesetrppaser"><strong>BerneseTrpPaser</strong></h3>
 <p>Full name: <code>midgard.parsers.bernese_trp.BerneseTrpPaser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading troposphere files in Bernese TRP format</p>
 <p>Following <strong>data</strong> can be available after reading troposphere files in Bernese TRP file:</p>
 <table>
@@ -1807,7 +1993,7 @@ dset = parser.as_dataset()
 <p>Reads data from files in the COST file format 2.2a (see :cite:<code>cost</code>).</p>
 <h3 id="costparser"><strong>CostParser</strong></h3>
 <p>Full name: <code>midgard.parsers.cost.CostParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading COST datan file</p>
 <p>The parser reads ground-based GNSS delay and water vapour data in COST format version 2.2a.</p>
 <p><strong>Attributes:</strong></p>
@@ -1837,7 +2023,7 @@ data = p.as_dict()
 <p>Reads data from files in CSV output format. The header information of the CSV file is not read (TODO).</p>
 <h3 id="csvparser"><strong>CsvParser</strong></h3>
 <p>Full name: <code>midgard.parsers.csv_.CsvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading CSV output files</p>
 <p>The CSV data header line is used to define the keys of the <strong>data</strong> dictionary. The values of the <strong>data</strong> 
 dictionary are represented by the CSV colum values.</p>
@@ -1845,27 +2031,48 @@ dictionary are represented by the CSV colum values.</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
+<h2 id="midgardparsersdoris_stcd">midgard.parsers.doris_stcd</h2>
+<p>A parser for reading DORIS station coordinate timeseries file in Station Coordinates Difference (STCD) format</p>
+<p><strong>Description:</strong></p>
+<p>Reads station coordinate timeseries data from files in DORIS Station Coordinates Difference (STCD) format</p>
+<p>Format description can be found under: https://ids-doris.org/documents/report/CB_STCD_format_v1.0.pdf</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='doris_stcd', file_path='ids21wd03.stcd.svac')
+data = p.as_dict()
+</code></pre>
+<h3 id="dorisstcdparser"><strong>DorisStcdParser</strong></h3>
+<p>Full name: <code>midgard.parsers.doris_stcd.DorisStcdParser</code></p>
+<p>Signature: <code>(file_path, encoding=None)</code></p>
+<p>A parser for reading DORIS station coordinate timeseries file in STCD format</p>
+<h3 id="fielddef"><strong>FieldDef</strong></h3>
+<p>Full name: <code>midgard.parsers.doris_stcd.FieldDef</code></p>
+<p>Signature: <code>(field=None, unit=None)</code></p>
+<p>A convenience class for defining dataset fields </p>
+<p><strong>Args:</strong></p>
+<p>field (str):             Dataset field name
+unit (str):              Unit of field</p>
 <h2 id="midgardparsersgalileo_constellation_html">midgard.parsers.galileo_constellation_html</h2>
 <p>A parser for reading Galileo constellation info from a web page</p>
 <p>See https://www.gsc-europa.eu/system-status/Constellation-Information for an example</p>
 <h3 id="galileoconstellationhtmlparser"><strong>GalileoConstellationHTMLParser</strong></h3>
 <p>Full name: <code>midgard.parsers.galileo_constellation_html.GalileoConstellationHTMLParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, url: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, url: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Galileo constellation info from a web page</p>
 <p>See https://www.gsc-europa.eu/system-status/Constellation-Information for an example</p>
 <h2 id="midgardparsersgamit_org">midgard.parsers.gamit_org</h2>
@@ -1897,7 +2104,7 @@ REYK_JPS Z coordinate  (m)          5716564.17515      0.00474      0.00947
 </code></pre>
 <h3 id="gamitorgparser"><strong>GamitOrgParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gamit_org.GamitOrgParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading gamit org file</p>
 <p><strong>Attributes:</strong></p>
 <p>data (Dict):                  The (observation) data read from file.
@@ -1924,64 +2131,64 @@ data = p.as_dict()
 <p>Reads data from files in Gipsy <code>stacov</code> format.</p>
 <h3 id="gipsystacovparser"><strong>GipsyStacovParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsy_stacov.GipsyStacovParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Gipsy <code>stacov</code> format file</p>
 <p>Following <strong>data</strong> are available after reading Gipsy <code>stacov</code> output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>correlation</td>
-<td>Correlation values</td>
+<td style="text-align: left;">correlation</td>
+<td style="text-align: left;">Correlation values</td>
 </tr>
 <tr>
-<td>correlation_index1</td>
-<td>Correlation index (1st column)</td>
+<td style="text-align: left;">correlation_index1</td>
+<td style="text-align: left;">Correlation index (1st column)</td>
 </tr>
 <tr>
-<td>correlation_index2</td>
-<td>Correlation index (2nd column)</td>
+<td style="text-align: left;">correlation_index2</td>
+<td style="text-align: left;">Correlation index (2nd column)</td>
 </tr>
 <tr>
-<td>estimate</td>
-<td>Parameter estimate at the given time</td>
+<td style="text-align: left;">estimate</td>
+<td style="text-align: left;">Parameter estimate at the given time</td>
 </tr>
 <tr>
-<td>estimate_index</td>
-<td>Estimate index</td>
+<td style="text-align: left;">estimate_index</td>
+<td style="text-align: left;">Estimate index</td>
 </tr>
 <tr>
-<td>parameter</td>
-<td>Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
+<td style="text-align: left;">parameter</td>
+<td style="text-align: left;">Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
 </tr>
 <tr>
-<td></td>
-<td>without spaces.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">without spaces.</td>
 </tr>
 <tr>
-<td>row</td>
-<td>Row number of correlations</td>
+<td style="text-align: left;">row</td>
+<td style="text-align: left;">Row number of correlations</td>
 </tr>
 <tr>
-<td>station</td>
-<td>Station name.</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">Station name.</td>
 </tr>
 <tr>
-<td>sigma</td>
-<td>Standard deviation of the parameter.</td>
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">Standard deviation of the parameter.</td>
 </tr>
 <tr>
-<td>time_past_j2000</td>
-<td>Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
+<td style="text-align: left;">time_past_j2000</td>
+<td style="text-align: left;">Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
 </tr>
 <tr>
-<td></td>
-<td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
 </tr>
 </tbody>
 </table>
@@ -1989,18 +2196,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2015,7 +2222,7 @@ data = p.as_dict()
 <p>Reads data from files in Gipsy summary output format.</p>
 <h3 id="gipsysummary"><strong>GipsySummary</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsy_sum.GipsySummary</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Gipsy summary output file (*.sum)</p>
 <p>Gipsy summary file <strong>data</strong> are grouped as follows:</p>
 <table>
@@ -2112,52 +2319,52 @@ data = p.as_dict()
 dtype (str):             Dataset data type</p>
 <h3 id="gipsytdpparser"><strong>GipsyTdpParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsy_tdp.GipsyTdpParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Gipsy time dependent parameter (TDP) file</p>
 <p>Following <strong>data</strong> are available after reading Gipsy TDP output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>apriori</td>
-<td>Nominal value. This field contains the last value used by the model.</td>
+<td style="text-align: left;">apriori</td>
+<td style="text-align: left;">Nominal value. This field contains the last value used by the model.</td>
 </tr>
 <tr>
-<td>name</td>
-<td>Parameter name.</td>
+<td style="text-align: left;">name</td>
+<td style="text-align: left;">Parameter name.</td>
 </tr>
 <tr>
-<td>sigma</td>
-<td>The sigma associated with the value of the parameter. A negative value indicates it</td>
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">The sigma associated with the value of the parameter. A negative value indicates it</td>
 </tr>
 <tr>
-<td></td>
-<td>should be used for interpolation by the file reader read_time_variation in</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">should be used for interpolation by the file reader read_time_variation in</td>
 </tr>
 <tr>
-<td></td>
-<td>$GOA/libsrc/time_variation. If no sigmas are computed by the smapper, a 1.0 will be</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">$GOA/libsrc/time_variation. If no sigmas are computed by the smapper, a 1.0 will be</td>
 </tr>
 <tr>
-<td></td>
-<td>placed here.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">placed here.</td>
 </tr>
 <tr>
-<td>time_past_j2000</td>
-<td>Time given in GPS seconds past J2000.</td>
+<td style="text-align: left;">time_past_j2000</td>
+<td style="text-align: left;">Time given in GPS seconds past J2000.</td>
 </tr>
 <tr>
-<td>value</td>
-<td>Accumulated value of the parameter at time and includes any nominal, or iterative</td>
+<td style="text-align: left;">value</td>
+<td style="text-align: left;">Accumulated value of the parameter at time and includes any nominal, or iterative</td>
 </tr>
 <tr>
-<td></td>
-<td>correction. This is the only entry used by the model.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">correction. This is the only entry used by the model.</td>
 </tr>
 </tbody>
 </table>
@@ -2165,18 +2372,18 @@ dtype (str):             Dataset data type</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2194,64 +2401,64 @@ data = p.as_dict()
 <p>Reads data from files in GipsyX <code>gdcov</code> format.</p>
 <h3 id="gipsyxgdcovparser"><strong>GipsyxGdcovParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsyx_gdcov.GipsyxGdcovParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX <code>gdcov</code> format file</p>
 <p>Following <strong>data</strong> are available after reading GipsyX <code>gdcov</code> output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>correlation</td>
-<td>Correlation values</td>
+<td style="text-align: left;">correlation</td>
+<td style="text-align: left;">Correlation values</td>
 </tr>
 <tr>
-<td>correlation_index1</td>
-<td>Correlation index (1st column)</td>
+<td style="text-align: left;">correlation_index1</td>
+<td style="text-align: left;">Correlation index (1st column)</td>
 </tr>
 <tr>
-<td>correlation_index2</td>
-<td>Correlation index (2nd column)</td>
+<td style="text-align: left;">correlation_index2</td>
+<td style="text-align: left;">Correlation index (2nd column)</td>
 </tr>
 <tr>
-<td>estimate</td>
-<td>Parameter estimate at the given time</td>
+<td style="text-align: left;">estimate</td>
+<td style="text-align: left;">Parameter estimate at the given time</td>
 </tr>
 <tr>
-<td>estimate_index</td>
-<td>Estimate index</td>
+<td style="text-align: left;">estimate_index</td>
+<td style="text-align: left;">Estimate index</td>
 </tr>
 <tr>
-<td>parameter</td>
-<td>Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
+<td style="text-align: left;">parameter</td>
+<td style="text-align: left;">Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
 </tr>
 <tr>
-<td></td>
-<td>without spaces.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">without spaces.</td>
 </tr>
 <tr>
-<td>row</td>
-<td>Row number of correlations</td>
+<td style="text-align: left;">row</td>
+<td style="text-align: left;">Row number of correlations</td>
 </tr>
 <tr>
-<td>station</td>
-<td>Station name.</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">Station name.</td>
 </tr>
 <tr>
-<td>sigma</td>
-<td>Standard deviation of the parameter.</td>
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">Standard deviation of the parameter.</td>
 </tr>
 <tr>
-<td>time_past_j2000</td>
-<td>Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
+<td style="text-align: left;">time_past_j2000</td>
+<td style="text-align: left;">Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
 </tr>
 <tr>
-<td></td>
-<td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
 </tr>
 </tbody>
 </table>
@@ -2259,18 +2466,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2285,60 +2492,60 @@ data = p.as_dict()
 <p>Reads data from files in GipsyX residual format.</p>
 <h3 id="gipsyxresidualparser"><strong>GipsyxResidualParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsyx_residual.GipsyxResidualParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX residual file</p>
 <p>Following <strong>data</strong> are available after reading GipsyX residual output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>azimuth</td>
-<td>Azimuth from receiver</td>
+<td style="text-align: left;">azimuth</td>
+<td style="text-align: left;">Azimuth from receiver</td>
 </tr>
 <tr>
-<td>azimuth_sat</td>
-<td>Azimuth from satellite</td>
+<td style="text-align: left;">azimuth_sat</td>
+<td style="text-align: left;">Azimuth from satellite</td>
 </tr>
 <tr>
-<td>data_type</td>
-<td>Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)</td>
+<td style="text-align: left;">data_type</td>
+<td style="text-align: left;">Data type (e.g. IonoFreeC_1P_2P, IonoFreeL_1P_2P)</td>
 </tr>
 <tr>
-<td>deleted</td>
-<td>Residuals are deleted, marked with True or False.</td>
+<td style="text-align: left;">deleted</td>
+<td style="text-align: left;">Residuals are deleted, marked with True or False.</td>
 </tr>
 <tr>
-<td>elevation</td>
-<td>Elevation from receiver</td>
+<td style="text-align: left;">elevation</td>
+<td style="text-align: left;">Elevation from receiver</td>
 </tr>
 <tr>
-<td>elevation_sat</td>
-<td>Elevation from satellite</td>
+<td style="text-align: left;">elevation_sat</td>
+<td style="text-align: left;">Elevation from satellite</td>
 </tr>
 <tr>
-<td>residual</td>
-<td>Post-fit residual</td>
+<td style="text-align: left;">residual</td>
+<td style="text-align: left;">Post-fit residual</td>
 </tr>
 <tr>
-<td>satellite</td>
-<td>Satellite name</td>
+<td style="text-align: left;">satellite</td>
+<td style="text-align: left;">Satellite name</td>
 </tr>
 <tr>
-<td>station</td>
-<td>Station name</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">Station name</td>
 </tr>
 <tr>
-<td>time_past_j2000</td>
-<td>Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
+<td style="text-align: left;">time_past_j2000</td>
+<td style="text-align: left;">Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
 </tr>
 <tr>
-<td></td>
-<td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
 </tr>
 </tbody>
 </table>
@@ -2346,18 +2553,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2372,88 +2579,88 @@ data = p.as_dict()
 <p>Reads data from files in GipsyX timeseries format.</p>
 <h3 id="gipsyxseriesparser"><strong>GipsyxSeriesParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsyx_series.GipsyxSeriesParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX timeseries file</p>
 <p>Following <strong>data</strong> are available after reading GipsyX residual output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>corr_en</td>
-<td>Correlation East-North.</td>
+<td style="text-align: left;">corr_en</td>
+<td style="text-align: left;">Correlation East-North.</td>
 </tr>
 <tr>
-<td>corr_ev</td>
-<td>Correlation East-Vertical.</td>
+<td style="text-align: left;">corr_ev</td>
+<td style="text-align: left;">Correlation East-Vertical.</td>
 </tr>
 <tr>
-<td>corr_nv</td>
-<td>Correlation North-Vertical.</td>
+<td style="text-align: left;">corr_nv</td>
+<td style="text-align: left;">Correlation North-Vertical.</td>
 </tr>
 <tr>
-<td>day</td>
-<td>Day</td>
+<td style="text-align: left;">day</td>
+<td style="text-align: left;">Day</td>
 </tr>
 <tr>
-<td>decimalyear</td>
-<td>Date in unit year.</td>
+<td style="text-align: left;">decimalyear</td>
+<td style="text-align: left;">Date in unit year.</td>
 </tr>
 <tr>
-<td>east</td>
-<td>East coordinate in [m].</td>
+<td style="text-align: left;">east</td>
+<td style="text-align: left;">East coordinate in [m].</td>
 </tr>
 <tr>
-<td>east_sigma</td>
-<td>Standard devication of east coordinate in [m].</td>
+<td style="text-align: left;">east_sigma</td>
+<td style="text-align: left;">Standard devication of east coordinate in [m].</td>
 </tr>
 <tr>
-<td>hour</td>
-<td>Hour</td>
+<td style="text-align: left;">hour</td>
+<td style="text-align: left;">Hour</td>
 </tr>
 <tr>
-<td>minute</td>
-<td>Minute</td>
+<td style="text-align: left;">minute</td>
+<td style="text-align: left;">Minute</td>
 </tr>
 <tr>
-<td>month</td>
-<td>Month</td>
+<td style="text-align: left;">month</td>
+<td style="text-align: left;">Month</td>
 </tr>
 <tr>
-<td>north</td>
-<td>North coordinate in [m].</td>
+<td style="text-align: left;">north</td>
+<td style="text-align: left;">North coordinate in [m].</td>
 </tr>
 <tr>
-<td>north_sigma</td>
-<td>Standard devication of north coordinate in [m].</td>
+<td style="text-align: left;">north_sigma</td>
+<td style="text-align: left;">Standard devication of north coordinate in [m].</td>
 </tr>
 <tr>
-<td>second</td>
-<td>Second</td>
+<td style="text-align: left;">second</td>
+<td style="text-align: left;">Second</td>
 </tr>
 <tr>
-<td>time_past_j2000</td>
-<td>Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
+<td style="text-align: left;">time_past_j2000</td>
+<td style="text-align: left;">Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
 </tr>
 <tr>
-<td></td>
-<td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
 </tr>
 <tr>
-<td>vertical</td>
-<td>Vertical coordinate in [m].</td>
+<td style="text-align: left;">vertical</td>
+<td style="text-align: left;">Vertical coordinate in [m].</td>
 </tr>
 <tr>
-<td>vertical_sigma</td>
-<td>Standard devication of vertical coordinate in [m].</td>
+<td style="text-align: left;">vertical_sigma</td>
+<td style="text-align: left;">Standard devication of vertical coordinate in [m].</td>
 </tr>
 <tr>
-<td>year</td>
-<td>Year</td>
+<td style="text-align: left;">year</td>
+<td style="text-align: left;">Year</td>
 </tr>
 </tbody>
 </table>
@@ -2461,18 +2668,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2487,28 +2694,28 @@ data = p.as_dict()
 <p>Reads data from files in GipsyX summary output format.</p>
 <h3 id="gipsyxsummary"><strong>GipsyxSummary</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsyx_summary.GipsyxSummary</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX summary file</p>
 <p>GipsyX summary file <strong>data</strong> are grouped as follows:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>position</td>
-<td>Dictionary with position summary information</td>
+<td style="text-align: left;">position</td>
+<td style="text-align: left;">Dictionary with position summary information</td>
 </tr>
 <tr>
-<td>residual</td>
-<td>Dictionary with residual summary information</td>
+<td style="text-align: left;">residual</td>
+<td style="text-align: left;">Dictionary with residual summary information</td>
 </tr>
 <tr>
-<td>station</td>
-<td>Station name</td>
+<td style="text-align: left;">station</td>
+<td style="text-align: left;">Station name</td>
 </tr>
 </tbody>
 </table>
@@ -2516,50 +2723,50 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>pos_x</td>
-<td>X-coordinate of station position solution</td>
+<td style="text-align: left;">pos_x</td>
+<td style="text-align: left;">X-coordinate of station position solution</td>
 </tr>
 <tr>
-<td>pos_y</td>
-<td>Y-coordinate of station position solution</td>
+<td style="text-align: left;">pos_y</td>
+<td style="text-align: left;">Y-coordinate of station position solution</td>
 </tr>
 <tr>
-<td>pos_z</td>
-<td>Z-coordinate of station position solution</td>
+<td style="text-align: left;">pos_z</td>
+<td style="text-align: left;">Z-coordinate of station position solution</td>
 </tr>
 <tr>
-<td>pos_vs_ref_x</td>
-<td>X-coordinate of difference between solution and reference of station coordinate</td>
+<td style="text-align: left;">pos_vs_ref_x</td>
+<td style="text-align: left;">X-coordinate of difference between solution and reference of station coordinate</td>
 </tr>
 <tr>
-<td>pos_vs_ref_y</td>
-<td>Y-coordinate of difference between solution and reference of station coordinate</td>
+<td style="text-align: left;">pos_vs_ref_y</td>
+<td style="text-align: left;">Y-coordinate of difference between solution and reference of station coordinate</td>
 </tr>
 <tr>
-<td>pos_vs_ref_z</td>
-<td>Z-coordinate of difference between solution and reference of station coordinate</td>
+<td style="text-align: left;">pos_vs_ref_z</td>
+<td style="text-align: left;">Z-coordinate of difference between solution and reference of station coordinate</td>
 </tr>
 <tr>
-<td>pos_vs_ref_e</td>
-<td>East-coordinate of difference between solution and reference of station coordinate</td>
+<td style="text-align: left;">pos_vs_ref_e</td>
+<td style="text-align: left;">East-coordinate of difference between solution and reference of station coordinate</td>
 </tr>
 <tr>
-<td>pos_vs_ref_n</td>
-<td>North-coordinate of difference between solution and reference of station coordinate</td>
+<td style="text-align: left;">pos_vs_ref_n</td>
+<td style="text-align: left;">North-coordinate of difference between solution and reference of station coordinate</td>
 </tr>
 <tr>
-<td>pos_vs_ref_v</td>
-<td>Vertical-coordinate of difference between solution and reference of station</td>
+<td style="text-align: left;">pos_vs_ref_v</td>
+<td style="text-align: left;">Vertical-coordinate of difference between solution and reference of station</td>
 </tr>
 <tr>
-<td></td>
-<td>coordinate</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">coordinate</td>
 </tr>
 </tbody>
 </table>
@@ -2567,74 +2774,74 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>code_obs_num</td>
-<td>Number of used pseudo-range observations</td>
+<td style="text-align: left;">code_obs_num</td>
+<td style="text-align: left;">Number of used pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_residual_max</td>
-<td>Maximal residual of used pseudo-range observations</td>
+<td style="text-align: left;">code_residual_max</td>
+<td style="text-align: left;">Maximal residual of used pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_residual_min</td>
-<td>Minimal residual of used pseudo-range observations</td>
+<td style="text-align: left;">code_residual_min</td>
+<td style="text-align: left;">Minimal residual of used pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_residual_rms</td>
-<td>RMS of residuals from used pseudo-range observations</td>
+<td style="text-align: left;">code_residual_rms</td>
+<td style="text-align: left;">RMS of residuals from used pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_outlier_max</td>
-<td>Maximal residual of rejected pseudo-range observations</td>
+<td style="text-align: left;">code_outlier_max</td>
+<td style="text-align: left;">Maximal residual of rejected pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_outlier_min</td>
-<td>Minimal residual of rejected pseudo-range observations</td>
+<td style="text-align: left;">code_outlier_min</td>
+<td style="text-align: left;">Minimal residual of rejected pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_outlier_num</td>
-<td>Number of rejected pseudo-range observations</td>
+<td style="text-align: left;">code_outlier_num</td>
+<td style="text-align: left;">Number of rejected pseudo-range observations</td>
 </tr>
 <tr>
-<td>code_outlier_rms</td>
-<td>RMS of residuals from rejected pseudo-range observations</td>
+<td style="text-align: left;">code_outlier_rms</td>
+<td style="text-align: left;">RMS of residuals from rejected pseudo-range observations</td>
 </tr>
 <tr>
-<td>phase_obs_num</td>
-<td>Number of used phase observations</td>
+<td style="text-align: left;">phase_obs_num</td>
+<td style="text-align: left;">Number of used phase observations</td>
 </tr>
 <tr>
-<td>phase_residual_min</td>
-<td>Minimal residual of used phase observations</td>
+<td style="text-align: left;">phase_residual_min</td>
+<td style="text-align: left;">Minimal residual of used phase observations</td>
 </tr>
 <tr>
-<td>phase_residual_max</td>
-<td>Maximal residual of used phase observations</td>
+<td style="text-align: left;">phase_residual_max</td>
+<td style="text-align: left;">Maximal residual of used phase observations</td>
 </tr>
 <tr>
-<td>phase_residual_rms</td>
-<td>RMS of residuals from used phase observations</td>
+<td style="text-align: left;">phase_residual_rms</td>
+<td style="text-align: left;">RMS of residuals from used phase observations</td>
 </tr>
 <tr>
-<td>phase_outlier_max</td>
-<td>Maximal residual of rejected phase observations</td>
+<td style="text-align: left;">phase_outlier_max</td>
+<td style="text-align: left;">Maximal residual of rejected phase observations</td>
 </tr>
 <tr>
-<td>phase_outlier_min</td>
-<td>Minimal residual of rejected phase observations</td>
+<td style="text-align: left;">phase_outlier_min</td>
+<td style="text-align: left;">Minimal residual of rejected phase observations</td>
 </tr>
 <tr>
-<td>phase_outlier_num</td>
-<td>Number of rejected phase observations</td>
+<td style="text-align: left;">phase_outlier_num</td>
+<td style="text-align: left;">Number of rejected phase observations</td>
 </tr>
 <tr>
-<td>phase_outlier_rms</td>
-<td>RMS of residuals from rejected phase observations</td>
+<td style="text-align: left;">phase_outlier_rms</td>
+<td style="text-align: left;">RMS of residuals from rejected phase observations</td>
 </tr>
 </tbody>
 </table>
@@ -2642,18 +2849,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2676,44 +2883,44 @@ category (str):          Category of parameter (e.g. station or satellite parame
 dtype (str):             Dataset data type</p>
 <h3 id="gipsyxtdpparser"><strong>GipsyxTdpParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gipsyx_tdp.GipsyxTdpParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GipsyX time dependent parameter (TDP) file</p>
 <p>Following <strong>data</strong> are available after reading GipsyX TDP output file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>apriori</td>
-<td>Nominal value. This field contains the last value used by the model.</td>
+<td style="text-align: left;">apriori</td>
+<td style="text-align: left;">Nominal value. This field contains the last value used by the model.</td>
 </tr>
 <tr>
-<td>name</td>
-<td>Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
+<td style="text-align: left;">name</td>
+<td style="text-align: left;">Parameter name. An arbitrary sequence of letters [A-Z,a-z], digits[0-9], and "."</td>
 </tr>
 <tr>
-<td></td>
-<td>without spaces.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">without spaces.</td>
 </tr>
 <tr>
-<td>sigma</td>
-<td>Standard deviation of the parameter.</td>
+<td style="text-align: left;">sigma</td>
+<td style="text-align: left;">Standard deviation of the parameter.</td>
 </tr>
 <tr>
-<td>time_past_j2000</td>
-<td>Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
+<td style="text-align: left;">time_past_j2000</td>
+<td style="text-align: left;">Time given in GPS seconds past J2000, whereby GipsyX uses following definition:</td>
 </tr>
 <tr>
-<td></td>
-<td>J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">J2000 is continuous seconds past Jan. 1, 2000 11:59:47 UTC.</td>
 </tr>
 <tr>
-<td>value</td>
-<td>Parameter value at the given time</td>
+<td style="text-align: left;">value</td>
+<td style="text-align: left;">Parameter value at the given time</td>
 </tr>
 </tbody>
 </table>
@@ -2721,18 +2928,18 @@ dtype (str):             Dataset data type</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2746,7 +2953,7 @@ data = p.as_dict()
 <p><strong>Description:</strong></p>
 <h3 id="glaboutputparser"><strong>GlabOutputParser</strong></h3>
 <p>Full name: <code>midgard.parsers.glab_output.GlabOutputParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading gLAB output files</p>
 <p>The keys of the <strong>data</strong> dictionary are defined depending, which kind of gLAB output file is read. The values of 
 the <strong>data</strong> dictionary are represented by the gLAB colum values.</p>
@@ -2754,18 +2961,18 @@ the <strong>data</strong> dictionary are represented by the gLAB colum values.</
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2784,7 +2991,7 @@ dset = parser.as_dataset()
 <p>Reads raw data file from <code>GnssLogger</code> Android App.</p>
 <h3 id="gnssandroidrawdataparser"><strong>GnssAndroidRawDataParser</strong></h3>
 <p>Full name: <code>midgard.parsers.gnss_android_raw_data.GnssAndroidRawDataParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <h2 id="midgardparsersgnss_galat_results">midgard.parsers.gnss_galat_results</h2>
 <p>A parser for GALAT single point positioning result files</p>
 <p><strong>Example:</strong></p>
@@ -2796,68 +3003,68 @@ data = p.as_dict()
 <p>Reads data from files in GALAT result format.</p>
 <h3 id="galatresults"><strong>GalatResults</strong></h3>
 <p>Full name: <code>midgard.parsers.gnss_galat_results.GalatResults</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GALAT single point positioning result files</p>
 <p>Following <strong>data</strong> are available after reading GALAT SPP result file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>time</td>
-<td>Time epoch</td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Time epoch</td>
 </tr>
 <tr>
-<td>latitude</td>
-<td>Latitude in degree</td>
+<td style="text-align: left;">latitude</td>
+<td style="text-align: left;">Latitude in degree</td>
 </tr>
 <tr>
-<td>longitude</td>
-<td>Longitude in degree</td>
+<td style="text-align: left;">longitude</td>
+<td style="text-align: left;">Longitude in degree</td>
 </tr>
 <tr>
-<td>height</td>
-<td>Height in [m]</td>
+<td style="text-align: left;">height</td>
+<td style="text-align: left;">Height in [m]</td>
 </tr>
 <tr>
-<td>dlatitude</td>
-<td>Latitude related to reference coordinate in [m]</td>
+<td style="text-align: left;">dlatitude</td>
+<td style="text-align: left;">Latitude related to reference coordinate in [m]</td>
 </tr>
 <tr>
-<td>dlongitude</td>
-<td>Longitude related to reference coordinate in [m]</td>
+<td style="text-align: left;">dlongitude</td>
+<td style="text-align: left;">Longitude related to reference coordinate in [m]</td>
 </tr>
 <tr>
-<td>dheight</td>
-<td>Height related to reference coordinate in [m]</td>
+<td style="text-align: left;">dheight</td>
+<td style="text-align: left;">Height related to reference coordinate in [m]</td>
 </tr>
 <tr>
-<td>hpe</td>
-<td>Horizontal positioning error (HPE) in [m]</td>
+<td style="text-align: left;">hpe</td>
+<td style="text-align: left;">Horizontal positioning error (HPE) in [m]</td>
 </tr>
 <tr>
-<td>vpe</td>
-<td>Vertical positioning error (VPE) in [m]</td>
+<td style="text-align: left;">vpe</td>
+<td style="text-align: left;">Vertical positioning error (VPE) in [m]</td>
 </tr>
 <tr>
-<td>site_vel_3d</td>
-<td>3D site velocity in [m/s]</td>
+<td style="text-align: left;">site_vel_3d</td>
+<td style="text-align: left;">3D site velocity in [m/s]</td>
 </tr>
 <tr>
-<td>pdop</td>
-<td>Precision dilution of precision</td>
+<td style="text-align: left;">pdop</td>
+<td style="text-align: left;">Precision dilution of precision</td>
 </tr>
 <tr>
-<td>num_satellite_available</td>
-<td>Number of available satellites</td>
+<td style="text-align: left;">num_satellite_available</td>
+<td style="text-align: left;">Number of available satellites</td>
 </tr>
 <tr>
-<td>num_satellite_used</td>
-<td>Number of used satellites</td>
+<td style="text-align: left;">num_satellite_used</td>
+<td style="text-align: left;">Number of used satellites</td>
 </tr>
 </tbody>
 </table>
@@ -2865,22 +3072,22 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__params__</td>
-<td>np.genfromtxt parameters</td>
+<td style="text-align: left;">__params__</td>
+<td style="text-align: left;">np.genfromtxt parameters</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2892,47 +3099,47 @@ p = parsers.parse_file(parser_name='gnssrefl_allrh', file_path='tgde_allRH.txt')
 data = p.as_dict()
 </code></pre>
 <p><strong>Description:</strong></p>
-<p>Reads data from files in GNSSREFL reflector height timeseries files</p>
+<p>Reads data from files in GNSSREFL reflector height timeseries format</p>
 <h3 id="gnssreflallrh"><strong>GnssreflAllRh</strong></h3>
 <p>Full name: <code>midgard.parsers.gnssrefl_allrh.GnssreflAllRh</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GNSSREFL reflector height timeseries files</p>
-<p>Following <strong>data</strong> are available after reading Terrapos residual file:</p>
+<p>Following <strong>data</strong> are available after reading the file:</p>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>amplitude</td>
-<td>Amplitude</td>
+<td style="text-align: left;">amplitude</td>
+<td style="text-align: left;">Amplitude</td>
 </tr>
 <tr>
-<td>azimuth</td>
-<td>Azimuth in [deg]</td>
+<td style="text-align: left;">azimuth</td>
+<td style="text-align: left;">Azimuth in [deg]</td>
 </tr>
 <tr>
-<td>frequency</td>
-<td>GNSS frequency identifier</td>
+<td style="text-align: left;">frequency</td>
+<td style="text-align: left;">GNSS frequency identifier</td>
 </tr>
 <tr>
-<td>peak2noise</td>
-<td>Peak to noise</td>
+<td style="text-align: left;">peak2noise</td>
+<td style="text-align: left;">Peak to noise</td>
 </tr>
 <tr>
-<td>reflection_height</td>
-<td>Reflection height in [m]</td>
+<td style="text-align: left;">reflector_height</td>
+<td style="text-align: left;">Reflector height in [m]</td>
 </tr>
 <tr>
-<td>satellite</td>
-<td>Satellite number</td>
+<td style="text-align: left;">satellite</td>
+<td style="text-align: left;">Satellite number</td>
 </tr>
 <tr>
-<td>time</td>
-<td>Time as datetime object</td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Time as datetime object</td>
 </tr>
 </tbody>
 </table>
@@ -2940,18 +3147,262 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersgnssrefl_snr">midgard.parsers.gnssrefl_snr</h2>
+<p>A parser for reading GNSSREFL SNR files</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='gnssrefl_snr', file_path='ande2740.24.snr66')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from files in GNSSREFL SNR format</p>
+<h3 id="gnssreflsnr"><strong>GnssreflSnr</strong></h3>
+<p>Full name: <code>midgard.parsers.gnssrefl_snr.GnssreflSnr</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
+<p>A parser for reading GNSSREFL SNR files</p>
+<p>Following <strong>data</strong> are available after reading the file:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">azimuth</td>
+<td style="text-align: left;">Azimuth in [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">elevation</td>
+<td style="text-align: left;">Elevation in [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">elevation_rate</td>
+<td style="text-align: left;">Elevation angle rate of change [deg/s]</td>
+</tr>
+<tr>
+<td style="text-align: left;">seconds_of_day</td>
+<td style="text-align: left;">Seconds of day (GPS time)</td>
+</tr>
+<tr>
+<td style="text-align: left;">satellite</td>
+<td style="text-align: left;">Satellite number</td>
+</tr>
+<tr>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">SNR observation data on L1</td>
+</tr>
+<tr>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">SNR observation data on L2</td>
+</tr>
+<tr>
+<td style="text-align: left;">S5</td>
+<td style="text-align: left;">SNR observation data on L5</td>
+</tr>
+<tr>
+<td style="text-align: left;">S6</td>
+<td style="text-align: left;">SNR observation data on L6</td>
+</tr>
+<tr>
+<td style="text-align: left;">S7</td>
+<td style="text-align: left;">SNR observation data on L7</td>
+</tr>
+<tr>
+<td style="text-align: left;">S8</td>
+<td style="text-align: left;">SNR observation data on L8</td>
+</tr>
+<tr>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Time as datetime object</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>data_path</strong></td>
+<td style="text-align: left;">File path</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>parser_name</strong></td>
+<td style="text-align: left;">Parser name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="midgardparsersgnssrefl_txt">midgard.parsers.gnssrefl_txt</h2>
+<p>A parser for reading daily GNSSREFL reflector height results (output of 'gnssir' and 'subdaily' program)</p>
+<p>TODO: subdaily produces several different formats. Not all of them are handled so far by this parser. At the moment
+      only the final subdaily file with RHdot and interfrequency bias corrections can be read.</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='gnssrefl_txt', file_path='218.txt')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from daily GNSSREFL files given as output from program 'gnssir'</p>
+<h3 id="gnssrefltxt"><strong>GnssreflTxt</strong></h3>
+<p>Full name: <code>midgard.parsers.gnssrefl_txt.GnssreflTxt</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
+<p>A parser for reading daily GNSSREFL reflector height results (output of 'gnssir' and 'subdaily' program)</p>
+<p>Following <strong>data</strong> can be available after reading the file:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">amplitude</td>
+<td style="text-align: left;">Amplitude</td>
+</tr>
+<tr>
+<td style="text-align: left;">azimuth</td>
+<td style="text-align: left;">Azimuth in [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">elevation_max</td>
+<td style="text-align: left;">Maximal elevation [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">elevation_min</td>
+<td style="text-align: left;">Minimal elevation [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">elevation_rate</td>
+<td style="text-align: left;">Elevation rate [rad/hour]</td>
+</tr>
+<tr>
+<td style="text-align: left;">frequency</td>
+<td style="text-align: left;">GNSS frequency identifier</td>
+</tr>
+<tr>
+<td style="text-align: left;">interfreq_bias_correction</td>
+<td style="text-align: left;">Interfrequency bias correction in [m] (Note: Information added to data.)</td>
+</tr>
+<tr>
+<td style="text-align: left;">number_of_observation</td>
+<td style="text-align: left;">Number of SNR observation</td>
+</tr>
+<tr>
+<td style="text-align: left;">peak2noise</td>
+<td style="text-align: left;">Peak to noise (maximal amplitude/noise)</td>
+</tr>
+<tr>
+<td style="text-align: left;">reflector_height</td>
+<td style="text-align: left;">Reflector height in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">reflector_height_with_</td>
+<td style="text-align: left;">Reflector height with interfrequency corrections in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">interfreq_corr</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">reflector_height_with_</td>
+<td style="text-align: left;">Reflector height with time varying height corrections (RHDOT) in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">rhdot_corr</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">refraction_model</td>
+<td style="text-align: left;">Defining used refraction model</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">0: No refraction correction applied</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1: Standard Bennett refraction correction</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2: Standard Bennett refraction correction, time-varying</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3: Ulich refraction correction</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">4: Ulich refraction correction, time-varying</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">5: NITE refraction correction (Peng et al.)</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">6: MPF refraction correction, Wiliams and Nievinski</td>
+</tr>
+<tr>
+<td style="text-align: left;">rhdot_correction</td>
+<td style="text-align: left;">Time varying height corrections (RHDOT) in [m]</td>
+</tr>
+<tr>
+<td style="text-align: left;">rising_satellite</td>
+<td style="text-align: left;">Rising satellite is set to 1 and setting satellite to -1</td>
+</tr>
+<tr>
+<td style="text-align: left;">satellite</td>
+<td style="text-align: left;">Satellite number</td>
+</tr>
+<tr>
+<td style="text-align: left;">satellite_arc_length</td>
+<td style="text-align: left;">Satellite arc length in [min]</td>
+</tr>
+<tr>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Time as datetime object</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>data_path</strong></td>
+<td style="text-align: left;">File path</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>parser_name</strong></td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -2990,20 +3441,20 @@ data = p.as_dict()
 </code></pre>
 <h3 id="gravsoftgrid"><strong>GravsoftGrid</strong></h3>
 <p>Full name: <code>midgard.parsers.gravsoft_grid.GravsoftGrid</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading GRAVSOFT grid text files</p>
 <p>Following <strong>data</strong> are available after reading data:</p>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>griddata</td>
-<td>Grid data with ordered grid blocks as list</td>
+<td style="text-align: left;">griddata</td>
+<td style="text-align: left;">Grid data with ordered grid blocks as list</td>
 </tr>
 </tbody>
 </table>
@@ -3011,46 +3462,46 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>grid_increment_lat</td>
-<td>Latitude grid increment in degree</td>
+<td style="text-align: left;">grid_increment_lat</td>
+<td style="text-align: left;">Latitude grid increment in degree</td>
 </tr>
 <tr>
-<td>grid_increment_lon</td>
-<td>Longitude grid increment in degree</td>
+<td style="text-align: left;">grid_increment_lon</td>
+<td style="text-align: left;">Longitude grid increment in degree</td>
 </tr>
 <tr>
-<td>grid_lat_max</td>
-<td>Maximal latitude border limit of grid area in degree</td>
+<td style="text-align: left;">grid_lat_max</td>
+<td style="text-align: left;">Maximal latitude border limit of grid area in degree</td>
 </tr>
 <tr>
-<td>grid_lat_max</td>
-<td>Maximal latitude border limit of grid area in degree</td>
+<td style="text-align: left;">grid_lat_max</td>
+<td style="text-align: left;">Maximal latitude border limit of grid area in degree</td>
 </tr>
 <tr>
-<td>grid_lat_min</td>
-<td>Minimal latitude border limit of grid area in degree</td>
+<td style="text-align: left;">grid_lat_min</td>
+<td style="text-align: left;">Minimal latitude border limit of grid area in degree</td>
 </tr>
 <tr>
-<td>grid_lon_max</td>
-<td>Maximal longitude border limit of grid area in degree</td>
+<td style="text-align: left;">grid_lon_max</td>
+<td style="text-align: left;">Maximal longitude border limit of grid area in degree</td>
 </tr>
 <tr>
-<td>grid_lon_min</td>
-<td>Minimal longitude border limit of grid area in degree</td>
+<td style="text-align: left;">grid_lon_min</td>
+<td style="text-align: left;">Minimal longitude border limit of grid area in degree</td>
 </tr>
 <tr>
-<td><strong>data_path</strong></td>
-<td>File path</td>
+<td style="text-align: left;"><strong>data_path</strong></td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td><strong>parser_name</strong></td>
-<td>Parser name</td>
+<td style="text-align: left;"><strong>parser_name</strong></td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -3191,7 +3642,7 @@ dset = parser.as_dataset()
 <p>Reads data from files in the Rinex file format 2.11 (see :cite:<code>rinex2</code>).</p>
 <h3 id="rinex2parser"><strong>Rinex2Parser</strong></h3>
 <p>Full name: <code>midgard.parsers.rinex2_obs.Rinex2Parser</code></p>
-<p>Signature: <code>(*args: Tuple[Any], sampling_rate: Optional[float] = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
+<p>Signature: <code>(*args: Tuple[Any], sampling_rate: None | float = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
 <p>A parser for reading RINEX observation file</p>
 <p>The parser reads GNSS observations in RINEX format 2.11 (see :cite:<code>rinex2</code>). The GNSS observations
 are sampled after sampling rate definition in configuration file.</p>
@@ -3231,7 +3682,7 @@ this parser does not handle GLONASS and SBAS navigation messages. All navigation
 converted to GPS time scale.</p>
 <h3 id="rinex3navparser"><strong>Rinex3NavParser</strong></h3>
 <p>Full name: <code>midgard.parsers.rinex3_nav.Rinex3NavParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading RINEX navigation file</p>
 <p>The parser reads GNSS broadcast ephemeris in RINEX format 3.03 (see :cite:<code>rinex3</code>) except for GLONASS and SBAS.</p>
 <h1 id="todo-would-it-not-be-better-to-use-one-leading-underscore-for-non-public-methods-and-instance-variables_2">TODO: Would it not be better to use one leading underscore for non-public methods and instance variables.</h1>
@@ -3286,7 +3737,7 @@ dset = parser.as_dataset()
 <p>Reads data from files in the RINEX file format version 3.03 (see :cite:<code>rinex3</code>).</p>
 <h3 id="rinex3parser"><strong>Rinex3Parser</strong></h3>
 <p>Full name: <code>midgard.parsers.rinex3_obs.Rinex3Parser</code></p>
-<p>Signature: <code>(*args: Tuple[Any], sampling_rate: Optional[float] = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
+<p>Signature: <code>(*args: Tuple[Any], sampling_rate: None | float = None, convert_unit: bool = False, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
 <p>A parser for reading RINEX observation file</p>
 <p>The parser reads GNSS observations in RINEX format 3.03 (see :cite:<code>rinex3</code>). The GNSS observations
 are sampled after sampling rate definition in configuration file.</p>
@@ -3345,7 +3796,7 @@ data = p.as_dict()
 <p>Reads discontinuities of GNSS station timeseries in SINEX format .</p>
 <h3 id="discontinuitiessnxparser"><strong>DiscontinuitiesSnxParser</strong></h3>
 <p>Full name: <code>midgard.parsers.sinex_discontinuities.DiscontinuitiesSnxParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -&gt; None</code></p>
 <p>A parser for reading data from discontinuties.snx file in SINEX format</p>
 <p>The solution discontinuity dictionary has as keys the site identifiers and as value the 'solution_discontinuity'
 entry. The dictionary has following strucuture:</p>
@@ -3372,7 +3823,7 @@ data = p.as_dict()
 <p>Reads events related to GNSS configuration, environment changes or station timeseries data problems in SINEX format .</p>
 <h3 id="eventssnxparser"><strong>EventsSnxParser</strong></h3>
 <p>Full name: <code>midgard.parsers.sinex_events.EventsSnxParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -&gt; None</code></p>
 <p>A parser for reading data from events.snx file in SINEX format</p>
 <p>The solution events dictionary has as keys the site identifiers and as value the 'solution_event'
 entry. The dictionary has following strucuture:</p>
@@ -3410,7 +3861,7 @@ eccentricities, ...) from files in SINEX format. Following blocks are read:</p>
 SOLUTION/ESTIMATE dictionary.</p>
 <h3 id="sinexsiteparser"><strong>SinexSiteParser</strong></h3>
 <p>Full name: <code>midgard.parsers.sinex_site.SinexSiteParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, header: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, header: bool = True) -&gt; None</code></p>
 <p>A parser for reading site related information from SINEX format</p>
 <p>site - Site dictionary, whereby keys are the site identifiers and values are a site entry
        dictionary with the keys 'site_antenna', 'site_eccentricity', 'site_id', 'site_receiver',
@@ -3491,6 +3942,35 @@ SOLUTION/ESTIMATE dictionary.</p>
    antenna monument and station coordinate changes were done at each site. If the time is defined as
    00:000:00000 in the SINEX file, then the value is saved as 'None' in the Sinex class.
 </code></pre>
+<h2 id="midgardparserssinex_tms">midgard.parsers.sinex_tms</h2>
+<p>A parser for reading SINEX timeseries format</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+p = parsers.parse_file(parser_name='sinex_tms', file_path='sinex_tms')
+data = p.as_dict()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Following SINEX timeseries blocks are read:</p>
+<pre><code>        FILE/REFERENCE 
+        SITE/ID
+        SITE/RECEIVER
+        SITE/ANTENNA
+        SITE/ECCENTRICITY
+        TIMESERIES/REF_COORDINATE
+        TIMESERIES/COLUMNS
+        TIMESERIES/DATA
+</code></pre>
+<h3 id="fielddef_1"><strong>FieldDef</strong></h3>
+<p>Full name: <code>midgard.parsers.sinex_tms.FieldDef</code></p>
+<p>Signature: <code>(field=None, unit=None)</code></p>
+<p>A convenience class for defining dataset fields </p>
+<p><strong>Args:</strong></p>
+<p>field (str):             Dataset field name
+unit (str):              Unit of field</p>
+<h3 id="sinextmsparser"><strong>SinexTmsParser</strong></h3>
+<p>Full name: <code>midgard.parsers.sinex_tms.SinexTmsParser</code></p>
+<p>Signature: <code>(file_path, encoding=None)</code></p>
+<p>A parser for reading SINEX timeseries format</p>
 <h2 id="midgardparserssinex_tro">midgard.parsers.sinex_tro</h2>
 <p>A parser for reading troposphere results in SNX format</p>
 <p><strong>Description:</strong></p>
@@ -3503,18 +3983,65 @@ SINEX format, but mostly uses custom blocks. The following blocks are found in t
 <p>The format of the custom blocks are derived by reading example files and blocks defined in the format that is not 
 present in the example files are not implemented yet.</p>
 <p>Format description: https://files.igs.org/pub/data/format/sinex_tropo.txt</p>
-<h3 id="berntropsnxparser"><strong>BernTropSnxParser</strong></h3>
-<p>Full name: <code>midgard.parsers.sinex_tro.BernTropSnxParser</code></p>
+<h3 id="sinextropparser"><strong>SinexTropParser</strong></h3>
+<p>Full name: <code>midgard.parsers.sinex_tro.SinexTropParser</code></p>
 <p>Signature: <code>(file_path, encoding=None)</code></p>
-<p>A parser for reading data from Bernese troposphere files in SNX format</p>
+<p>A parser for reading data from troposphere files in SNX format</p>
 <h2 id="midgardparsersslr_prediction">midgard.parsers.slr_prediction</h2>
 <p>A parser for reading SLR prediction files</p>
 <p><strong>Description:</strong></p>
 <p>Reads data from files in the CPF file format as defined in http://ilrs.gsfc.nasa.gov/docs/2006/cpf_1.01.pdf</p>
 <h3 id="slrpredictionparser"><strong>SlrPredictionParser</strong></h3>
 <p>Full name: <code>midgard.parsers.slr_prediction.SlrPredictionParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading SLR prediction files (CPF format)</p>
+<h2 id="midgardparserssp3">midgard.parsers.sp3</h2>
+<p>A parser for reading SP3-c and SP3-d orbit files</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+
+# Parse data
+p = parsers.parse_file(parser_name="sp3d", file_path=file_path)
+
+# Get Dataset with parsed data
+dset = p.as_dataset()
+</code></pre>
+<p><strong>Description:</strong></p>
+<p>Reads data from SP3-c files (see :cite:<code>hilla2010</code> ) and SP3-d files (see :cite:<code>hilla2016</code>). The reference frame is 
+defined in the header of the SP3 file, which is for IGS products the current IGS terrestrial reference frame 
+(e.g. IGb08). The time system is for IGS products the GPS time scale. The orbit position and velocities are given 
+normally for every 15 minutes.</p>
+<h3 id="sp3dparser"><strong>Sp3dParser</strong></h3>
+<p>Full name: <code>midgard.parsers.sp3.Sp3dParser</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
+<p>A parser for reading data from SP3-c and SP3-d orbit files</p>
+<p><strong>Attributes:</strong></p>
+<p>data (dict):             Dict containing the (precise orbit) data read from file.
+data_available (bool):   Indicator of whether data are available.
+dependencies (list):     List of files that have been read by the parser.
+file_key (str):          Key to the SP3 orbit file defined in files.conf file.
+file_path (pathlib.PosixPath):  File path to SP3 orbit file.
+meta (dict):             Dict containing the metainformation read from file, whereby SP3 header entries define
+                             the keys.</p>
+<p>Methods:
+    calculate_data()        Carry out the defined calculators
+    copy_cache_to_data()    Copy contents of the cache to the data datastructure
+    copy_cache_to_meta()    Copy contents of the cache to the meta datastructure
+    parse()                 Parse data
+    parse_default()         Add the contents of line to data
+    parse_default_meta()    Add the contents of line to meta
+    parse_file()            Read a data file and parse the content
+    parse_line()            Parse line
+    read_data()             Read data from datafiles
+    setup_calculators()     List steps necessary for postprocessing
+    setup_parsers()         Setup parser definition
+    write_to_dataset()      Write data based on GNSS SP3 orbit file</p>
+<pre><code>_parse_date()           Parse date orbit position/velocity block
+_parse_float()          Parse float entries of SP3 header to instance variable 'meta'
+_parse_position()       Parse orbit position
+_parse_string()         Parse string entries of SP3 header to instance variable 'meta'
+_parse_velocity()       Parse orbit velocity
+</code></pre>
 <h2 id="midgardparsersspring_csv">midgard.parsers.spring_csv</h2>
 <p>A parser for reading Spring CSV output files</p>
 <p><strong>Example:</strong></p>
@@ -3526,7 +4053,7 @@ data = p.as_dict()
 <p>Reads data from files in Spring CSV output format. The header information of the Spring CSV file is not read (TODO).</p>
 <h3 id="springcsvparser"><strong>SpringCsvParser</strong></h3>
 <p>Full name: <code>midgard.parsers.spring_csv.SpringCsvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Spring CSV output files</p>
 <p>The Spring CSV data header line is used to define the keys of the <strong>data</strong> dictionary. The values of the <strong>data</strong> 
 dictionary are represented by the Spring CSV colum values.</p>
@@ -3534,54 +4061,54 @@ dictionary are represented by the Spring CSV colum values.</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Description</th>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>acquiredsat</td>
-<td>Number of acquired satellites (TODO?)</td>
+<td style="text-align: left;">acquiredsat</td>
+<td style="text-align: left;">Number of acquired satellites (TODO?)</td>
 </tr>
 <tr>
-<td>gdop</td>
-<td>Geometric dilution of precision</td>
+<td style="text-align: left;">gdop</td>
+<td style="text-align: left;">Geometric dilution of precision</td>
 </tr>
 <tr>
-<td>hdop</td>
-<td>Horizontal dilution of precision</td>
+<td style="text-align: left;">hdop</td>
+<td style="text-align: left;">Horizontal dilution of precision</td>
 </tr>
 <tr>
-<td>pdop</td>
-<td>Position (3D) dilution of precision</td>
+<td style="text-align: left;">pdop</td>
+<td style="text-align: left;">Position (3D) dilution of precision</td>
 </tr>
 <tr>
-<td>satinview</td>
-<td>Number of satellites in view</td>
+<td style="text-align: left;">satinview</td>
+<td style="text-align: left;">Number of satellites in view</td>
 </tr>
 <tr>
-<td>system</td>
-<td>GNSS identifier based on RINEX definition (e.g. G: GPS, E: Galileo)</td>
+<td style="text-align: left;">system</td>
+<td style="text-align: left;">GNSS identifier based on RINEX definition (e.g. G: GPS, E: Galileo)</td>
 </tr>
 <tr>
-<td>tdop</td>
-<td>Time dilution of precision</td>
+<td style="text-align: left;">tdop</td>
+<td style="text-align: left;">Time dilution of precision</td>
 </tr>
 <tr>
-<td>time</td>
-<td>Observation time given as Time object</td>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Observation time given as Time object</td>
 </tr>
 <tr>
-<td>usedsat</td>
-<td>Number of used satellites</td>
+<td style="text-align: left;">usedsat</td>
+<td style="text-align: left;">Number of used satellites</td>
 </tr>
 <tr>
-<td>vdop</td>
-<td>Vertical dilution of precision</td>
+<td style="text-align: left;">vdop</td>
+<td style="text-align: left;">Vertical dilution of precision</td>
 </tr>
 <tr>
-<td>...</td>
-<td>...</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">...</td>
 </tr>
 </tbody>
 </table>
@@ -3597,7 +4124,7 @@ data = p.as_dict()
 based on the reference epoch.</p>
 <h3 id="sscsiteparser"><strong>SscSiteParser</strong></h3>
 <p>Full name: <code>midgard.parsers.ssc_site.SscSiteParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading data from TRF files in SSC format</p>
 <h2 id="midgardparsersterrapos_position">midgard.parsers.terrapos_position</h2>
 <p>A parser for reading Terrapos position output file</p>
@@ -3610,80 +4137,80 @@ data = p.as_dict()
 <p>Reads data from files in Terrapos position output format.</p>
 <h3 id="terrapospositionparser"><strong>TerraposPositionParser</strong></h3>
 <p>Full name: <code>midgard.parsers.terrapos_position.TerraposPositionParser</code></p>
-<p>Signature: <code>(*args: Tuple[Any], station: Optional[str] = None, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
+<p>Signature: <code>(*args: Tuple[Any], station: None | str = None, **kwargs: Dict[Any, Any]) -&gt; None</code></p>
 <p>A parser for reading Terrapos position output file</p>
 <p>Following <strong>data</strong> are available after reading Terrapos position file:</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>gpsweek</td>
-<td>GPS week</td>
+<td style="text-align: left;">gpsweek</td>
+<td style="text-align: left;">GPS week</td>
 </tr>
 <tr>
-<td>gpssec</td>
-<td>Seconds of GPS week</td>
+<td style="text-align: left;">gpssec</td>
+<td style="text-align: left;">Seconds of GPS week</td>
 </tr>
 <tr>
-<td>head</td>
-<td>Head in [deg]</td>
+<td style="text-align: left;">head</td>
+<td style="text-align: left;">Head in [deg]</td>
 </tr>
 <tr>
-<td>height</td>
-<td>Ellipsoidal height in [m]</td>
+<td style="text-align: left;">height</td>
+<td style="text-align: left;">Ellipsoidal height in [m]</td>
 </tr>
 <tr>
-<td>lat</td>
-<td>Latitude in [deg]</td>
+<td style="text-align: left;">lat</td>
+<td style="text-align: left;">Latitude in [deg]</td>
 </tr>
 <tr>
-<td>lon</td>
-<td>Longitude in [deg]</td>
+<td style="text-align: left;">lon</td>
+<td style="text-align: left;">Longitude in [deg]</td>
 </tr>
 <tr>
-<td>num_sat</td>
-<td>Number of satellites</td>
+<td style="text-align: left;">num_sat</td>
+<td style="text-align: left;">Number of satellites</td>
 </tr>
 <tr>
-<td>pdop</td>
-<td>Position Dilution of Precision (PDOP)</td>
+<td style="text-align: left;">pdop</td>
+<td style="text-align: left;">Position Dilution of Precision (PDOP)</td>
 </tr>
 <tr>
-<td>pitch</td>
-<td>Pitch in [deg]</td>
+<td style="text-align: left;">pitch</td>
+<td style="text-align: left;">Pitch in [deg]</td>
 </tr>
 <tr>
-<td>reliability_east</td>
-<td>East position external reliability in [m] #TODO: Is that correct?</td>
+<td style="text-align: left;">reliability_east</td>
+<td style="text-align: left;">East position external reliability in [m] #TODO: Is that correct?</td>
 </tr>
 <tr>
-<td>reliability_height</td>
-<td>Height position external reliability in [m] #TODO: Is that correct?</td>
+<td style="text-align: left;">reliability_height</td>
+<td style="text-align: left;">Height position external reliability in [m] #TODO: Is that correct?</td>
 </tr>
 <tr>
-<td>reliability_north</td>
-<td>North position external reliability in [m] #TODO: Is that correct?</td>
+<td style="text-align: left;">reliability_north</td>
+<td style="text-align: left;">North position external reliability in [m] #TODO: Is that correct?</td>
 </tr>
 <tr>
-<td>roll</td>
-<td>Roll in [deg]</td>
+<td style="text-align: left;">roll</td>
+<td style="text-align: left;">Roll in [deg]</td>
 </tr>
 <tr>
-<td>sigma_east</td>
-<td>Standard deviation of East position in [m] #TODO: Is that correct?</td>
+<td style="text-align: left;">sigma_east</td>
+<td style="text-align: left;">Standard deviation of East position in [m] #TODO: Is that correct?</td>
 </tr>
 <tr>
-<td>sigma_height</td>
-<td>Standard deviation of Height position in [m] #TODO: Is that correct?</td>
+<td style="text-align: left;">sigma_height</td>
+<td style="text-align: left;">Standard deviation of Height position in [m] #TODO: Is that correct?</td>
 </tr>
 <tr>
-<td>sigma_north</td>
-<td>Standard deviation of North position in [m] #TODO: Is that correct?</td>
+<td style="text-align: left;">sigma_north</td>
+<td style="text-align: left;">Standard deviation of North position in [m] #TODO: Is that correct?</td>
 </tr>
 </tbody>
 </table>
@@ -3691,18 +4218,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -3717,52 +4244,52 @@ data = p.as_dict()
 <p>Reads data from files in Terrapos residual format.</p>
 <h3 id="terraposresidualparser"><strong>TerraposResidualParser</strong></h3>
 <p>Full name: <code>midgard.parsers.terrapos_residual.TerraposResidualParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading Terrapos residual file</p>
 <p>Following <strong>data</strong> are available after reading Terrapos residual file:</p>
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>azimuth</td>
-<td>Azimuth of satellites in [deg]</td>
+<td style="text-align: left;">azimuth</td>
+<td style="text-align: left;">Azimuth of satellites in [deg]</td>
 </tr>
 <tr>
-<td>elevation</td>
-<td>Elevation of satellites in [deg]</td>
+<td style="text-align: left;">elevation</td>
+<td style="text-align: left;">Elevation of satellites in [deg]</td>
 </tr>
 <tr>
-<td>gpsweek</td>
-<td>GPS week</td>
+<td style="text-align: left;">gpsweek</td>
+<td style="text-align: left;">GPS week</td>
 </tr>
 <tr>
-<td>gpssec</td>
-<td>Seconds of GPS week</td>
+<td style="text-align: left;">gpssec</td>
+<td style="text-align: left;">Seconds of GPS week</td>
 </tr>
 <tr>
-<td>residual_code</td>
-<td>Code (pseudorange) residuals in [m]</td>
+<td style="text-align: left;">residual_code</td>
+<td style="text-align: left;">Code (pseudorange) residuals in [m]</td>
 </tr>
 <tr>
-<td>residual_doppler</td>
-<td>Doppler residuals in [m]</td>
+<td style="text-align: left;">residual_doppler</td>
+<td style="text-align: left;">Doppler residuals in [m]</td>
 </tr>
 <tr>
-<td>residual_phase</td>
-<td>Carrier-phase residuals in [m]</td>
+<td style="text-align: left;">residual_phase</td>
+<td style="text-align: left;">Carrier-phase residuals in [m]</td>
 </tr>
 <tr>
-<td>satellite</td>
-<td>Satellite PRN number together with GNSS identifier (e.g. G07)</td>
+<td style="text-align: left;">satellite</td>
+<td style="text-align: left;">Satellite PRN number together with GNSS identifier (e.g. G07)</td>
 </tr>
 <tr>
-<td>system</td>
-<td>GNSS identifier</td>
+<td style="text-align: left;">system</td>
+<td style="text-align: left;">GNSS identifier</td>
 </tr>
 </tbody>
 </table>
@@ -3770,18 +4297,18 @@ data = p.as_dict()
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Description</th>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>__data_path__</td>
-<td>File path</td>
+<td style="text-align: left;">__data_path__</td>
+<td style="text-align: left;">File path</td>
 </tr>
 <tr>
-<td>__parser_name__</td>
-<td>Parser name</td>
+<td style="text-align: left;">__parser_name__</td>
+<td style="text-align: left;">Parser name</td>
 </tr>
 </tbody>
 </table>
@@ -3797,7 +4324,7 @@ data = p.as_dict()
 not read (TODO).</p>
 <h3 id="urecontroltoolcsvparser"><strong>UreControlToolCsvParser</strong></h3>
 <p>Full name: <code>midgard.parsers.ure_control_tool_csv.UreControlToolCsvParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading URE Control Tool CSV output files</p>
 <p>The URE Control Tool CSV data header line is used to define the keys of the <strong>data</strong> dictionary. The values of the 
 <strong>data</strong> dictionary are represented by the URE Control Tool CSV colum values.</p>
@@ -3805,9 +4332,144 @@ not read (TODO).</p>
 <p>A parser for reading IVS source names translation table</p>
 <h3 id="vlbisourcenamesparser"><strong>VlbiSourceNamesParser</strong></h3>
 <p>Full name: <code>midgard.parsers.vlbi_source_names.VlbiSourceNamesParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
 <p>A parser for reading IVS source names translation table</p>
 <p>See https://vlbi.gsfc.nasa.gov/output for an example of a IVS source name file</p>
+<h2 id="midgardparserswater_level_api_xml">midgard.parsers.water_level_api_xml</h2>
+<p>A parser for reading water level file in XML format form Norwegian water level API</p>
+<p><strong>Description:</strong>
+Note, that 'forecast' data are not read by this parser. In addition only data with common time period are read.
+It can e.g. happen, that predicted tidal data are available for a period, where no water level observations
+are available.</p>
+<p><strong>Example:</strong></p>
+<pre><code>from midgard import parsers
+
+p = parsers.parse_file(parser_name="water_level_api_xml",  file_path="water_level_api.xml")
+data = p.as_dict()
+</code></pre>
+<h3 id="waterlevelapixml"><strong>WaterLevelApiXml</strong></h3>
+<p>Full name: <code>midgard.parsers.water_level_api_xml.WaterLevelApiXml</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None) -&gt; None</code></p>
+<p>A parser for reading water level file in XML format form Norwegian water level API</p>
+<p>See https://vannstand.kartverket.no/tideapi_no.html for an example</p>
+<p>Following <strong>data</strong> are available in dependency of given water level data:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">flag</td>
+<td style="text-align: left;">Data flag of water level observation data (obs: observation, pre: prediction),</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">which can also predicted tidal data</td>
+</tr>
+<tr>
+<td style="text-align: left;">time</td>
+<td style="text-align: left;">Observation time</td>
+</tr>
+<tr>
+<td style="text-align: left;">water_level</td>
+<td style="text-align: left;">Observed/estimated water level data in [cm]</td>
+</tr>
+<tr>
+<td style="text-align: left;">water_level_predicted</td>
+<td style="text-align: left;">Tidal prediction data in [cm]</td>
+</tr>
+<tr>
+<td style="text-align: left;">water_level_weather_effect</td>
+<td style="text-align: left;">Weather effect [cm]</td>
+</tr>
+</tbody>
+</table>
+<p>and <strong>meta</strong>-data:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">code</td>
+<td style="text-align: left;">3-digit station identifier</td>
+</tr>
+<tr>
+<td style="text-align: left;">delay</td>
+<td style="text-align: left;">Time shift applied to the tidal prediction to best represent the given locations in</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">[min]</td>
+</tr>
+<tr>
+<td style="text-align: left;">descr</td>
+<td style="text-align: left;">Description of water level data</td>
+</tr>
+<tr>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">Amplitude correction factor</td>
+</tr>
+<tr>
+<td style="text-align: left;">latitude</td>
+<td style="text-align: left;">Latitude of water level position in [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">longitude</td>
+<td style="text-align: left;">Longitude of water level position in [deg]</td>
+</tr>
+<tr>
+<td style="text-align: left;">name</td>
+<td style="text-align: left;">Station name</td>
+</tr>
+<tr>
+<td style="text-align: left;">obsname</td>
+<td style="text-align: left;">Station name of observations</td>
+</tr>
+<tr>
+<td style="text-align: left;">obscode</td>
+<td style="text-align: left;">3-digit station identifier of observations</td>
+</tr>
+<tr>
+<td style="text-align: left;">quality_flag</td>
+<td style="text-align: left;">Quality flag of 'type' data</td>
+</tr>
+<tr>
+<td style="text-align: left;">quality_class</td>
+<td style="text-align: left;">Quality class of 'type' data</td>
+</tr>
+<tr>
+<td style="text-align: left;">quality_description</td>
+<td style="text-align: left;">Quality description of 'type' data</td>
+</tr>
+<tr>
+<td style="text-align: left;">type</td>
+<td style="text-align: left;">Data type of water level data</td>
+</tr>
+<tr>
+<td style="text-align: left;">unit</td>
+<td style="text-align: left;">Unit of water level data (information provided from 'type' data)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>data_path</strong></td>
+<td style="text-align: left;">File path</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>parser_name</strong></td>
+<td style="text-align: left;">Parser name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>url</strong></td>
+<td style="text-align: left;">URL of water level API</td>
+</tr>
+</tbody>
+</table>
 <h2 id="midgardparserswip_rinex">midgard.parsers.wip_rinex</h2>
 <p>A parser for reading Rinex files</p>
 <h3 id="rinex"><strong>rinex</strong>()</h3>
@@ -3818,7 +4480,7 @@ not read (TODO).</p>
 <p>A parser for reading RINEX navigation files with version 2.xx</p>
 <h3 id="rinex2navparser_1"><strong>Rinex2NavParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex2_nav.Rinex2NavParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading RINEX navigation files with version 2.xx</p>
 <h2 id="midgardparserswip_rinex2_nav_header">midgard.parsers.wip_rinex2_nav_header</h2>
 <p>RINEX navigation header classes for file format version 2.xx</p>
@@ -3828,14 +4490,14 @@ not read (TODO).</p>
 <p>A mixin defining which RINEX navigation headers are mandatory and optional in RINEX version 2.xx</p>
 <h3 id="rinex2navheaderparser"><strong>Rinex2NavHeaderParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex2_nav_header.Rinex2NavHeaderParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading just the RINEX version 2.xx navigation header</p>
 <p>The data in the rinex file will not be parsed.</p>
 <h2 id="midgardparserswip_rinex2_obs">midgard.parsers.wip_rinex2_obs</h2>
 <p>A parser for reading RINEX observation files with version 2.xx</p>
 <h3 id="rinex2obsparser"><strong>Rinex2ObsParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex2_obs.Rinex2ObsParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading RINEX observation files with version 2.xx</p>
 <h2 id="midgardparserswip_rinex2_obs_header">midgard.parsers.wip_rinex2_obs_header</h2>
 <p>RINEX observation header classes for file format version 3.xx</p>
@@ -3845,14 +4507,14 @@ not read (TODO).</p>
 <p>A mixin defining which RINEX observation headers are mandatory and optional in RINEX version 2.xx</p>
 <h3 id="rinex2obsheaderparser"><strong>Rinex2ObsHeaderParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex2_obs_header.Rinex2ObsHeaderParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading just the RINEX version 2.xx observation header</p>
 <p>The data in the rinex file will not be parsed.</p>
 <h2 id="midgardparserswip_rinex3_clk">midgard.parsers.wip_rinex3_clk</h2>
 <p>A parser for reading RINEX clock files with version 3.xx</p>
 <h3 id="rinex3clkparser"><strong>Rinex3ClkParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_clk.Rinex3ClkParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading RINEX clock files with version 3.xx</p>
 <h2 id="midgardparserswip_rinex3_clk_header">midgard.parsers.wip_rinex3_clk_header</h2>
 <p>RINEX clock header classes for file format version 3.xx</p>
@@ -3862,14 +4524,14 @@ not read (TODO).</p>
 <p>A mixin defining which RINEX clock headers are mandatory and optional in RINEX version 3.xx</p>
 <h3 id="rinex3clkheaderparser"><strong>Rinex3ClkHeaderParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_clk_header.Rinex3ClkHeaderParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading just the RINEX version 3.xx clock header</p>
 <p>The data in the rinex file will not be parsed.</p>
 <h2 id="midgardparserswip_rinex3_nav">midgard.parsers.wip_rinex3_nav</h2>
 <p>A parser for reading RINEX navigation files with version 3.xx</p>
 <h3 id="rinex3navparser_1"><strong>Rinex3NavParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_nav.Rinex3NavParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading RINEX navigation files with version 3.xx</p>
 <h2 id="midgardparserswip_rinex3_nav_header">midgard.parsers.wip_rinex3_nav_header</h2>
 <p>RINEX navigation header classes for file format version 3.xx</p>
@@ -3879,14 +4541,14 @@ not read (TODO).</p>
 <p>A mixin defining which RINEX navigation headers are mandatory and optional in RINEX version 3.xx</p>
 <h3 id="rinex3navheaderparser"><strong>Rinex3NavHeaderParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_nav_header.Rinex3NavHeaderParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading just the RINEX version 3.xx navigation header</p>
 <p>The data in the rinex file will not be parsed.</p>
 <h2 id="midgardparserswip_rinex3_obs">midgard.parsers.wip_rinex3_obs</h2>
 <p>A parser for reading RINEX observation files with version 3.xx</p>
 <h3 id="rinex3obsparser"><strong>Rinex3ObsParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_obs.Rinex3ObsParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading RINEX observation files with version 3.xx</p>
 <h2 id="midgardparserswip_rinex3_obs_header">midgard.parsers.wip_rinex3_obs_header</h2>
 <p>RINEX observation header classes for file format version 3.xx</p>
@@ -3896,14 +4558,14 @@ not read (TODO).</p>
 <p>A mixin defining which RINEX observation headers are mandatory and optional in RINEX version 3.xx</p>
 <h3 id="rinex3obsheaderparser"><strong>Rinex3ObsHeaderParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex3_obs_header.Rinex3ObsHeaderParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>A parser for reading just the RINEX version 3.xx observation header</p>
 <p>The data in the rinex file will not be parsed.</p>
 <h2 id="midgardparserswip_rinex_clk">midgard.parsers.wip_rinex_clk</h2>
 <p>A parser for reading Rinex navigation files</p>
 <h3 id="rinexclkparser"><strong>RinexClkParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex_clk.RinexClkParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>Class for defining common methods for RINEX clock parsers.</p>
 <h3 id="rinex_clk"><strong>rinex_clk</strong>()</h3>
 <p>Full name: <code>midgard.parsers.wip_rinex_clk.rinex_clk</code></p>
@@ -3913,7 +4575,7 @@ not read (TODO).</p>
 <p>A parser for reading Rinex navigation files</p>
 <h3 id="rinexnavparser"><strong>RinexNavParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex_nav.RinexNavParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>Class for defining common methods for RINEX navigation parsers.</p>
 <h3 id="rinex_nav"><strong>rinex_nav</strong>()</h3>
 <p>Full name: <code>midgard.parsers.wip_rinex_nav.rinex_nav</code></p>
@@ -3923,7 +4585,7 @@ not read (TODO).</p>
 <p>A parser for reading Rinex observation files</p>
 <h3 id="rinexobsparser"><strong>RinexObsParser</strong></h3>
 <p>Full name: <code>midgard.parsers.wip_rinex_obs.RinexObsParser</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], encoding: Optional[str] = None, logger=&lt;built-in function print&gt;, sampling_rate: Optional[int] = None, strict: bool = False) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, encoding: str | None = None, logger=&lt;built-in function print&gt;, sampling_rate: int | None = None, strict: bool = False) -&gt; None</code></p>
 <p>Class for defining common methods for RINEX observation parsers.</p>
 <h3 id="rinex_obs"><strong>rinex_obs</strong>()</h3>
 <p>Full name: <code>midgard.parsers.wip_rinex_obs.rinex_obs</code></p>
@@ -3936,8 +4598,7 @@ not read (TODO).</p>
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="../../js/jquery-3.6.0.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
@@ -3950,7 +4611,7 @@ not read (TODO).</p>
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>From here you can search these documents. Enter your search terms below.</p>
@@ -3970,7 +4631,7 @@ not read (TODO).</p>
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <table class="table">
