@@ -32,7 +32,7 @@ class SpringCsvParser(CsvParser):
     Depending on the Spring CSV following dataset fields can be available:
 
     | Field               | Description                                                                           |
-    |---------------------|---------------------------------------------------------------------------------------|
+    | :-------------------| :-------------------------------------------------------------------------------------|
     | acquiredsat         | Number of acquired satellites (TODO?)                                                 |
     | gdop                | Geometric dilution of precision                                                       |
     | hdop                | Horizontal dilution of precision                                                      |

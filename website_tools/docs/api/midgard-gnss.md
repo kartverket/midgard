@@ -29,7 +29,7 @@ ant = AntennaCalibration(file_path="igs14.atx")
 
 Full name: `midgard.gnss.antenna_calibration.AntennaCalibration`
 
-Signature: `(file_path: Union[str, pathlib.PosixPath]) -> None`
+Signature: `(file_path: str | pathlib.PosixPath) -> None`
 
 A class for representing GNSS antenna calibration data
 
@@ -222,7 +222,7 @@ use this model. The implementation is based on original paper of Klobuchar
 
 Full name: `midgard.gnss.klobuchar.klobuchar`
 
-Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7f04e3d4fe20>, level='debug'))`
+Signature: `(time, ion_coeffs, rec_pos, az, el, freq_l1, freq=None, logger=functools.partial(<function log at 0x7f58126122a0>, level='debug'))`
 
 Compute the ionospheric time-delay correction for the single-frequency by broadcast  model (klobuchar model)
 

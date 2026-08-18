@@ -26,7 +26,7 @@ Formats and converters that can be used for convenience and consistency.
 
 Full name: `midgard.files.dates.date_vars`
 
-Signature: `(date: Union[datetime.date, datetime.datetime, NoneType]) -> Dict[str, str]`
+Signature: `(date: datetime.date | datetime.datetime | None) -> Dict[str, str]`
 
 Construct a dict of date variables
 
@@ -72,7 +72,7 @@ Two strategies are available:
 
 Full name: `midgard.files.dependencies.add`
 
-Signature: `(*file_paths: Union[str, pathlib.Path], label: str = '') -> None`
+Signature: `(*file_paths: str | pathlib.Path, label: str = '') -> None`
 
 Add a list of files to the list of dependencies
 
@@ -92,7 +92,7 @@ where to store the dependencies.
 
 Full name: `midgard.files.dependencies.changed`
 
-Signature: `(file_path: Union[str, pathlib.Path], fast_check: bool = True) -> bool`
+Signature: `(file_path: str | pathlib.Path, fast_check: bool = True) -> bool`
 
 Check if the dependencies have changed
 
@@ -113,7 +113,7 @@ True if any file has changed or if the dependecy file does not exist, False othe
 
 Full name: `midgard.files.dependencies.get_md5`
 
-Signature: `(file_path: Union[str, pathlib.Path]) -> str`
+Signature: `(file_path: str | pathlib.Path) -> str`
 
 Return a md5 checksum based on a file.
 
@@ -130,7 +130,7 @@ Hex-string representing the contents of the file.
 
 Full name: `midgard.files.dependencies.get_paths_with_label`
 
-Signature: `(file_path: Union[str, pathlib.Path], label_pattern: str) -> List[pathlib.Path]`
+Signature: `(file_path: str | pathlib.Path, label_pattern: str) -> List[pathlib.Path]`
 
 Find all paths with the given label
 
@@ -148,7 +148,7 @@ Find all paths with the given label
 
 Full name: `midgard.files.dependencies.get_timestamp`
 
-Signature: `(file_path: Union[str, pathlib.Path]) -> str`
+Signature: `(file_path: str | pathlib.Path) -> str`
 
 Return a textual timestamp from the modification date of a file
 
@@ -165,7 +165,7 @@ String representing the modification date of the file.
 
 Full name: `midgard.files.dependencies.init`
 
-Signature: `(file_path: Union[str, pathlib.Path], fast_check: bool = True) -> None`
+Signature: `(file_path: str | pathlib.Path, fast_check: bool = True) -> None`
 
 Start a clean list of dependencies
 
@@ -197,7 +197,7 @@ Utilities for working with files
 
 Full name: `midgard.files.files.move`
 
-Signature: `(from_path: Union[str, pathlib.Path], to_path: Union[str, pathlib.Path], overwrite: bool = True) -> None`
+Signature: `(from_path: str | pathlib.Path, to_path: str | pathlib.Path, overwrite: bool = True) -> None`
 
 Move a file to another path
 
@@ -215,7 +215,7 @@ False will raise a FileExistsError if to_path already exists.
 
 Full name: `midgard.files.files.open`
 
-Signature: `(file_path: Union[str, pathlib.Path], create_dirs: bool = False, open_as_gzip: Optional[bool] = None, **open_args: Any) -> Iterator`
+Signature: `(file_path: str | pathlib.Path, create_dirs: bool = False, open_as_gzip: bool | None = None, **open_args: Any) -> Iterator`
 
 Open a file.
 

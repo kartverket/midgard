@@ -69,7 +69,7 @@ individual entry, or for all entries in a configuration.
 
 Full name: `midgard.config.config.CasedConfigParser`
 
-Signature: `(defaults=None, dict_type=<class 'dict'>, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=<object object at 0x7f04eb3c6f20>, converters=<object object at 0x7f04eb3c6f20>)`
+Signature: `(defaults=None, dict_type=<class 'dict'>, allow_no_value=False, *, delimiters=('=', ':'), comment_prefixes=('#', ';'), inline_comment_prefixes=None, strict=True, empty_lines_in_values=True, default_section='DEFAULT', interpolation=<object object at 0x7f581386d6b0>, converters=<object object at 0x7f581386d6b0>, allow_unnamed_section=False)`
 
 ConfigParser with case-sensitive keys
 
@@ -85,7 +85,7 @@ Represents a Configuration
 
 Full name: `midgard.config.config.ConfigurationEntry`
 
-Signature: `(key: str, value: Any, *, source: str = '', meta: Optional[Dict[str, str]] = None, vars_dict: Optional[Dict[str, str]] = None, _used_as: Optional[Set[str]] = None) -> None`
+Signature: `(key: <property object at 0x7f5810a63970>, value: Any, *, source: str = '', meta: Dict[<property object at 0x7f5810a63970>, <property object at 0x7f5810a63970>] | None = None, vars_dict: Dict[str, str] | None = None, _used_as: Set[str] | None = None) -> None`
 
 
 

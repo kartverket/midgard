@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>midgard.api - Midgard v1.4.0</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../howto/testing/" class="dropdown-item">Testing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.api</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-collections/" class="dropdown-item">midgard.collections</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-config/" class="dropdown-item">midgard.config</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-data/" class="dropdown-item">midgard.data</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-dev/" class="dropdown-item">midgard.dev</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-files/" class="dropdown-item">midgard.files</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-gnss/" class="dropdown-item">midgard.gnss</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-math/" class="dropdown-item">midgard.math</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-parsers/" class="dropdown-item">midgard.parsers</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-plot/" class="dropdown-item">midgard.plot</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-site_info/" class="dropdown-item">midgard.site_info</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-writers/" class="dropdown-item">midgard.writers</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../midgard/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../midgard-collections/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#midgardapitransformation_api" class="nav-link">midgard.api.transformation_api</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-transformationapi-class-on-default-url" class="nav-link">Get instance of TransformationApi class on default URL</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-transformationapi-class-based-on-defined-url" class="nav-link">Get instance of TransformationApi class based on defined URL</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#transform-from-itrf2014-to-etrs89" class="nav-link">Transform from ITRF2014 to ETRS89</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#midgardapiwater_level_api" class="nav-link">midgard.api.water_level_api</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#standard-library-imports" class="nav-link">Standard library imports</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#import-water-level-api-wrapper" class="nav-link">Import water level API wrapper</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#define-file-path-of-xml-file-received-by-water-level-api" class="nav-link">Define file path of XML file received by water level API</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-waterlevelapi-class" class="nav-link">Get instance of WaterLevelApi class</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="midgardapitransformation_api">midgard.api.transformation_api</h2>
+<p>Python wrapper around the Transformation API</p>
+<p><strong>Description:</strong></p>
+<p>Transformation of coordinates can be done by using Transformation API from/to different reference systems and 
+projection. Available Transformation API projections can be shown by using function 'projections'.</p>
+<p><strong>Example:</strong>
+from midgard.api import transformation_api</p>
+<h1 id="get-instance-of-transformationapi-class-on-default-url">Get instance of TransformationApi class on default URL</h1>
+<p>api = transformation_api.TransformationApi()</p>
+<h1 id="get-instance-of-transformationapi-class-based-on-defined-url">Get instance of TransformationApi class based on defined URL</h1>
+<p>api = transformation_api.TransformationApi(url="https://ws.geonorge.no/transformering/v1")</p>
+<h1 id="transform-from-itrf2014-to-etrs89">Transform from ITRF2014 to ETRS89</h1>
+<p>pos = api.transform(2169481.21111251,  627616.7736756 , 5944952.10084486, 2021.0, 4936, 7789)</p>
+<h3 id="transformationapi"><strong>TransformationApi</strong></h3>
+<p>Full name: <code>midgard.api.transformation_api.TransformationApi</code></p>
+<p>Signature: <code>(url: str = 'https://ws.geonorge.no/transformering/v1', proxy: str | None = None) -&gt; None</code></p>
+<p>A wrapper around the transformation API</p>
+<p>https://ws.geonorge.no/transformering/v1/transformer?x=1&amp;y=60&amp;z=0&amp;t=2018&amp;fra=4258&amp;til=4258</p>
+<h2 id="midgardapiwater_level_api">midgard.api.water_level_api</h2>
+<p>Python wrapper around the Norwegian water level API (https://vannstand.kartverket.no/tideapi_en.html)</p>
+<p><strong>Description:</strong>
+The Python wrapper access only the water level data from the API.</p>
+<p>Water level information includes information about levels, tide tables with high and low waters and tidal 
+constituents, and data such as predicted tides, (estimated) observed water level and surge, and water level forecasts.</p>
+<p>Using the API, water level information can be requested from a specific water level station, typically one of the 
+permanent tide gauges, or for a particular position. All requests for water level information for a position are based
+on a model where the Norwegian coast has been divided into tidal zones. For each valid zone, the tide tables, 
+predictions and tide related levels are calculated based on tidal prediction from an associated station with assigned
+correction factor for height and delay for time shift. Most zones return the observed weather effect (surge) from the
+closest permanent station. The estimated observations of water level returned are the sum of the adjusted tidal 
+predictions and the observed weather effects from the most relevant permanent tide gauge. The adjusted tidal 
+predictions and the observed weather effect can be based on different stations. </p>
+<p>The different types of levels include important reference levels used in maps and other official products, astronomical
+levels related to the tide, observed extremes and statistical return levels for extreme water levels with different
+return periods.</p>
+<p><strong>Terms of Use:</strong>
+The API is open for everybody and does not require registration, but the Norwegian Mapping Authority, Hydrographic
+Service must be credited, since we are licensee of the data.</p>
+<p>The use of the data is licensed through Creative Commons Attribution 4.0 international (CCBY 4.0). See also Terms of
+use at Kartverket.no.</p>
+<p>Please be careful not to abuse the API by excessive polling of data. Proper programming practice will be to cache
+static data locally and limit the number of requests. Remember that you share this resource with all other users.</p>
+<p>Users must also accept that the API is evolving, and that new elements or parameters might be added to existing
+requests.</p>
+<p><strong>Example:</strong></p>
+<h1 id="standard-library-imports">Standard library imports</h1>
+<p>from datetime import datetime</p>
+<h1 id="import-water-level-api-wrapper">Import water level API wrapper</h1>
+<p>from midgard.api import water_level_api</p>
+<h1 id="define-file-path-of-xml-file-received-by-water-level-api">Define file path of XML file received by water level API</h1>
+<p>file_path = "../examples/api/water_level_api.xml"</p>
+<h1 id="get-instance-of-waterlevelapi-class">Get instance of WaterLevelApi class</h1>
+<p>api = water_level_api.WaterLevelApi(
+        file_path=file_path,
+        date_from=datetime(2025, 1, 1),
+        date_to=datetime(2025, 1, 2),
+        station="ANX",
+)</p>
+<p>from datetime import datetime
+from midgard.api import water_level_api 
+api = water_level_api.WaterLevelApi(
+        file_path="test.xml",
+        date_from=datetime(2025, 1, 1),
+        date_to=datetime(2025, 1, 2),
+        station="ANX",
+)</p>
+<h3 id="station_def-list">STATION_DEF (list)</h3>
+<p><code>STATION_DEF = ['ANX', 'BGO', 'BOH', 'BOO', 'BRJ', 'HFT', 'HAR', 'HEI', 'HRO', 'HVG', 'KAB', 'KSU', 'LEH', 'MSU', 'MAY', 'NVK', 'NYA', 'OSC', 'OSL', 'RVK', 'SBG', 'SIE', 'SOY', 'SVG', 'TRG', 'TOS', 'TRD', 'TAZ', 'VAW', 'VIK', 'AES']</code></p>
+<h3 id="waterlevelapi"><strong>WaterLevelApi</strong></h3>
+<p>Full name: <code>midgard.api.water_level_api.WaterLevelApi</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, date_from: datetime.datetime, date_to: datetime.datetime, station: str | None = None, latitude: float | None = None, longitude: float | None = None, datatype: str | None = 'all', reference_level: str | None = 'chart_datum', interval: int | str = 10, no_annual_tidal: bool | None = False, url: str | None = 'https://vannstand.kartverket.no/tideapi.php') -&gt; None</code></p>
+<p>Python wrapper around the Norwegian water level API (https://vannstand.kartverket.no/tideapi_en.html)</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,15 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.writers - Midgard v1.3.0</title>
+        <title>midgard.writers - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -20,9 +24,9 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
                 <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -30,11 +34,11 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem">
+                            <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
@@ -42,12 +46,16 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
     <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
 </li>
                                     
 <li>
@@ -91,15 +99,15 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">midgard.writers</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.writers</a>
 </li>
                                 </ul>
                             </li>
                         </ul>
 
-                    <ul class="nav navbar-nav ml-auto">
+                    <ul class="nav navbar-nav ms-md-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
@@ -120,20 +128,68 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
             <span class="fa fa-angle-down"></span>
         </button>
     </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#midgardwriters" class="nav-link">midgard.writers</a>
+            <li class="nav-item" data-bs-level="1"><a href="#midgardwriters" class="nav-link">midgard.writers</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardwriters_writers" class="nav-link">midgard.writers._writers</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwriters_writers" class="nav-link">midgard.writers._writers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersbernese_abb" class="nav-link">midgard.writers.bernese_abb</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersbernese_clu" class="nav-link">midgard.writers.bernese_clu</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersbernese_crd" class="nav-link">midgard.writers.bernese_crd</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersbernese_sta" class="nav-link">midgard.writers.bernese_sta</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersbernese_sta_v52" class="nav-link">midgard.writers.bernese_sta_v52</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersbernese_vel" class="nav-link">midgard.writers.bernese_vel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwriterscsv_" class="nav-link">midgard.writers.csv_</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersgamit_apr_eq" class="nav-link">midgard.writers.gamit_apr_eq</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersgamit_station_info" class="nav-link">midgard.writers.gamit_station_info</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersgipsyx_site_info" class="nav-link">midgard.writers.gipsyx_site_info</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwritersreport" class="nav-link">midgard.writers.report</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardwriterssinex_tms" class="nav-link">midgard.writers.sinex_tms</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -198,7 +254,7 @@ def write_as_fancy_format(arg_1, arg_2):
 <p>Existing writer fields</p>
 <h3 id="get_field"><strong>get_field</strong>()</h3>
 <p>Full name: <code>midgard.writers._writers.get_field</code></p>
-<p>Signature: <code>(dset: 'Dataset', field: str, attrs: Tuple[str], unit: Optional[str] = None) -&gt; numpy.ndarray</code></p>
+<p>Signature: <code>(dset: 'Dataset', field: str, attrs: Tuple[str], unit: str | None = None) -&gt; numpy.ndarray</code></p>
 <p>Get field values of a Dataset specified by the field attributes</p>
 <p>If necessary the unit of the data fields are corrected to the defined 'output' unit.</p>
 <p><strong>Args:</strong></p>
@@ -225,7 +281,7 @@ def write_as_fancy_format(arg_1, arg_2):
 <p>Array with Dataset field values</p>
 <h3 id="get_header"><strong>get_header</strong>()</h3>
 <p>Full name: <code>midgard.writers._writers.get_header</code></p>
-<p>Signature: <code>(fields: List[str], pgm_version: Optional[str] = None, run_by: str = '', summary: Optional[str] = None, add_description: Optional[str] = None, lsign: str = '') -&gt; str</code></p>
+<p>Signature: <code>(fields: List[str], pgm_version: None | str = None, run_by: str = '', summary: None | str = None, add_description: None | str = None, lsign: str = '') -&gt; str</code></p>
 <p>Get header</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -240,7 +296,7 @@ def write_as_fancy_format(arg_1, arg_2):
 <p>Header lines</p>
 <h3 id="get_value_by_keys"><strong>get_value_by_keys</strong>()</h3>
 <p>Full name: <code>midgard.writers._writers.get_value_by_keys</code></p>
-<p>Signature: <code>(dict_: Dict[str, Any], keys: Tuple[str], format_=None, unit=None) -&gt; Union[Any, List[Any]]</code></p>
+<p>Signature: <code>(dict_: Dict[str, Any], keys: Tuple[str], format_=None, unit=None) -&gt; Any | List[Any]</code></p>
 <p>Get value of a dictionary specified by keys</p>
 <p>If option <code>format_</code> is defined, then formatted string is returned instead of original value.</p>
 <p><strong>Args:</strong></p>
@@ -251,7 +307,232 @@ def write_as_fancy_format(arg_1, arg_2):
 <li><code>unit</code>:    Unit definition in format <from_unit>2<to_unit> (e.g. meter2millimeter)</li>
 </ul>
 <p><strong>Returns:</strong></p>
-<p>Original dictionary value or string formatted value</p></div>
+<p>Original dictionary value or string formatted value</p>
+<h2 id="midgardwritersbernese_abb">midgard.writers.bernese_abb</h2>
+<p>Write Bernese abbreviation file in *.ABB format</p>
+<p><strong>Description:</strong></p>
+<h3 id="ascii_lowercase-str">ascii_lowercase (str)</h3>
+<p><code>ascii_lowercase = 'abcdefghijklmnopqrstuvwxyz'</code></p>
+<h3 id="bernese_abb"><strong>bernese_abb</strong>()</h3>
+<p>Full name: <code>midgard.writers.bernese_abb.bernese_abb</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any], agency: str = 'UNKNOWN') -&gt; None</code></p>
+<p>Write Bernese abbreviation file in *.ABB format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:             File path of Bernese *.ABB output file</li>
+<li><code>site_info</code>:             Dictionary with station information, whereby station name is the key and a dictionary
+                           with site information the value.</li>
+<li><code>agency</code>:                Abbreviation of agency producing the file (e.g. IGS)</li>
+</ul>
+<h2 id="midgardwritersbernese_clu">midgard.writers.bernese_clu</h2>
+<p>Write a-priori Bernese station cluster file in *.CLU format</p>
+<p><strong>Description:</strong></p>
+<h3 id="bernese_clu"><strong>bernese_clu</strong>()</h3>
+<p>Full name: <code>midgard.writers.bernese_clu.bernese_clu</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any], agency: str = 'UNKNOWN') -&gt; None</code></p>
+<p>Write a-priori Bernese station cluster file in *.CLU format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:             File path of Bernese *.CLU output file</li>
+<li><code>site_info</code>:             Dictionary with station information, whereby station name is the key and a dictionary
+                           with site information the value.</li>
+<li><code>agency</code>:                Abbreviation of agency producing the file (e.g. IGS)</li>
+</ul>
+<h2 id="midgardwritersbernese_crd">midgard.writers.bernese_crd</h2>
+<p>Write a-priori Bernese station coordinate file in *.CRD format</p>
+<p><strong>Description:</strong></p>
+<h3 id="bernese_crd"><strong>bernese_crd</strong>()</h3>
+<p>Full name: <code>midgard.writers.bernese_crd.bernese_crd</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any], datum: str = 'UNKNOWN', epoch: datetime.datetime | None = None, agency: str = 'UNKNOWN', write_nan_site_coord: bool = False) -&gt; None</code></p>
+<p>Write a-priori Bernese station coordinate file in *.CRD format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:             File path of Bernese *.CRD output file</li>
+<li><code>site_info</code>:             Dictionary with station information, whereby station name is the key and a dictionary
+                           with site information the value.</li>
+<li><code>datum</code>:                 Reference system name of site coordinates (e.g. IGb14)</li>
+<li><code>epoch</code>:                 Reference epoch of site coordinates in format yyyy-mm-dd HH:MM:SS (e.g. 
+                           2015-01-01 00:00:00)</li>
+<li><code>agency</code>:                Abbreviation of agency producing the file (e.g. IGS)</li>
+<li><code>write_nan_site_coord</code>:  Write site coordinates, which has Not a Number (NaN) as value.</li>
+</ul>
+<h2 id="midgardwritersbernese_sta">midgard.writers.bernese_sta</h2>
+<p>Write Bernese station information file in *.STA format</p>
+<p><strong>Description:</strong></p>
+<h3 id="bernese_sta"><strong>bernese_sta</strong>()</h3>
+<p>Full name: <code>midgard.writers.bernese_sta.bernese_sta</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any], rename_station: Dict[str, str] = {}, event_path: pathlib.PosixPath | None = None, agency: str = 'UNKNOWN', skip_firmware: bool = False, use_first_common_date: bool = True) -&gt; None</code></p>
+<p>Write Bernese station information file in *.STA format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:       File path of Bernese *.STA output file</li>
+<li><code>site_info</code>:       Dictionary with station information, whereby station name is the key and a dictionary with 
+                     site information the value.</li>
+<li><code>rename_station</code>:  Dictionary with official 4-digit station name as key and the alternative name as value. This 
+                     information is used in the "RENAMING OF STATIONS" section in Bernese *.STA file. This can be
+                     necessary if the used 4-digit station names are not unique.</li>
+<li><code>event_path</code>:      File path of event file with additional event </li>
+<li><code>agency</code>:          Agency which uses this Bernese station information file for processing</li>
+<li><code>skip_firmware</code>:   Skip firmware changes by generating "TYPE 002: STATION INFORMATION" block</li>
+<li><code>use_first_common_date</code>: Use first common date entry given by receiver, antenna and eccentricity properties. It<br />
+                     can happen, that the first date entry is inconsistent for these properties. In this case the
+                     first common date entry of one of these properties is used in the BERNESE STA file. The 
+                     alternative is to skip date entries, which does not fit into the given date period. </li>
+</ul>
+<h2 id="midgardwritersbernese_sta_v52">midgard.writers.bernese_sta_v52</h2>
+<p>Write Bernese station information file in *.STA v5.2 format</p>
+<p><strong>Description:</strong></p>
+<h3 id="bernese_sta_v52"><strong>bernese_sta_v52</strong>()</h3>
+<p>Full name: <code>midgard.writers.bernese_sta_v52.bernese_sta_v52</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any], rename_station: Dict[str, str] = {}, event_path: pathlib.PosixPath | None = None, agency: str = 'UNKNOWN', skip_firmware: bool = False) -&gt; None</code></p>
+<p>Write Bernese station information file in *.STA v5.2 format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:       File path of Bernese *.STA output file</li>
+<li><code>site_info</code>:       Dictionary with station information, whereby station name is the key and a dictionary with 
+                     site information the value.</li>
+<li><code>rename_station</code>:  Dictionary with official 4-digit station name as key and the alternative name as value. This 
+                     information is used in the "RENAMING OF STATIONS" section in Bernese *.STA file. This can be
+                     necessary if the used 4-digit station names are not unique.</li>
+<li><code>event_path</code>:      File path of event file with additional event </li>
+<li><code>agency</code>:          Agency which uses this Bernese station information file for processing</li>
+<li><code>skip_firmware</code>:   Skip firmware changes by generating "TYPE 002: STATION INFORMATION" block</li>
+</ul>
+<h2 id="midgardwritersbernese_vel">midgard.writers.bernese_vel</h2>
+<p>Write a-priori Bernese station velocity file in *.VEL format</p>
+<p><strong>Description:</strong></p>
+<h3 id="bernese_vel"><strong>bernese_vel</strong>()</h3>
+<p>Full name: <code>midgard.writers.bernese_vel.bernese_vel</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any], datum: str = 'UNKNOWN', agency: str = 'UNKNOWN', write_nan_site_vel: bool = False) -&gt; None</code></p>
+<p>Write a-priori Bernese station velocity file in *.VEL format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:             File path of Bernese *.VEL output file</li>
+<li><code>site_info</code>:             Dictionary with station information, whereby station name is the key and a dictionary
+                           with site information the value.</li>
+<li><code>datum</code>:                 Reference system name of site coordinates (e.g. IGb14)</li>
+<li><code>agency</code>:                Abbreviation of agency producing the file (e.g. IGS)</li>
+<li><code>write_nan_site_vel</code>:    Write site velocities, which has Not a Number (NaN) as value.</li>
+</ul>
+<h2 id="midgardwriterscsv_">midgard.writers.csv_</h2>
+<p>Write dataset fields in CSV file format</p>
+<h3 id="csv_"><strong>csv_</strong>()</h3>
+<p>Full name: <code>midgard.writers.csv_.csv_</code></p>
+<p>Signature: <code>(dset: 'Dataset', file_path: str | pathlib.PosixPath, fields: OrderedDict[str, str]) -&gt; None</code></p>
+<p>Write dataset fields in CSV file format</p>
+<p>Field names of dataset, which should be written in CSV file, are defined via the 'fields' argument. The keys of the
+'fields' dictionary represents the field names and optional the format of the field can be defined via dictionary<br />
+values (e.g. '%.2f'). If the format is not defined (dictionary values is ''), than the specifier 's' is used as 
+default. For more information about possible format specifiers, check option 'fmt' of numpy savetxt function, which<br />
+is used to write the CSV files. </p>
+<p>Example for 'fields' dictionary:</p>
+<pre><code>fields = {
+     'date': '%s',
+     'time.gps.mjd': '%.6f',
+     'time.gps.gps_ws.week': '%d',
+     'time.gps.gps_ws.seconds': '%.3f',
+     'satellite': '%s',
+     'frequency': '%s',
+     'amplitude': '%.2f',
+     'peak2noise': '%.2f',
+     'reflection_height': '%.2f',
+     'reflection_height_referenced': '%.2f',
+     'water_level': '%.2f',
+     'water_level_referenced': '%.2f',
+}
+</code></pre>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>dset</code>:       A dataset containing the data.</li>
+<li><code>file_path</code>:  File path of CSV file.</li>
+<li><code>fields</code>:     Dictionary with field name as key and format specifiers as values</li>
+</ul>
+<h2 id="midgardwritersgamit_apr_eq">midgard.writers.gamit_apr_eq</h2>
+<p>Write apr and eq file for GAMIT</p>
+<p><strong>Description:</strong></p>
+<h3 id="gamit_apr_eq"><strong>gamit_apr_eq</strong>()</h3>
+<p>Full name: <code>midgard.writers.gamit_apr_eq.gamit_apr_eq</code></p>
+<p>Signature: <code>(apr_path: pathlib.PosixPath, eq_path: pathlib.PosixPath, site_info: Dict[str, Any], ref_frame: str) -&gt; None</code></p>
+<p>Write apr and eq file for GAMIT</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>apr_path</code>:    File path of GAMIT *.apr file</li>
+<li><code>eq_path</code>:     File path of GAMIT *.eq file      </li>
+<li><code>site_info</code>:   Dictionary with station information, whereby station name is the key and a dictionary with 
+                 site information the value.           </li>
+<li><code>ref_frame</code>:   Reference frame name of site coordinates (e.g. IGb14)</li>
+</ul>
+<h2 id="midgardwritersgamit_station_info">midgard.writers.gamit_station_info</h2>
+<p>Write site information file for GAMIT</p>
+<p><strong>Description:</strong></p>
+<h3 id="reference_point-dict">REFERENCE_POINT (dict)</h3>
+<p><code>REFERENCE_POINT = {'BAM': 'DHARP', 'BCR': 'DHBCR', 'BDG': '', 'BGP': 'DHBGP', 'BPA': 'DHBPA', 'TCR': 'DHTCR', 'TDG': '', 'TGP': 'DHTGP', 'TOP': 'DHARP', 'TPA': ''}</code></p>
+<h3 id="gamit_station_info"><strong>gamit_station_info</strong>()</h3>
+<p>Full name: <code>midgard.writers.gamit_station_info.gamit_station_info</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Write site information file for GAMIT</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:       File path of site information GAMIT output file</li>
+<li><code>site_info</code>:       Dictionary with station information, whereby station name is the key and a dictionary with 
+                     site information the value.</li>
+</ul>
+<h2 id="midgardwritersgipsyx_site_info">midgard.writers.gipsyx_site_info</h2>
+<p>Write site information file for GipsyX</p>
+<p><strong>Description:</strong></p>
+<h3 id="gipsyx_site_info"><strong>gipsyx_site_info</strong>()</h3>
+<p>Full name: <code>midgard.writers.gipsyx_site_info.gipsyx_site_info</code></p>
+<p>Signature: <code>(file_path: pathlib.PosixPath, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Write site information file for GipsyX</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>file_path</code>:       File path of site information GipsyX output file</li>
+<li><code>site_info</code>:       Dictionary with station information, whereby station name is the key and a dictionary with 
+                     site information the value.</li>
+</ul>
+<h2 id="midgardwritersreport">midgard.writers.report</h2>
+<p>Class for reports</p>
+<p><strong>Description:</strong>
+TODO</p>
+<h3 id="report"><strong>Report</strong></h3>
+<p>Full name: <code>midgard.writers.report.Report</code></p>
+<p>Signature: <code>(fid: '_io.TextIOWrapper', rundate: datetime.date, path: 'pathlib.PosixPath', description: str = '') -&gt; None</code></p>
+<p>Class for reports</p>
+<h2 id="midgardwriterssinex_tms">midgard.writers.sinex_tms</h2>
+<p>Write timeseries file in SINEX TMS format</p>
+<h3 id="data_field_types-ordereddict">DATA_FIELD_TYPES (OrderedDict)</h3>
+<p><code>DATA_FIELD_TYPES = OrderedDict({'YYYY-MM-DD': 'time.utc.date', 'YEAR': 'time.utc.decimalyear', 'X': 'obs.site_pos.trs.x', 'Y': 'obs.site_pos.trs.y', 'Z': 'obs.site_pos.trs.z', 'SIG_X': 'obs.site_pos_x_sigma', 'SIG_Y': 'obs.site_pos_y_sigma', 'SIG_Z': 'obs.site_pos_z_sigma', 'CORR_XY': 'obs.site_pos_xy_correlation', 'CORR_XZ': 'obs.site_pos_xz_correlation', 'CORR_YZ': 'obs.site_pos_yz_correlation', 'EAST': 'obs.dsite_pos.enu.east', 'NORTH': 'obs.dsite_pos.enu.north', 'UP': 'obs.dsite_pos.enu.up', 'SIG_E': 'obs.dsite_pos_east_sigma', 'SIG_N': 'obs.dsite_pos_north_sigma', 'SIG_U': 'obs.dsite_pos_up_sigma', 'CORR_EN': 'obs.dsite_pos_en_correlation', 'CORR_EU': 'obs.dsite_pos_eu_correlation', 'CORR_NU': 'obs.dsite_pos_nu_correlation', 'NOBSC': 'obs.code_obs_num', 'NOBSP': 'obs.phase_obs_num', 'NOUTC': 'obs.code_outlier_num', 'NOUTP': 'obs.phase_outlier_num', 'PRES_C': 'obs.code_residual_rms', 'PRES_P': 'obs.phase_residual_rms', 'RCV_CLK': 'obs.receiver_clock', 'SIG_RCV_CLK': 'obs.receiver_clock_sigma', 'TGE': 'obs.trop_gradient_east', 'SIG_TGE': 'obs.trop_gradient_east_sigma', 'TGN': 'obs.trop_gradient_north', 'SIG_TGN': 'obs.trop_gradient_north_sigma', 'TGTOT': 'obs.trop_gradient_total', 'SIG_TGTOT': 'obs.trop_gradient_total_sigma', 'TRODRY': 'obs.trop_zenith_dry', 'SIG_TRODRY': 'obs.trop_zenith_dry_sigma', 'TROWET': 'obs.trop_zenith_wet', 'SIG_TROWET': 'obs.trop_zenith_wet_sigma', 'TROTOT': 'obs.trop_zenith_total', 'SIG_TROTOT': 'obs.trop_zenith_total_sigma'})</code></p>
+<h3 id="data_types-dict">DATA_TYPES (dict)</h3>
+<p><code>DATA_TYPES = {'GPSWEEK': DataType(unit='', format='7s', description='Date as GPS week together with GPS day in format wwwwd (e.g. 22644)'), 'JD': DataType(unit='', format='11.1f', description='Date as Julian Day (e.g. 2460096.5)'), 'MJD': DataType(unit='', format='9.1f', description='Date as Modified Julian Day (e.g. 60096.0)'), 'YEAR': DataType(unit='y', format='12.5f', description='Date as decimal year (2023.4137)'), 'YYYY-DDD': DataType(unit='', format='10s', description='Date in format year and day of year (e.g. 2023-152)'), 'YYYY-MM-DD': DataType(unit='', format='12s', description='Date in format year, month and day (e.g. 2023-06-01)'), 'HH:MM:SS': DataType(unit='', format='10s', description='Time in format hour, minute and second (e.g. 01:34:15)'), 'EAST': DataType(unit='m', format='12.4f', description='East component of topocentric site coordinates'), 'NORTH': DataType(unit='m', format='12.4f', description='North component of topocentric site coordinates'), 'UP': DataType(unit='m', format='12.4f', description='Up component of topocentric site coordinates'), 'SIG_E': DataType(unit='m', format='10.4f', description='Standard deviation of topocentric East component'), 'SIG_N': DataType(unit='m', format='10.4f', description='Standard deviation of topocentric North component'), 'SIG_U': DataType(unit='m', format='10.4f', description='Standard deviation of topocentric Up component'), 'CORR_EN': DataType(unit='', format='10.4f', description='Correlation between East and North component'), 'CORR_EU': DataType(unit='', format='10.4f', description='Correlation between East and Up component'), 'CORR_NU': DataType(unit='', format='10.4f', description='Correlation between North and Up component'), 'X': DataType(unit='m', format='14.4f', description='X-coordinate of geocentric site coordinates'), 'Y': DataType(unit='m', format='14.4f', description='Y-coordinate of geocentric site coordinates'), 'Z': DataType(unit='m', format='14.4f', description='Z-coordinate of geocentric site coordinates'), 'SIG_X': DataType(unit='m', format='10.4f', description='Standard deviation of geocentric X-coordinate'), 'SIG_Y': DataType(unit='m', format='10.4f', description='Standard deviation of geocentric Y-coordinate'), 'SIG_Z': DataType(unit='m', format='10.4f', description='Standard deviation of geocentric Z-coordinate'), 'CORR_XY': DataType(unit='', format='10.4f', description='Correlation between X- and Y-coordinate '), 'CORR_XZ': DataType(unit='', format='10.4f', description='Correlation between X- and Z-coordinate'), 'CORR_YZ': DataType(unit='', format='10.4f', description='Correlation between Y- and Z-coordinate'), 'NOBS': DataType(unit='', format='8d', description='Number of observations used by generation of daily site coordinate solution'), 'RES_E': DataType(unit='m', format='12.4f', description='Residual of topocentric East component, which represent the difference between the East observation and the calculated model (e.g. linear trend) '), 'RES_N': DataType(unit='m', format='12.4f', description='Residual of topocentric North component, which represent the difference between the North observation and the calculated model (e.g. linear trend) '), 'RES_U': DataType(unit='m', format='12.4f', description='Residual of topocentric Up component, which represent the difference between the Up observation and the calculated model (e.g. linear trend) '), 'MOD_E': DataType(unit='m', format='12.4f', description='Calculated model for topocentric East component time-series data'), 'MOD_N': DataType(unit='m', format='12.4f', description='Calculated model for topocentric North component time-series data'), 'MOD_U': DataType(unit='m', format='12.4f', description='Calculated model for topocentric Up component time-series data'), 'NOBSC': DataType(unit='', format='7.0f', description='Number of GNSS carrier-phase observations used by generation of site coordinate solution for given sampling rate period'), 'NOBSP': DataType(unit='', format='7.0f', description='Number of GNSS pseudo_range observations used by generation of site coordinate solution for given sampling rate period'), 'NOUTC': DataType(unit='', format='7.0f', description='Number of GNSS carrier-phase outliers by generation of site coordinate solution for given sampling rate period'), 'NOUTP': DataType(unit='', format='7.0f', description='Number of GNSS pseudo_range outliers by generation of site coordinate solution for given sampling rate period'), 'PRES_C': DataType(unit='m', format='14.4f', description='Post-fit GNSS carrier-phase residuals by generation of site coordinate solution for given sampling rate period'), 'PRES_P': DataType(unit='m', format='14.4f', description='Post-fit GNSS pseudo_range residuals by generation of site coordinate solution for given sampling rate period'), 'RCV_CLK': DataType(unit='m', format='18.4f', description='Daily average of receiver clock estimate'), 'TGE': DataType(unit='m', format='14.4f', description='Daily average of tropospheric gradient - East component'), 'TGN': DataType(unit='m', format='14.4f', description='Daily average of tropospheric gradient - North component'), 'TGTOT': DataType(unit='m', format='14.4f', description='Daily average of tropospheric total gradient (East + North parts)'), 'TRODRY': DataType(unit='m', format='14.4f', description='Daily average of tropospheric zenith dry/hydrostation delay (ZHD)'), 'TROTOT': DataType(unit='m', format='14.4f', description='Daily average of tropospheric zenith total delay (ZTD)'), 'TROWET': DataType(unit='m', format='14.4f', description='Daily average of tropospheric zenith wet delay (ZWD)'), 'SIG_RCV_CLK': DataType(unit='m', format='18.4f', description='Daily average of standard deviation of receiver clock estimate'), 'SIG_TGE': DataType(unit='m', format='11.4f', description='Daily average of standard deviation of tropospheric gradient - East component'), 'SIG_TGN': DataType(unit='m', format='11.4f', description='Daily average of standard deviation of tropospheric gradient - North component'), 'SIG_TGTOT': DataType(unit='m', format='11.4f', description='Daily average of standard deviation of tropospheric total gradient (East + North parts)'), 'SIG_TRODRY': DataType(unit='m', format='11.4f', description='Daily average of standard deviation of tropospheric zenith dry/hydrostation delay (ZHD)'), 'SIG_TROTOT': DataType(unit='m', format='11.4f', description='Daily average of standard deviation of tropospheric zenith total delay (ZTD)'), 'SIG_TROWET': DataType(unit='m', format='11.4f', description='Daily average of standard deviation of tropospheric zenith wet delay (ZWD)')}</code></p>
+<h3 id="datatype"><strong>DataType</strong></h3>
+<p>Full name: <code>midgard.writers.sinex_tms.DataType</code></p>
+<p>Signature: <code>(unit=None, format=None, description=None)</code></p>
+<p>A convenience class for defining a data type </p>
+<p><strong>Args:</strong></p>
+<p>unit (str):            Unit of data type
+format (str):          Data type format definition
+description  (str):    Description to given data type acronym</p>
+<h3 id="estimate_parameter_field_types-ordereddict">ESTIMATE_PARAMETER_FIELD_TYPES (OrderedDict)</h3>
+<p><code>ESTIMATE_PARAMETER_FIELD_TYPES = OrderedDict({'VEL_X': ParaType(keys=('vel', 'trend', 'x'), unit='m/y'), 'VEL_Y': ParaType(keys=('vel', 'trend', 'y'), unit='m/y'), 'VEL_Z': ParaType(keys=('vel', 'trend', 'z'), unit='m/y'), 'VEL_E': ParaType(keys=('vel', 'trend', 'e'), unit='m/y'), 'VEL_N': ParaType(keys=('vel', 'trend', 'n'), unit='m/y'), 'VEL_U': ParaType(keys=('vel', 'trend', 'u'), unit='m/y'), 'BIAS_X': ParaType(keys=('vel', 'bias', 'x'), unit='m'), 'BIAS_Y': ParaType(keys=('vel', 'bias', 'y'), unit='m'), 'BIAS_Z': ParaType(keys=('vel', 'bias', 'z'), unit='m'), 'BIAS_E': ParaType(keys=('vel', 'bias', 'e'), unit='m'), 'BIAS_N': ParaType(keys=('vel', 'bias', 'n'), unit='m'), 'BIAS_U': ParaType(keys=('vel', 'bias', 'u'), unit='m'), 'AMPA_X': ParaType(keys=('vel', 'amp_annual', 'x'), unit='m'), 'AMPA_Y': ParaType(keys=('vel', 'amp_annual', 'y'), unit='m'), 'AMPA_Z': ParaType(keys=('vel', 'amp_annual', 'z'), unit='m'), 'AMPA_E': ParaType(keys=('vel', 'amp_annual', 'e'), unit='m'), 'AMPA_N': ParaType(keys=('vel', 'amp_annual', 'n'), unit='m'), 'AMPA_U': ParaType(keys=('vel', 'amp_annual', 'u'), unit='m'), 'AMPS_X': ParaType(keys=('vel', 'amp_semiannual', 'x'), unit='m'), 'AMPS_Y': ParaType(keys=('vel', 'amp_semiannual', 'y'), unit='m'), 'AMPS_Z': ParaType(keys=('vel', 'amp_semiannual', 'z'), unit='m'), 'AMPS_E': ParaType(keys=('vel', 'amp_semiannual', 'e'), unit='m'), 'AMPS_N': ParaType(keys=('vel', 'amp_semiannual', 'n'), unit='m'), 'AMPS_U': ParaType(keys=('vel', 'amp_semiannual', 'u'), unit='m'), 'PHSA_X': ParaType(keys=('vel', 'phase_annual', 'x'), unit='deg'), 'PHSA_Y': ParaType(keys=('vel', 'phase_annual', 'y'), unit='deg'), 'PHSA_Z': ParaType(keys=('vel', 'phase_annual', 'z'), unit='deg'), 'PHSA_E': ParaType(keys=('vel', 'phase_annual', 'e'), unit='deg'), 'PHSA_N': ParaType(keys=('vel', 'phase_annual', 'n'), unit='deg'), 'PHSA_U': ParaType(keys=('vel', 'phase_annual', 'u'), unit='deg'), 'PHSS_X': ParaType(keys=('vel', 'phase_semiannual', 'x'), unit='deg'), 'PHSS_Y': ParaType(keys=('vel', 'phase_semiannual', 'y'), unit='deg'), 'PHSS_Z': ParaType(keys=('vel', 'phase_semiannual', 'z'), unit='deg'), 'PHSS_E': ParaType(keys=('vel', 'phase_semiannual', 'e'), unit='deg'), 'PHSS_N': ParaType(keys=('vel', 'phase_semiannual', 'n'), unit='deg'), 'PHSS_U': ParaType(keys=('vel', 'phase_semiannual', 'u'), unit='deg'), 'RMS_X': ParaType(keys=('vel', 'rms', 'x'), unit='m'), 'RMS_Y': ParaType(keys=('vel', 'rms', 'y'), unit='m'), 'RMS_Z': ParaType(keys=('vel', 'rms', 'z'), unit='m'), 'RMS_E': ParaType(keys=('vel', 'rms', 'e'), unit='m'), 'RMS_N': ParaType(keys=('vel', 'rms', 'n'), unit='m'), 'RMS_U': ParaType(keys=('vel', 'rms', 'u'), unit='m'), 'OFFSET_X': ParaType(keys=('vel', 'offset', 'x'), unit='m'), 'OFFSET_Y': ParaType(keys=('vel', 'offset', 'y'), unit='m'), 'OFFSET_Z': ParaType(keys=('vel', 'offset', 'z'), unit='m'), 'OFFSET_E': ParaType(keys=('vel', 'offset', 'e'), unit='m'), 'OFFSET_N': ParaType(keys=('vel', 'offset', 'n'), unit='m'), 'OFFSET_U': ParaType(keys=('vel', 'offset', 'u'), unit='m'), 'VEL_X_SIG': ParaType(keys=('vel', 'trend_sigma', 'x'), unit='m/y'), 'VEL_Y_SIG': ParaType(keys=('vel', 'trend_sigma', 'z'), unit='m/y'), 'VEL_E_SIG': ParaType(keys=('vel', 'trend_sigma', 'e'), unit='m/y'), 'VEL_N_SIG': ParaType(keys=('vel', 'trend_sigma', 'n'), unit='m/y'), 'VEL_U_SIG': ParaType(keys=('vel', 'trend_sigma', 'u'), unit='m/y'), 'BIAS_X_SIG': ParaType(keys=('vel', 'bias_sigma', 'x'), unit='m'), 'BIAS_Y_SIG': ParaType(keys=('vel', 'bias_sigma', 'y'), unit='m'), 'BIAS_Z_SIG': ParaType(keys=('vel', 'bias_sigma', 'z'), unit='m'), 'BIAS_E_SIG': ParaType(keys=('vel', 'bias_sigma', 'e'), unit='m'), 'BIAS_N_SIG': ParaType(keys=('vel', 'bias_sigma', 'n'), unit='m'), 'BIAS_U_SIG': ParaType(keys=('vel', 'bias_sigma', 'u'), unit='m'), 'AMPA_X_SIG': ParaType(keys=('vel', 'amp_annual_sigma', 'x'), unit='m'), 'AMPA_Y_SIG': ParaType(keys=('vel', 'amp_annual_sigma', 'y'), unit='m'), 'AMPA_Z_SIG': ParaType(keys=('vel', 'amp_annual_sigma', 'z'), unit='m'), 'AMPA_E_SIG': ParaType(keys=('vel', 'amp_annual_sigma', 'e'), unit='m'), 'AMPA_N_SIG': ParaType(keys=('vel', 'amp_annual_sigma', 'n'), unit='m'), 'AMPA_U_SIG': ParaType(keys=('vel', 'amp_annual_sigma', 'u'), unit='m'), 'AMPS_X_SIG': ParaType(keys=('vel', 'amp_semiannual_sigma', 'x'), unit='m'), 'AMPS_Y_SIG': ParaType(keys=('vel', 'amp_semiannual_sigma', 'y'), unit='m'), 'AMPS_Z_SIG': ParaType(keys=('vel', 'amp_semiannual_sigma', 'z'), unit='m'), 'AMPS_E_SIG': ParaType(keys=('vel', 'amp_semiannual_sigma', 'e'), unit='m'), 'AMPS_N_SIG': ParaType(keys=('vel', 'amp_semiannual_sigma', 'n'), unit='m'), 'AMPS_U_SIG': ParaType(keys=('vel', 'amp_semiannual_sigma', 'u'), unit='m')})</code></p>
+<h3 id="paratype"><strong>ParaType</strong></h3>
+<p>Full name: <code>midgard.writers.sinex_tms.ParaType</code></p>
+<p>Signature: <code>(keys=None, unit=None)</code></p>
+<p>A convenience class for defining a parameter type </p>
+<p><strong>Args:</strong></p>
+<p>keys (tuple):          Keys of meta variable dictionary
+unit (str):            Unit of parameter</p>
+<h3 id="timeseriesblocks"><strong>TimeseriesBlocks</strong></h3>
+<p>Full name: <code>midgard.writers.sinex_tms.TimeseriesBlocks</code></p>
+<p>Signature: <code>(dset: 'Dataset', fid: 'FileHandle', station: str, contact: str, data_agency: str, file_agency: str, input_: str = '', organization: str = '', output: str = '', software: str = '', version: str = '001', data_field_types: None | collections.OrderedDict[str, str] = None)</code></p>
+<p>This class takes care of the writing of the different blocks in the SINEX TMS files</p>
+<h3 id="sinex_tms"><strong>sinex_tms</strong>()</h3>
+<p>Full name: <code>midgard.writers.sinex_tms.sinex_tms</code></p>
+<p>Signature: <code>(dset: 'Dataset', station: str, file_path: pathlib.PosixPath, contact: str, data_agency: str, file_agency: str, input_: str, organization: str, output: str, software: str, version: str) -&gt; None</code></p>
+<p>Write timeseries file in SINEX TMS format</p>
+<p><strong>Args:</strong></p>
+<ul>
+<li><code>dset</code>:  A dataset containing the data.</li>
+</ul></div>
             </div>
         </div>
 
@@ -259,8 +540,7 @@ def write_as_fancy_format(arg_1, arg_2):
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="../../js/jquery-3.6.0.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
@@ -273,7 +553,7 @@ def write_as_fancy_format(arg_1, arg_2):
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>From here you can search these documents. Enter your search terms below.</p>
@@ -293,7 +573,7 @@ def write_as_fancy_format(arg_1, arg_2):
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <table class="table">

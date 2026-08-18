@@ -12,6 +12,7 @@ from midgard.dev.exceptions import MissingDataError
 from midgard.site_info.antenna import Antenna
 
 # Tests: Antenna.get("snx",...)
+#===============================
 
 @pytest.mark.usefixtures("sinex_data")
 def test_antenna_sinex_one_station(sinex_data):
@@ -24,7 +25,7 @@ def test_antenna_sinex_one_station(sinex_data):
     assert a["zimm"].date_from == datetime.datetime(1998, 11, 6, 0, 0)
     assert a["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
     assert a["zimm"].station == 'zimm'
-    assert a["zimm"].radome_serial_number == 'NONE'
+    assert a["zimm"].radome_serial_number == ''
     assert a["zimm"].radome_type == 'NONE'
     assert a["zimm"].serial_number == '99390'
     assert a["zimm"].type == 'TRM29659.00'
@@ -67,7 +68,82 @@ def test_antenna_sinex_last_entry(sinex_data):
     assert "zimm" in a
     assert a["zimm"].date_to == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
 
+
+# Tests: AntennaSinex.set_...("snx",...)
+#=============================================
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_calibration(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].calibration == False
+
+    e["zimm"].set_calibration(True)
+    assert e["zimm"].calibration == True
+
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_date_from(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].date_from == datetime.datetime(1998, 11, 6)
+
+    e["zimm"].set_date_from(datetime.datetime(2026, 1, 1))
+    assert e["zimm"].date_from == datetime.datetime(2026, 1, 1)
+
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_date_to(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].date_to.strftime("%Y-%m-%d %H:%M:%S") == "9999-12-31 23:59:59"
+
+    e["zimm"].set_date_to(datetime.datetime(2026, 12, 31))
+    assert e["zimm"].date_to == datetime.datetime(2026, 12, 31)
+
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_radome_serial_number(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].radome_serial_number == ""
+
+    e["zimm"].set_radome_serial_number("dummy")
+    assert e["zimm"].radome_serial_number == "dummy"
+
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_radome_type(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].radome_type == "NONE"
+
+    e["zimm"].set_radome_type("dummy")
+    assert e["zimm"].radome_type == "dummy"
+
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_serial_number(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].serial_number == "99390"
+
+    e["zimm"].set_serial_number("dummy")
+    assert e["zimm"].serial_number == "dummy"
+
+
+@pytest.mark.usefixtures("sinex_data")
+def test_antenna_sinex_set_type(sinex_data):
+    e = Antenna.get("snx", sinex_data, "zimm", "last", source_path="/path/to/sinex")
+    assert "zimm" in e
+    assert e["zimm"].type == "TRM29659.00"
+
+    e["zimm"].set_type("dummy")
+    assert e["zimm"].type == "dummy"
+
+
 # Tests: Antenna.get_history("snx",...)
+#=======================================
 
 @pytest.mark.usefixtures("sinex_data")
 def test_antenna_history_sinex_one_station(sinex_data):
@@ -108,6 +184,7 @@ def test_antenna_history_sinex_two_stations_error(sinex_data):
 
 
 # Tests: Antenna.get("ssc",...)
+#===============================
 
 @pytest.mark.usefixtures("ssc_data")
 def test_antenna_ssc_one_station(ssc_data):
@@ -146,6 +223,7 @@ def test_antenna_ssc_two_stations_error(ssc_data):
         
 
 # Tests: Antenna.get_history("ssc",...)
+#=======================================
 
 @pytest.mark.usefixtures("ssc_data")
 def test_antenna_history_ssc_one_station(ssc_data):
@@ -186,6 +264,7 @@ def test_antenna_history_ssc_two_stations_error(ssc_data):
 
 
 # Tests: Antenna.get("m3g",...)
+#===============================
 
 @pytest.mark.usefixtures("m3g_api")
 def test_antenna_m3g_one_station(m3g_api):
@@ -231,7 +310,9 @@ def test_antenna_m3g_two_stations_error(m3g_api):
     with pytest.raises(MissingDataError):
         a = Antenna.get("m3g", m3g_api, "osls, xxxx", datetime.datetime(2020, 1, 1), source_path="/path/to/api")
 
+
 # Tests: Antenna.get_history("m3g",...)
+#=======================================
 
 @pytest.mark.usefixtures("m3g_api")
 def test_antenna_history_m3g_one_station(m3g_api):

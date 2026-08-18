@@ -116,9 +116,10 @@ class Collection:
             if suffix and not suffix[1:].isdigit():
                 continue
             self.default_field_suffix = suffix
-            yield multiplier
-
-        self.default_field_suffix = previous_field_suffix
+            try:
+                yield multiplier
+            finally:
+                self.default_field_suffix = previous_field_suffix
 
     @property
     def default_field_suffix(self):
@@ -258,7 +259,11 @@ class Collection:
         if not subfield:
             return getattr(self, key)
         else:
-            return getattr(getattr(self, mainfield), subfield)
+            main_attr = self
+            while subfield:
+                main_attr = getattr(main_attr, mainfield)
+                mainfield, _, subfield = subfield.partition(".")
+            return getattr(main_attr, mainfield)
 
     def __getattr__(self, key):
         """Get a field from the dataset using dot-notation"""

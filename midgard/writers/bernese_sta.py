@@ -157,11 +157,11 @@ def bernese_sta(
                         date_to=date_to.strftime("%Y %m %d %H %M %S"),
                         rcv=rcv.type,
                         rcv_serial=rcv.serial_number,
-                        rcv_serial_short=re.sub("[^0-9]", "", rcv.serial_number)[-6:],
+                        rcv_serial_short=re.sub("[^0-9]", "", rcv.serial_number)[-6:],  # Only numbers are excepted for rcv_serial_short
                         ant=ant.type,
                         radome=ant.radome_type if ant.radome_type else "NONE",
                         ant_serial=ant.serial_number,
-                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-5:] if ant.calibration else "999999",
+                        ant_serial_short=re.sub("[^0-9]", "", ant.serial_number)[-5:] if ant.calibration else "999999",  # Only numbers are excepted for ant_serial_short
                         north=ecc.north,
                         east=ecc.east,
                         up=ecc.up,

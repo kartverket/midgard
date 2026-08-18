@@ -46,7 +46,7 @@ class GipsyTdpParser(LineParser):
     Following **data** are available after reading Gipsy TDP output file:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
+    | :------------------- | :----------------------------------------------------------------------------------- |
     | apriori              | Nominal value. This field contains the last value used by the model.                 |
     | name                 | Parameter name.                                                                      |
     | sigma                | The sigma associated with the value of the parameter. A negative value indicates it  |
@@ -60,9 +60,9 @@ class GipsyTdpParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
     """
 
     def setup_parser(self) -> Dict[str, Any]:
@@ -198,7 +198,7 @@ class GipsyTdpParser(LineParser):
                     if field[parameter].dtype == "float":
 
                         if field_name not in dset.fields:
-                            dset.add_float(field_name, val=np.full(dset.num_obs, np.NaN))
+                            dset.add_float(field_name, val=np.full(dset.num_obs, np.nan))
                             dset[field_name][idx] = self.data[collection][idx]
 
                     # Add posvel fields to Dataset
@@ -206,7 +206,7 @@ class GipsyTdpParser(LineParser):
 
                         if field_name not in dset.fields:
                             dset.add_posvel(
-                                field_name, time=dset.time, system="trs", val=np.full((dset.num_obs, 6), np.NaN)
+                                field_name, time=dset.time, system="trs", val=np.full((dset.num_obs, 6), np.nan)
                             )
 
                             # Fill position field with data
@@ -221,7 +221,7 @@ class GipsyTdpParser(LineParser):
                             ]:
                                 idx_item = name.replace("STA X", item) == self.data["name"]
                                 if self.data["value"][idx_item].size == 0:
-                                    tmp_sol[item] = np.repeat(np.NaN, tmp_sol["STA X"].size)
+                                    tmp_sol[item] = np.repeat(np.nan, tmp_sol["STA X"].size)
                                 else:
                                     tmp_sol[item] = self.data["value"][idx_item]
                                 if not item == "STA X":

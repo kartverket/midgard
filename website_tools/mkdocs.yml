@@ -1,4 +1,4 @@
-site_name: Midgard v1.3.0
+site_name: Midgard v1.4.0
 theme: flatly
 site_dir: ../docs
 nav:
@@ -7,6 +7,7 @@ nav:
         - howto/testing.md 
     - API:
         - midgard: api/midgard.md
+        - midgard.api: api/midgard-api.md
         - midgard.collections: api/midgard-collections.md
         - midgard.config: api/midgard-config.md
         - midgard.data: api/midgard-data.md

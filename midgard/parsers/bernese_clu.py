@@ -28,7 +28,7 @@ class BerneseCluParser(LineParser):
     Following **data** are available after reading Bernese CLU file:
 
     | Parameter           | Description                                                                           |
-    |---------------------|---------------------------------------------------------------------------------------|
+    | :------------------ | :------------------------------------------------------------------------------------ |
     | station             | 4-digit station identifier                                                            |
     | domes               | Domes number                                                                          |
     | cluster             | Cluster number                                                                        |
@@ -36,9 +36,9 @@ class BerneseCluParser(LineParser):
     and **meta**-data:
 
     | Key                  | Description                                                                          |
-    |----------------------|--------------------------------------------------------------------------------------|
-    | \__data_path__       | File path                                                                            |
-    | \__parser_name__     | Parser name                                                                          |
+    | :------------------- | :----------------------------------------------------------------------------------- |
+    | \\__data_path__      | File path                                                                            |
+    | \\__parser_name__    | Parser name                                                                          |
 
     """
 

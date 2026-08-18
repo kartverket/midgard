@@ -27,14 +27,14 @@ reading and correct interpretation of the attribute.
 
 
 ## midgard.data._position
- Module for dealing with positions, velocities and position corrections in different coordinate systems
+Module for dealing with positions, velocities and position corrections in different coordinate systems
 
 
 ### **PosBase**
 
 Full name: `midgard.data._position.PosBase`
 
-Signature: `()`
+Signature: `(shape, dtype=None, buffer=None, offset=0, strides=None, order=None)`
 
 Base class for the various position and velocity arrays
 
@@ -541,7 +541,7 @@ Decorator registering scale.
 
 
 ## midgard.data.collection
- A collection of fields 
+A collection of fields 
 
 Also serves as base class for dataset
 
@@ -1020,7 +1020,7 @@ Array with time epochs
 
 Full name: `midgard.data.time.Time`
 
-Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None, _jd1: Optional[numpy.ndarray] = None, _jd2: Optional[numpy.ndarray] = None) -> 'TimeArray'`
+Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: numpy.ndarray | None = None, _jd1: numpy.ndarray | None = None, _jd2: numpy.ndarray | None = None) -> 'TimeArray'`
 
 Factory for creating TimeArrays for different systems
 
@@ -1042,7 +1042,7 @@ Array with epochs in the given time scale and format
 
 Full name: `midgard.data.time.TimeDelta`
 
-Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: Optional[numpy.ndarray] = None) -> 'TimeDeltaArray'`
+Signature: `(val: numpy.ndarray, scale: str, fmt: str, val2: numpy.ndarray | None = None) -> 'TimeDeltaArray'`
 
 Factory for creating TimeArrays for different systems
 
