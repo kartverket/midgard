@@ -61,7 +61,7 @@ class SscSiteParser(ChainParser):
                 # REFERENCE FRAME:    IGb14    AT EPOCH OF 2010.0
                 True: {
                     "parser": self.parse_reference_frame,
-                    "delimiter": "\s+",
+                    "delimiter": "\\s+",
                     "fields": ["_", "_", "ref_frame", "_"],
                 },
             },
