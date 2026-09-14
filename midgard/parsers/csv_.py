@@ -36,6 +36,30 @@ class CsvParser(Parser):
     | \\__data_path__      | File path                                                                            |
     | \\__parser_name__    | Parser name                                                                          |
     """
+    
+    def __init__(
+            self,
+            file_path: Union[str, pathlib.Path],
+            encoding: Optional[str] = None,
+            dropnan: bool = True,
+            keep_default_na: bool = True,
+            
+    ) -> None:
+        """Set up the basic information needed by the parser
+
+        Add a self._sinex dictionary for the raw Sinex data and read which
+        blocks to read from self.setup_parser().
+
+        Args:
+            file_path:          Path to file that will be read.
+            encoding:           Encoding of file that will be read.
+            dropnan:            Drop 'NaN' columns.
+            keep_default_na:    Convert empty entries into 'NaN'.
+        """
+        super().__init__(file_path, encoding=encoding)
+        self._dropnan = dropnan
+        self._keep_default_na = keep_default_na
+   
 
     def read_data(self) -> None:
         """Read data from the data file
@@ -51,8 +75,13 @@ class CsvParser(Parser):
                 index_col=False, 
                 sep="[\;,\,]", 
                 na_values="nan",
+                keep_default_na=self._keep_default_na,
                 skip_blank_lines=True, 
                 skipinitialspace=True,
         )
-        df = df.dropna(axis="columns", how="all")  # drop 'NaN' columns
+        
+        # drop 'NaN' columns
+        if self._dropnan:
+            df = df.dropna(axis="columns", how="all")  
+            
         self.data = {k: np.array(v) for k, v in df.to_dict(orient="list").items()}
