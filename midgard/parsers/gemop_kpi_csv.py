@@ -49,7 +49,8 @@ class GemopKpiCsvParser(CsvParser):
     | signal                     | numpy.ndarray | GNSS signals used in analysis (e.g. E1, E1/E5a)                   |
     | signal_combination         | numpy.ndarray | Single combination (e.g. Single, Dual, Multiple)                  |
     | slot                       | numpy.ndarray | Nominal and auxiliary slots of satellites (e.g. B04, A15)         |
-    | station_identifier         | numpy.ndarray | Station name list (9-alphanumeric characters, e.g. KOUG00GUF)     |
+    | station                    | numpy.ndarray | Station name list (9-alphanumeric characters, e.g. KOUG00GUF).    |
+    |                            |               | Former 'station_identifier' column of KPI CSV format.             |
     | system                     | numpy.ndarray | GNSS identifier                                                   |
     | target                     | numpy.ndarray | KPI target or minimum performance level or typical performance    |
     |                            |               | level                                                             |
@@ -98,6 +99,8 @@ class GemopKpiCsvParser(CsvParser):
         # Rename keys to adapt it to Midgard naming convention
         data["svid"] = data.pop("satellite")
         data["satellite"] = data.pop("prn")
+        data["station"] = data.pop("station_identifier")
+        data["unit_"] = data.pop("unit")  # Needed otherwise 'unit' field name comes in conflict with 'unit()' function
         
         # Initialize dataset
         dset = dataset.Dataset()
