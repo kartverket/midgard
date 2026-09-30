@@ -388,25 +388,31 @@ class TimeBase(np.ndarray):
         """Return list of valid attributes for this object"""
         # Pick one element to avoid doing calculations on a large array 
         obj = self if len(self) == 1 else self[0]
-
         scales_and_formats = []
         for scale in obj._scales():
             try:
                 _find_conversion_hops(self.cls_name, (obj.scale, scale))
                 # Add scales
-                scales_and_formats.append(scale)
-                scale_time = getattr(obj, scale)
+                try:
+                    scale_time = getattr(obj, scale)
+                    scales_and_formats.append(scale)
+                except:
+                    # Skip scale if conversion fails for any reason
+                    continue
                 fmt_cls = obj.cls_name.replace("Array", "Format")
                 for fmt in _FORMATS.get(fmt_cls, {}):
                     # Add system fields
                     try:
+                        print(f"calling getattr({scale_time}, {fmt}")
                         fmt_time = getattr(scale_time, fmt)
                         if isinstance(fmt_time, tuple) and hasattr(fmt_time, "_fields"):
                             for f in fmt_time._fields:
                                 scales_and_formats.append(f"{scale}.{fmt}.{f}")
                         else:
                             scales_and_formats.append(f"{scale}.{fmt}")
-                    except ValueError:
+                    except (ValueError, OverflowError):
+                        # datetime is limited to years 1-9999 and datetime.min and datetime.max may
+                        # cause OverflowError when converting between time scales
                         pass  # Skip formats that are invalid for that scale
             except exceptions.UnknownConversionError:
                 pass  # Skip systems that cannot be converted to
@@ -417,6 +423,7 @@ class TimeBase(np.ndarray):
     def plot_fields(self):
         """Returns list of attributes that can be plotted"""
         obj = self if len(self) == 1 else self[0]
+
         fieldnames = set(self.fieldnames())
         text_fields = set()
         for f in fieldnames:
@@ -1426,8 +1433,8 @@ class TimeDecimalYear(TimeFormat):
     @lru_cache()
     def _year2days(cls, year, scale):
         """Computes number of days in year, including leap seconds"""
-        if year == datetime.max.year:
-            # Assume there will be 365 days in the year 9999
+        if year == datetime.max.year or year == datetime.min.year:
+            # Assume there will be 365 days in the year 9999 and year 1
             return 365
 
         t_start = TimeArray.create(datetime(year, 1, 1), scale=scale, fmt="datetime")
@@ -1437,6 +1444,7 @@ class TimeDecimalYear(TimeFormat):
             # Account for leap seconds in UTC by differencing one TAI year
             t_start = getattr(t_start, "tai")
             t_end = getattr(t_end, "tai")
+
         return (t_end - t_start).days
 
 
