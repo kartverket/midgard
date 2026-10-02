@@ -403,7 +403,6 @@ class TimeBase(np.ndarray):
                 for fmt in _FORMATS.get(fmt_cls, {}):
                     # Add system fields
                     try:
-                        print(f"calling getattr({scale_time}, {fmt}")
                         fmt_time = getattr(scale_time, fmt)
                         if isinstance(fmt_time, tuple) and hasattr(fmt_time, "_fields"):
                             for f in fmt_time._fields:
