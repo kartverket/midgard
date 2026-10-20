@@ -15,7 +15,8 @@ Reads data from files in GEMOP KPI CSV format.
 
 # Standard library import
 from datetime import datetime
-from typing import Union
+from pathlib import PosixPath
+from typing import Optional, Union
 
 # Third party import
 import numpy as np
@@ -61,7 +62,7 @@ class GemopKpiCsvParser(CsvParser):
     
     def __init__(
             self,
-            file_path: Union[str, pathlib.Path],
+            file_path: Union[str, PosixPath],
             encoding: Optional[str] = None,
             dropnan: bool = False,
             keep_default_na: bool = False,

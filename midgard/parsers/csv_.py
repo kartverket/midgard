@@ -13,6 +13,10 @@ Description:
 Reads data from files in CSV output format. The header information of the CSV file is not read (TODO).
 
 """
+# Standard library imports
+from pathlib import PosixPath
+from typing import Optional, Union
+
 # External library imports
 import numpy as np
 import pandas as pd
@@ -39,7 +43,7 @@ class CsvParser(Parser):
     
     def __init__(
             self,
-            file_path: Union[str, pathlib.Path],
+            file_path: Union[str, PosixPath],
             encoding: Optional[str] = None,
             dropnan: bool = True,
             keep_default_na: bool = True,
