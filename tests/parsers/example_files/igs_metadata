@@ -1,0 +1,373 @@
+%=SNX 2.02 DLR 26:098:30885 DLR 78:053:00000 00:000:00000 P 00000 0
+*-------------------------------------------------------------------------------
+*                                                                               
++FILE/REFERENCE                                                                 
+ DESCRIPTION        IGS satellite meta data of GNSS satellites, release 2413
+ SOFTWARE           SNXmerge                                                    
+ INPUT              INFO.snx                                                    
+ INPUT              SATELLITE_COM.snx                                           
+ INPUT              SATELLITE_ECCENTRICITY_ANT_ATX14.snx                        
+ INPUT              SATELLITE_ECCENTRICITY_LRA.snx                              
+ INPUT              GLO2SNX.snx                                                 
+ INPUT              SATELLITE_IDENTIFIER.snx                                    
+ INPUT              SATELLITE_MASS.snx                                          
+ INPUT              SATELLITE_PLANE.snx                                         
+ INPUT              SATELLITE_PRN.snx                                           
+ INPUT              SATELLITE_TX_POWER.snx                                      
+-FILE/REFERENCE                                                                 
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++FILE/COMMENT                                                                   
+                                                                                
+ ===============================================================================
+  IGS Satellite Meta Data                                                       
+ ===============================================================================
+                                                                                
+   Satellite meta data for GPS, GLONASS, Galileo, BeiDou, QZSS, and IRNSS.      
+                                                                                
+   Steigenberger P, Montenbruck O (2024) IGS Satellite Metadata File Description
+        Version 1.10, September 30, 2024, doi: 10.57677/metadata-sinex          
+        https://files.igs.org/pub/resource/working_groups/multi_gnss/           
+                Metadata_SINEX_1.10.pdf                                         
+                                                                                
+   The following SINEX blocks are included:                                     
+                                                                                
+   - SATELLITE/IDENTIFIER        SVN, COSPAR ID, satellite catalogue number     
+                                 (NORAD ID), satellite block                    
+   - SATELLITE/PLANE             Orbital plane and slot                         
+   - SATELLITE/PRN               SVN/PRN assignment                             
+   - SATELLITE/FREQUENCY_CHANNEL GLONASS frequency channel numbers              
+   - SATELLITE/MASS              In-orbit satellite mass                        
+   - SATELLITE/COM               Center-of-mass information                     
+   - SATELLITE/ECCENTRICITY      Equipment eccentricities, e.g., reference point
+                                 for GNSS transmit antennas, satellite laser    
+                                 ranging retroreflector array                   
+   - SATELLITE/TX_POWER          L-Band transmit power                          
+                                                                                
+ Revision history:                                                              
+                                                                                
+    29-Mar-2018: First draft release                                            
+    09-Apr-2018: C207 and C208 added, end date for C001                         
+    16-Apr-2018: I009 added                                                     
+    15-May-2018: E215-E218 added, GLO-K1 splitted into GLO-K1A and GLO-K1B,     
+                 J001-J004 mass history updated                                 
+    08-Aug-2018: R856 added, C102 PRN switch                                    
+    28-Aug-2018: E219-E222, C209, C210 added                                    
+    06-Sep-2018: C211 and C212 added                                            
+    23-Oct-2018: C213 and C214 added, G04 SVN switch, CAST and SECM subgroups of
+                 BDS-3M, BDS-3S subgroups renamed, BDS SECM LRA offsets added,  
+                 renaming of BDS LRA types, R856 LRA offsets added, E218/E220   
+                 CoM and mass updated, QZSS mass changes added, Mass of BDS-3M  
+                 SECM satellites updated, C201 and C204 PRN switches            
+    13-Dec-2018: R249 removed, R857, C215-C217 added, end time R716/R15,        
+                 R856 M => M+, CoM of R750, R753-R757, R759, R768/9, R771-R774  
+                 addded, format of frequency channel number fixed in            
+                 SATELLITE/FREQUENCY_CHANNEL (A4 => A3)                         
+    08-Mar-2019: BDS PRN switches, BDS-3 equipment names updated,               
+                 C218, C219, G074 added, I09 added                              
+    29-Mar-2019: COSPAR/NORAD ID of E220 and E222 swapped                       
+    02-May-2019: Correction of GLONASS K1 mass, C220 added, QZSS mass history   
+                 updated, Galileo metadata released in April 2019 added,        
+                 R720 transmit power corrected                                  
+    03-May-2019: BDS-3 GEO/IGSO mass 4000 kg => 2500 kg but still a guess       
+                 removed redundant QZSS mass entries                            
+    29-May-2019: Updated PRN switch times for C204                              
+    03-Jun-2019: C020 and R858 added                                            
+    26-Jun-2019: C221 added, J002/3/4 mass history updated, R858 is GLO-M+      
+                 end date R723/R12, R858/R12 added, GLO TX power update repro3  
+    11-Jul-2019: R858 tx power added                                            
+    22-Jul-2019: GPS PRN G04 switch: G074 => G036, historical GLO FCNs          
+    28-Aug-2019: J003 and J004 mass and CoM updated, G075 added                 
+    29-Aug-2019: Typo for C216 block name fixed, QZSS references updated        
+                 DOI added for [EL17], [TP01] updated                           
+    30-Sep-2019: C222 and C223 added, PRN for C221 added, links for status      
+                 information added                                              
+    07-Oct-2019: R723 FCN switch                                                
+    10-Oct-2019: R10 SVN switch, J001 and J003 mass and CoM history updated     
+    14-Oct-2019: C18 SVN switch C104=>C020, C104 PRN switch C18=>C56,           
+                 R720 reduced L1 TX power                                       
+    15-Oct-2019  R27/R716 added, R26 FCN switch                                 
+    21-Oct-2019  R10 FCN switch, R720 reduced L1+L2 TX power                    
+    24-Oct-2019  G04 SVN switch G036=>G074                                      
+    18-Nov-2019  C224 added, J003 mass and CoM history updated                  
+    28-Nov-2019  PRN/SVN assignment of C222/3 changed according to CSNO/TARC    
+                 C225 and C226 added                                            
+    02-Jan-2020  R859, C227, C228 added, BDS mass from CSNO/TARC                
+    08-Jan-2020  BDS LRA offsets from CSNO/TARC, BDS-2 CoM and antenna          
+                 eccentricity set to zero as LRA offsets are referred to CoM,   
+                 PRN/SVN assignment of C225/6 changed according to CSNO/TARC,   
+                 J002+J003 mass and CoM history updated, C020 eccentricity added
+    19-Jan-2020  J003 mass history updated, BDS-3SM-CAST TX power added         
+    03-Feb-2020  J003 and J004 mass and CoM history updated                     
+    10-Feb-2020  R723 FCN switch, preliminary BDS-3 TX power                    
+    12-Mar-2020  C229 added                                                     
+    16-Mar-2020  G075 added, end time for G18/G034, J003 mass and CoM history   
+                 updated                                                        
+    19-Mar-2020  Start time G075 corrected                                      
+    20-Mar-2020  R860 added                                                     
+    14-Apr-2020  C229/C60 PRN added, R24 SVN switch R735=>R860                  
+    20-May-2020  J003 mass and CoM history updated                              
+    02-Jun-2020  Corrected FCN time intervals for R714 and R724                 
+    16-Jun-2020  J002 history updated, R24 SVN switch consistent with igs14.atx 
+                 BDS-3M-SECM-A/B blocks introduced                              
+    06-Jul-2020  C230 and G076 added, R860 TX power added                       
+    14-Jul-2020  G23/G076 added, end time for G23/G060                          
+    10-Aug-2020  J003 mass and CoM history updated                              
+    19-Aug-2020  R22 SVN switch                                                 
+    17-Sep-2020  J001 and J003 mass and CoM history updated                     
+    11-Nov-2020  R815 and G077 added, J001 and J003 mass and CoM history updated
+    16-Nov-2020  R815 renamed to R805, PRN added                                
+    02-Dec-2020  R805 PRN switch                                                
+    12-Jan-2021  J002 and J003 mass and CoM history updated                     
+    05-Feb-2021  R805 FCN switch                                                
+    10-Feb-2021  J004 TX power corrected                                        
+    15-Mar-2021  J003 and J004 mass and CoM history updated                     
+                 BDS ILRS common names in comment field corrected               
+    07-May-2021  J001 and J003 history updated                                  
+    25-Jun-2021  G078 added, J002 and J003 history updated                      
+    28-Sep-2021  J003 and J004 history updated                                  
+    19-Nov-2021  J005 added                                                     
+    24-Nov-2021  J04 start time consistent with ANTEX, CoM X/Y sign of J001-J004
+                 corrected, J001 and J003 mass and CoM history updated          
+    10-Dec-2021  E223 and E224 added                                            
+    27-Dec-2021  J005 mass start date corrected, C020 PRN switch                
+    04-Jan-2021  Updated mass for E203, E204, E206, E219, E223, E224            
+    23-Jan-2022  Swapped mass and LRA offset for C222/223 and C225/226          
+    27-Jan-2022  End date G047, G041/G22 added                                  
+    31-Jan-2022  Updated J005 BoL mass and CoM values after IOT                 
+    15-Mar-2022  R11 FCN change, J002, J003, J004 mass and CoM history updated  
+    23-Mar-2022  R11 FCN change                                                 
+    28-Mar-2022  R11 FCN change                                                 
+    30-Mar-2022  R11 FCN change                                                 
+    11-May-2022  Added J005 CoM and mass history                                
+    28-Jun-2022  J002 and J003 mass and CoM history updated                     
+    29-Jun-2022  added missing underscore in SATELLITE/COM header line          
+    04-Jul-2022  added conventional TX power for BDS-3 GEO and IGSO             
+    12-Jul-2022  added R806, updated J003 mass and CoM history                  
+    18-Jul-2022  R806 PRN added                                                 
+    08-Aug-2022  R806 FCN added                                                 
+    19-Aug-2022  R806 FCN change                                                
+    15-Sep-2022  J003, J004, J005 mass and CoM history updated                  
+    10-Oct-2022  J003 mass and CoM history updated; R806 FCN change             
+                 R806 TX power added (copy of R802)                             
+    28-Oct-2022  R807 added, G28/G044 end time, G28/G049 start time             
+    13-Dec-2022  R16/R736 end time, R861 added                                  
+    20-Dec-2022  R861 FCN added                                                 
+    01-Feb-2023  G079 added, QZSS mass/CoM history switched to pre-maneuver     
+    25-May-2023  C231 added                                                     
+    19-Jun-2023  I10 added                                                      
+    18-Jul-2023  J001, J002, J003, J004, J005 history updated                   
+    09-Aug-2023  R803 added, E101/E104/E205/E207-E212/E222-E224 mass            
+                 history updated                                                
+    10-Aug-2023  J003 and J004 history updated                                  
+    11-Aug-2023  G22 SVN switch                                                 
+    29-Aug-2023  R807 FCN added                                                 
+    25-Oct-2023  R26 SVN switch, R801 FCN end time, R803 FCN added,             
+                 J003 history updated                                           
+    02-Jan-2024  R803 FCN switches                                              
+    07-Jan-2024  R803 FCN switch to -7, C232 and C233 added                     
+    16-Jan-2024  R803 and R807 PRN switches, R803 FCN switch to -6              
+    12-Feb-2024  C232 and C233 PRN/SVN assignment switched                      
+                 J003, J004, J005 mass and CoM history updated                  
+    27-Feb-2024  C222/C223 LRA offsets updated                                  
+    25-Apr-2024  G01/G063 end date and G01/G049 start date added                
+    08-May-2024  E225/E227 added, E214 mass and CoM updated                     
+                 J003, J005 mass and CoM history updated                        
+    23-May-2024  E225/E227 TLE name added, QZSS PRN reference added             
+    04-Sep-2024  E225/E227/J003/J004/J005 mass updated, E225/E227 CoM added     
+    09-Oct-2024  E226 and E232 added, J002/J003 mass updated                    
+    15-Nov-2024  Updated merging of QZSS history records                        
+    03-Jan-2025  G080 added                                                     
+    24-Jan-2025  R733 and R803 PRN switches, SATELLITE/PLANE added              
+                 J003, J004 mass and CoM history updated                        
+    05-Feb-2025  R733 and R803 PRN switches, R807 changed to K1+,               
+                 E210 plane updated                                             
+    24-Feb-2025  C234 and C235 added, E226 and E232 mass and CoM updated        
+    14-Mar-2025  I011 and J007 added; J003, J005 mass and CoM history updated   
+    31-Mar-2025  R804 added                                                     
+    07-Apr-2025  J007 updated from SPI; J003 TX power updated from SPI;         
+                 R804 mass time window fixed                                    
+    10-Apr-2025  R804 FCN updated                                               
+    26-May-2025  R807 FCN updated, R720 and R807 PRN switches                   
+    11-Jun-2025  G081 added, J002, J003 mass and CoM history updated            
+    23-Jun-2025  Removed erroneous G21/G045 record                              
+    14-Jul-2025  J003 mass and CoM history updated                              
+    06-Aug-2025  J003 and J004 mass and CoM history updated; planes:            
+                 G081 added, R807 repositioning, R717/R720/R801/R853 updated    
+    17-Oct-2025  R808 and R28 added, J007 mass and CoM history updated          
+    10-Dec-2025  J002/J003/J007 mass and CoM history updated,                   
+                 E205 decommissioning                                           
+    05-Jan-2026  R733 and R804 PRN switches                                     
+    12-Jan-2026  E205 disposal, E233 and E234 added,                            
+                 J003/J007 mass and CoM history updated                         
+    28-Jan-2026  E104/E205 end dates added, G045 end date for plane,            
+                 G061 and G081 plane updated                                    
+    04-Feb-2026  G082 added, G051 decommissioning                               
+    08-Apr-2026  E233/E234/J003/J007 mass and CoM updated, E232 repositioning   
+                                                                                
+ ===============================================================================
+  Center-of-mass information for GNSS satellites                                
+ ===============================================================================
+                                                                                
+ Notes:                                                                         
+                                                                                
+   - All coordinates refer to the IGS conventions of the spacecraft body axis   
+     orientations as defined in Ref. [CM01]                                     
+   - CoM hisotry of QZSS satellites is based on BoL/EoL mass and CoM values from
+     [CM07,09,10,11] and current mass values according to                       
+                                                                                
+       mu(t) = (m(t) - m(EoL))/m(EoL)                                           
+                                                                                
+       dCoG = (CoG(BoL)-CoG(EoL))/(mu(BoL)*(1-mu(BoL)))                         
+                                                                                
+       CoG(t) = CoG(EoL) + dCoG * mu(t)*(1-mu(t))                               
+                                                                                
+ References:                                                                    
+                                                                                
+   [CM01]  Montenbruck O, Schmid R, Mercier F, Steigenberger P, Noll C,         
+           Fatkulin R, Kogure S, Ganeshan AS (2015) GNSS satellite geometry and 
+           attitude models. Adv Space Res 56(6): 1015-1029,                     
+           doi: 10.1016/j.asr.2015.06.019                                                                                 
+                                                                                
+-FILE/COMMENT                                                                   
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/IDENTIFIER                                                           
+*                                                                               
+*SVN_ COSPAR ID SatCat Block__________ Comment__________________________________
+*                                                                               
+ G001 1978-020A  10684 GPS-I           Launched 1978-02-22; NAVSTAR 1
+ G002 1978-047A  10893 GPS-I           Launched 1978-05-13; NAVSTAR 2
+ G068 2014-045A  40105 GPS-IIF         Launched 2014-08-02; NAVSTAR 71
+ E103 2012-055A  38857 GAL-1           Launched 2012-10-12; GALILEO-FM3
+ E104 2012-055B  38858 GAL-1           Launched 2012-10-12; GALILEO-FM4
+ E201 2014-050A  40128 GAL-2           Launched 2014-08-22; GALILEO 5 (261)
+ E202 2014-050B  40129 GAL-2           Launched 2014-08-22; GALILEO 6 (262)
+ I010 2023-076A  56759 IRS-2G          Launched 2023-05-29; NVS-01
+ I011 2025-020A  62850 IRS-2I          Launched 2025-01-29; NVS-02; GTO
+*                                                                               
+-SATELLITE/IDENTIFIER                                                           
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/PLANE                                                                
+*                                                                               
+*SVN_ Valid_From____ Valid_To______ P Slot__ Comment____________________________
+*                                                                               
+ G008 1983:195:00000 0000:000:00000 3 C3     CANSPACE_92-10-02.txt
+ G017 1989:345:00000 2003:107:00000 4 D3     [PL05]
+ E102 2011:294:00000 0000:000:00000 2 B06    [PL03]
+ E103 2012:286:00000 0000:000:00000 3 C04    [PL03]
+ E104 2012:286:00000 2024:078:00000 3 C14    [PL03]
+*                                                                               
+-SATELLITE/PLANE                                                                
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/PRN                                                                  
+*                                                                               
+*SVN_ Valid_From____ Valid_To______ PRN Comment_________________________________
+*                                                                               
+ G051 2000:132:00000 2026:008:00000 G20 NANU 2026006
+ G052 2006:268:00000 0000:000:00000 G31 
+ G053 2005:269:00000 0000:000:00000 G17 
+ R784 1998:364:00000 2004:361:00000 R08 
+ R785 1995:205:00000 2007:359:00000 R11 
+ R786 1998:364:00000 2004:361:00000 R07 
+ E233 2025:351:00000 0000:000:00000 E28 
+ E234 2025:351:00000 0000:000:00000 E32 
+ C001 2007:103:00000 2012:182:00000 C30 
+ C003 2010:016:00000 2020:091:15600 C01 end time from tracking data
+*                                                                               
+-SATELLITE/PRN                                                                  
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/FREQUENCY_CHANNEL                                                    
+*                                                                               
+*SVN_ Valid_From____ Valid_To______ chn Comment________________________________
+*                                                                               
+ R701 2003:344:00000 2009:258:86399   1 [FC10]
+ R701 2009:259:00000 2010:057:86399  -4 [Const_090916.glo]
+ R711 2001:335:34200 2006:084:86399   2 [FC02]
+ R711 2006:085:00000 2008:010:86399   7 [Const_060326.glo]
+ R712 2004:361:00000 2007:037:86399   4 BSW
+ R712 2007:038:00000 2011:348:86399   5 [Const_070207.glo]
+ R712 2012:292:00000 2012:358:86399   6 [Const_121018.glo]
+ R713 2006:096:00000 2010:057:86399   2 [Const_060406.glo]
+ R714 2006:096:00000 2010:077:86399   3 [Const_060406.glo]
+ R714 2010:359:00000 2011:017:86399  -5 [Const_101225.glo]
+ R714 2011:018:00000 2011:353:86399   4 [Const_110118.glo]
+*                                                                               
+-SATELLITE/FREQUENCY_CHANNEL                                                    
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/MASS                                                                 
+*                                                                               
+*SVN_ Valid_From____ Valid_To______ Mass_[kg] Comment___________________________
+*                                                                               
+ E201 2014:234:00000 0000:000:00000   660.977 GAL-2; [MA08]; post orbit raising
+ E202 2014:234:00000 2015:212:00000   662.646 GAL-2; [MA08]; post orbit raising
+ E202 2015:212:00000 0000:000:00000   662.141 GAL-2; [MA08]; post orbit raising
+ E203 2015:086:00000 2015:253:00000   706.162 GAL-2; [MA08], Issue Date: 2015-03-27
+ E203 2015:253:00000 2021:322:00000   705.688 GAL-2; [MA08], Issue Date: 2015-08-03
+ E203 2021:322:00000 0000:000:00000   705.685 GAL-2; [MA08], Issue Date: 2021-11-18
+*                                                                               
+-SATELLITE/MASS                                                                 
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/COM                                                                  
+*                                                                               
+*SVN_ Valid_From____ Valid_To______ ____X_[m] ____Y_[m] ____Z_[m] Comment___________________________
+*                                                                               
+ R783 2000:287:00000 0000:000:00000    0.0000    0.0000    0.0000 GLO; [CM02]
+ J003 2017:303:35554 2017:334:21266   -0.0002   -0.0010    1.7794 QZS-2G; [CM10] and mass history
+ J003 2017:334:21266 2017:348:23818   -0.0002   -0.0010    1.7796 QZS-2G; [CM10] and mass history
+ J003 2017:348:23818 2017:360:11929   -0.0002   -0.0010    1.7796 QZS-2G; [CM10] and mass history
+ J003 2017:360:11929 2018:021:34513   -0.0002   -0.0010    1.7799 QZS-2G; [CM10] and mass history
+ J003 2018:021:34513 2018:041:31320   -0.0002   -0.0010    1.7799 QZS-2G; [CM10] and mass history
+ J003 2018:041:31320 2018:062:67384   -0.0002   -0.0010    1.7802 QZS-2G; [CM10] and mass history
+ J003 2018:062:67384 2018:107:31327   -0.0002   -0.0010    1.7802 QZS-2G; [CM10] and mass history
+ J003 2018:107:31327 2018:145:63719   -0.0002   -0.0010    1.7804 QZS-2G; [CM10] and mass history
+ J003 2018:145:63719 2018:185:67374   -0.0002   -0.0010    1.7807 QZS-2G; [CM10] and mass history
+ J003 2018:185:67374 2018:203:48982   -0.0002   -0.0010    1.7810 QZS-2G; [CM10] and mass history
+*                                                                               
+-SATELLITE/COM                                                                  
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/ECCENTRICITY                                                         
+*                                                                               
+*SVN_ Equipment___________ T ____X_[m] ____Y_[m] ____Z_[m] Comment___________________________
+*                                                                               
+ G001 BLOCK I              P    0.0000    0.0000    0.0000 GPS-I; [EG02]
+ G002 BLOCK I              P    0.0000    0.0000    0.0000 GPS-I; [EG02]
+ R788 GLONASS              P    0.0000    0.0000    0.0000 GLO; [EG02]
+ E210 GALILEO-2            P   -0.2620    0.0100    0.5650 GAL-2; [EG04]
+ E210 LRA_GAL_2            L    0.7030    0.0275    1.1205 galileo210 [M,p,EL09]
+ C103 LRA_BDS_NCRIEO_38    L    0.6101   -0.0712    1.2448 compassms2 [C,p,EL16]
+ C104 BEIDOU-3SI-CAST      P    0.0000    0.0000    0.0000 BDS-3I; [EG02]
+ C104 LRA_BDS_SHAO_90      L    0.1851    0.6854    1.9602 compassis2 [C,p,EL16]
+ C217 BEIDOU-3G-CAST       P    0.0000    0.0000    0.0000 BDS-3G; [EG02]
+ C217 LRA_BDS_SHAO_90      L    0.5896   -0.0845    0.7637 [C,EL20]
+*                                                                               
+-SATELLITE/ECCENTRICITY                                                         
+*                                                                               
+*-------------------------------------------------------------------------------
+*                                                                               
++SATELLITE/TX_POWER                                                             
+*                                                                               
+*SVN_ Valid_From____ Valid_To______ P[W] Comment________________________________
+*                                                                               
+ G028 1992:101:00000 0000:000:00000   50  GPS-IIA; [TP01]; block mean
+ R724 2008:269:00000 0000:000:00000   50  GLO-M; [TP01]; default, not measured
+ R860 2020:076:00000 0000:000:00000  110  GLO-M+; average of R855/R857/R858
+*                                                                               
+-SATELLITE/TX_POWER                                                             
+*                                                                               
+*-------------------------------------------------------------------------------
+%ENDSNX                                                                         
