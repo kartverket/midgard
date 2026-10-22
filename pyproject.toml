@@ -1,10 +1,67 @@
 [build-system]
-requires = ["flit_core >=2,<4"]
+requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
+[project]
+name = "midgard"
+authors = [
+    {name = "Norwegian Mapping Authority", email = "michael.daehnn@kartverket.no"},
+    {name = "Norwegian Mapping Authority", email = "ingrid.fausk@kartverket.no"},
+    {name = "Norwegian Mapping Authority", email = "ann-silje.kirkvik@kartverket.no"},
+]
+readme = "README.md"
+dynamic = ["version", "description"]
+requires-python = ">=3.11"
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["geodesy utilities"]
+
+# Requirements
+dependencies = [
+    "colorama",
+    "dataclasses",
+    "h5py",
+    "importlib_resources",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pint>=0.20",
+    "pycurl",
+    "scipy",
+    "statsmodels",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "bump-my-version",
+    "flit>=4.0.2",
+    "ipython",
+    "mkdocs",
+    "mkdocs-bootswatch",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://kartverket.github.io/midgard/"
+Repository = "https://github.com/kartverket/midgard"
 
 [tool.pytest.ini_options]
-testpaths = ["tests",]
+testpaths = ["tests"]
 
 # Needed for release with bump-my-version
 [tool.bumpversion]
@@ -18,37 +75,3 @@ filename = "midgard/__init__.py"
 [[tool.bumpversion.files]]
 filename = "website_tools/mkdocs.yml_template"
 
-
-# Requirements
-requires           = ["dataclasses", "importlib_resources", "numpy", "pandas", "pint", "pycurl", "scipy", "statsmodels"]
-dev-requires       = ["black", "bump-my-version", "flit", "mkdocs", "mkdocs-bootswatch", "mypy", "pytest", "pytest-cov"]
-requires-python = ">=3.11"
-
-[project]
-name = "midgard"
-authors = [
-    {name = "Norwegian Mapping Authority", email = "hans.sverre.smalo@kartverket.no"},
-]
-readme = "README.md"
-dynamic = ["version", "description"]
-
-classifiers        = ["Development Status :: 2 - Pre-Alpha",
-                      "Intended Audience :: Developers",
-                      "Intended Audience :: Science/Research",
-                      "License :: OSI Approved :: MIT License",
-                      "Natural Language :: English",
-                      "Operating System :: MacOS",
-                      "Operating System :: Microsoft",
-                      "Operating System :: POSIX :: Linux",
-                      "Programming Language :: Python :: 3.11",
-                      "Topic :: Scientific/Engineering",
-                      "Topic :: Software Development :: Libraries :: Python Modules",
-]
-keywords           = ["geodesy utilities"]
-dependencies = [
-    "flit>=4.0.2",
-]
-
-[project.urls]
-Homepage = "https://kartverket.github.io/midgard/"
-Repository = "https://github.com/kartverket/midgard"
