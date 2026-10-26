@@ -10,6 +10,7 @@
 # http://pint.readthedocs.io/en/stable/defining.html for a description of how to define new units.
 
 unit = [] = unitless = dimensionless
+gal = centimeter / s**2
 percent = unit / 100
 ppb = 1e-9 * unit = parts per billion
 mas = milliarcsec
