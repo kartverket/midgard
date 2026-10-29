@@ -403,6 +403,32 @@ class SinexParser(Parser):
         time = timedelta(seconds=int(field_str[7:]))
         return date + time
 
+    def _convert_epoch_long(self, field: bytes) -> datetime:
+            """Convert epoch field to datetime value
+    
+            The epoch is given in YYYY:DDD:SSSSS format with::
+                YYYY  = 4-digit year.
+                DDD   = 3-digit day of year,
+                SSSSS = 5-digit seconds of day.
+    
+            Args:
+                field:  Original field with time epoch in YYYY:DDD:SSSSS format.
+    
+            Returns:
+                Field converted to datetime object.
+            """
+            field_str = field.decode(self.file_encoding or "utf-8")
+    
+            if field_str != "0000:000:00000" and field_str[3:6] == "000":
+                # Doy field may be 000 which does not make sense. Increase value by one
+                year_doy = field_str[:2] + ":"+ "001"
+            else:
+                year_doy = field_str[:8]
+    
+            date = datetime.strptime(year_doy, "%Y:%j")
+            time = timedelta(seconds=int(field_str[7:]))
+            return date + time
+
     def _convert_exponent(self, field: bytes) -> float:
         """Convert scientific notation number field to float
 
@@ -831,6 +857,155 @@ class SinexParser(Parser):
 
     parse_satellite_id = parsing_factory()
 
+    @property
+    def satellite_identifier(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/IDENTIFIER",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("cospar_id", 6, "U9"),
+                SinexField("satcat", 18, "U6"),
+                SinexField("block", 23, "U15"),
+                SinexField("comment", 39, "U41"),
+            ),
+            parser=self.parse_satellite_identifier,
+        )
+
+    parse_satellite_identifier = parsing_factory()
+
+    @property
+    def satellite_plane(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/PLANE",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "epoch_long"),
+                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("plane", 36, "U1"),
+                SinexField("slot", 38, "U6"),
+                SinexField("comment", 45, "U35"),
+            ),
+            parser=self.parse_satellite_plane,
+        )
+
+    parse_satellite_plane = parsing_factory()
+
+    @property
+    def satellite_prn(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/PRN",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "epoch_long"),
+                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("prn", 36, "U3"),
+                SinexField("comment", 40, "U40"),
+            ),
+            parser=self.parse_satellite_prn,
+        )
+
+    parse_satellite_prn = parsing_factory()
+
+    @property
+    def satellite_frequency_channel(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/FREQUENCY_CHANNEL",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "epoch_long"),
+                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("channel", 36, "U3"),
+                SinexField("comment", 40, "U40"),
+            ),
+            parser=self.parse_satellite_frequency_channel,
+        )
+
+    parse_satellite_frequency_channel = parsing_factory()
+    
+    @property
+    def satellite_mass(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/MASS",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "epoch_long"),
+                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("mass", 36, "f8"),
+                SinexField("comment", 46, "U34"),
+            ),
+            parser=self.parse_satellite_mass,
+        )
+
+    parse_satellite_mass = parsing_factory()
+
+    @property
+    def satellite_com(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/COM",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "epoch_long"),
+                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("x", 36, "f8"),
+                SinexField("y", 46, "f8"),
+                SinexField("z", 56, "f8"),
+                SinexField("comment", 66, "U14"),
+            ),
+            parser=self.parse_satellite_com,
+        )
+
+    parse_satellite_com = parsing_factory()
+
+    @property
+    def satellite_eccentricity(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/ECCENTRICITY",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("equipment", 6, "U20"),
+                SinexField("type", 27, "U1"),
+                SinexField("x", 29, "f8"),
+                SinexField("y", 39, "f8"),
+                SinexField("z", 49, "f8"),
+                SinexField("comment", 59, "U21"),
+            ),
+            parser=self.parse_satellite_eccentricity,
+        )
+
+    parse_satellite_eccentricity = parsing_factory()
+
+    @property
+    def satellite_tx_power(self) -> SinexBlock:
+        """Information about GNSS satellites used in the solution
+        """
+        return SinexBlock(
+            marker="SATELLITE/TX_POWER",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "epoch_long"),
+                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("power", 36, "U4"),
+                SinexField("comment", 41, "U39"),
+            ),
+            parser=self.parse_satellite_tx_power,
+        )
+
+    parse_satellite_tx_power = parsing_factory()
+ 
     @property
     def satellite_phase_center(self) -> SinexBlock:
         """Information about GNSS satellite antenna phase centers
