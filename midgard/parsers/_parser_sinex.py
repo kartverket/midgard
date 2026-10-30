@@ -373,7 +373,7 @@ class SinexParser(Parser):
         return Unit.dms_to_rad(degrees, minutes, seconds)
 
     def _convert_yydddsssss(self, field: bytes) -> datetime:
-        """Convert epoch field to datetime value
+        """Convert epoch field given in format <yydddsssss> to datetime value
 
         The epoch is given in YY:DDD:SSSSS format with::
 
@@ -404,7 +404,7 @@ class SinexParser(Parser):
         return date + time
 
     def _convert_yyyydddsssss(self, field: bytes) -> datetime:
-            """Convert epoch field to datetime value
+            """Convert epoch field given in format <yyyydddsssss> to datetime value
     
             The epoch is given in YYYY:DDD:SSSSS format with::
                 YYYY  = 4-digit year.
