@@ -130,7 +130,7 @@ class SinexTropParser(SinexParser):
             marker="TROP/SOLUTION",
             fields=(
                 SinexField("site_name", 1, "U4"),
-                SinexField("epoch", 6, "O", "epoch"),
+                SinexField("epoch", 6, "O", "yydddsssss"),
                 SinexField("trop_tot", 19, "f8"),
                 SinexField("trop_tot_std", 26, "f8"),
                 SinexField("trop_gn_tot", 34, "f8"),
