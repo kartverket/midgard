@@ -162,23 +162,23 @@ class SinexMetaParser(SinexParser):
 
     def parse_satellite_plane(self, data):
         """Parse SATELLITE/PLANE SINEX block"""
-        self._parse_satellite_com(data, "satellite_plane")
+        self._parse_sinex_block_lines(data, "satellite_plane")
 
     def parse_satellite_prn(self, data):
         """Parse SATELLITE/PRN SINEX block"""
-        self._parse_satellite_com(data, "satellite_prn")
+        self._parse_sinex_block_lines(data, "satellite_prn")
 
     def parse_satellite_frequency_channel(self, data):
         """Parse SATELLITE/FREQUENCY_CHANNEL SINEX block"""
-        self._parse_satellite_com(data, "satellite_frequency_channel")
+        self._parse_sinex_block_lines(data, "satellite_frequency_channel")
 
     def parse_satellite_mass(self, data):
         """Parse SATELLITE/MASS SINEX block"""
-        self._parse_satellite_com(data, "satellite_mass")
+        self._parse_sinex_block_lines(data, "satellite_mass")
 
     def parse_satellite_com(self, data):
         """Parse SATELLITE/COM SINEX block"""
-        self._parse_satellite_com(data, "satellite_com")
+        self._parse_sinex_block_lines(data, "satellite_com")
 
     def parse_satellite_eccentricity(self, data):
         """Parse SATELLITE/ECCENTRICITY SINEX block"""
@@ -208,12 +208,13 @@ class SinexMetaParser(SinexParser):
             # Convert numpy data types to standard data types
             values = dict()
             for n in d.dtype.names:
-                if n =="svn" or n == "valid_from":
+                if n == "svn":    
+                    continue
+                if n == "valid_from":
                     valid_from_flag = True
-                    continue 
-                values[n] = d[n].item() if d[n] else d[n]  # Handling of None values
+                values[n] = d[n].item() if isinstance(d[n], np.generic) else d[n]  # Handling of None values
 
-        if valid_from_flag:
-             self.data[satellite_key][sinex_block_key].append(values)
-        else:
-            self.data[satellite_key][sinex_block_key] = values
+            if valid_from_flag:
+                self.data[satellite_key][sinex_block_key].append(values)
+            else:
+                self.data[satellite_key][sinex_block_key] = values

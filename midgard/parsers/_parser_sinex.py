@@ -426,7 +426,7 @@ class SinexParser(Parser):
                 year_doy = field_str[:8]
     
             date = datetime.strptime(year_doy, "%Y:%j")
-            time = timedelta(seconds=int(field_str[7:]))
+            time = timedelta(seconds=int(field_str[9:]))
             return date + time
 
     def _convert_exponent(self, field: bytes) -> float:
@@ -859,7 +859,17 @@ class SinexParser(Parser):
 
     @property
     def satellite_identifier(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information about identifiers for GNSS satellites
+
+        Example:
+            +SATELLITE/IDENTIFIER
+            *
+            *SVN_ COSPAR ID SatCat Block__________ Comment__________________________________
+            *
+             G001 1978-020A  10684 GPS-I           Launched 1978-02-22; NAVSTAR 1
+             G002 1978-047A  10893 GPS-I           Launched 1978-05-13; NAVSTAR 2
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/IDENTIFIER
         """
         return SinexBlock(
             marker="SATELLITE/IDENTIFIER",
@@ -877,7 +887,19 @@ class SinexParser(Parser):
 
     @property
     def satellite_plane(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """This block provides provides information about the orbital plane of a satellite within the constellation as
+          well as the slot within the plane.
+
+          Example:
+            +SATELLITE/PLANE
+            *
+            *SVN_ Valid_From____ Valid_To______ P Slot__ Comment____________________________
+            *
+             G028 1996:236:00000 0000:000:00000 3 C5     [PL05]
+             G029 2001:354:00000 2002:178:00000 6 REPOS  [PL05] repositioning
+             G029 2002:178:00000 0000:000:00000 6 F5     [PL05]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/PLANE
         """
         return SinexBlock(
             marker="SATELLITE/PLANE",
@@ -896,7 +918,18 @@ class SinexParser(Parser):
 
     @property
     def satellite_prn(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information about what PRN codes a satellite has had assigned to it at what times.
+
+        Example:
+            +SATELLITE/PRN
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ PRN Comment_________________________________
+            *                                                                               
+             G050 2009:229:00000 0000:000:00000 G05 
+             G051 2000:132:00000 2026:008:79200 G20 NANU 2026006
+             G052 2006:268:00000 0000:000:00000 G31 
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/PRN
         """
         return SinexBlock(
             marker="SATELLITE/PRN",
@@ -914,7 +947,18 @@ class SinexParser(Parser):
 
     @property
     def satellite_frequency_channel(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information about frequency allocations for GLONASS GNSS satellites.
+
+        Example:
+            +SATELLITE/FREQUENCY_CHANNEL                                                    
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ chn Comment________________________________
+            *                                                                               
+             R701 2003:344:00000 2009:258:86399   1 [FC10]
+             R701 2009:259:00000 2010:057:86399  -4 [Const_090916.glo]
+             R711 2001:335:34200 2006:084:86399   2 [FC02]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/FREQUENCY_CHANNEL 
         """
         return SinexBlock(
             marker="SATELLITE/FREQUENCY_CHANNEL",
@@ -932,7 +976,18 @@ class SinexParser(Parser):
     
     @property
     def satellite_mass(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information about mass of GNSS satellites.
+
+        Example:
+            +SATELLITE/MASS                                                                 
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ Mass_[kg] Comment___________________________
+            *                                                                               
+             G059 2004:080:00000 0000:000:00000  1080.000 GPS-IIR-B; [MA03]
+             G060 2004:175:00000 0000:000:00000  1080.000 GPS-IIR-B; [MA03]
+             G061 2004:311:00000 0000:000:00000  1080.000 GPS-IIR-B; [MA03]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/MASS
         """
         return SinexBlock(
             marker="SATELLITE/MASS",
@@ -950,7 +1005,16 @@ class SinexParser(Parser):
 
     @property
     def satellite_com(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information about centre of mass for GNSS satellites
+        Example:
+            +SATELLITE/COM                                                                  
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ ____X_[m] ____Y_[m] ____Z_[m] Comment___________________________
+            *                                                                               
+             G001 1978:053:00000 0000:000:00000    0.0000    0.0000    0.0000 GPS-I; [CM02]
+             G002 1978:133:00000 0000:000:00000    0.0000    0.0000    0.0000 GPS-I; [CM02]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/COM
         """
         return SinexBlock(
             marker="SATELLITE/COM",
@@ -970,7 +1034,18 @@ class SinexParser(Parser):
 
     @property
     def satellite_eccentricity(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information eccentricity of equipment mounted on GNSS satellites
+
+        Example:
+            +SATELLITE/ECCENTRICITY                                                         
+            *                                                                               
+            *SVN_ Equipment___________ T ____X_[m] ____Y_[m] ____Z_[m] Comment___________________________
+            *                                                                               
+             G035 LRA_GPS_IIA          L    0.8626   -0.5245    0.6695 gps35 [C,p,EL02]
+             G036 BLOCK IIA            P    0.0000    0.0000    0.0000 GPS-IIA; [EG02]
+             G036 LRA_GPS_IIA          L    0.8626   -0.5245    0.6717 gps36 [C,p,EL02]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/ECCENTRICITY
         """
         return SinexBlock(
             marker="SATELLITE/ECCENTRICITY",
@@ -990,7 +1065,18 @@ class SinexParser(Parser):
 
     @property
     def satellite_tx_power(self) -> SinexBlock:
-        """Information about GNSS satellites used in the solution
+        """Information about transmit power of GNSS satellites
+
+        Example:
+            +SATELLITE/TX_POWER                                                             
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ P[W] Comment________________________________
+            *                                                                               
+             G057 2007:354:00000 0000:000:00000  145  GPS-IIR-M; [TP01]; block mean
+             G058 2006:321:00000 0000:000:00000  145  GPS-IIR-M; [TP01]; block mean
+             G059 2004:080:00000 0000:000:00000   60  GPS-IIR-B; [TP01]; block mean
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/TX_POWER
         """
         return SinexBlock(
             marker="SATELLITE/TX_POWER",
