@@ -372,7 +372,7 @@ class SinexParser(Parser):
         degrees, minutes, seconds = [float(f) for f in field.split()]
         return Unit.dms_to_rad(degrees, minutes, seconds)
 
-    def _convert_epoch(self, field: bytes) -> datetime:
+    def _convert_yydddsssss(self, field: bytes) -> datetime:
         """Convert epoch field to datetime value
 
         The epoch is given in YY:DDD:SSSSS format with::
@@ -403,7 +403,7 @@ class SinexParser(Parser):
         time = timedelta(seconds=int(field_str[7:]))
         return date + time
 
-    def _convert_epoch_long(self, field: bytes) -> datetime:
+    def _convert_yyyydddsssss(self, field: bytes) -> datetime:
             """Convert epoch field to datetime value
     
             The epoch is given in YYYY:DDD:SSSSS format with::
@@ -495,10 +495,10 @@ class SinexParser(Parser):
         return (
             SinexField("snx_version", 5, "f8"),
             SinexField("create_agency", 10, "U3"),
-            SinexField("create_epoch", 14, "O", "epoch"),
+            SinexField("create_epoch", 14, "O", "yydddsssss"),
             SinexField("data_agency", 27, "U3"),
-            SinexField("start_epoch", 31, "O", "epoch"),
-            SinexField("end_epoch", 44, "O", "epoch"),
+            SinexField("start_epoch", 31, "O", "yydddsssss"),
+            SinexField("end_epoch", 44, "O", "yydddsssss"),
             SinexField("obs_code", 57, "U1"),
             SinexField("num_param", 59, "i8"),
             SinexField("constraint_code", 65, "U1"),
@@ -562,10 +562,10 @@ class SinexParser(Parser):
                 SinexField("doc_type", 2, "U3"),
                 SinexField("snx_version", 6, "f8"),
                 SinexField("create_agency", 11, "U3"),
-                SinexField("create_epoch", 15, "O", "epoch"),
+                SinexField("create_epoch", 15, "O", "yydddsssss"),
                 SinexField("data_agency", 28, "U3"),
-                SinexField("start_epoch", 32, "O", "epoch"),
-                SinexField("end_epoch", 45, "O", "epoch"),
+                SinexField("start_epoch", 32, "O", "yydddsssss"),
+                SinexField("end_epoch", 45, "O", "yydddsssss"),
                 SinexField("obs_code", 58, "U1"),
                 SinexField("num_param", 60, "i8"),
                 SinexField("constraint_code", 66, "U1"),
@@ -587,7 +587,7 @@ class SinexParser(Parser):
             marker="INPUT/FILES",
             fields=(
                 SinexField("create_agency", 1, "U3"),
-                SinexField("create_time", 5, "O", "epoch"),
+                SinexField("create_time", 5, "O", "yydddsssss"),
                 SinexField("filename", 18, "U29"),
                 SinexField("description", 48, "U32"),
             ),
@@ -691,10 +691,10 @@ class SinexParser(Parser):
                 SinexField("input_point_code", 19, "U2"),
                 SinexField("input_soln", 22, "U4"),
                 SinexField("input_obs_code", 26, "U1"),
-                SinexField("input_start_time", 28, "O", "epoch"),
-                SinexField("input_end_time", 41, "O", "epoch"),
+                SinexField("input_start_time", 28, "O", "yydddsssss"),
+                SinexField("input_end_time", 41, "O", "yydddsssss"),
                 SinexField("input_agency", 54, "U3"),
-                SinexField("input_create_time", 58, "O", "epoch"),
+                SinexField("input_create_time", 58, "O", "yydddsssss"),
             ),
             parser=self.parse_site_data,
         )
@@ -712,8 +712,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("receiver_type", 42, "U20"),
                 SinexField("serial_number", 63, "U5"),
                 SinexField("firmware", 69, "U11"),
@@ -734,8 +734,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("antenna_type", 42, "U20"),
                 SinexField("serial_number", 63, "U5"),
             ),
@@ -825,8 +825,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("vector_type", 42, "U3"),
                 SinexField("vector_1", 46, "f8"),
                 SinexField("vector_2", 55, "f8"),
@@ -848,8 +848,8 @@ class SinexParser(Parser):
                 SinexField("prn", 6, "U2"),
                 SinexField("cospar_id", 9, "U9"),
                 SinexField("obs_code", 19, "U1"),
-                SinexField("start_time", 21, "O", "epoch"),
-                SinexField("end_time", 34, "O", "epoch"),
+                SinexField("start_time", 21, "O", "yydddsssss"),
+                SinexField("end_time", 34, "O", "yydddsssss"),
                 SinexField("antenna_type", 47, "U20"),
             ),
             parser=self.parse_satellite_id,
@@ -905,8 +905,8 @@ class SinexParser(Parser):
             marker="SATELLITE/PLANE",
             fields=(
                 SinexField("svn", 1, "U4"),
-                SinexField("valid_from", 6, "O", "epoch_long"),
-                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
                 SinexField("plane", 36, "U1"),
                 SinexField("slot", 38, "U6"),
                 SinexField("comment", 45, "U35"),
@@ -935,8 +935,8 @@ class SinexParser(Parser):
             marker="SATELLITE/PRN",
             fields=(
                 SinexField("svn", 1, "U4"),
-                SinexField("valid_from", 6, "O", "epoch_long"),
-                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
                 SinexField("prn", 36, "U3"),
                 SinexField("comment", 40, "U40"),
             ),
@@ -964,8 +964,8 @@ class SinexParser(Parser):
             marker="SATELLITE/FREQUENCY_CHANNEL",
             fields=(
                 SinexField("svn", 1, "U4"),
-                SinexField("valid_from", 6, "O", "epoch_long"),
-                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
                 SinexField("channel", 36, "U3"),
                 SinexField("comment", 40, "U40"),
             ),
@@ -993,8 +993,8 @@ class SinexParser(Parser):
             marker="SATELLITE/MASS",
             fields=(
                 SinexField("svn", 1, "U4"),
-                SinexField("valid_from", 6, "O", "epoch_long"),
-                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
                 SinexField("mass", 36, "f8"),
                 SinexField("comment", 46, "U34"),
             ),
@@ -1020,8 +1020,8 @@ class SinexParser(Parser):
             marker="SATELLITE/COM",
             fields=(
                 SinexField("svn", 1, "U4"),
-                SinexField("valid_from", 6, "O", "epoch_long"),
-                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
                 SinexField("x", 36, "f8"),
                 SinexField("y", 46, "f8"),
                 SinexField("z", 56, "f8"),
@@ -1082,8 +1082,8 @@ class SinexParser(Parser):
             marker="SATELLITE/TX_POWER",
             fields=(
                 SinexField("svn", 1, "U4"),
-                SinexField("valid_from", 6, "O", "epoch_long"),
-                SinexField("valid_to", 21, "O", "epoch_long"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
                 SinexField("power", 36, "U4"),
                 SinexField("comment", 41, "U39"),
             ),
@@ -1134,9 +1134,9 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_epoch", 16, "O", "epoch"),
-                SinexField("end_epoch", 29, "O", "epoch"),
-                SinexField("mean_epoch", 42, "O", "epoch"),
+                SinexField("start_epoch", 16, "O", "yydddsssss"),
+                SinexField("end_epoch", 29, "O", "yydddsssss"),
+                SinexField("mean_epoch", 42, "O", "yydddsssss"),
             ),
             parser=self.parse_solution_epochs,
         )
@@ -1154,9 +1154,9 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("bias_type", 14, "U1"),
-                SinexField("start_epoch", 16, "O", "epoch"),
-                SinexField("end_epoch", 29, "O", "epoch"),
-                SinexField("weighted_mean_epoch", 42, "O", "epoch"),
+                SinexField("start_epoch", 16, "O", "yydddsssss"),
+                SinexField("end_epoch", 29, "O", "yydddsssss"),
+                SinexField("weighted_mean_epoch", 42, "O", "yydddsssss"),
             ),
             parser=self.parse_bias_epochs,
         )
@@ -1193,7 +1193,7 @@ class SinexParser(Parser):
                 SinexField("site_code", 14, "U4"),
                 SinexField("point_code", 19, "U2"),
                 SinexField("soln", 22, "U4"),
-                SinexField("ref_epoch", 27, "O", "epoch"),
+                SinexField("ref_epoch", 27, "O", "yydddsssss"),
                 SinexField("unit", 40, "U4"),
                 SinexField("constraint", 45, "U1"),
                 SinexField("estimate", 47, "f8", "exponent"),
@@ -1222,7 +1222,7 @@ class SinexParser(Parser):
                 SinexField("site_code", 14, "U4"),
                 SinexField("point_code", 19, "U2"),
                 SinexField("soln", 22, "U4"),
-                SinexField("ref_epoch", 27, "O", "epoch"),
+                SinexField("ref_epoch", 27, "O", "yydddsssss"),
                 SinexField("unit", 40, "U4"),
                 SinexField("constraint", 45, "U1"),
                 SinexField("apriori", 47, "f8", "exponent"),
@@ -1307,7 +1307,7 @@ class SinexParser(Parser):
                 SinexField("site_code", 14, "U4"),
                 SinexField("point code", 19, "U2"),
                 SinexField("soln", 22, "U4"),
-                SinexField("ref_epoch", 27, "O", "epoch"),
+                SinexField("ref_epoch", 27, "O", "yydddsssss"),
                 SinexField("unit", 40, "U4"),
                 SinexField("constraint", 45, "U1"),
                 SinexField("value", 47, "f8"),
@@ -1379,8 +1379,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("event_code", 42, "U1"),
                 SinexField("description", 44, "U120"),
             ),
@@ -1409,8 +1409,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("event_code", 42, "U7"),
                 SinexField("description", 51, "U120"),
             ),
