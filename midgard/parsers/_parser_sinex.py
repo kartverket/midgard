@@ -372,7 +372,7 @@ class SinexParser(Parser):
         degrees, minutes, seconds = [float(f) for f in field.split()]
         return Unit.dms_to_rad(degrees, minutes, seconds)
 
-    def _convert_epoch(self, field: bytes) -> datetime:
+    def _convert_yydddsssss(self, field: bytes) -> datetime:
         """Convert epoch field to datetime value
 
         The epoch is given in YY:DDD:SSSSS format with::
@@ -402,6 +402,32 @@ class SinexParser(Parser):
         date = datetime.strptime(ce + year_doy, "%Y:%j")
         time = timedelta(seconds=int(field_str[7:]))
         return date + time
+
+    def _convert_yyyydddsssss(self, field: bytes) -> datetime:
+            """Convert epoch field to datetime value
+    
+            The epoch is given in YYYY:DDD:SSSSS format with::
+                YYYY  = 4-digit year.
+                DDD   = 3-digit day of year,
+                SSSSS = 5-digit seconds of day.
+    
+            Args:
+                field:  Original field with time epoch in YYYY:DDD:SSSSS format.
+    
+            Returns:
+                Field converted to datetime object.
+            """
+            field_str = field.decode(self.file_encoding or "utf-8")
+    
+            if field_str != "0000:000:00000" and field_str[3:6] == "000":
+                # Doy field may be 000 which does not make sense. Increase value by one
+                year_doy = field_str[:2] + ":"+ "001"
+            else:
+                year_doy = field_str[:8]
+    
+            date = datetime.strptime(year_doy, "%Y:%j")
+            time = timedelta(seconds=int(field_str[9:]))
+            return date + time
 
     def _convert_exponent(self, field: bytes) -> float:
         """Convert scientific notation number field to float
@@ -469,10 +495,10 @@ class SinexParser(Parser):
         return (
             SinexField("snx_version", 5, "f8"),
             SinexField("create_agency", 10, "U3"),
-            SinexField("create_epoch", 14, "O", "epoch"),
+            SinexField("create_epoch", 14, "O", "yydddsssss"),
             SinexField("data_agency", 27, "U3"),
-            SinexField("start_epoch", 31, "O", "epoch"),
-            SinexField("end_epoch", 44, "O", "epoch"),
+            SinexField("start_epoch", 31, "O", "yydddsssss"),
+            SinexField("end_epoch", 44, "O", "yydddsssss"),
             SinexField("obs_code", 57, "U1"),
             SinexField("num_param", 59, "i8"),
             SinexField("constraint_code", 65, "U1"),
@@ -536,10 +562,10 @@ class SinexParser(Parser):
                 SinexField("doc_type", 2, "U3"),
                 SinexField("snx_version", 6, "f8"),
                 SinexField("create_agency", 11, "U3"),
-                SinexField("create_epoch", 15, "O", "epoch"),
+                SinexField("create_epoch", 15, "O", "yydddsssss"),
                 SinexField("data_agency", 28, "U3"),
-                SinexField("start_epoch", 32, "O", "epoch"),
-                SinexField("end_epoch", 45, "O", "epoch"),
+                SinexField("start_epoch", 32, "O", "yydddsssss"),
+                SinexField("end_epoch", 45, "O", "yydddsssss"),
                 SinexField("obs_code", 58, "U1"),
                 SinexField("num_param", 60, "i8"),
                 SinexField("constraint_code", 66, "U1"),
@@ -561,7 +587,7 @@ class SinexParser(Parser):
             marker="INPUT/FILES",
             fields=(
                 SinexField("create_agency", 1, "U3"),
-                SinexField("create_time", 5, "O", "epoch"),
+                SinexField("create_time", 5, "O", "yydddsssss"),
                 SinexField("filename", 18, "U29"),
                 SinexField("description", 48, "U32"),
             ),
@@ -665,10 +691,10 @@ class SinexParser(Parser):
                 SinexField("input_point_code", 19, "U2"),
                 SinexField("input_soln", 22, "U4"),
                 SinexField("input_obs_code", 26, "U1"),
-                SinexField("input_start_time", 28, "O", "epoch"),
-                SinexField("input_end_time", 41, "O", "epoch"),
+                SinexField("input_start_time", 28, "O", "yydddsssss"),
+                SinexField("input_end_time", 41, "O", "yydddsssss"),
                 SinexField("input_agency", 54, "U3"),
-                SinexField("input_create_time", 58, "O", "epoch"),
+                SinexField("input_create_time", 58, "O", "yydddsssss"),
             ),
             parser=self.parse_site_data,
         )
@@ -686,8 +712,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("receiver_type", 42, "U20"),
                 SinexField("serial_number", 63, "U5"),
                 SinexField("firmware", 69, "U11"),
@@ -708,8 +734,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("antenna_type", 42, "U20"),
                 SinexField("serial_number", 63, "U5"),
             ),
@@ -799,8 +825,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("vector_type", 42, "U3"),
                 SinexField("vector_1", 46, "f8"),
                 SinexField("vector_2", 55, "f8"),
@@ -822,8 +848,8 @@ class SinexParser(Parser):
                 SinexField("prn", 6, "U2"),
                 SinexField("cospar_id", 9, "U9"),
                 SinexField("obs_code", 19, "U1"),
-                SinexField("start_time", 21, "O", "epoch"),
-                SinexField("end_time", 34, "O", "epoch"),
+                SinexField("start_time", 21, "O", "yydddsssss"),
+                SinexField("end_time", 34, "O", "yydddsssss"),
                 SinexField("antenna_type", 47, "U20"),
             ),
             parser=self.parse_satellite_id,
@@ -831,6 +857,241 @@ class SinexParser(Parser):
 
     parse_satellite_id = parsing_factory()
 
+    @property
+    def satellite_identifier(self) -> SinexBlock:
+        """Information about identifiers for GNSS satellites
+
+        Example:
+            +SATELLITE/IDENTIFIER
+            *
+            *SVN_ COSPAR ID SatCat Block__________ Comment__________________________________
+            *
+             G001 1978-020A  10684 GPS-I           Launched 1978-02-22; NAVSTAR 1
+             G002 1978-047A  10893 GPS-I           Launched 1978-05-13; NAVSTAR 2
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/IDENTIFIER
+        """
+        return SinexBlock(
+            marker="SATELLITE/IDENTIFIER",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("cospar_id", 6, "U9"),
+                SinexField("satcat", 18, "U6"),
+                SinexField("block", 23, "U15"),
+                SinexField("comment", 39, "U41"),
+            ),
+            parser=self.parse_satellite_identifier,
+        )
+
+    parse_satellite_identifier = parsing_factory()
+
+    @property
+    def satellite_plane(self) -> SinexBlock:
+        """This block provides provides information about the orbital plane of a satellite within the constellation as
+          well as the slot within the plane.
+
+          Example:
+            +SATELLITE/PLANE
+            *
+            *SVN_ Valid_From____ Valid_To______ P Slot__ Comment____________________________
+            *
+             G028 1996:236:00000 0000:000:00000 3 C5     [PL05]
+             G029 2001:354:00000 2002:178:00000 6 REPOS  [PL05] repositioning
+             G029 2002:178:00000 0000:000:00000 6 F5     [PL05]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/PLANE
+        """
+        return SinexBlock(
+            marker="SATELLITE/PLANE",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
+                SinexField("plane", 36, "U1"),
+                SinexField("slot", 38, "U6"),
+                SinexField("comment", 45, "U35"),
+            ),
+            parser=self.parse_satellite_plane,
+        )
+
+    parse_satellite_plane = parsing_factory()
+
+    @property
+    def satellite_prn(self) -> SinexBlock:
+        """Information about what PRN codes a satellite has had assigned to it at what times.
+
+        Example:
+            +SATELLITE/PRN
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ PRN Comment_________________________________
+            *                                                                               
+             G050 2009:229:00000 0000:000:00000 G05 
+             G051 2000:132:00000 2026:008:79200 G20 NANU 2026006
+             G052 2006:268:00000 0000:000:00000 G31 
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/PRN
+        """
+        return SinexBlock(
+            marker="SATELLITE/PRN",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
+                SinexField("prn", 36, "U3"),
+                SinexField("comment", 40, "U40"),
+            ),
+            parser=self.parse_satellite_prn,
+        )
+
+    parse_satellite_prn = parsing_factory()
+
+    @property
+    def satellite_frequency_channel(self) -> SinexBlock:
+        """Information about frequency allocations for GLONASS GNSS satellites.
+
+        Example:
+            +SATELLITE/FREQUENCY_CHANNEL                                                    
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ chn Comment________________________________
+            *                                                                               
+             R701 2003:344:00000 2009:258:86399   1 [FC10]
+             R701 2009:259:00000 2010:057:86399  -4 [Const_090916.glo]
+             R711 2001:335:34200 2006:084:86399   2 [FC02]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/FREQUENCY_CHANNEL 
+        """
+        return SinexBlock(
+            marker="SATELLITE/FREQUENCY_CHANNEL",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
+                SinexField("channel", 36, "U3"),
+                SinexField("comment", 40, "U40"),
+            ),
+            parser=self.parse_satellite_frequency_channel,
+        )
+
+    parse_satellite_frequency_channel = parsing_factory()
+    
+    @property
+    def satellite_mass(self) -> SinexBlock:
+        """Information about mass of GNSS satellites.
+
+        Example:
+            +SATELLITE/MASS                                                                 
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ Mass_[kg] Comment___________________________
+            *                                                                               
+             G059 2004:080:00000 0000:000:00000  1080.000 GPS-IIR-B; [MA03]
+             G060 2004:175:00000 0000:000:00000  1080.000 GPS-IIR-B; [MA03]
+             G061 2004:311:00000 0000:000:00000  1080.000 GPS-IIR-B; [MA03]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/MASS
+        """
+        return SinexBlock(
+            marker="SATELLITE/MASS",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
+                SinexField("mass", 36, "f8"),
+                SinexField("comment", 46, "U34"),
+            ),
+            parser=self.parse_satellite_mass,
+        )
+
+    parse_satellite_mass = parsing_factory()
+
+    @property
+    def satellite_com(self) -> SinexBlock:
+        """Information about centre of mass for GNSS satellites
+        Example:
+            +SATELLITE/COM                                                                  
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ ____X_[m] ____Y_[m] ____Z_[m] Comment___________________________
+            *                                                                               
+             G001 1978:053:00000 0000:000:00000    0.0000    0.0000    0.0000 GPS-I; [CM02]
+             G002 1978:133:00000 0000:000:00000    0.0000    0.0000    0.0000 GPS-I; [CM02]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/COM
+        """
+        return SinexBlock(
+            marker="SATELLITE/COM",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
+                SinexField("x", 36, "f8"),
+                SinexField("y", 46, "f8"),
+                SinexField("z", 56, "f8"),
+                SinexField("comment", 66, "U14"),
+            ),
+            parser=self.parse_satellite_com,
+        )
+
+    parse_satellite_com = parsing_factory()
+
+    @property
+    def satellite_eccentricity(self) -> SinexBlock:
+        """Information eccentricity of equipment mounted on GNSS satellites
+
+        Example:
+            +SATELLITE/ECCENTRICITY                                                         
+            *                                                                               
+            *SVN_ Equipment___________ T ____X_[m] ____Y_[m] ____Z_[m] Comment___________________________
+            *                                                                               
+             G035 LRA_GPS_IIA          L    0.8626   -0.5245    0.6695 gps35 [C,p,EL02]
+             G036 BLOCK IIA            P    0.0000    0.0000    0.0000 GPS-IIA; [EG02]
+             G036 LRA_GPS_IIA          L    0.8626   -0.5245    0.6717 gps36 [C,p,EL02]
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/ECCENTRICITY
+        """
+        return SinexBlock(
+            marker="SATELLITE/ECCENTRICITY",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("equipment", 6, "U20"),
+                SinexField("type", 27, "U1"),
+                SinexField("x", 29, "f8"),
+                SinexField("y", 39, "f8"),
+                SinexField("z", 49, "f8"),
+                SinexField("comment", 59, "U21"),
+            ),
+            parser=self.parse_satellite_eccentricity,
+        )
+
+    parse_satellite_eccentricity = parsing_factory()
+
+    @property
+    def satellite_tx_power(self) -> SinexBlock:
+        """Information about transmit power of GNSS satellites
+
+        Example:
+            +SATELLITE/TX_POWER                                                             
+            *                                                                               
+            *SVN_ Valid_From____ Valid_To______ P[W] Comment________________________________
+            *                                                                               
+             G057 2007:354:00000 0000:000:00000  145  GPS-IIR-M; [TP01]; block mean
+             G058 2006:321:00000 0000:000:00000  145  GPS-IIR-M; [TP01]; block mean
+             G059 2004:080:00000 0000:000:00000   60  GPS-IIR-B; [TP01]; block mean
+            0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+---
+            -SATELLITE/TX_POWER
+        """
+        return SinexBlock(
+            marker="SATELLITE/TX_POWER",
+            fields=(
+                SinexField("svn", 1, "U4"),
+                SinexField("valid_from", 6, "O", "yyyydddsssss"),
+                SinexField("valid_to", 21, "O", "yyyydddsssss"),
+                SinexField("power", 36, "U4"),
+                SinexField("comment", 41, "U39"),
+            ),
+            parser=self.parse_satellite_tx_power,
+        )
+
+    parse_satellite_tx_power = parsing_factory()
+ 
     @property
     def satellite_phase_center(self) -> SinexBlock:
         """Information about GNSS satellite antenna phase centers
@@ -873,9 +1134,9 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_epoch", 16, "O", "epoch"),
-                SinexField("end_epoch", 29, "O", "epoch"),
-                SinexField("mean_epoch", 42, "O", "epoch"),
+                SinexField("start_epoch", 16, "O", "yydddsssss"),
+                SinexField("end_epoch", 29, "O", "yydddsssss"),
+                SinexField("mean_epoch", 42, "O", "yydddsssss"),
             ),
             parser=self.parse_solution_epochs,
         )
@@ -893,9 +1154,9 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("bias_type", 14, "U1"),
-                SinexField("start_epoch", 16, "O", "epoch"),
-                SinexField("end_epoch", 29, "O", "epoch"),
-                SinexField("weighted_mean_epoch", 42, "O", "epoch"),
+                SinexField("start_epoch", 16, "O", "yydddsssss"),
+                SinexField("end_epoch", 29, "O", "yydddsssss"),
+                SinexField("weighted_mean_epoch", 42, "O", "yydddsssss"),
             ),
             parser=self.parse_bias_epochs,
         )
@@ -932,7 +1193,7 @@ class SinexParser(Parser):
                 SinexField("site_code", 14, "U4"),
                 SinexField("point_code", 19, "U2"),
                 SinexField("soln", 22, "U4"),
-                SinexField("ref_epoch", 27, "O", "epoch"),
+                SinexField("ref_epoch", 27, "O", "yydddsssss"),
                 SinexField("unit", 40, "U4"),
                 SinexField("constraint", 45, "U1"),
                 SinexField("estimate", 47, "f8", "exponent"),
@@ -961,7 +1222,7 @@ class SinexParser(Parser):
                 SinexField("site_code", 14, "U4"),
                 SinexField("point_code", 19, "U2"),
                 SinexField("soln", 22, "U4"),
-                SinexField("ref_epoch", 27, "O", "epoch"),
+                SinexField("ref_epoch", 27, "O", "yydddsssss"),
                 SinexField("unit", 40, "U4"),
                 SinexField("constraint", 45, "U1"),
                 SinexField("apriori", 47, "f8", "exponent"),
@@ -1046,7 +1307,7 @@ class SinexParser(Parser):
                 SinexField("site_code", 14, "U4"),
                 SinexField("point code", 19, "U2"),
                 SinexField("soln", 22, "U4"),
-                SinexField("ref_epoch", 27, "O", "epoch"),
+                SinexField("ref_epoch", 27, "O", "yydddsssss"),
                 SinexField("unit", 40, "U4"),
                 SinexField("constraint", 45, "U1"),
                 SinexField("value", 47, "f8"),
@@ -1118,8 +1379,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("event_code", 42, "U1"),
                 SinexField("description", 44, "U120"),
             ),
@@ -1148,8 +1409,8 @@ class SinexParser(Parser):
                 SinexField("point_code", 6, "U2"),
                 SinexField("soln", 9, "U4"),
                 SinexField("obs_code", 14, "U1"),
-                SinexField("start_time", 16, "O", "epoch"),
-                SinexField("end_time", 29, "O", "epoch"),
+                SinexField("start_time", 16, "O", "yydddsssss"),
+                SinexField("end_time", 29, "O", "yydddsssss"),
                 SinexField("event_code", 42, "U7"),
                 SinexField("description", 51, "U120"),
             ),
