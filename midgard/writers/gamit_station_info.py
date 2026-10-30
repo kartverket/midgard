@@ -89,7 +89,7 @@ def gamit_station_info(
                 r_serial_number = r.serial_number
 
                 # Firmware information
-                prog = re.compile("\d*\.?\d+(?:\d+)?") 
+                prog = re.compile("\\d*\\.?\\d+(?:\\d+)?") 
                 if prog.fullmatch(r.firmware):
                     r_firmware = r.firmware
                     r_version = "--------------------"

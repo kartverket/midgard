@@ -463,3 +463,13 @@ def test_water_level_api_xml():
     assert len(parser) == 3
     assert "value" in parser
     assert 244.2 == parser["value"][0]
+
+def test_sinex_satellite_metadata():
+    ex_path = pathlib.Path(__file__).parent.parent.parent / "notebooks" / "examples" / "parsers" / "igs_metadata.snx"
+    p = parsers.parse_file(parser_name="sinex_satellite_metadata", file_path=ex_path)
+
+    assert p.data["E103"]["satellite_identifier"]["cospar_id"] == "2012-055A"
+    assert len(p.data["G051"]["satellite_prn"]) == 1
+    assert p.data["R701"]["satellite_frequency_channel"][1]["channel"] == -4
+    assert p.data["E233"]["satellite_prn"][0]["valid_to"] == None
+    assert p.data["J003"]["satellite_com"][0]["z"] == 1.7794
