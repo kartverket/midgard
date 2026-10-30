@@ -1,10 +1,10 @@
-"""A parser for reading site related information from SINEX format
+"""A parser for reading satellite metadata information from SINEX format
 
 Example:
 --------
 
     from midgard import parsers
-    p = parsers.parse_file(parser_name='sinex_site', file_path='sinex_site')
+    p = parsers.parse_file(parser_name='sinex_satellite_metadata', file_path='sinex_satellite_metadata')
     data = p.as_dict()
 
 Description:
@@ -13,6 +13,7 @@ Description:
 Reads station related information (e.g. approximated station coordinates, receiver and antenna type, station 
 eccentricities, ...) from files in SINEX format. Following blocks are read:
 
+            FILE/REFERENCE
             FILE/COMMENT   
             SATELLITE/IDENTIFIER
             SATELLITE/PLANE
@@ -22,9 +23,6 @@ eccentricities, ...) from files in SINEX format. Following blocks are read:
             SATELLITE/COM
             SATELLITE/ECCENTRICITY
             SATELLITE/TX_POWER
-
-Note, that FILE/COMMENT block is only used for reading reference frame information ('ref_frame'), which is added to 
-SOLUTION/ESTIMATE dictionary.
 
 """
 # Standard library imports
@@ -130,6 +128,7 @@ class SinexMetaParser(SinexParser):
 
     def setup_parser(self):
         return (
+            self.file_reference,
             self.file_comment,
             self.satellite_identifier,
             self.satellite_plane,
@@ -141,88 +140,80 @@ class SinexMetaParser(SinexParser):
             self.satellite_tx_power,
         )
 
-    def parse_file_comment(self, data):
-        """Parse FILE_COMMENT SINEX block"""
-        ...
-
+    #
+    # Overwrite SINEX class methods
+    #     
+    def parse_file_reference(self, data: np.ndarray) -> None:
+        """Parser for FILE/REFERENCE data
+         
+        Args:
+            data (numpy.array):  Input data, raw data for FILE/REFERENCE block.
+        """
+        self.data.setdefault("file_reference", dict())
+        for d in data:
+            self.data["file_reference"].update({d[0].split()[0].lower(): str(d[1])})
+    
+    #
+    # SINEX BLOCK
+    #
     def parse_satellite_identifier(self, data):
         """Parse SATELLITE/IDENTIFIER SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key] = {n: d[n] for n in d.dtype.names}
+        self._parse_sinex_block_lines(data, "satellite_identifier")
 
     def parse_satellite_plane(self, data):
         """Parse SATELLITE/PLANE SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key].setdefault("satellite_plane", list())
-            self.data[satellite_key]["satellite_plane"].append(
-                {n: d[n] for n in d.dtype.names}
-            )
+        self._parse_satellite_com(data, "satellite_plane")
 
     def parse_satellite_prn(self, data):
         """Parse SATELLITE/PRN SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key].setdefault("satellite_prn", list())
-            self.data[satellite_key]["satellite_prn"].append(
-                {n: d[n] for n in d.dtype.names}
-            )
+        self._parse_satellite_com(data, "satellite_prn")
 
     def parse_satellite_frequency_channel(self, data):
         """Parse SATELLITE/FREQUENCY_CHANNEL SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key].setdefault("satellite_frequency_channel", list())
-            self.data[satellite_key]["satellite_frequency_channel"].append(
-                {n: d[n] for n in d.dtype.names}
-            )
+        self._parse_satellite_com(data, "satellite_frequency_channel")
 
     def parse_satellite_mass(self, data):
         """Parse SATELLITE/MASS SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key].setdefault("satellite_mass", list())
-            self.data[satellite_key]["satellite_mass"].append(
-                {n: d[n] for n in d.dtype.names}
-            )
+        self._parse_satellite_com(data, "satellite_mass")
 
     def parse_satellite_com(self, data):
         """Parse SATELLITE/COM SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key].setdefault("satellite_com", list())
-            self.data[satellite_key]["satellite_com"].append(
-                {n: d[n] for n in d.dtype.names}
-            )
+        self._parse_satellite_com(data, "satellite_com")
 
     def parse_satellite_eccentricity(self, data):
         """Parse SATELLITE/ECCENTRICITY SINEX block"""
-        for d in data:
-            satellite_key = d["svn"]
-            self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key] = {n: d[n] for n in d.dtype.names}
+        self._parse_sinex_block_lines(data, "satellite_eccentricity")
 
     def parse_satellite_tx_power(self, data):
         """Parse SATELLITE/TX_POWER SINEX block"""
+        self._parse_sinex_block_lines(data, "satellite_tx_power")
+        
+    #
+    # AUXILIARY FUNCTIONS
+    #  
+    def _parse_sinex_block_lines(self, data: np.ndarray, sinex_block_key: str) -> None:
+        """Parse lines and save data related to given SINEX block key in self.data 
+        
+        Args:
+            data:              Parsed data
+            sinex_block_key:   SINEX block key (e.g. identifier, plane, ...)
+        """
+        valid_from_flag = False  # Needed to distinguish between different SINEX block formats with and without time period
+        
         for d in data:
-            satellite_key = d["svn"]
+            satellite_key = str(d["svn"])
             self.data.setdefault(satellite_key, dict())
-            self.data[satellite_key].setdefault("satellite_tx_power", list())
-            self.data[satellite_key]["satellite_tx_power"].append(
-                {n: d[n] for n in d.dtype.names}
-            )
+            self.data[satellite_key].setdefault(sinex_block_key, list())
 
-    #
-    # SETUP POSTPROCESSORS
-    #
-    def setup_postprocessors(self) -> List[Callable[[], None]]:
-        """List steps necessary for postprocessing"""
-        return [
-        ]
+            # Convert numpy data types to standard data types
+            values = dict()
+            for n in d.dtype.names:
+                if n =="svn" or n == "valid_from":
+                    valid_from_flag = True
+                    continue 
+                values[n] = d[n].item() if d[n] else d[n]  # Handling of None values
+
+        if valid_from_flag:
+             self.data[satellite_key][sinex_block_key].append(values)
+        else:
+            self.data[satellite_key][sinex_block_key] = values
