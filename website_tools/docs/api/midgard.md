@@ -10,17 +10,19 @@ Note: Midgard is still in pre-alpha status. Its functionality will change,
 
 Midgard comes organized into different subpackages:
 
-+ gnss
-+ config
-+ site_info
-+ data
 + collections
-+ writers
++ config
++ data
 + dev
++ files
++ gnss
++ ionosphere
++ math
 + parsers
 + plot
-+ math
-+ files
++ site_info
++ writers
++ api
 
 Look for help inside each subpackage:
 
@@ -34,5 +36,6 @@ Look for help inside each subpackage:
 + Ingrid Fausk <ingrid.fausk@kartverket.no>
 + Ann-Silje Kirkvik <ann-silje.kirkvik@kartverket.no>
 + Mohammed Ouassou <mohammed.ouassou@kartverket.no>
++ Ove Christian Dahl Omang <ove.christian.dahl.omang@kartverket.no>
 + Hans Sverre Smalø <hans.sverre.smalo@kartverket.no>
 + Geir Arne Hjelle <geirarne@gmail.com>

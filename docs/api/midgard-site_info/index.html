@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,15 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.site_info - Midgard v1.3.0</title>
+        <title>midgard.site_info - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -20,9 +24,9 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
                 <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -30,11 +34,11 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem">
+                            <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
@@ -42,12 +46,16 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
     <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
 </li>
                                     
 <li>
@@ -87,7 +95,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">midgard.site_info</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.site_info</a>
 </li>
                                     
 <li>
@@ -97,9 +105,9 @@
                             </li>
                         </ul>
 
-                    <ul class="nav navbar-nav ml-auto">
+                    <ul class="nav navbar-nav ms-md-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
@@ -120,62 +128,62 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
             <span class="fa fa-angle-down"></span>
         </button>
     </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#midgardsite_info" class="nav-link">midgard.site_info</a>
+            <li class="nav-item" data-bs-level="1"><a href="#midgardsite_info" class="nav-link">midgard.site_info</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardsite_info_site_info" class="nav-link">midgard.site_info._site_info</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infoantenna" class="nav-link">midgard.site_info.antenna</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_info_site_info" class="nav-link">midgard.site_info._site_info</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infoeccentricity" class="nav-link">midgard.site_info.eccentricity</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infoantenna" class="nav-link">midgard.site_info.antenna</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infognsseu" class="nav-link">midgard.site_info.gnsseu</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infoeccentricity" class="nav-link">midgard.site_info.eccentricity</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infognsseuapi" class="nav-link">midgard.site_info.gnsseu.api</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infoidentifier" class="nav-link">midgard.site_info.identifier</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infom3g" class="nav-link">midgard.site_info.m3g</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infom3gapi" class="nav-link">midgard.site_info.m3g.api</a>
               <ul class="nav flex-column">
               </ul>
             </li>
               </ul>
             </li>
             
-            <li class="nav-item" data-level="1"><a href="#get-instance-of-gnsseuapi-class-with-api-methods-based-on-default-url" class="nav-link">Get instance of GnssEuApi class with API methods based on default URL</a>
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-m3gapi-class-with-api-methods-based-on-default-url" class="nav-link">Get instance of M3gApi class with API methods based on default URL</a>
               <ul class="nav flex-column">
               </ul>
             </li>
             
-            <li class="nav-item" data-level="1"><a href="#get-instance-of-gnsseuapi-class-with-api-methods-based-on-defined-url" class="nav-link">Get instance of GnssEuApi class with API methods based on defined URL</a>
+            <li class="nav-item" data-bs-level="1"><a href="#get-instance-of-m3gapi-class-with-api-methods-based-on-defined-url" class="nav-link">Get instance of M3gApi class with API methods based on defined URL</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infoidentifier" class="nav-link">midgard.site_info.identifier</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_inforeceiver" class="nav-link">midgard.site_info.receiver</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_inforeceiver" class="nav-link">midgard.site_info.receiver</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infosite_coord" class="nav-link">midgard.site_info.site_coord</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infosite_coord" class="nav-link">midgard.site_info.site_coord</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardsite_infosite_info" class="nav-link">midgard.site_info.site_info</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardsite_infosite_info" class="nav-link">midgard.site_info.site_info</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -260,12 +268,8 @@ Antenna.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Full name: <code>midgard.site_info.antenna.Antenna</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting antenna information from various sources into unified classes</p>
-<h3 id="antennagnsseu"><strong>AntennaGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.antenna.AntennaGnssEu</code></p>
-<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
-<p>Antenna class handling GnssEu API antenna station information</p>
-<h3 id="antennahistorygnsseu"><strong>AntennaHistoryGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.antenna.AntennaHistoryGnssEu</code></p>
+<h3 id="antennahistorym3g"><strong>AntennaHistoryM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaHistoryM3g</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="antennahistorysinex"><strong>AntennaHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.AntennaHistorySinex</code></p>
@@ -273,6 +277,10 @@ Antenna.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <h3 id="antennahistoryssc"><strong>AntennaHistorySsc</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.AntennaHistorySsc</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="antennam3g"><strong>AntennaM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.antenna.AntennaM3g</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Antenna class handling M3g API antenna station information</p>
 <h3 id="antennasinex"><strong>AntennaSinex</strong></h3>
 <p>Full name: <code>midgard.site_info.antenna.AntennaSinex</code></p>
 <p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
@@ -315,12 +323,8 @@ Eccentricity.get_history("snx", all_stations, source_data, source_path=p.file_pa
 <p>Full name: <code>midgard.site_info.eccentricity.Eccentricity</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting eccentricity information from various sources into unified classes</p>
-<h3 id="eccentricitygnsseu"><strong>EccentricityGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.eccentricity.EccentricityGnssEu</code></p>
-<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
-<p>Eccentricity class handling gnssEu API eccentricity station information</p>
-<h3 id="eccentricityhistorygnsseu"><strong>EccentricityHistoryGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.eccentricity.EccentricityHistoryGnssEu</code></p>
+<h3 id="eccentricityhistorym3g"><strong>EccentricityHistoryM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.eccentricity.EccentricityHistoryM3g</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="eccentricityhistorysinex"><strong>EccentricityHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.eccentricity.EccentricityHistorySinex</code></p>
@@ -328,25 +332,14 @@ Eccentricity.get_history("snx", all_stations, source_data, source_path=p.file_pa
 <h3 id="eccentricityhistoryssc"><strong>EccentricityHistorySsc</strong></h3>
 <p>Full name: <code>midgard.site_info.eccentricity.EccentricityHistorySsc</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="eccentricitym3g"><strong>EccentricityM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.eccentricity.EccentricityM3g</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Eccentricity class handling gnssEu API eccentricity station information</p>
 <h3 id="eccentricitysinex"><strong>EccentricitySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.eccentricity.EccentricitySinex</code></p>
 <p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
 <p>Eccentricity class handling SINEX file eccentricity station information</p>
-<h2 id="midgardsite_infognsseu">midgard.site_info.gnsseu</h2>
-<h2 id="midgardsite_infognsseuapi">midgard.site_info.gnsseu.api</h2>
-<p>Python wrapper around the gnss-metadata.eu API</p>
-<p><strong>Description:</strong></p>
-<h3 id="creates-functions-automatically-based-on-the-services-listed-on-the-swagger-help-page-referred-to-by-url">Creates functions automatically based on the services listed on the Swagger help page referred to by URL.</h3>
-<p><strong>Example:</strong>
-from åsgard import gnsseu</p>
-<h1 id="get-instance-of-gnsseuapi-class-with-api-methods-based-on-default-url">Get instance of GnssEuApi class with API methods based on default URL</h1>
-<p>api = gnsseu.api.GnssEuApi()</p>
-<h1 id="get-instance-of-gnsseuapi-class-with-api-methods-based-on-defined-url">Get instance of GnssEuApi class with API methods based on defined URL</h1>
-<p>api = gnsseu.api.GnssEuApi(url=""https://gnss-metadata.eu/site/api-json")</p>
-<h3 id="gnsseuapi"><strong>GnssEuApi</strong></h3>
-<p>Full name: <code>midgard.site_info.gnsseu.api.GnssEuApi</code></p>
-<p>Signature: <code>(url: str = 'https://gnss-metadata.eu/site/api-json') -&gt; None</code></p>
-<p>A wrapper around the gnss-metadata.eu API</p>
 <h2 id="midgardsite_infoidentifier">midgard.site_info.identifier</h2>
 <p>Identifier information classes</p>
 <p><strong>Description:</strong>
@@ -376,8 +369,8 @@ Identifier.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_pa
 <p>Full name: <code>midgard.site_info.identifier.Identifier</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting identifier information from various sources into unified classes</p>
-<h3 id="identifiergnsseu"><strong>IdentifierGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.identifier.IdentifierGnssEu</code></p>
+<h3 id="identifierm3g"><strong>IdentifierM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.identifier.IdentifierM3g</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <p>Identifier class handling gnssEu API identifier station information</p>
 <h3 id="identifiersinex"><strong>IdentifierSinex</strong></h3>
@@ -388,6 +381,23 @@ Identifier.get("snx", all_stations, datetime(2020, 1, 1), source_data, source_pa
 <p>Full name: <code>midgard.site_info.identifier.IdentifierSsc</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <p>Identifier class handling SSC file identifier station information</p>
+<h2 id="midgardsite_infom3g">midgard.site_info.m3g</h2>
+<p>Functionality for working with SeStation</p>
+<h2 id="midgardsite_infom3gapi">midgard.site_info.m3g.api</h2>
+<p>Python wrapper around the M3G API</p>
+<p><strong>Description:</strong>
+Creates functions automatically based on the services listed on the Swagger help page referred to by URL.</p>
+<p>Note: Functionality for PUT endpoints is not implemented.</p>
+<p><strong>Example:</strong>
+from midgard.site_info import m3g</p>
+<h1 id="get-instance-of-m3gapi-class-with-api-methods-based-on-default-url">Get instance of M3gApi class with API methods based on default URL</h1>
+<p>api = m3g.api.M3gApi()</p>
+<h1 id="get-instance-of-m3gapi-class-with-api-methods-based-on-defined-url">Get instance of M3gApi class with API methods based on defined URL</h1>
+<p>api = m3g.api.M3gApi(url=""https://gnss-metadata.eu/site/api-json")</p>
+<h3 id="m3gapi"><strong>M3gApi</strong></h3>
+<p>Full name: <code>midgard.site_info.m3g.api.M3gApi</code></p>
+<p>Signature: <code>(url: str = 'https://gnss-metadata.eu/site/api-json') -&gt; None</code></p>
+<p>A wrapper around the M3G API</p>
 <h2 id="midgardsite_inforeceiver">midgard.site_info.receiver</h2>
 <p>Receiver information classes</p>
 <p><strong>Description:</strong>
@@ -426,12 +436,8 @@ Receiver.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Full name: <code>midgard.site_info.receiver.Receiver</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting receiver information from various sources into unified classes</p>
-<h3 id="receivergnsseu"><strong>ReceiverGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.receiver.ReceiverGnssEu</code></p>
-<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
-<p>Receiver class handling gnssEu API receiver station information</p>
-<h3 id="receiverhistorygnsseu"><strong>ReceiverHistoryGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.receiver.ReceiverHistoryGnssEu</code></p>
+<h3 id="receiverhistorym3g"><strong>ReceiverHistoryM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.receiver.ReceiverHistoryM3g</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="receiverhistorysinex"><strong>ReceiverHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.ReceiverHistorySinex</code></p>
@@ -439,6 +445,10 @@ Receiver.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <h3 id="receiverhistoryssc"><strong>ReceiverHistorySsc</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.ReceiverHistorySsc</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
+<h3 id="receiverm3g"><strong>ReceiverM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.receiver.ReceiverM3g</code></p>
+<p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
+<p>Receiver class handling gnssEu API receiver station information</p>
 <h3 id="receiversinex"><strong>ReceiverSinex</strong></h3>
 <p>Full name: <code>midgard.site_info.receiver.ReceiverSinex</code></p>
 <p>Signature: <code>(station: str, site_info: Dict[str, Any]) -&gt; None</code></p>
@@ -447,7 +457,7 @@ Receiver.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Site cooridnate information classes</p>
 <p><strong>Description:</strong>
 This module is divided into three different types of classes:</p>
-<pre><code>1. Main class SiteCoord provides basic functionality to the user. See exampless
+<pre><code>1. Main class SiteCoord provides basic functionality to the user. See examples
 2. Site coordinate source type classes:
     - There is one class for each source type.
     - A class with all relevant site coordinate information for a point in time.
@@ -481,8 +491,8 @@ SiteCoord.get_history("snx", all_stations, source_data, source_path=p.file_path)
 <p>Full name: <code>midgard.site_info.site_coord.SiteCoord</code></p>
 <p>Signature: <code>()</code></p>
 <p>Main class for converting site coordinates from various sources into unified classes</p>
-<h3 id="sitecoordhistorygnsseu"><strong>SiteCoordHistoryGnssEu</strong></h3>
-<p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistoryGnssEu</code></p>
+<h3 id="sitecoordhistorym3g"><strong>SiteCoordHistoryM3g</strong></h3>
+<p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistoryM3g</code></p>
 <p>Signature: <code>(station: str, source_data: Any = None, source_path: str = None) -&gt; None</code></p>
 <h3 id="sitecoordhistorysinex"><strong>SiteCoordHistorySinex</strong></h3>
 <p>Full name: <code>midgard.site_info.site_coord.SiteCoordHistorySinex</code></p>
@@ -531,8 +541,7 @@ SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="../../js/jquery-3.6.0.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
@@ -545,7 +554,7 @@ SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>From here you can search these documents. Enter your search terms below.</p>
@@ -565,7 +574,7 @@ SiteInfo.get_history("snx", all_stations, source_data, source_path=p.file_path)
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <table class="table">

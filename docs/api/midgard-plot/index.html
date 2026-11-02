@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,15 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.plot - Midgard v1.3.0</title>
+        <title>midgard.plot - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -20,9 +24,9 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
                 <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -30,11 +34,11 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem">
+                            <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
@@ -42,12 +46,16 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
     <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
 </li>
                                     
 <li>
@@ -83,7 +91,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">midgard.plot</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.plot</a>
 </li>
                                     
 <li>
@@ -97,9 +105,9 @@
                             </li>
                         </ul>
 
-                    <ul class="nav navbar-nav ml-auto">
+                    <ul class="nav navbar-nav ms-md-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
@@ -120,24 +128,24 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
             <span class="fa fa-angle-down"></span>
         </button>
     </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#midgardplot" class="nav-link">midgard.plot</a>
+            <li class="nav-item" data-bs-level="1"><a href="#midgardplot" class="nav-link">midgard.plot</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardplotmatplotext" class="nav-link">midgard.plot.matplotext</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardplotmatplotext" class="nav-link">midgard.plot.matplotext</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardplotmatplotlib_extension" class="nav-link">midgard.plot.matplotlib_extension</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardplotmatplotlib_extension" class="nav-link">midgard.plot.matplotlib_extension</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -161,271 +169,316 @@
 <table>
 <thead>
 <tr>
-<th>Option</th>
-<th>Value</th>
-<th>Description</th>
+<th style="text-align: left;">Option</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>bar_text</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;">alpha</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Blending values of markers (0: transparent, 1: opaque)</td>
 </tr>
 <tr>
-<td>bar_text_offset</td>
-<td><num></td>
-<td>Define text offset for text of bar plots</td>
+<td style="text-align: left;">axhline_y</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Add a horizontal line across the Axes by defining y-position of line</td>
 </tr>
 <tr>
-<td>bar_zeroline</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;">axhline_width</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Line width of horizontal line</td>
 </tr>
 <tr>
-<td>colorbar</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;">axhline_color</td>
+<td style="text-align: left;"><name></td>
+<td style="text-align: left;">Color of horizontal line</td>
 </tr>
 <tr>
-<td>colorbar_label</td>
-<td><text></td>
-<td>Color bar label</td>
+<td style="text-align: left;">axvline_x</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Add a vertical line across the Axes by defining x-position of line</td>
 </tr>
 <tr>
-<td>colormap</td>
-<td><type></td>
-<td>Color map type for plotting either events or labels (e.g. viridis,</td>
+<td style="text-align: left;">axvline_width</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Line width of vertical line</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>jet, tab10, rainbow, hsv, plasma)</td>
+<td style="text-align: left;">axvline_color</td>
+<td style="text-align: left;"><name></td>
+<td style="text-align: left;">Color of vertical line</td>
 </tr>
 <tr>
-<td>dpi</td>
-<td><num></td>
-<td>Resolution of file in dots per inch</td>
+<td style="text-align: left;">bar_text</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>ecapsize</td>
-<td><num></td>
-<td>Cap size of error bar</td>
+<td style="text-align: left;">bar_text_offset</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Define text offset for text of bar plots</td>
 </tr>
 <tr>
-<td>ecapthick</td>
-<td><num></td>
-<td>Cap thick of error bar</td>
+<td style="text-align: left;">bar_zeroline</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>ecolor</td>
-<td><name></td>
-<td>Color of error bar</td>
+<td style="text-align: left;">colorbar</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>edgecolor</td>
-<td><name></td>
-<td>Edge color of bars of bar plots</td>
+<td style="text-align: left;">colorbar_label</td>
+<td style="text-align: left;"><text></td>
+<td style="text-align: left;">Color bar label</td>
 </tr>
 <tr>
-<td>elinewidth</td>
-<td><num></td>
-<td>Line width of error bar</td>
+<td style="text-align: left;">colormap</td>
+<td style="text-align: left;"><type></td>
+<td style="text-align: left;">Color map type for plotting either events or labels (e.g. viridis,</td>
 </tr>
 <tr>
-<td>errorbar</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">jet, tab10, rainbow, hsv, plasma)</td>
 </tr>
 <tr>
-<td>figsize</td>
-<td>(num, num)</td>
-<td>Figure size given by (width, height) in inches</td>
+<td style="text-align: left;">dpi</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Resolution of file in dots per inch</td>
 </tr>
 <tr>
-<td>fontsize</td>
-<td><num></td>
-<td>Fontsize of title, axis labels and legend</td>
+<td style="text-align: left;">ecapsize</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Cap size of error bar</td>
 </tr>
 <tr>
-<td>fsize_subtitle</td>
-<td><num></td>
-<td>Fontsize of subplot title (statistical information)</td>
+<td style="text-align: left;">ecapthick</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Cap thick of error bar</td>
 </tr>
 <tr>
-<td>grid</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;">ecolor</td>
+<td style="text-align: left;"><name></td>
+<td style="text-align: left;">Color of error bar</td>
 </tr>
 <tr>
-<td>histogram</td>
-<td><x, y></td>
-<td>Plot x-axis histogram on top, y-axis histogram on right or for both</td>
+<td style="text-align: left;">edgecolor</td>
+<td style="text-align: left;"><name></td>
+<td style="text-align: left;">Edge color of bars of bar plots</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>axis on scatter plot</td>
+<td style="text-align: left;">elinewidth</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Line width of error bar</td>
 </tr>
 <tr>
-<td>histogram_binwidth</td>
-<td><num></td>
-<td>Histogram bin width</td>
+<td style="text-align: left;">errorbar</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>histogram_size</td>
-<td><num></td>
-<td>Histogram y-axis size</td>
+<td style="text-align: left;">figsize</td>
+<td style="text-align: left;">(num, num)</td>
+<td style="text-align: left;">Figure size given by (width, height) in inches</td>
 </tr>
 <tr>
-<td>legend</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;">fontsize</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Fontsize of title, axis labels and legend</td>
 </tr>
 <tr>
-<td>legend_location</td>
-<td><right, bottom></td>
-<td>Legend location</td>
+<td style="text-align: left;">grid</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>legend_ncol</td>
-<td><num></td>
-<td>The number of legend columns</td>
+<td style="text-align: left;">histogram</td>
+<td style="text-align: left;"><x, y></td>
+<td style="text-align: left;">Plot x-axis histogram on top, y-axis histogram on right or for both</td>
 </tr>
 <tr>
-<td>linestyle</td>
-<td><style></td>
-<td>Line style for plot type (e.g. 'solid', 'dashed')</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">axis on scatter plot</td>
 </tr>
 <tr>
-<td>marker</td>
-<td>&lt;'.'</td>
-<td>'-'&gt;</td>
+<td style="text-align: left;">histogram_binwidth</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Histogram bin width</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>if in one scatter subplot several plots should be plotted.</td>
+<td style="text-align: left;">histogram_size</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Histogram y-axis size</td>
 </tr>
 <tr>
-<td>plot_to</td>
-<td>&lt;console</td>
-<td>file&gt;</td>
+<td style="text-align: left;">legend</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>plot_type</td>
-<td>&lt;bar</td>
-<td>plot</td>
+<td style="text-align: left;">legend_bbox_bottom</td>
+<td style="text-align: left;">(num, num)</td>
+<td style="text-align: left;">Placement of legend, if legend location 'bottom' is chosen</td>
 </tr>
 <tr>
-<td></td>
-<td>scatter&gt;</td>
-<td></td>
+<td style="text-align: left;">legend_location</td>
+<td style="text-align: left;"><right, bottom></td>
+<td style="text-align: left;">Legend location</td>
 </tr>
 <tr>
-<td>plot_type_2nd</td>
-<td>&lt;bar</td>
-<td>plot</td>
+<td style="text-align: left;">legend_ncol</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">The number of legend columns</td>
 </tr>
 <tr>
-<td></td>
-<td>scatter</td>
-<td>None&gt;</td>
+<td style="text-align: left;">linestyle</td>
+<td style="text-align: left;"><style></td>
+<td style="text-align: left;">Line style for plot type (e.g. 'solid', 'dashed')</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>between a 'plot' or 'scatter' plot.</td>
+<td style="text-align: left;">marker</td>
+<td style="text-align: left;">&lt;'.'</td>
+<td style="text-align: left;">'-'&gt;</td>
 </tr>
 <tr>
-<td>projection</td>
-<td><type></td>
-<td>Projection type of plot (e.g. 'polar')</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">if in one scatter subplot several plots should be plotted.</td>
 </tr>
 <tr>
-<td>reg_line</td>
-<td>&lt;True</td>
-<td>False&gt;</td>
+<td style="text-align: left;">plot_to</td>
+<td style="text-align: left;">&lt;console</td>
+<td style="text-align: left;">file&gt;</td>
 </tr>
 <tr>
-<td>statistic</td>
-<td><rms, mean, ...></td>
-<td>Plot statistical information. Following function can be defined:</td>
+<td style="text-align: left;">plot_type</td>
+<td style="text-align: left;">&lt;bar</td>
+<td style="text-align: left;">plot</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">scatter&gt;</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>_get_statistic for more information)</td>
+<td style="text-align: left;">plot_type_2nd</td>
+<td style="text-align: left;">&lt;bar</td>
+<td style="text-align: left;">plot</td>
 </tr>
 <tr>
-<td>tick_labelsize</td>
-<td>&lt;(axis, size)&gt;</td>
-<td>Change label size of x- and y-axis tick labels. This can be done</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">scatter</td>
+<td style="text-align: left;">None&gt;</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>either for x-axis, y-axis or both axis via specifying 'x', 'y' or</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">between a 'plot' or 'scatter' plot.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td>both'.</td>
+<td style="text-align: left;">projection</td>
+<td style="text-align: left;"><type></td>
+<td style="text-align: left;">Projection type of plot (e.g. 'polar')</td>
 </tr>
 <tr>
-<td>title</td>
-<td><text></td>
-<td>Main title of subplots</td>
+<td style="text-align: left;">reg_line</td>
+<td style="text-align: left;">&lt;True</td>
+<td style="text-align: left;">False&gt;</td>
 </tr>
 <tr>
-<td>xlabelrotation</td>
-<td><num></td>
-<td>Define x-axis label rotation</td>
+<td style="text-align: left;">statistic</td>
+<td style="text-align: left;"><rms, mean, ...></td>
+<td style="text-align: left;">Plot statistical information. Following function can be defined:</td>
 </tr>
 <tr>
-<td>xlim</td>
-<td>&lt;[num, num]</td>
-<td></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">'max', 'mean', 'min', 'rms', 'std', 'percentile' (see function</td>
 </tr>
 <tr>
-<td></td>
-<td>auto</td>
-<td></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">_get_statistic for more information)</td>
 </tr>
 <tr>
-<td></td>
-<td>fit_to_data&gt;</td>
-<td>fit_to_data, then x-axis limit is defined related to x-axis data.</td>
+<td style="text-align: left;">subtitle</td>
+<td style="text-align: left;"><text></td>
+<td style="text-align: left;">Subtitle of subplots</td>
 </tr>
 <tr>
-<td>xticks</td>
-<td>&lt;[num, ...]&gt;</td>
-<td>Define x-axis ticks by defining a list with ticks</td>
+<td style="text-align: left;">subtitle_fsize</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Fontsize of subplot title (statistical information)</td>
 </tr>
 <tr>
-<td>xticklabels</td>
-<td>&lt;[text, ...]&gt;</td>
-<td>Define x-axis ticks labels by defining a list with labels</td>
+<td style="text-align: left;">tick_labelsize</td>
+<td style="text-align: left;">&lt;(axis, size)&gt;</td>
+<td style="text-align: left;">Change label size of x- and y-axis tick labels. This can be done</td>
 </tr>
 <tr>
-<td>ylim</td>
-<td>&lt;[num, num]&gt;</td>
-<td>Define y-axis limit by defining a list with [bottom, top] range</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">either for x-axis, y-axis or both axis via specifying 'x', 'y' or</td>
 </tr>
 <tr>
-<td>yticks</td>
-<td>&lt;[num, ...]&gt;</td>
-<td>Define y-axis ticks by defining a list with ticks</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">both'.</td>
 </tr>
 <tr>
-<td>yticklabels</td>
-<td>&lt;[text, ...]&gt;</td>
-<td>Define y-axis ticks labels by defining a list with labels</td>
+<td style="text-align: left;">title</td>
+<td style="text-align: left;"><text></td>
+<td style="text-align: left;">Main title of subplots</td>
+</tr>
+<tr>
+<td style="text-align: left;">xlabelrotation</td>
+<td style="text-align: left;"><num></td>
+<td style="text-align: left;">Define x-axis label rotation</td>
+</tr>
+<tr>
+<td style="text-align: left;">xlim</td>
+<td style="text-align: left;">&lt;[num, num]</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">auto</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">fit_to_data&gt;</td>
+<td style="text-align: left;">fit_to_data, then x-axis limit is defined related to x-axis data.</td>
+</tr>
+<tr>
+<td style="text-align: left;">xticks</td>
+<td style="text-align: left;">&lt;[num, ...]&gt;</td>
+<td style="text-align: left;">Define x-axis ticks by defining a list with ticks</td>
+</tr>
+<tr>
+<td style="text-align: left;">xticklabels</td>
+<td style="text-align: left;">&lt;[text, ...]&gt;</td>
+<td style="text-align: left;">Define x-axis ticks labels by defining a list with labels</td>
+</tr>
+<tr>
+<td style="text-align: left;">ylim</td>
+<td style="text-align: left;">&lt;[num, num]&gt;</td>
+<td style="text-align: left;">Define y-axis limit by defining a list with [bottom, top] range</td>
+</tr>
+<tr>
+<td style="text-align: left;">yticks</td>
+<td style="text-align: left;">&lt;[num, ...]&gt;</td>
+<td style="text-align: left;">Define y-axis ticks by defining a list with ticks</td>
+</tr>
+<tr>
+<td style="text-align: left;">yticklabels</td>
+<td style="text-align: left;">&lt;[text, ...]&gt;</td>
+<td style="text-align: left;">Define y-axis ticks labels by defining a list with labels</td>
 </tr>
 </tbody>
 </table>
@@ -480,7 +533,7 @@
 <p>List with strings representing statistical information</p>
 <h3 id="plot"><strong>plot</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot</code></p>
-<p>Signature: <code>(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: Optional[List[str]] = None, labels: Optional[List[str]] = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -&gt; None</code></p>
+<p>Signature: <code>(x_arrays: List[numpy.ndarray], y_arrays: List[numpy.ndarray], xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', colors: List[str] | None = None, labels: List[str] | None = None, figure_path: str = 'plot_scatter.png', opt_args: Dict[str, Any] = {}, events: Dict[str, List[Any]] | None = None) -&gt; None</code></p>
 <p>Generate scatter/plot plot</p>
 <p>Several scatter/plot plots can be plotted on one plot. This is defined via the chosen number of y_arrays data.
 Histogram is only plotted for the last given y-array in "y_arrays".</p>
@@ -686,7 +739,7 @@ Histogram is only plotted for the last given y-array in "y_arrays".</p>
                    'events' can not be chosen together, either 'labels' or 'events' should be defined.</p>
 <h3 id="plot_bar_dataframe_columns"><strong>plot_bar_dataframe_columns</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_bar_dataframe_columns</code></p>
-<p>Signature: <code>(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: Optional[List[str]] = None, opt_args: Optional[Dict[str, Any]] = None) -&gt; None</code></p>
+<p>Signature: <code>(df: 'Dataframe', column: str, path: pathlib.PosixPath, xlabel: str = '', ylabel: str = '', label: str = 'label', colors: List[str] | None = None, opt_args: Dict[str, Any] | None = None) -&gt; None</code></p>
 <p>Generate bar plot of given dataframe columns</p>
 <p>If 'label' column is given in Dataframe (as 'df.label'), then the bars are color coded based on the defined labels.
 In addition a legend is added with information about the labels.</p>
@@ -759,7 +812,7 @@ In addition a legend is added with information about the labels.</p>
    opt_args:    Dictionary with options, which overwrite default plot configuration.</p>
 <h3 id="plot_scatter_subplots"><strong>plot_scatter_subplots</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_scatter_subplots</code></p>
-<p>Signature: <code>(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: Optional[List[str]] = None, colors: Optional[List[str]] = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Optional[Dict[str, List[Any]]] = None) -&gt; None</code></p>
+<p>Signature: <code>(x_array: numpy.ndarray, y_arrays: List[numpy.ndarray], xlabel: str, ylabels: List[str], x_unit: str = '', y_units: List[str] | None = None, colors: List[str] | None = None, figure_path: str = 'plot_scatter_subplot.png', opt_args: Dict[str, Any] = {}, events: Dict[str, List[Any]] | None = None) -&gt; None</code></p>
 <p>Generate scatter subplot</p>
 <p>The subplot has only one column. The number of rows is defined via the chosen number of y-axis data.</p>
 <p>Following <strong>opt_arg</strong> options can be selected:</p>
@@ -948,7 +1001,7 @@ In addition a legend is added with information about the labels.</p>
                    x-axis data. Event colors are automatically chosen based on 'colormap'. </p>
 <h3 id="plot_subplot_row"><strong>plot_subplot_row</strong>()</h3>
 <p>Full name: <code>midgard.plot.matplotlib_extension.plot_subplot_row</code></p>
-<p>Signature: <code>(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: Optional[numpy.ndarray] = None, opt_args: Dict[str, Any] = {}) -&gt; None</code></p>
+<p>Signature: <code>(ax: 'AxesSubplot', x_array: numpy.ndarray, y_array: numpy.ndarray, xlabel: str = '', ylabel: str = '', x_unit: str = '', y_unit: str = '', label: str = '', color: None | numpy.ndarray = None, opt_args: Dict[str, Any] = {}) -&gt; None</code></p>
 <p>Generate single row of plot subplot</p>
 <p>Following <strong>options</strong> can be selected:</p>
 <table>
@@ -1090,8 +1143,7 @@ In addition a legend is added with information about the labels.</p>
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="../../js/jquery-3.6.0.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
@@ -1104,7 +1156,7 @@ In addition a legend is added with information about the labels.</p>
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>From here you can search these documents. Enter your search terms below.</p>
@@ -1124,7 +1176,7 @@ In addition a legend is added with information about the labels.</p>
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <table class="table">

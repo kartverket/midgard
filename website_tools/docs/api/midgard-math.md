@@ -43,7 +43,7 @@ Signature: `() -> None`
 
 
 ### constant (Constant)
-`constant = Constant('/opt/miniconda3/envs/where/lib/python3.11/site-packages/midgard/math/constant.txt')`
+`constant = Constant('/opt/miniconda3/envs/operax/lib/python3.14/site-packages/midgard/math/constant.txt')`
 
 
 ## midgard.math.ellipsoid
@@ -51,6 +51,10 @@ Midgard library module for handling Earth ellipsoids
 
 **Description:**
 
+
+
+### DORIS (Ellipsoid)
+`DORIS = Ellipsoid(name='DORIS', a=6378136.0, f_inv=298.25781, description='Used by DORIS')`
 
 
 ### **Ellipsoid**
@@ -99,7 +103,7 @@ Methods for interpolating in numpy arrays
 **Description:**
 
 Different interpolation methods are decorated with `@register_interpolator` and will then become available for use as
-`kind` in `interpolate` and `moving_window`.
+`kind` in `interpolate` function.
 
 
 **Example:**
@@ -184,26 +188,6 @@ Uses the scipy.interpolate.interp1d function with kind='cubic' behind the scenes
 **Returns:**
 
 Cubic spline interpolation function
-
-
-### **get_interpolator**()
-
-Full name: `midgard.math.interpolation.get_interpolator`
-
-Signature: `(name: str) -> Callable`
-
-Return an interpolation function
-
-Interpolation functions are registered by the @register_interpolator-decorator. The name-parameter corresponds to
-the function name of the interpolator.
-
-**Args:**
-
-- `name`:  Name of interpolator.
-
-**Returns:**
-
-Interpolation function with the given name.
 
 
 ### **interpolate**()
@@ -337,6 +321,27 @@ Uses the scipy.interpolate.interp1d function with kind='linear' behind the scene
 Linear interpolation function
 
 
+### **nearest**()
+
+Full name: `midgard.math.interpolation.nearest`
+
+Signature: `(x: numpy.ndarray, y: numpy.ndarray, **ipargs: Any) -> Callable`
+
+Nearest neighbor interpolation through the given points
+
+Uses the scipy.interpolate.interp1d function with kind='nearest' behind the scenes.
+
+**Args:**
+
+- `x`:       1-dimensional array with original x-values.
+- `y`:       Array with original y-values.
+- `ipargs`:  Keyword arguments passed on to the interp1d-interpolator.
+
+**Returns:**
+
+Nearest neighbor interpolation function
+
+
 ### **register_interpolator**()
 
 Full name: `midgard.math.interpolation.register_interpolator`
@@ -387,7 +392,7 @@ slope = linreg.slope
 
 Full name: `midgard.math.linear_regression.LinearRegression`
 
-Signature: `(x: Union[numpy.ndarray, list], y: Union[numpy.ndarray, list], reject_outlier: bool = False, outlier_limit_factor: float = 1.0, outlier_iteration: int = 1) -> None`
+Signature: `(x: numpy.ndarray | list, y: numpy.ndarray | list, reject_outlier: bool = False, outlier_limit_factor: float = 1.0, outlier_iteration: int = 1) -> None`
 
 Linear regression class
 
@@ -766,28 +771,63 @@ Numpy array:   Rotation matrix or array of rotation matrices.
 
 
 ## midgard.math.spatial_interpolation
-Methods for spatial interpolation in numpy arrays
+Methods for spatial interpolating (2D-interpolation) in numpy arrays
 
 **Description:**
 
+Different interpolation methods are decorated with `@register_interpolator` and will then become available for use as
+`kind` in `interpolate` function.
 
 
 **Example:**
 
-TODO
+import numpy as np
+from midgard.math import spatial_interpolation
+
+# Generate grid input data
+x = np.arange(-5.01, 5.01, 0.25)
+y = np.arange(-5.01, 5.01, 0.25)
+grid_x, grid_y = np.meshgrid(x, y)
+values = np.sin(xx**2+yy**2)
+
+# Define data points for interplation
+xnew = np.arange(-5.01, 5.01, 1e-2)
+ynew = np.arange(-5.01, 5.01, 1e-2)
+
+# Interpolate for given data points
+values_new = spatial_interpolation.interpolate(grid_x, grid_y, values, xnew, ynew, kind="griddata")
 
 
 
-### **interpolate_for_position**()
+**Developer info:**
 
-Full name: `midgard.math.spatial_interpolation.interpolate_for_position`
+To add your own interpolators, you can simply decorate your interpolator functions with `@register_interpolator`. Your
+interpolator function should have the signature
 
-Signature: `(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float, y: float, method: str = 'linear') -> float`
+    (   grid_x: np.ndarray, 
+        grid_y: np.ndarray, 
+        values: np.ndarray, 
+        x: Union[float, np.ndarray],
+        y: Union[float, np.ndarray],
+    ) -> np.ndarray
 
-Interpolation in grid with size (n, m) for a given position
 
-Interpolation is based on scipy.interpolate.griddata module. More information about this module can be found under:
-    https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html
+
+### **griddata**()
+
+Full name: `midgard.math.spatial_interpolation.griddata`
+
+Signature: `(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float | numpy.ndarray, y: float | numpy.ndarray, **kwargs: Any) -> numpy.ndarray`
+
+Griddata interpolation through the given points
+
+Interpolation is based on scipy.interpolate.griddata module.
+
+The 'method' argument can e.g. be chosen as additional griddata keyword argument 'kwargs'. Following interpolation
+methods can be chosen via the 'method' argument:
+                linear:  tessellate the input point set to N-D simplices, and interpolate linearly on each simplex
+                nearest: value of data point closest to the point of interpolation
+                cubic:   value determined from a piecewise cubic 
 
 **Args:**
 
@@ -796,10 +836,112 @@ Interpolation is based on scipy.interpolate.griddata module. More information ab
 - `values`: (n,m) Array with data values for each grid point
 - `x`:            x-position
 - `y`:            y-position
-- `method`: Method of interpolation:
-                linear:  tessellate the input point set to N-D simplices, and interpolate linearly on each simplex
-                nearest: value of data point closest to the point of interpolation
-                cubic:   value determined from a piecewise cubic
+- `kwargs`:       Keyword arguments passed on to the griddata-interpolator.
+
+**Returns:**
+
+Interpolated value in data grid for a given position
+
+
+### **interpolate**()
+
+Full name: `midgard.math.spatial_interpolation.interpolate`
+
+Signature: `(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float | numpy.ndarray, y: float | numpy.ndarray, kind: str, **kwargs: Any) -> numpy.ndarray`
+
+Interpolate values from one x-array to another
+
+See `interpolators()` for a list of valid interpolators.
+
+**Args:**
+
+- `grid_x`: (n,m) Array with x-positions for each grid point 
+- `grid_y`: (n,m) Array with y-positions for each grid point 
+- `values`: (n,m) Array with data values for each grid point
+- `x`:            x-position
+- `y`:            y-position
+- `kind`:         Name of interpolator to use.
+- `kwargs`:       Keyword arguments passed on to the interp1d-interpolator.
+
+**Returns:**
+
+Array of interpolated y-values.
+
+
+### **interpolators**()
+
+Full name: `midgard.math.spatial_interpolation.interpolators`
+
+Signature: `() -> List[str]`
+
+Return a list of available interpolators
+
+**Returns:**
+
+Names of available interpolators.
+
+
+### **rect_bivariate_spline**()
+
+Full name: `midgard.math.spatial_interpolation.rect_bivariate_spline`
+
+Signature: `(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float | numpy.ndarray, y: float | numpy.ndarray, **kwargs: Any) -> numpy.ndarray`
+
+RectBivariateSpline interpolation through the given points
+
+Interpolation is based on scipy.interpolate.RectBivariateSpline module.
+
+**Args:**
+
+- `grid_x`: (n,m) Array with x-positions for each grid point 
+- `grid_y`: (n,m) Array with y-positions for each grid point 
+- `values`: (n,m) Array with data values for each grid point
+- `x`:            x-position
+- `y`:            y-position
+- `kwargs`:       Keyword arguments passed on to the RectBivariateSpline-interpolator.
+
+**Returns:**
+
+Interpolated value in data grid for a given position
+
+
+### **register_interpolator**()
+
+Full name: `midgard.math.spatial_interpolation.register_interpolator`
+
+Signature: `(func: Callable) -> Callable`
+
+Register an interpolation function
+
+This function should be used as a @register_interpolator-decorator
+
+**Args:**
+
+- `func`: Function that will be registered as an interpolator.
+
+**Returns:**
+
+Same function.
+
+
+### **regular_grid_interpolator**()
+
+Full name: `midgard.math.spatial_interpolation.regular_grid_interpolator`
+
+Signature: `(grid_x: numpy.ndarray, grid_y: numpy.ndarray, values: numpy.ndarray, x: float | numpy.ndarray, y: float | numpy.ndarray, **kwargs: Any) -> numpy.ndarray`
+
+RegularGridInterpolator interpolation through the given points
+
+Interpolation is based on scipy.interpolate.RegularGridInterpolator module.
+
+**Args:**
+
+- `grid_x`: (n,m) Array with x-positions for each grid point 
+- `grid_y`: (n,m) Array with y-positions for each grid point 
+- `values`: (n,m) Array with data values for each grid point
+- `x`:            x-position
+- `y`:            y-position
+- `kwargs`:       Keyword arguments passed on to the RegularGridInterpolator-interpolator.
 
 **Returns:**
 
@@ -865,13 +1007,20 @@ Convert position deltas from TRS to ENU
 
 Full name: `midgard.math.transformation.kepler2trs`
 
-Signature: `(kepler: 'KeplerPosVel') -> 'TrsPosVel'`
+Signature: `(kepler: 'KeplerPosVel') -> numpy.ndarray`
 
 Compute orbit position and velocity vector in geocentric equatorial coordinate system based on Keplerian
 elements for elliptic orbits.
 
 The implementation is based on Section 2.2.3 in :cite:`montenbruck2012`.
 
+**Args:**
+
+- `kepler`: Keplerian elements as PosVel object
+
+**Returns:**
+
+Array with following position and velocity vector
 
 
 ### **llh2trs**()
@@ -884,12 +1033,76 @@ Convert geodetic latitude-, longitude-, height-coordinates to geocentric xyz-coo
 
 Reimplementation of GD2GCE.for from the IUA SOFA software collection.
 
+**Args:**
+
+- `llh`:        Array with geodetic latitude, longitude and height coordinates in radian and meter
+- `ellipsoid`:  Ellipsoid definition given via Ellipsoid data class 
+
+**Returns:**
+
+Array with geocentric xyz-coordinates in meter
+
+
+### **sigma_trs2enu**()
+
+Full name: `midgard.math.transformation.sigma_trs2enu`
+
+Signature: `(R: numpy.ndarray, sx: numpy.ndarray, sy: numpy.ndarray, sz: numpy.ndarray, cxy: numpy.ndarray | None = None, cxz: numpy.ndarray | None = None, cyz: numpy.ndarray | None = None) -> Tuple[float]`
+
+Transformation of the covariance information of geocentric coordinates to topocentric coordinates 
+
+The tranformation matrix looks like
+
+       |        -sin(lon)              cos(lon)            0      |
+   R = | -sin(lat) * cos(lon)    -sin(lat) * sin(lon)   cos(lat)  |
+       |  cos(lat) * cos(lon)     cos(lat) * sin(lon)   sin(lat)  |
+
+   with
+      lon - longitude
+      lat - latitude
+
+Transformation of the covariance information of the geocentric coordinates to the topocentric coordinates are based 
+on the propagation of uncertainty:
+
+   C_t = R * C_g * R^T 
+
+   with 
+      C_t - covariance matrix of topocentric coordinates:
+
+                     |      se^2        ren * se * sn   reu * se * su |   | se^2  cen   ceu  |
+               C_t = | ren * se * sn         sn^2       rnu * sn * su | = | cen   sn^2  cnu  |
+                     | reu * se * su    rnu * sn * su        su^2     |   | ceu   cnu   su^2 |
+
+               with standard deviation se, sn and su of the east, north and up
+               coordinates and correlation r between the coordinates
+
+      C_g - covariance matrix of geocentric coordinates:
+
+                     |      sx^2        rxy * sx * sy   rxz * sx * sz |   | sx^2  cxy   cxz  |
+               C_g = | rxy * sx * sy         sy^2       ryz * sy * sz | = | cxy   sy^2  cyz  |
+                     | rxz * sx * sz    ryz * sy * sz        sz^2     |   | cxz   cyz   sz^2 |
+
+               with standard deviation sx, sy and sz of the x, y and 
+               coordinates and correlation r between the coordinates
+
+      R^T - transposed rotation matrix
+
+**Args:**
+
+- `R`:              Rotation matrix from geocentric to topocentric coordinate system 
+sx,sy,sz:       Standard deviation of geocentric coordinates
+cxy,cxz,cyz:    Correlation coefficients of geocentric coordinates
+
+**Returns:**
+
+   Standard deviation of topocentric coordinates 
+
 
 ### **trs2kepler**()
 
 Full name: `midgard.math.transformation.trs2kepler`
 
-Signature: `(trs: 'TrsPosVel') -> 'KeplerPosVel'`
+Signature: `(trs: 'TrsPosVel') -> numpy.ndarray`
 
 Compute Keplerian elements for elliptic orbit based on orbit position and velocity vector given in ITRS.
 
@@ -901,20 +1114,22 @@ The position and velocity vector in ITRS and GM must be given in consistent unit
 .. note::
 The function cannot be used with position/velocity vectors describing a circular or non-inclined orbit.
 
+**Args:**
+
+- `trs`: Position and velocity coordinates given in terrestrial reference frame and as PosVel object
+
 **Returns:**
 
-tuple with numpy.ndarray types: Tuple with following Keplerian elements:
+Array with following Keplerian elements:
 
-===============  ======  ==================================================================================
- Keys             Unit     Description
-===============  ======  ==================================================================================
- a                m       Semimajor axis
- e                        Eccentricity of the orbit
- i                rad     Inclination
- Omega            rad     Right ascension of the ascending node
- omega            rad     Argument of perigee
- E                rad     Eccentric anomaly
-===============  ======  ==================================================================================
+   | Keys           | Unit  |  Description                          |
+   | :--------------| :-----| :------------------------------------ |
+   | a              | m     | Semimajor axis                        |
+   | e              |       | Eccentricity of the orbit             |
+   | i              | rad   | Inclination                           |
+   | Omega          | rad   | Right ascension of the ascending node |
+   | omega          | rad   | Argument of perigee                   |
+   | E              | rad   | Eccentric anomaly                     |
 
 
 ### **trs2llh**()
@@ -926,6 +1141,15 @@ Signature: `(trs: numpy.ndarray, ellipsoid: midgard.math.ellipsoid.Ellipsoid = N
 Convert geocentric xyz-coordinates to geodetic latitude-, longitude-, height-coordinates
 
 Reimplementation of GC2GDE.for from the IUA SOFA software collection.
+
+**Args:**
+
+- `trs`:        Array with geocentric xyz-coordinates in meter
+- `ellipsoid`:  Ellipsoid definition given via Ellipsoid data class 
+
+**Returns:**
+
+Geodetic latitude, longitude and height coordinates in radian and meter
 
 
 
@@ -992,7 +1216,7 @@ current (midgard/math) directory.
 
 Full name: `midgard.math.unit.Unit`
 
-Signature: `(from_unit: str, to_unit: Optional[str] = None) -> Any`
+Signature: `(from_unit: str, to_unit: str | None = None) -> Any`
 
 Unit converter
 

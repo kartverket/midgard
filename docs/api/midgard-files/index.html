@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,11 +8,15 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>midgard.files - Midgard v1.3.0</title>
+        <title>midgard.files - Midgard v1.4.0</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
@@ -20,9 +24,9 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Midgard v1.3.0</a>
+                <a class="navbar-brand" href="../..">Midgard v1.4.0</a>
                 <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -30,11 +34,11 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem">
+                            <li class="nav-item">
                                 <a href="../.." class="nav-link">Home</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">How-to <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">How-to</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
@@ -42,12 +46,16 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
                                 <ul class="dropdown-menu">
                                     
 <li>
     <a href="../midgard/" class="dropdown-item">midgard</a>
+</li>
+                                    
+<li>
+    <a href="../midgard-api/" class="dropdown-item">midgard.api</a>
 </li>
                                     
 <li>
@@ -67,7 +75,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">midgard.files</a>
+    <a href="./" class="dropdown-item active" aria-current="page">midgard.files</a>
 </li>
                                     
 <li>
@@ -97,9 +105,9 @@
                             </li>
                         </ul>
 
-                    <ul class="nav navbar-nav ml-auto">
+                    <ul class="nav navbar-nav ms-md-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
@@ -120,32 +128,32 @@
 
         <div class="container">
             <div class="row">
-                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
             <span class="fa fa-angle-down"></span>
         </button>
     </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#midgardfiles" class="nav-link">midgard.files</a>
+            <li class="nav-item" data-bs-level="1"><a href="#midgardfiles" class="nav-link">midgard.files</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#midgardfilesdates" class="nav-link">midgard.files.dates</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-level="2"><a href="#midgardfilesdependencies" class="nav-link">midgard.files.dependencies</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesdates" class="nav-link">midgard.files.dates</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardfilesfiles" class="nav-link">midgard.files.files</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesdependencies" class="nav-link">midgard.files.dependencies</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#midgardfilesurl" class="nav-link">midgard.files.url</a>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesfiles" class="nav-link">midgard.files.files</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#midgardfilesurl" class="nav-link">midgard.files.url</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -169,7 +177,7 @@
 <p><code>FMT_dt_file = '%Y%m%d-%H%M%S'</code></p>
 <h3 id="date_vars"><strong>date_vars</strong>()</h3>
 <p>Full name: <code>midgard.files.dates.date_vars</code></p>
-<p>Signature: <code>(date: Union[datetime.date, datetime.datetime, NoneType]) -&gt; Dict[str, str]</code></p>
+<p>Signature: <code>(date: datetime.date | datetime.datetime | None) -&gt; Dict[str, str]</code></p>
 <p>Construct a dict of date variables</p>
 <p>From a given date, construct a dict containing all relevant date
 variables. This dict can be used to for instance replace variables in file
@@ -201,7 +209,7 @@ names.</p>
 </ul>
 <h3 id="add"><strong>add</strong>()</h3>
 <p>Full name: <code>midgard.files.dependencies.add</code></p>
-<p>Signature: <code>(*file_paths: Union[str, pathlib.Path], label: str = '') -&gt; None</code></p>
+<p>Signature: <code>(*file_paths: str | pathlib.Path, label: str = '') -&gt; None</code></p>
 <p>Add a list of files to the list of dependencies</p>
 <p>Records the current time stamp or md5 hash of the files specified by file
 paths, and stores as dependencies on the dependency file.</p>
@@ -214,7 +222,7 @@ where to store the dependencies.</p>
 </ul>
 <h3 id="changed"><strong>changed</strong>()</h3>
 <p>Full name: <code>midgard.files.dependencies.changed</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], fast_check: bool = True) -&gt; bool</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, fast_check: bool = True) -&gt; bool</code></p>
 <p>Check if the dependencies have changed</p>
 <p>Returns True if any of the files listed in the dependency file have
 changed, or if the dependency file itself does not exist.</p>
@@ -227,7 +235,7 @@ changed, or if the dependency file itself does not exist.</p>
 <p>True if any file has changed or if the dependecy file does not exist, False otherwise.</p>
 <h3 id="get_md5"><strong>get_md5</strong>()</h3>
 <p>Full name: <code>midgard.files.dependencies.get_md5</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path]) -&gt; str</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path) -&gt; str</code></p>
 <p>Return a md5 checksum based on a file.</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -237,7 +245,7 @@ changed, or if the dependency file itself does not exist.</p>
 <p>Hex-string representing the contents of the file.</p>
 <h3 id="get_paths_with_label"><strong>get_paths_with_label</strong>()</h3>
 <p>Full name: <code>midgard.files.dependencies.get_paths_with_label</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], label_pattern: str) -&gt; List[pathlib.Path]</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, label_pattern: str) -&gt; List[pathlib.Path]</code></p>
 <p>Find all paths with the given label</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -250,7 +258,7 @@ changed, or if the dependency file itself does not exist.</p>
 </ul>
 <h3 id="get_timestamp"><strong>get_timestamp</strong>()</h3>
 <p>Full name: <code>midgard.files.dependencies.get_timestamp</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path]) -&gt; str</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path) -&gt; str</code></p>
 <p>Return a textual timestamp from the modification date of a file</p>
 <p><strong>Args:</strong></p>
 <ul>
@@ -260,7 +268,7 @@ changed, or if the dependency file itself does not exist.</p>
 <p>String representing the modification date of the file.</p>
 <h3 id="init"><strong>init</strong>()</h3>
 <p>Full name: <code>midgard.files.dependencies.init</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], fast_check: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, fast_check: bool = True) -&gt; None</code></p>
 <p>Start a clean list of dependencies</p>
 <p>The file_path is to the file in which dependencies are stored. This is
 cached, so after init() is run, the other functions do not need to specify
@@ -278,7 +286,7 @@ the file_path.</p>
 <p>Utilities for working with files</p>
 <h3 id="move"><strong>move</strong>()</h3>
 <p>Full name: <code>midgard.files.files.move</code></p>
-<p>Signature: <code>(from_path: Union[str, pathlib.Path], to_path: Union[str, pathlib.Path], overwrite: bool = True) -&gt; None</code></p>
+<p>Signature: <code>(from_path: str | pathlib.Path, to_path: str | pathlib.Path, overwrite: bool = True) -&gt; None</code></p>
 <p>Move a file to another path</p>
 <p>With overwrite set to True, to_path may already exist and will be overwritten without warning. Setting overwrite to
 False will raise a FileExistsError if to_path already exists.</p>
@@ -290,7 +298,7 @@ False will raise a FileExistsError if to_path already exists.</p>
 </ul>
 <h3 id="open"><strong>open</strong>()</h3>
 <p>Full name: <code>midgard.files.files.open</code></p>
-<p>Signature: <code>(file_path: Union[str, pathlib.Path], create_dirs: bool = False, open_as_gzip: Optional[bool] = None, **open_args: Any) -&gt; Iterator</code></p>
+<p>Signature: <code>(file_path: str | pathlib.Path, create_dirs: bool = False, open_as_gzip: bool | None = None, **open_args: Any) -&gt; Iterator</code></p>
 <p>Open a file.</p>
 <p>Can automatically create the necessary directories before writing to a file, as well as handle gzipped files.</p>
 <p>With <code>open_as_gzip</code> set to None (default), it will try to detect whether the path is a .gz file simply by looking
@@ -318,8 +326,7 @@ at the path suffix. For more control, you can set the parameter to True or False
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="../../js/jquery-3.6.0.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
         <script>
             var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
@@ -332,7 +339,7 @@ at the path suffix. For more control, you can set the parameter to True or False
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>From here you can search these documents. Enter your search terms below.</p>
@@ -352,7 +359,7 @@ at the path suffix. For more control, you can set the parameter to True or False
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <table class="table">

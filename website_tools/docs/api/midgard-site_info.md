@@ -114,18 +114,9 @@ Signature: `()`
 
 Main class for converting antenna information from various sources into unified classes
 
-### **AntennaGnssEu**
+### **AntennaHistoryM3g**
 
-Full name: `midgard.site_info.antenna.AntennaGnssEu`
-
-Signature: `(station: str, site_info: Dict[str, Any]) -> None`
-
-Antenna class handling GnssEu API antenna station information
-
-
-### **AntennaHistoryGnssEu**
-
-Full name: `midgard.site_info.antenna.AntennaHistoryGnssEu`
+Full name: `midgard.site_info.antenna.AntennaHistoryM3g`
 
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 
@@ -145,6 +136,15 @@ Full name: `midgard.site_info.antenna.AntennaHistorySsc`
 
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 
+
+
+### **AntennaM3g**
+
+Full name: `midgard.site_info.antenna.AntennaM3g`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Antenna class handling M3g API antenna station information
 
 
 ### **AntennaSinex**
@@ -203,18 +203,9 @@ Signature: `()`
 
 Main class for converting eccentricity information from various sources into unified classes
 
-### **EccentricityGnssEu**
+### **EccentricityHistoryM3g**
 
-Full name: `midgard.site_info.eccentricity.EccentricityGnssEu`
-
-Signature: `(station: str, site_info: Dict[str, Any]) -> None`
-
-Eccentricity class handling gnssEu API eccentricity station information
-
-
-### **EccentricityHistoryGnssEu**
-
-Full name: `midgard.site_info.eccentricity.EccentricityHistoryGnssEu`
+Full name: `midgard.site_info.eccentricity.EccentricityHistoryM3g`
 
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 
@@ -236,6 +227,15 @@ Signature: `(station: str, source_data: Any = None, source_path: str = None) -> 
 
 
 
+### **EccentricityM3g**
+
+Full name: `midgard.site_info.eccentricity.EccentricityM3g`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Eccentricity class handling gnssEu API eccentricity station information
+
+
 ### **EccentricitySinex**
 
 Full name: `midgard.site_info.eccentricity.EccentricitySinex`
@@ -243,35 +243,6 @@ Full name: `midgard.site_info.eccentricity.EccentricitySinex`
 Signature: `(station: str, site_info: Dict[str, Any]) -> None`
 
 Eccentricity class handling SINEX file eccentricity station information
-
-
-## midgard.site_info.gnsseu
-
-
-## midgard.site_info.gnsseu.api
-Python wrapper around the gnss-metadata.eu API
-
-**Description:**
-###Creates functions automatically based on the services listed on the Swagger help page referred to by URL.
-
-**Example:**
-from åsgard import gnsseu
-
-# Get instance of GnssEuApi class with API methods based on default URL
-api = gnsseu.api.GnssEuApi()
-
-# Get instance of GnssEuApi class with API methods based on defined URL
-api = gnsseu.api.GnssEuApi(url=""https://gnss-metadata.eu/site/api-json")
-
-
-
-### **GnssEuApi**
-
-Full name: `midgard.site_info.gnsseu.api.GnssEuApi`
-
-Signature: `(url: str = 'https://gnss-metadata.eu/site/api-json') -> None`
-
-A wrapper around the gnss-metadata.eu API
 
 
 ## midgard.site_info.identifier
@@ -312,9 +283,9 @@ Signature: `()`
 
 Main class for converting identifier information from various sources into unified classes
 
-### **IdentifierGnssEu**
+### **IdentifierM3g**
 
-Full name: `midgard.site_info.identifier.IdentifierGnssEu`
+Full name: `midgard.site_info.identifier.IdentifierM3g`
 
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 
@@ -337,6 +308,37 @@ Full name: `midgard.site_info.identifier.IdentifierSsc`
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 
 Identifier class handling SSC file identifier station information
+
+
+## midgard.site_info.m3g
+Functionality for working with SeStation
+
+## midgard.site_info.m3g.api
+Python wrapper around the M3G API
+
+**Description:**
+Creates functions automatically based on the services listed on the Swagger help page referred to by URL.
+
+Note: Functionality for PUT endpoints is not implemented.
+
+**Example:**
+from midgard.site_info import m3g
+
+# Get instance of M3gApi class with API methods based on default URL
+api = m3g.api.M3gApi()
+
+# Get instance of M3gApi class with API methods based on defined URL
+api = m3g.api.M3gApi(url=""https://gnss-metadata.eu/site/api-json")
+
+
+
+### **M3gApi**
+
+Full name: `midgard.site_info.m3g.api.M3gApi`
+
+Signature: `(url: str = 'https://gnss-metadata.eu/site/api-json') -> None`
+
+A wrapper around the M3G API
 
 
 ## midgard.site_info.receiver
@@ -386,18 +388,9 @@ Signature: `()`
 
 Main class for converting receiver information from various sources into unified classes
 
-### **ReceiverGnssEu**
+### **ReceiverHistoryM3g**
 
-Full name: `midgard.site_info.receiver.ReceiverGnssEu`
-
-Signature: `(station: str, site_info: Dict[str, Any]) -> None`
-
-Receiver class handling gnssEu API receiver station information
-
-
-### **ReceiverHistoryGnssEu**
-
-Full name: `midgard.site_info.receiver.ReceiverHistoryGnssEu`
+Full name: `midgard.site_info.receiver.ReceiverHistoryM3g`
 
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 
@@ -419,6 +412,15 @@ Signature: `(station: str, source_data: Any = None, source_path: str = None) -> 
 
 
 
+### **ReceiverM3g**
+
+Full name: `midgard.site_info.receiver.ReceiverM3g`
+
+Signature: `(station: str, site_info: Dict[str, Any]) -> None`
+
+Receiver class handling gnssEu API receiver station information
+
+
 ### **ReceiverSinex**
 
 Full name: `midgard.site_info.receiver.ReceiverSinex`
@@ -434,7 +436,7 @@ Site cooridnate information classes
 **Description:**
 This module is divided into three different types of classes:
 
-    1. Main class SiteCoord provides basic functionality to the user. See exampless
+    1. Main class SiteCoord provides basic functionality to the user. See examples
     2. Site coordinate source type classes:
         - There is one class for each source type.
         - A class with all relevant site coordinate information for a point in time.
@@ -475,9 +477,9 @@ Signature: `()`
 
 Main class for converting site coordinates from various sources into unified classes
 
-### **SiteCoordHistoryGnssEu**
+### **SiteCoordHistoryM3g**
 
-Full name: `midgard.site_info.site_coord.SiteCoordHistoryGnssEu`
+Full name: `midgard.site_info.site_coord.SiteCoordHistoryM3g`
 
 Signature: `(station: str, source_data: Any = None, source_path: str = None) -> None`
 

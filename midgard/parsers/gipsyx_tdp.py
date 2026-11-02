@@ -232,7 +232,7 @@ class GipsyxTdpParser(LineParser):
 
                 for collection in collections:
                     field_name = f"{collection}.{field['Source'].name}"
-                    dset.add_float(field_name, val=np.full(dset.num_obs, np.NaN))
+                    dset.add_float(field_name, val=np.full(dset.num_obs, np.nan))
                     dset[field_name][idx] = self.data["value"][idx]
                 continue
 
@@ -272,7 +272,7 @@ class GipsyxTdpParser(LineParser):
                             )
 
                         if field_name not in dset.fields:
-                            dset.add_float(field_name, val=np.full(dset.num_obs, np.NaN))
+                            dset.add_float(field_name, val=np.full(dset.num_obs, np.nan))
                             dset[field_name][idx] = self.data[collection][idx]
 
                     # Add position fields to Dataset
@@ -280,7 +280,7 @@ class GipsyxTdpParser(LineParser):
 
                         if field_name not in dset.fields:
                             dset.add_position(
-                                field_name, time=dset.time, system="trs", val=np.full((dset.num_obs, 3), np.NaN)
+                                field_name, time=dset.time, system="trs", val=np.full((dset.num_obs, 3), np.nan)
                             )
 
                         # Fill position field with data
@@ -301,7 +301,7 @@ class GipsyxTdpParser(LineParser):
 
                         if field_name not in dset.fields:
                             dset.add_posvel(
-                                field_name, time=dset.time, system="trs", val=np.full((dset.num_obs, 6), np.NaN)
+                                field_name, time=dset.time, system="trs", val=np.full((dset.num_obs, 6), np.nan)
                             )
 
                         # Fill position field with data

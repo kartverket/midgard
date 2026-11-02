@@ -144,7 +144,7 @@ class SinexTmsParser(SinexParser):
     # CONVERTERS
     #
     def _convert_yyyydddsssss(self, field: bytes) -> datetime:
-        """Convert epoch field to ISO format
+        """Convert epoch field from format YYYY:DDD:sssss to ISO format YYYYMMDDThhmmss
 
         The epoch is given in YYYY:DDD:SSSSS format with::
 
@@ -180,7 +180,6 @@ class SinexTmsParser(SinexParser):
         block. It must start with the 5 characters `%=TMS`.
 
         Example:
-            %=SNX 2.02 IGN 15:314:37740 IGN 00:000:00000 00:000:00000 R   142 2 S
             %=TMS  1.0 NMA 2025:008:36155 NMA 2023:152:43185 2023:156:43185 P 0ABI
             0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8---
         """
