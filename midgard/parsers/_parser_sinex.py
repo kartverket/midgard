@@ -453,7 +453,8 @@ class SinexParser(Parser):
         date = datetime.strptime(field_str[:8], "%Y:%j")
         time = timedelta(seconds=int(field_str[9:]))
 
-        return (date + time).isoformat()
+        return (date + time).isoformat()  
+        
     def _convert_exponent(self, field: bytes) -> float:
         """Convert scientific notation number field to float
 
