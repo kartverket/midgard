@@ -129,21 +129,21 @@ class TerraposPositionParser(LineParser):
             Midgard Dataset where Terrapos position output data are stored with following fields:
             
 
-       | Field              | Type              | Description                                                         |
-       | :----------------- | :---------------- | :------------------------------------------------------------------ |
-       | head               | numpy.ndarray     | Head in [deg]                                                       |
-       | num_sat            | numpy.ndarray     | Number of satellites                                                |
-       | pdop               | numpy.ndarray     | Position Dilution of Precision (PDOP)                               |
-       | pitch              | numpy.ndarray     | Pitch in [deg]                                                      |
-       | reliability_east   | numpy.ndarray     | East position external reliability in [m] #TODO: Is that correct?   |
-       | reliability_height | numpy.ndarray     | Height position external reliability in [m] #TODO: Is that correct? |
-       | reliability_north  | numpy.ndarray     | North position external reliability in [m] #TODO: Is that correct?  |
-       | roll               | numpy.ndarray     | Roll in [deg]                                                       |
-       | sigma_east         | numpy.ndarray     | Standard deviation of East position in [m] #TODO: Is that correct?  |
-       | sigma_height       | numpy.ndarray     | Standard deviation of Height position in [m] #TODO: Is that correct?|
-       | sigma_north        | numpy.ndarray     | Standard deviation of North position in [m] #TODO: Is that correct? |
-       | site_pos           | Position          | Geocentric station coordinates x, y and z                           |
-       | time               | Time              | Parameter time given as Time object                                 |
+       | Field                 | Type           | Description                                                         |
+       | :-------------------- | :------------- | :------------------------------------------------------------------ |
+       | dsite_pos_east_sigma  | numpy.ndarray  | Standard deviation of topocentric East-coordinate                   |
+       | dsite_pos_north_sigma | numpy.ndarray  | Standard deviation of topocentric North-coordinate                  |
+       | dsite_pos_up_sigma    | numpy.ndarray  | Standard deviation of topocentric Up-coordinate                     |
+       | head                  | numpy.ndarray  | Head in [deg]                                                       |
+       | num_sat               | numpy.ndarray  | Number of satellites                                                |
+       | pdop                  | numpy.ndarray  | Position Dilution of Precision (PDOP)                               |
+       | pitch                 | numpy.ndarray  | Pitch in [deg]                                                      |
+       | reliability_east      | numpy.ndarray  | East position external reliability in [m] #TODO: Is that correct?   |
+       | reliability_height    | numpy.ndarray  | Height position external reliability in [m] #TODO: Is that correct? |
+       | reliability_north     | numpy.ndarray  | North position external reliability in [m] #TODO: Is that correct?  |
+       | roll                  | numpy.ndarray  | Roll in [deg]                                                       |
+       | site_pos              | Position       | Geocentric station coordinates x, y and z                           |
+       | time                  | Time           | Parameter time given as Time object                                 |
         
         """
         dset = dataset.Dataset(num_obs=len(self.data["gpsweek"]))
