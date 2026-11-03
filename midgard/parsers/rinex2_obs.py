@@ -739,19 +739,18 @@ class Rinex2Parser(ChainParser):
        |                      |                   | in meters. Only observation types are kept, which are defined in      |
        |                      |                   | configuration file. Observation types are rejected, which include     |
        |                      |                   | only blank or 0.0 entries.                                            |
-       | epoch_flag           | numpy.ndarray     | Epoch flag                                                            |
+       | epoch_flag           | numpy.ndarray     | Epoch flag in RINEX observation file                                  |
        | rcv_clk_offset       | numpy.ndarray     | Receiver clock offset in seconds given for each epoch                 |
        | satellite            | numpy.ndarray     | Satellite PRN number together with GNSS system identifier             |
        |                      |                   | (e.g. G07). Only satellites are kept, which are defined in            |
        |                      |                   | configuration file.                                                   |
        | satnum               | numpy.ndarray     | Satellite PRN number (e.g. 07). Only satellites are kept, which are   |
        |                      |                   | defined in configuration file.                                        |
-       | site_pos             | PositionTable     | PositionTable object with given station coordinates (read from        |
-       |                      |                   | RINEX header)                                                         |
-       | station              | numpy.ndarray     | Station name list                                                     |
+       | site_pos             | Position          | Geocentric station coordinates x, y and z (read from RINEX header)    |
+       | station              | numpy.ndarray     | Station name                                                          |
        | system               | numpy.ndarray     | GNSS system identifier. Only satellite system are kept, which are     |
        |                      |                   | defined in configuration file.                                        |
-       | time                 | TimeTable         | Observation time given as TimeTable object                            |
+       | time                 | Time              | Observation time given as Time object                                 |
 
             and following Dataset `meta` data:
 

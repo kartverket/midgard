@@ -370,10 +370,10 @@ class Sp3dParser(ChainParser):
         | Field               | Type           | Unit   | Description                                                |
         | :------------------ | :------------- | :----- | :--------------------------------------------------------- |
         | sat_clock_bias      | numpy.ndarray  | m      | Satellite clock offset from GPS time                       |
-        | sat_pos             | PositionTable  | m      | Satellite position                                         |
+        | sat_pos             | Position       | m      | Satellite position                                         |
         | satellite           | numpy.ndarray  |        | Satellite PRN number                                       |
         | system              | numpy.ndarray  |        | GNSS identifier                                            |
-        | time                | TimeTable      |        | Observation epoch in GPS time                              |
+        | time                | Time           |        | Observation time given as Time object                      |
 
             and following Dataset `meta` data:
 

@@ -153,17 +153,17 @@ class GipsyxGdcovParser(ChainParser):
             Midgard Dataset where time dependent parameter data are stored with following fields:
 
 
-       | Field                    | Type              | Description                                                   |
-       | :----------------------- | :---------------- | :------------------------------------------------------------ |
-       | site_pos                 | Position          | x, y and z station coordinates                                |
-       | site_pos_xy_correlation  | numpy.ndarray     | Correlation between x and y station coordinate                |
-       | site_pos_xz_correlation  | numpy.ndarray     | Correlation between x and z station coordinate                |
-       | site_pos_yz_correlation  | numpy.ndarray     | Correlation between y and z station coordinate                |
-       | site_pos_x_sigma         | numpy.ndarray     | Standard deviation for x station coordinate                   |
-       | site_pos_y_sigma         | numpy.ndarray     | Standard deviation for y station coordinate                   |
-       | site_pos_z_sigma         | numpy.ndarray     | Standard deviation for z station coordinate                   |
-       | station                  | numpy.ndarray     | Station name list                                             |
-       | time                     | Time              | Parameter time given as TimeTable object                      |
+       | Field                    | Type           | Description                                                      |
+       | :----------------------- | :------------- | :--------------------------------------------------------------- |
+       | site_pos                 | Position       | Geocentric station coordinates x, y and z                        |
+       | site_pos_xy_correlation  | numpy.ndarray  | Correlation between x and y station coordinate                   |
+       | site_pos_xz_correlation  | numpy.ndarray  | Correlation between x and z station coordinate                   |
+       | site_pos_yz_correlation  | numpy.ndarray  | Correlation between y and z station coordinate                   |
+       | site_pos_x_sigma         | numpy.ndarray  | Standard deviation for x station coordinate                      |
+       | site_pos_y_sigma         | numpy.ndarray  | Standard deviation for y station coordinate                      |
+       | site_pos_z_sigma         | numpy.ndarray  | Standard deviation for z station coordinate                      |
+       | station                  | numpy.ndarray  | Station name                                                     |
+       | time                     | Time           | Parameter time given as Time object                              |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         

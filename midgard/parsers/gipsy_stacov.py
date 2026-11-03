@@ -164,8 +164,8 @@ class GipsyStacovParser(ChainParser):
        | site_pos_x_sigma         | numpy.ndarray     | Standard deviation for x station coordinate                   |
        | site_pos_y_sigma         | numpy.ndarray     | Standard deviation for y station coordinate                   |
        | site_pos_z_sigma         | numpy.ndarray     | Standard deviation for z station coordinate                   |
-       | station                  | numpy.ndarray     | Station name list                                             |
-       | time                     | Time              | Parameter time given as TimeTable object                      |
+       | station                  | numpy.ndarray     | Station name                                                  |
+       | time                     | Time              | Parameter time given as Time object                           |
        
        The fields above are given for 'apriori', 'value' and 'sigma' Dataset collections.
         

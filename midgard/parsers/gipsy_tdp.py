@@ -106,9 +106,9 @@ class GipsyTdpParser(LineParser):
        | receiver_clock      | numpy.ndarray     | Receiver clock parameter                                           |
        | satellite           | numpy.ndarray     | Satellite SVN number together with GNSS identifier (e.g. G62)      |
        |                     |                   | related to ambiguity                                               |
-       | ambiguity           | numpy.ndarray     | Ambiguity (phase bias) given for satellite vehicle number (SVN)    |                             |
-       | site_posvel         | PosVel            | Station coordinates and velocities (not given and set to NaN for   |
-       |                     |                   | consistency reason related to GipsyX TDP format)                   |
+       | ambiguity           | numpy.ndarray     | Ambiguity (phase bias) given for satellite vehicle number (SVN)    |
+       | site_posvel         | PosVel            | Geocentric station coordinates and velocities (not given and set   |
+       |                     |                   | to NaN for consistency reason related to GipsyX TDP format)        |
        | station             | numpy.ndarray     | Station name list                                                  |
        | system              | numpy.ndarray     | GNSS identifier (e.g. G or E)                                      |
        | time                | Time              | Parameter time given as TimeTable object                           |

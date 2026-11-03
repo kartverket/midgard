@@ -291,7 +291,7 @@ class DorisStcdParser(SinexParser):
        | obs.dsite_pos_y_sigma     | numpy.ndarray     | Standard deviation of geocentric Y-coordinate                 |
        | obs.dsite_pos_z_sigma     | numpy.ndarray     | Standard deviation of geocentric Z-coordinate                 |
        | obs.site_pos              | Position          | Position object with given station coordinates                |
-       | time                      | Time              | Parameter time given as TimeTable object                      |
+       | time                      | Time              | Observation time given as Time object                         |
            
         and **meta**-data:
 

@@ -35,7 +35,7 @@ class BerneseSlrPltParser(LineParser):
     | :----------------- | :----------------------------------------------------------------------------- |
     | station            | 4-digit station identifier                                                     |
     | domes              | domes number, e.g.  50107M001                                                  |
-    | sat_prn            | satellite, e.g. E18
+    | sat_prn            | satellite, e.g. E18                                                            |
     | epoch              | mjd of observation                                                             |
     | residual           | observation residual (mm)                                                      |
     | azi                | azimuth (deg)                                                                  |

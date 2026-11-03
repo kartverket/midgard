@@ -192,13 +192,13 @@ class GalatResults(LineParser):
     
            | Field                    | Type              | Description                                               |
            | :----------------------- | :---------------- | :-------------------------------------------------------- |
+           | dsite_pos                | PositionDelta     | Position delta object refered to a reference position     |
            | hpe                      | np.ndarray        | Horizontal Position Error of site position vs. reference  |
            |                          |                   | position                                                  |
            | num_satellite_available  | np.ndarray        | Number of available satellites                            |
            | num_satellite_used       | np.ndarray        | Number of used satellites                                 |
            | pdop                     | np.ndarray        | Position dilution of precision                            |
            | site_pos                 | Position          | Site position                                             |
-           | site_pos_vs_ref          | PositionDelta     | Site position versus reference coordinate                 |
            | site_vel_3d              | np.ndarray        | 3D site velocity                                          |
            | time                     | Time              | Parameter time given as TimeTable object                  |
            | vpe                      | np.ndarray        | Vertical Position Error of site position vs. reference    |
@@ -258,7 +258,7 @@ class GalatResults(LineParser):
 
         # Add relative position
         dset.add_position_delta(
-            name="site_pos_vs_ref",
+            name="dsite_pos",
             val=(dset.site_pos.trs - ref_pos.trs).val,
             system="trs",
             ref_pos=ref_pos,
@@ -266,9 +266,9 @@ class GalatResults(LineParser):
             
         # Add HPE and VPE to dataset
         dset.add_float("hpe", val=np.sqrt(
-                                dset.site_pos_vs_ref.enu.east ** 2 + dset.site_pos_vs_ref.enu.north ** 2), 
+                                dset.dsite_pos.enu.east ** 2 + dset.dsite_pos.enu.north ** 2), 
                                 unit="meter",
         )
-        dset.add_float("vpe", val=np.absolute(dset.site_pos_vs_ref.enu.up), unit="meter")
+        dset.add_float("vpe", val=np.absolute(dset.dsite_pos.enu.up), unit="meter")
         
         return dset
