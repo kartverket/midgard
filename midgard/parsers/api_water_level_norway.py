@@ -250,7 +250,7 @@ class ApiWaterLevelNorwayParser(Parser):
        | :------------------- | :---------------- | :---------------------------------------------------------------- |
        | flag                 | numpy.ndarray     | Data flag (obs: observation, pre: prediction, weather: weather    |
        |                      |                   | effect, forecast: forecast)                                       |
-       | time                 | TimeTable         | Observation time given as TimeTable object                        |
+       | time                 | Time              | Observation time given as Time object                             |
        | water_level          | numpy.ndarray     | Water level in [m]                                                |
 
             and following Dataset `meta` data:

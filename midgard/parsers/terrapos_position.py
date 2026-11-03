@@ -66,7 +66,7 @@ class TerraposPositionParser(LineParser):
         station: Union[None, str] = None,
         **kwargs: Dict[Any, Any],
     ) -> None:
-        """Initialize Rinex3-parser
+        """Initialize parser
         
         Args:
             args:           Parameters without keyword.
@@ -142,8 +142,8 @@ class TerraposPositionParser(LineParser):
        | sigma_east         | numpy.ndarray     | Standard deviation of East position in [m] #TODO: Is that correct?  |
        | sigma_height       | numpy.ndarray     | Standard deviation of Height position in [m] #TODO: Is that correct?|
        | sigma_north        | numpy.ndarray     | Standard deviation of North position in [m] #TODO: Is that correct? |
-       | site_pos           | Position          | x, y and z station coordinates                                      |
-       | time               | Time              | Parameter time given as TimeTable object                            |
+       | site_pos           | Position          | Geocentric station coordinates x, y and z                           |
+       | time               | Time              | Parameter time given as Time object                                 |
         
         """
         dset = dataset.Dataset(num_obs=len(self.data["gpsweek"]))

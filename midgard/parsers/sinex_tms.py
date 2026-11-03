@@ -141,35 +141,6 @@ class SinexTmsParser(SinexParser):
 
 
     #
-    # CONVERTERS
-    #
-    def _convert_yyyydddsssss(self, field: bytes) -> datetime:
-        """Convert epoch field from format YYYY:DDD:sssss to ISO format YYYYMMDDThhmmss
-
-        The epoch is given in YYYY:DDD:SSSSS format with::
-
-            YY    = 4-digits of the year,
-            DDD   = 3-digits day of year,
-            SSSSS = 5-digits seconds of day.
-
-        Args:
-            field:  Original field with time epoch in YYYY:DDD:SSSSS format.
-
-        Returns:
-            Field converted to ISO format.
-        """
-        field_str = field.decode(self.file_encoding or "utf-8")
-
-        if field_str == "0000:000:00000":
-            field_str = "9999:364:99999"  # 0000:000:00000 means the current time. Therefore value set a time in 
-                                          # the future.
-
-        date = datetime.strptime(field_str[:8], "%Y:%j")
-        time = timedelta(seconds=int(field_str[9:]))
-
-        return (date + time).isoformat()
-
-    #
     # HEADER
     #
     @property
@@ -180,16 +151,17 @@ class SinexTmsParser(SinexParser):
         block. It must start with the 5 characters `%=TMS`.
 
         Example:
+            %=SNX 2.02 IGN 15:314:37740 IGN 00:000:00000 00:000:00000 R   142 2 S
             %=TMS  1.0 NMA 2025:008:36155 NMA 2023:152:43185 2023:156:43185 P 0ABI
             0----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8---
         """
         return (
             SinexField("snx_version", 5, "f8"),
             SinexField("create_agency", 10, "U3"),
-            SinexField("create_epoch", 14, "O", "yyyydddsssss"),
+            SinexField("create_epoch", 14, "O", "yyyydddsssss2iso"),
             SinexField("data_agency", 29, "U3"),
-            SinexField("start_epoch", 33, "O", "yyyydddsssss"),
-            SinexField("end_epoch", 48, "O", "yyyydddsssss"),
+            SinexField("start_epoch", 33, "O", "yyyydddsssss2iso"),
+            SinexField("end_epoch", 48, "O", "yyyydddsssss2iso"),
             SinexField("obs_code", 63, "U1"),
             SinexField("solution_contents", 65, "U30"), #TODO: This should be improved to '*'.
         )
@@ -271,8 +243,8 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 18, "U1"),             
-                SinexField("start_time", 20, "O", "yyyydddsssss"),
-                SinexField("end_time", 35, "O", "yyyydddsssss"),
+                SinexField("start_time", 20, "O", "yyyydddsssss2iso"),
+                SinexField("end_time", 35, "O", "yyyydddsssss2iso"),
                 SinexField("receiver_type", 50, "U20"),
                 SinexField("serial_number", 71, "U20"),
                 SinexField("firmware", 92, "U11"),
@@ -308,8 +280,8 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 18, "U1"),             
-                SinexField("start_time", 20, "O", "yyyydddsssss"),
-                SinexField("end_time", 35, "O", "yyyydddsssss"),
+                SinexField("start_time", 20, "O", "yyyydddsssss2iso"),
+                SinexField("end_time", 35, "O", "yyyydddsssss2iso"),
                 SinexField("antenna_type", 50, "U20"),
                 SinexField("serial_number", 71, "U20"),
             ),
@@ -352,8 +324,8 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 18, "U1"),             
-                SinexField("start_time", 20, "O", "yyyydddsssss"),
-                SinexField("end_time", 35, "O", "yyyydddsssss"),
+                SinexField("start_time", 20, "O", "yyyydddsssss2iso"),
+                SinexField("end_time", 35, "O", "yyyydddsssss2iso"),
                 SinexField("vector_type", 50, "U3"),
                 SinexField("vector_1", 54, "f8"),
                 SinexField("vector_2", 63, "f8"),
@@ -392,7 +364,7 @@ class SinexTmsParser(SinexParser):
                 SinexField("point_code", 11, "U2"),
                 SinexField("soln", 14, "U4"),
                 SinexField("obs_code", 19, "U1"),
-                SinexField("epoch", 21, "O", "yyyydddsssss"),
+                SinexField("epoch", 21, "O", "yyyydddsssss2iso"),
                 SinexField("ref_x", 35, "f8"),
                 SinexField("ref_y", 49, "f8"),
                 SinexField("ref_z", 64, "f8"),

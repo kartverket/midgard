@@ -807,15 +807,14 @@ class Rinex3Parser(ChainParser):
        | <observation type>   | numpy.ndarray     | GNSS observation type data (e.g. C1C, C2W, L1C, L2W, ...) given for   |
        |                      |                   | loss of lock indicator (lli), pseudo-range and carrier phase          |
        |                      |                   | observation (obs) and signal-to-noise-ratio (snr)                     |
-       | epoch_flag           | numpy.ndarray     | Epoch flag                                                            |
+       | epoch_flag           | numpy.ndarray     | Epoch flag in RINEX observation file                                  |
        | rcv_clk_offset       | numpy.ndarray     | Receiver clock offset in seconds given for each epoch                 |
        | satellite            | numpy.ndarray     | Satellite PRN number together with GNSS identifier (e.g. G07)         |
        | satnum               | numpy.ndarray     | Satellite PRN number (e.g. 07)                                        |
-       | site_pos             | PositionTable     | PositionTable object with given station coordinates (read from        |
-       |                      |                   | RINEX header)                                                         |
-       | station              | numpy.ndarray     | Station name list                                                     |
+       | site_pos             | Position          | Geocentric station coordinates x, y and z (read from RINEX header)    |
+       | station              | numpy.ndarray     | Station name                                                          |
        | system               | numpy.ndarray     | GNSS identifier                                                       |
-       | time                 | TimeTable         | Observation time given as TimeTable object                            |
+       | time                 | Time              | Observation time given as Time object                                 |
 
              and following Dataset `meta` data:
 

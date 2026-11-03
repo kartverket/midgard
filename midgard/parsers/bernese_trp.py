@@ -198,7 +198,7 @@ class BerneseTrpPaser(LineParser):
        | flag                      | numpy.ndarray  | Station flag (see section 24.7.1 of Bernese GNSS software       |
        |                           |                | version 5.2, November 2015)                                     |
        | station                   | numpy.ndarray  | Station name                                                    |
-       | time                      | TimeTable      | Observation time given as TimeTable object                      |
+       | time                      | Time           | Observation time given as Time object                           |
        | trop_gradient_east        | numpy.ndarray  | Troposphere horizontal gradients in East/West direction in [m]  |
        | trop_gradient_east_sigma  | numpy.ndarray  | Standard deviation of troposphere horizontal gradients in       |
        |                           |                | East/West direction in [m]                                      |
