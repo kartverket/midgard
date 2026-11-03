@@ -180,7 +180,17 @@ def test_parser_gamit_org():
 
     assert len(dset.site_pos) == 8
     assert len(dset.time) == 8
-    assert "REYK" in dset.station[0]
+    assert "reyk" in dset.station[0]
+
+
+def test_parser_ginan_pos():
+    """Test that parsing ginan_pos gives expected output"""
+    parser = get_parser("ginan_pos").as_dict()
+
+    assert len(parser) == 24
+    assert "time" in parser
+    assert "x" in parser
+    assert 2011818.18297 == parser["x"][0]
 
 
 def test_parser_gipsy_stacov():
@@ -374,7 +384,17 @@ def test_parser_sinex_events():
     assert "ande" in parser
     assert "solution_event" in parser["ande"]
     assert "point_code" in parser["ande"]["solution_event"][0]
-    
+
+
+def test_sinex_satellite_metadata():
+    parser = get_parser("sinex_satellite_metadata")
+
+    assert parser.data["E103"]["satellite_identifier"]["cospar_id"] == "2012-055A"
+    assert len(parser.data["G051"]["satellite_prn"]) == 1
+    assert parser.data["R701"]["satellite_frequency_channel"][1]["channel"] == -4
+    assert parser.data["E233"]["satellite_prn"][0]["valid_to"] == None
+    assert parser.data["J003"]["satellite_com"][0]["z"] == 1.7794    
+
 
 def test_parser_sinex_site():
     """Test that parsing sinex_site gives expected output"""
@@ -386,6 +406,7 @@ def test_parser_sinex_site():
     assert "site_code" in parser["brux"]["site_id"]
     assert "brux" in parser["brux"]["site_id"]["site_code"]
 
+
 def test_parser_sp3():
     """Test that parsing sp3 gives expected output"""
     parser = get_parser("sp3", pathlib.Path(__file__).parent / "example_files" / "sp3d").as_dict()
@@ -394,6 +415,7 @@ def test_parser_sp3():
     assert "system" in parser
     assert "G" in parser["system"][0]
     
+    
 def test_parser_sp3_with_velocity():
     """Test that parsing sp3 gives expected output"""
     parser = get_parser("sp3", pathlib.Path(__file__).parent / "example_files" / "sp3d_with_velocity").as_dict()
@@ -401,6 +423,7 @@ def test_parser_sp3_with_velocity():
     assert "system" in parser
     assert "sat_vel" in parser
     assert len(parser["sat_vel"]) == 1
+
 
 def test_parser_spring_csv():
     """Test that parsing spring_csv gives expected output"""
@@ -415,7 +438,7 @@ def test_parser_ssc_site():
     """Test that parsing ssc_site gives expected output"""
     parser = get_parser("ssc_site").as_dict()
 
-    assert len(parser) == 3
+    assert len(parser) == 4
     assert "brux" in parser
     assert "site_id" in parser["brux"]
 
@@ -460,15 +483,7 @@ def test_water_level_api_xml():
     """Test that parsing water_level_api_xml gives expected output"""
     parser = get_parser("water_level_api_xml").as_dict()
 
-    assert len(parser) == 3
-    assert "value" in parser
-    assert 244.2 == parser["value"][0]
+    assert len(parser) == 5
+    assert "water_level" in parser
+    assert 244.2 == parser["water_level"][0]
 
-def test_sinex_satellite_metadata():
-    parser = get_parser("sinex_satellite_metadata")
-
-    assert parser.data["E103"]["satellite_identifier"]["cospar_id"] == "2012-055A"
-    assert len(parser.data["G051"]["satellite_prn"]) == 1
-    assert parser.data["R701"]["satellite_frequency_channel"][1]["channel"] == -4
-    assert parser.data["E233"]["satellite_prn"][0]["valid_to"] == None
-    assert parser.data["J003"]["satellite_com"][0]["z"] == 1.7794
