@@ -429,6 +429,31 @@ class SinexParser(Parser):
             time = timedelta(seconds=int(field_str[9:]))
             return date + time
 
+    def _convert_yyyydddsssss2iso(self, field: bytes) -> datetime:
+        """Convert epoch field to ISO format
+
+        The epoch is given in YYYY:DDD:SSSSS format with::
+
+            YY    = 4-digits of the year,
+            DDD   = 3-digits day of year,
+            SSSSS = 5-digits seconds of day.
+
+        Args:
+            field:  Original field with time epoch in YYYY:DDD:SSSSS format.
+
+        Returns:
+            Field converted to ISO format.
+        """
+        field_str = field.decode(self.file_encoding or "utf-8")
+
+        if field_str == "0000:000:00000":
+            field_str = "9999:364:99999"  # 0000:000:00000 means the current time. Therefore value set a time in 
+                                          # the future.
+
+        date = datetime.strptime(field_str[:8], "%Y:%j")
+        time = timedelta(seconds=int(field_str[9:]))
+
+        return (date + time).isoformat()
     def _convert_exponent(self, field: bytes) -> float:
         """Convert scientific notation number field to float
 
@@ -907,7 +932,7 @@ class SinexParser(Parser):
                 SinexField("svn", 1, "U4"),
                 SinexField("valid_from", 6, "O", "yyyydddsssss"),
                 SinexField("valid_to", 21, "O", "yyyydddsssss"),
-                SinexField("plane", 36, "U1"),
+                SinexField("plane", 36, "i8"),
                 SinexField("slot", 38, "U6"),
                 SinexField("comment", 45, "U35"),
             ),
@@ -966,7 +991,7 @@ class SinexParser(Parser):
                 SinexField("svn", 1, "U4"),
                 SinexField("valid_from", 6, "O", "yyyydddsssss"),
                 SinexField("valid_to", 21, "O", "yyyydddsssss"),
-                SinexField("channel", 36, "U3"),
+                SinexField("channel", 36, "i8"),
                 SinexField("comment", 40, "U40"),
             ),
             parser=self.parse_satellite_frequency_channel,
@@ -1084,7 +1109,7 @@ class SinexParser(Parser):
                 SinexField("svn", 1, "U4"),
                 SinexField("valid_from", 6, "O", "yyyydddsssss"),
                 SinexField("valid_to", 21, "O", "yyyydddsssss"),
-                SinexField("power", 36, "U4"),
+                SinexField("power", 36, "i8"),
                 SinexField("comment", 41, "U39"),
             ),
             parser=self.parse_satellite_tx_power,

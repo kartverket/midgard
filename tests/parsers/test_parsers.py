@@ -463,3 +463,12 @@ def test_water_level_api_xml():
     assert len(parser) == 3
     assert "value" in parser
     assert 244.2 == parser["value"][0]
+
+def test_sinex_satellite_metadata():
+    parser = get_parser("sinex_satellite_metadata")
+
+    assert parser.data["E103"]["satellite_identifier"]["cospar_id"] == "2012-055A"
+    assert len(parser.data["G051"]["satellite_prn"]) == 1
+    assert parser.data["R701"]["satellite_frequency_channel"][1]["channel"] == -4
+    assert parser.data["E233"]["satellite_prn"][0]["valid_to"] == None
+    assert parser.data["J003"]["satellite_com"][0]["z"] == 1.7794
