@@ -212,7 +212,7 @@ iers_2010    = 6378136.6
 #	   de440      - DE440 [13], constant GM3
 #      egm_2008   - EGM2008 Global Gravitational Model [2].
 #      gtrf       - Galileo OS-SIS-ICD [7], table 58
-#      iers_2010  - IERS Conventions [1], table 1.1.; Galileo OS-SIS-ICD [7], table 58
+#      iers_2010  - IERS Conventions [1], table 1.1.; Galileo OS-SIS-ICD [7], table 58, TCG-compatible value
 #      jgs        - QZSS IS-QZSS-PNT-001 [9], section 5.3.3
 #      pz_90      - GLONASS ICD [12], Table 4.1
 #      wgs84      - IS-GPS-200H [4], table 20-IV.; IRNSS-ICD-SPS [10], Appendix B
@@ -236,10 +236,10 @@ wgs84        = 3.986005e14
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      iers_2010  - IERS Conventions [1], table 1.1.
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GMS [tdb].
-#	   de440      - DE440 [13], constant GMS
+#      iers_2010  - IERS Conventions [1], table 1.1. TCB-compatible value
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GMS. TDB-compatible value.
+#      de440      - DE440 [13], constant GMS. TDB-compatible value.
 [GM_sun]
 __unit__     = meter**3 / second **2
 default      = %(iers_2010)s
@@ -253,9 +253,9 @@ de440        = 1.32712440041279419e20
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [6], table 2, page 7 [tdb].
-#	   de440      - DE440 [13], constant GMM
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [6], table 2, page 7. TDB-compatible value.
+#      de440      - DE440 [13], constant GMM. TDB-compatible value.
 [GM_moon]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -268,9 +268,9 @@ de440        = 4.902800118e12
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM1 [tdb].
-#      de440      - DE440 [13], constant GM1
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM1. TDB-compatible value.
+#      de440      - DE440 [13], constant GM1. TDB-compatible value.
 [GM_mercury]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -283,9 +283,9 @@ de440        = 2.2031868551e13
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM2 [tdb].
-#	   de440      - DE440 [13], constant GM2
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM2. TDB-compatible value.
+#      de440      - DE440 [13], constant GM2. TDB-compatible value.
 [GM_venus]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -298,9 +298,9 @@ de440        = 3.24858592000e14
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM4 [tdb].
-#	   de440      - DE440 [13], constant GM4
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM4. TDB-compatible value.
+#      de440      - DE440 [13], constant GM4. TDB-compatible value.
 [GM_mars]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -313,9 +313,9 @@ de440        = 4.2828375816e13
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM5 [tdb].
-#	   de440      - DE440 [13], constant GM5
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM5. TDB-compatible value.
+#      de440      - DE440 [13], constant GM5. TDB-compatible value.
 [GM_jupiter]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -328,9 +328,9 @@ de440        = 1.267127641e17
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM6 [tdb].
-#	   de440      - DE440 [13], constant GM6
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM6. TDB-compatible value.
+#      de440      - DE440 [13], constant GM6. TDB-compatible value.
 [GM_saturn]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -343,9 +343,9 @@ de440        = 3.79405848418e16
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM7 [tdb].
-#	   de440      - DE440 [13], constant GM7
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM7. TDB-compatible value.
+#      de440      - DE440 [13], constant GM7. TDB-compatible value.
 [GM_uranus]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -358,9 +358,9 @@ de440        = 5.7945564e15
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM8 [tdb].
-#	   de440      - DE440 [13], constant GM8
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM8. TDB-compatible value.
+#      de440      - DE440 [13], constant GM8. TDB-compatible value.
 [GM_neptune]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
@@ -373,9 +373,9 @@ de440        = 6.83652710058e15
 #  Unit:       \f$ m^3 / s^2 \f$.
 #
 #  References:
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [5], constant GM9 [tdb].
-#	   de440      - DE440 [13], constant GM9
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value.
+#      de421      - DE421 [5], constant GM9. TDB-compatible value.
+#      de440      - DE440 [13], constant GM9. TDB-compatible value.
 [GM_pluto]
 __unit__     = meter**3 / second **2
 default      = %(de440)s
