@@ -104,6 +104,7 @@ def gfzrnx_crux(
                 )   
             )
 
+            # TODO: Length of observer name is limited.
             #fid.write(
             #    "\"OBSERVER / AGENCY\"   : {{ 0: \"{agency}\" }}\n".format(
             #            agency=idn.agency,
