@@ -207,9 +207,9 @@ iers_2010    = 6378136.6
 #
 #  References:
 #      cgcs2000   - BDS-SIS-ICD-2.0 [8], table 5.11
-#      de430      - DE430 [3], table 8, page 49 [tdb].
-#      de421      - DE421 [6], table 1, page 6 [tdb].
-#	   de440      - DE440 [13], constant GM3
+#      de430      - DE430 [3], table 8, page 49. TDB-compatible value
+#      de421      - DE421 [6], table 1, page 6. TDB-compatible value
+#      de440      - DE440 [13], constant GM3. TDB-compatible value
 #      egm_2008   - EGM2008 Global Gravitational Model [2].
 #      gtrf       - Galileo OS-SIS-ICD [7], table 58
 #      iers_2010  - IERS Conventions [1], table 1.1.; Galileo OS-SIS-ICD [7], table 58, TCG-compatible value
