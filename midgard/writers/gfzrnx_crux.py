@@ -117,8 +117,8 @@ def gfzrnx_crux(
             for date, rcv in site_info[station]["receiver"].history.items():
                 fid.write(
                     "\"REC # / TYPE / VERS\" + {date_from:15} {date_to:15} : {{ 0: \"{rcv_serial}\", 1: \"{rcv_type}\", 2: \"{firmware}\" }}\n".format(
-                        date_from=_get_yyyyddd_sssss(date[0]),
-                        date_to=_get_yyyyddd_sssss(date[1]),
+                        date_from=_get_yyyymmdd_hhmmss(date[0]),
+                        date_to=_get_yyyymmdd_hhmmss(date[1]),
                         rcv_serial=rcv.serial_number,
                         rcv_type=rcv.type,
                         firmware=rcv.firmware,                        
@@ -130,8 +130,8 @@ def gfzrnx_crux(
             for date, ant in site_info[station]["antenna"].history.items():
                 fid.write(
                     "\"ANT # / TYPE\" + {date_from:15} {date_to:15} : {{ 0: \"{ant_serial}\", 1: \"{ant_type}\", 2: \"{radome_type}\" }}\n".format(
-                        date_from=_get_yyyyddd_sssss(date[0]),
-                        date_to=_get_yyyyddd_sssss(date[1]),
+                        date_from=_get_yyyymmdd_hhmmss(date[0]),
+                        date_to=_get_yyyymmdd_hhmmss(date[1]),
                         ant_serial=ant.serial_number,
                         ant_type=ant.type,
                         radome_type="NONE" if not ant.radome_type else ant.radome_type,                        
@@ -147,8 +147,8 @@ def gfzrnx_crux(
                     for date, crd in site_info[station]["site_coord"].history.items():
                         fid.write(
                             "\"APPROX POSITION XYZ\" +  {date_from:15} {date_to:15} : {{ 0: \"{x}\", 1: \"{y}\", 2: \"{z}\" }}\n".format(
-                                date_from=_get_yyyyddd_sssss(date[0]),
-                                date_to=_get_yyyyddd_sssss(date[1]),
+                                date_from=_get_yyyymmdd_hhmmss(date[0]),
+                                date_to=_get_yyyymmdd_hhmmss(date[1]),
                                 x=crd.pos.trs.x,
                                 y=crd.pos.trs.y,
                                 z=crd.pos.trs.z,                     
@@ -160,8 +160,8 @@ def gfzrnx_crux(
             for date, ecc in site_info[station]["eccentricity"].history.items():
                 fid.write(
                     "\"ANTENNA: DELTA H/E/N\" + {date_from:15} {date_to:15} : {{ 0: \"{up}\", 1: \"{east}\", 2: \"{north}\" }}\n".format(
-                        date_from=_get_yyyyddd_sssss(date[0]),
-                        date_to=_get_yyyyddd_sssss(date[1]),
+                        date_from=_get_yyyymmdd_hhmmss(date[0]),
+                        date_to=_get_yyyymmdd_hhmmss(date[1]),
                         up=ecc.up,
                         east=ecc.east,
                         north=ecc.north,                        
@@ -171,7 +171,7 @@ def gfzrnx_crux(
 #
 # AUXILIARY FUNCTIONS
 #                   
-def _get_yyyyddd_sssss(date: datetime) -> str:
+def _get_yyyymmdd_hhmmss(date: datetime) -> str:
     """Get date format <YYYYMMDD:SSSSS>
 
     Args:
@@ -184,8 +184,8 @@ def _get_yyyyddd_sssss(date: datetime) -> str:
     datetime_limit = datetime(9999, 12, 31, 23, 59, 59, 999999)
 
     if date == datetime_limit:
-        yyyymmdd_sssss="00000000:00000"
+        yyyymmdd_sssss="00000000:000000"
     else:
-        yyyymmdd_sssss=f"{date.strftime('%Y%j')}:{seconds_per_day}"
+        yyyymmdd_sssss=f"{date.strftime('%Y%m%d:%H%M%S')} #{seconds_per_day}"
 
     return yyyymmdd_sssss
