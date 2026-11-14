@@ -604,7 +604,7 @@ class Configuration:
 
         try:
             return self.master_section[key]
-        except exceptions.MissingSectionError:
+        except (exceptions.MissingSectionError, exceptions.MissingEntryError):
             try:
                 return self.fallback_config[key]
             except exceptions.MidgardException:

@@ -112,13 +112,13 @@ def test_list_of_interpolators_not_empty():
 def test_interpolator_non_existing():
     """Test that a non-existent interpolator raises an appropriate error"""
     with pytest.raises(exceptions.UnknownPluginError):
-        interpolation.get_interpolator("non_existent")
+        interpolation._get_interpolator("non_existent")
 
 
 @pytest.mark.parametrize("name", interpolation.interpolators())
 def test_interpolator_is_callable(name):
     """Test that an existing interpolator returns a function"""
-    interpolator = interpolation.get_interpolator(name)
+    interpolator = interpolation._get_interpolator(name)
     assert callable(interpolator)
 
 
