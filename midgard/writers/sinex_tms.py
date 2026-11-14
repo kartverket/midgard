@@ -97,6 +97,12 @@ DATA_TYPES = {
     "SIG_TRODRY": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric zenith dry/hydrostation delay (ZHD)"),
     "SIG_TROTOT": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric zenith total delay (ZTD)"),
     "SIG_TROWET": DataType("m", "11.4f", "Daily average of standard deviation of tropospheric zenith wet delay (ZWD)"),
+    
+    # Gravimetry specific parameter types
+    "GRAVITY": DataType("gal", "15.6e", "Gravity values"),
+
+    # Meteorological specific parameter types
+    "PRESSURE": DataType("Pa", "12.2f", "Atmospheric pressure values"),
 }
 
 # Definition of data type and corresponding dataset field.
@@ -148,6 +154,13 @@ DATA_FIELD_TYPES = OrderedDict({
     "SIG_TROWET": "obs.trop_zenith_wet_sigma",
     "TROTOT": "obs.trop_zenith_total",
     "SIG_TROTOT": "obs.trop_zenith_total_sigma",
+    
+    # Gravimetry specific parameter types
+    "GRAVITY": "obs.gravity",
+
+    # Meteorological specific parameter types
+    "PRESSURE": "obs.pressure",
+        
 })
 
 
@@ -259,7 +272,7 @@ def sinex_tms(
     Args:
         dset:  A dataset containing the data.
     """
-    
+
     # Generate a dataset, whereby 'obs' collection is used for defined dataset fields
     if not "obs" in dset.fields:
         dset = deepcopy(dset)  # Necessary because Dataset is changed in the following
@@ -470,7 +483,7 @@ class TimeseriesBlocks:
         self.fid.write(f"{header}\n")
 
         # Write data
-        idx_sta = self.dset.filter(station=self.station)
+        idx_sta = self.dset.filter(station=self.station) if "station" in self.dset.fields else np.ones(self.dset.num_obs, dtype=bool)  # TODO: Is it necessary to filter after station?
         for time in sorted(self.dset.time.utc.datetime[idx_sta]):
             idx = time == self.dset.time.utc.datetime[idx_sta]
             line = " "
@@ -635,7 +648,8 @@ class TimeseriesBlocks:
         Returns:
             Reference coordinate position as Position object
         """
-        idx = self.dset.filter(station=self.station)
+        # TODO: Is it necessary to filter after station?
+        idx = self.dset.filter(station=self.station) if "station" in self.dset.fields else np.ones(self.dset.num_obs, dtype=bool)
         if self.dset.obs.dsite_pos.ref_pos[idx].shape[0] == 1: # only one reference station coordinate entry are given
             ref_pos = Position(np.squeeze(self.dset.obs.dsite_pos.ref_pos[idx]), system="trs")
         else: 
